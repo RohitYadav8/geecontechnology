@@ -47,7 +47,7 @@ export const services = [
   {
     id: "software-support",
     image: "/service-grid.png",
-    
+    tag: "Software Support & Maintenance",
     title: "Software Support Maintenance",
     description:
       "If ICT is not planned and managed properly, it can be a restriction to the achievements of a business. To allow business stability and growth, your ICT support team has to be carefully structured and well equipped.",
@@ -56,6 +56,7 @@ export const services = [
   {
     id: "seo",
     image: "/service-grid-1.png",
+    tag: "Search Engine Optimization And Maintenance",
     title: "Search Engine Optimization & Maintenance",
     description:
       "SEO offers a visible and effective search presence which leads to a considerable increase of sales, profitability, and cost efficiency for our clients.",
@@ -64,6 +65,7 @@ export const services = [
   {
     id: "social-media",
     image: "/service-grid-2.png",
+    tag: "Social Media Marketing Services",
     title: "Social Media Marketing Services",
     description:
       "An effective social strategy can help to grow an engaged audience, we help to maintain your social presence, engaging with your company's followers. Social media marketing refers to the process of gaining traffic or attention through social media sites.",
@@ -72,7 +74,7 @@ export const services = [
   {
     id: "custom-development",
     image: "/service-grid-3.png",
-
+    tag: "Customised Software Development",
     title: "Customised Software Development",
     description:
       "We specialize in the development of custom software applications. Specifically, our company carries out custom programming, database design, client-server and internet/intranet software application development.",
@@ -81,7 +83,7 @@ export const services = [
   {
     id: "cloud-services",
     image: "/service-grid-4.png",
-    
+    tag: "Cloud Services",
     title: "Cloud Services",
     description:
       "Cloud technologies can be an organisation's greatest and most reliable resource when it comes to solving some of the modern business IT related challenges. At Geecon, we have been involved with cloud computing from its infant stages.",
@@ -90,7 +92,7 @@ export const services = [
   {
     id: "vps-servers",
     image: "/service-grid-5.png",
-
+    tag: "VPS/Dedicated Servers",
     title: "VPS/Dedicated Servers",
     description:
       "Our Dedicated Servers are designed to host resource-intensive websites or mission-critical applications that have outgrown shared hosting or VPS Hosting platform. It is a well-known fact that online businesses are ever-growing.",

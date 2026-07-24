@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from "react";
 import Image from "next/image";
+import { AnimatePresence, motion } from "motion/react";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import { heroSlides } from "../../lib/home-data";
 
@@ -20,34 +21,48 @@ export function HeroSlider() {
     return () => clearInterval(timer);
   }, [next]);
 
+  const slide = heroSlides[current];
+
   return (
     <section className="relative h-[420px] w-full overflow-hidden bg-slate-900 sm:h-[480px] lg:h-[560px]">
-      {heroSlides.map((slide, index) => (
-        <div
+      <AnimatePresence mode="wait">
+        <motion.div
           key={slide.id}
-          className={`absolute inset-0 transition-opacity duration-700 ease-in-out ${
-            index === current ? "opacity-100" : "pointer-events-none opacity-0"
-          }`}
+          initial={{ opacity: 0, scale: 1.05 }}
+          animate={{ opacity: 1, scale: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.9, ease: [0.21, 0.47, 0.32, 0.98] }}
+          className="absolute inset-0"
         >
           <Image
             src={slide.image}
             alt={slide.title}
             fill
-            priority={index === 0}
+            priority={current === 0}
             className="object-cover"
           />
           <div className="absolute inset-0 bg-gradient-to-r from-black/70 via-black/40 to-transparent" />
 
           <div className="relative z-10 mx-auto flex h-full max-w-7xl flex-col justify-center px-6">
-            <h1 className="max-w-lg text-3xl font-semibold leading-tight text-white sm:text-4xl lg:text-5xl">
+            <motion.h1
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.2 }}
+              className="max-w-lg text-3xl font-semibold leading-tight text-white sm:text-4xl lg:text-5xl"
+            >
               {slide.title}
-            </h1>
-            <p className="mt-4 max-w-md text-sm text-slate-200 sm:text-base">
+            </motion.h1>
+            <motion.p
+              initial={{ opacity: 0, y: 24 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.6, delay: 0.35 }}
+              className="mt-4 max-w-md text-sm text-slate-200 sm:text-base"
+            >
               {slide.description}
-            </p>
+            </motion.p>
           </div>
-        </div>
-      ))}
+        </motion.div>
+      </AnimatePresence>
 
       <button
         onClick={prev}

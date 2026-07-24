@@ -5,6 +5,8 @@ import Link from "next/link";
 import Image from "next/image";
 import { Briefcase, Package, User, Link2, ChevronRight, Phone, ShieldCheck, Send } from "lucide-react";
 import { footerLinks } from "../lib/home-data";
+import { AnimateIn } from "../components/animate-in";
+import { StaggerContainer, StaggerItem } from "../components/stagger-container";
 
 function FacebookIcon({ size = 16 }: { size?: number }) {
   return (
@@ -86,7 +88,7 @@ export function Footer() {
     <footer className="bg-[#0a1122] text-slate-400">
       <div className="mx-auto max-w-7xl px-6 sm:px-8 lg:px-10">
         <div className="grid gap-12 py-16 lg:grid-cols-[280px_1fr]">
-          <div>
+          <AnimateIn direction="left">
             <Link href="/" className="flex items-center gap-2.5">
               <Image src="/logo-icon-1.png" alt="Geecon Technology" width={44} height={40} className="h-9 w-auto" />
               <div className="leading-tight">
@@ -112,21 +114,30 @@ export function Footer() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   placeholder="Enter your email"
+                  suppressHydrationWarning
                   className="w-full bg-transparent px-3 py-2 text-sm text-white placeholder:text-slate-500 focus:outline-none"
                 />
-                <button type="submit" aria-label="Subscribe" className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-blue-500 text-white transition-colors hover:bg-blue-400">
+                <button type="submit" aria-label="Subscribe" suppressHydrationWarning className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-blue-500 text-white transition-colors hover:bg-blue-400">
                   <Send size={16} />
                 </button>
               </form>
             </div>
-          </div>
+          </AnimateIn>
 
-          <div className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
-            <FooterColumn columnKey="services" links={footerLinks.services} />
-            <FooterColumn columnKey="products" links={footerLinks.products} />
-            <FooterColumn columnKey="about" links={footerLinks.about} />
-            <FooterColumn columnKey="popular" links={footerLinks.popular} />
-          </div>
+          <StaggerContainer className="grid gap-10 sm:grid-cols-2 lg:grid-cols-4">
+            <StaggerItem>
+              <FooterColumn columnKey="services" links={footerLinks.services} />
+            </StaggerItem>
+            <StaggerItem>
+              <FooterColumn columnKey="products" links={footerLinks.products} />
+            </StaggerItem>
+            <StaggerItem>
+              <FooterColumn columnKey="about" links={footerLinks.about} />
+            </StaggerItem>
+            <StaggerItem>
+              <FooterColumn columnKey="popular" links={footerLinks.popular} />
+            </StaggerItem>
+          </StaggerContainer>
         </div>
 
         <div className="border-t border-white/10 py-8">
