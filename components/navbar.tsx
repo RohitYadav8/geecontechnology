@@ -94,7 +94,7 @@ export function Navbar() {
 
        <Link href="/" className="group flex items-center gap-2.5">
   <Image
-    src="/logo-icon_1.png"
+    src="/logo-icon-1.png"
     alt="Geecon Technology"
     width={31}
     height={40}
