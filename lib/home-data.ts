@@ -51,7 +51,7 @@ export const services = [
     title: "Software Support Maintenance",
     description:
       "If ICT is not planned and managed properly, it can be a restriction to the achievements of a business. To allow business stability and growth, your ICT support team has to be carefully structured and well equipped.",
-    href: "/services/software-support",
+    href: "/software-support-maintenance",
   },
   {
     id: "seo",
@@ -60,7 +60,7 @@ export const services = [
     title: "Search Engine Optimization & Maintenance",
     description:
       "SEO offers a visible and effective search presence which leads to a considerable increase of sales, profitability, and cost efficiency for our clients.",
-    href: "/services/seo",
+    href: "/search-engine-optimization",
   },
   {
     id: "social-media",
@@ -69,7 +69,7 @@ export const services = [
     title: "Social Media Marketing Services",
     description:
       "An effective social strategy can help to grow an engaged audience, we help to maintain your social presence, engaging with your company's followers. Social media marketing refers to the process of gaining traffic or attention through social media sites.",
-    href: "/services/social-media-marketing",
+    href: "/social-media-marketing-services",
   },
   {
     id: "custom-development",
@@ -78,7 +78,7 @@ export const services = [
     title: "Customised Software Development",
     description:
       "We specialize in the development of custom software applications. Specifically, our company carries out custom programming, database design, client-server and internet/intranet software application development.",
-    href: "/services/customised-software-development",
+    href: "/customised-software-development",
   },
   {
     id: "cloud-services",
@@ -87,7 +87,7 @@ export const services = [
     title: "Cloud Services",
     description:
       "Cloud technologies can be an organisation's greatest and most reliable resource when it comes to solving some of the modern business IT related challenges. At Geecon, we have been involved with cloud computing from its infant stages.",
-    href: "/services/cloud-services",
+    href: "/cloud-services",
   },
   {
     id: "vps-servers",
@@ -96,7 +96,7 @@ export const services = [
     title: "VPS/Dedicated Servers",
     description:
       "Our Dedicated Servers are designed to host resource-intensive websites or mission-critical applications that have outgrown shared hosting or VPS Hosting platform. It is a well-known fact that online businesses are ever-growing.",
-    href: "/services/vps-dedicated-servers",
+    href: "/vps-dedicated-servers",
   },
 ];
 
@@ -131,14 +131,14 @@ export const clients = [
 export const footerLinks = {
   services: [
     { label: "Candidate Screening", href: "/candidate-screening" },
-    { label: "Cloud Services", href: "/services/cloud-services" },
+    { label: "Cloud Services", href: "/cloud-services" },
     { label: "Current Openings", href: "/careers" },
-    { label: "Customised Software Development", href: "/services/customised-software-development" },
-    { label: "Search Engine Optimisation", href: "/services/seo" },
-    { label: "Social Media Marketing", href: "/services/social-media-marketing" },
-    { label: "Software Support & Maintenance", href: "/services/software-support" },
-    { label: "VPS/Dedicated Servers", href: "/services/vps-dedicated-servers" },
-    { label: "Website Development", href: "/services/website-development" },
+    { label: "Customised Software Development", href: "/customised-software-development" },
+    { label: "Search Engine Optimisation", href: "/search-engine-optimization" },
+    { label: "Social Media Marketing", href: "/social-media-marketing-services" },
+    { label: "Software Support & Maintenance", href: "/software-support-maintenance" },
+    { label: "VPS/Dedicated Servers", href: "/vps-dedicated-servers" },
+    { label: "Website Development", href: "/website-development" },
   ],
   products: [
     { label: "Candidate Screening", href: "/candidate-screening" },

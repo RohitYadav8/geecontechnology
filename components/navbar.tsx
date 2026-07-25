@@ -38,9 +38,13 @@ const navLinks = [
     label: "SERVICES",
     href: "/services",
     children: [
-      { label: "IT Consulting", href: "/services/it-consulting" },
-      { label: "Staffing Solutions", href: "/services/staffing" },
-      { label: "Product Engineering", href: "/services/product-engineering" },
+      { label: "Website Development", href: "/website-development" },
+      { label: "Customised Software Development", href: "/customised-software-development" },
+      { label: "VPS/Dedicated Servers", href: "/vps-dedicated-servers" },
+      { label: "Cloud Services", href: "/cloud-services" },
+      { label: "Social Media Marketing", href: "/social-media-marketing-services" },
+      { label: "Search Engine Optimization", href: "/search-engine-optimization" },
+      { label: "Software Support & Maintenance", href: "/software-support-maintenance" },
     ],
   },
   { label: "PRODUCTS", href: "/products" },
@@ -151,17 +155,20 @@ export function Navbar() {
                 onMouseEnter={() => setServicesOpen(true)}
                 onMouseLeave={() => setServicesOpen(false)}
               >
-                <button className="group relative flex items-center gap-1 py-2 text-sm font-semibold text-slate-800 transition-colors duration-200 hover:text-[#1a2b4a] dark:text-slate-200 dark:hover:text-white">
+                <Link
+                  href={link.href}
+                  className="group relative flex items-center gap-1 py-2 text-sm font-semibold text-slate-800 transition-colors duration-200 hover:text-[#1a2b4a] dark:text-slate-200 dark:hover:text-white"
+                >
                   {link.label}
                   <ChevronDown
                     size={14}
                     className={`transition-transform duration-200 ${servicesOpen ? "rotate-180" : ""}`}
                   />
                   <span className="absolute -bottom-0.5 left-0 h-[2px] w-0 bg-[#1a2b4a] transition-all duration-300 ease-out group-hover:w-full dark:bg-white" />
-                </button>
+                </Link>
 
                 <div
-                  className={`absolute left-1/2 top-full w-60 -translate-x-1/2 pt-3 transition-all duration-200 ${
+                  className={`absolute left-1/2 top-full w-64 -translate-x-1/2 pt-3 transition-all duration-200 ${
                     servicesOpen
                       ? "pointer-events-auto translate-y-0 opacity-100"
                       : "pointer-events-none -translate-y-1 opacity-0"
