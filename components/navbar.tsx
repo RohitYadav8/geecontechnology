@@ -1,9 +1,10 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { motion, useScroll, useMotionValueEvent } from "motion/react";
 import { Mail, Phone, ChevronDown, Menu, X } from "lucide-react";
 import { ThemeToggle } from "../components/theme-toggle";
 
@@ -51,12 +52,37 @@ const navLinks = [
 export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const pathname = usePathname();
+  const { scrollY } = useScroll();
+
+  useMotionValueEvent(scrollY, "change", (latest) => {
+    setScrolled(latest > 24);
+  });
+
+  useEffect(() => {
+    setMobileOpen(false);
+  }, [pathname]);
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-slate-200/70 bg-white/85 backdrop-blur-md dark:border-slate-800/70 dark:bg-slate-950/85">
+    <motion.header
+      animate={{
+        backgroundColor: scrolled ? "rgba(255,255,255,0.75)" : "rgba(255,255,255,0)",
+        boxShadow: scrolled ? "0 8px 30px rgba(15,23,42,0.08)" : "0 0 0 rgba(0,0,0,0)",
+      }}
+      transition={{ duration: 0.4, ease: [0.21, 0.47, 0.32, 0.98] }}
+      className={`sticky top-0 z-50 w-full border-b transition-[border-color] duration-500 dark:bg-slate-950/0 ${
+        scrolled
+          ? "border-slate-200/70 backdrop-blur-xl dark:border-slate-800/70 dark:!bg-slate-950/75"
+          : "border-transparent dark:!bg-slate-950/0"
+      }`}
+    >
       {/* Top utility bar */}
-      <div className="hidden border-b border-slate-100 bg-slate-50/60 text-xs text-slate-500 dark:border-slate-800 dark:bg-slate-900/40 dark:text-slate-400 md:block">
+      <motion.div
+        animate={{ height: scrolled ? 0 : "auto", opacity: scrolled ? 0 : 1 }}
+        transition={{ duration: 0.35, ease: "easeInOut" }}
+        className="hidden overflow-hidden border-b border-slate-100 bg-slate-50/60 text-xs text-slate-500 dark:border-slate-800 dark:bg-slate-900/40 dark:text-slate-400 md:block"
+      >
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-2">
           <div className="flex items-center gap-3.5">
             <a href="#" aria-label="Facebook" className="text-slate-400 transition-colors duration-200 hover:text-[#1a2b4a] dark:text-slate-500 dark:hover:text-white">
@@ -71,10 +97,10 @@ export function Navbar() {
           </div>
 
           <div className="flex items-center gap-6">
-            <Link href="/candidate-screening" className="relative font-medium text-slate-500 transition-colors duration-200 hover:text-[#1a2b4a] dark:text-slate-400 dark:hover:text-white">
+            <Link href="/candidate-screening" className="font-medium text-slate-500 transition-colors duration-200 hover:text-[#1a2b4a] dark:text-slate-400 dark:hover:text-white">
               Candidate Screening
             </Link>
-            <Link href="/careers" className="relative font-medium text-slate-500 transition-colors duration-200 hover:text-[#1a2b4a] dark:text-slate-400 dark:hover:text-white">
+            <Link href="/careers" className="font-medium text-slate-500 transition-colors duration-200 hover:text-[#1a2b4a] dark:text-slate-400 dark:hover:text-white">
               Apply Current Openings
             </Link>
             <a href="mailto:info@geecontechnology.com" className="flex items-center gap-1.5 font-medium text-slate-500 transition-colors duration-200 hover:text-[#1a2b4a] dark:text-slate-400 dark:hover:text-white">
@@ -85,31 +111,33 @@ export function Navbar() {
             </a>
           </div>
         </div>
-      </div>
+      </motion.div>
 
       {/* Main nav */}
-      <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-3.5">
+      <motion.div
+        animate={{ paddingTop: scrolled ? 10 : 14, paddingBottom: scrolled ? 10 : 14 }}
+        transition={{ duration: 0.35 }}
+        className="mx-auto flex max-w-7xl items-center justify-between px-6"
+      >
         {/* Logo */}
-
-
-       <Link href="/" className="group flex items-center gap-2.5">
-  <Image
-    src="/logo-icon-1.png"
-    alt="Geecon Technology"
-    width={31}
-    height={40}
-    className="h-10 w-auto transition-transform duration-300 group-hover:scale-105"
-    priority
-  />
-  <div className="leading-tight">
-    <div className="text-2xl font-extrabold tracking-tight text-slate-900 dark:text-white">
-      GEECON
-    </div>
-    <div className="text-[9px] font-medium tracking-wide text-slate-400 dark:text-slate-500">
-      SIMPLE SOLUTIONS ENGINEERED FOR EXTREME
-    </div>
-  </div>
-</Link>
+        <Link href="/" className="group flex items-center gap-2.5">
+          <Image
+            src="/logo-icon-1.png"
+            alt="Geecon Technology"
+            width={44}
+            height={40}
+            className="h-10 w-auto transition-transform duration-300 group-hover:scale-105"
+            priority
+          />
+          <div className="leading-tight">
+            <div className="text-2xl font-extrabold tracking-tight text-slate-900 dark:text-white">
+              GEECON
+            </div>
+            <div className="text-[9px] font-medium tracking-wide text-slate-400 dark:text-slate-500">
+              SIMPLE SOLUTIONS ENGINEERED FOR EXTREME
+            </div>
+          </div>
+        </Link>
 
         {/* Desktop links */}
         <nav className="hidden items-center gap-8 lg:flex">
@@ -133,12 +161,13 @@ export function Navbar() {
                 </button>
 
                 <div
-                  className={`absolute left-1/2 top-full w-60 -translate-x-1/2 pt-3 transition-all duration-200 ${servicesOpen
-                    ? "pointer-events-auto translate-y-0 opacity-100"
-                    : "pointer-events-none -translate-y-1 opacity-0"
-                    }`}
+                  className={`absolute left-1/2 top-full w-60 -translate-x-1/2 pt-3 transition-all duration-200 ${
+                    servicesOpen
+                      ? "pointer-events-auto translate-y-0 opacity-100"
+                      : "pointer-events-none -translate-y-1 opacity-0"
+                  }`}
                 >
-                  <div className="overflow-hidden rounded-lg border border-slate-200 bg-white py-2 shadow-xl shadow-slate-900/5 dark:border-slate-800 dark:bg-slate-900 dark:shadow-black/20">
+                  <div className="overflow-hidden rounded-lg border border-slate-200 bg-white/95 py-2 shadow-xl shadow-slate-900/5 backdrop-blur-xl dark:border-slate-800 dark:bg-slate-900/95 dark:shadow-black/20">
                     {link.children.map((child) => (
                       <Link
                         key={child.label}
@@ -159,8 +188,9 @@ export function Navbar() {
               >
                 {link.label}
                 <span
-                  className={`absolute -bottom-0.5 left-0 h-[2px] bg-[#1a2b4a] transition-all duration-300 ease-out dark:bg-white ${isActive ? "w-full" : "w-0 group-hover:w-full"
-                    }`}
+                  className={`absolute -bottom-0.5 left-0 h-[2px] bg-[#1a2b4a] transition-all duration-300 ease-out dark:bg-white ${
+                    isActive ? "w-full" : "w-0 group-hover:w-full"
+                  }`}
                 />
               </Link>
             );
@@ -177,12 +207,13 @@ export function Navbar() {
             {mobileOpen ? <X size={20} /> : <Menu size={20} />}
           </button>
         </div>
-      </div>
+      </motion.div>
 
       {/* Mobile menu */}
       <div
-        className={`overflow-hidden border-t border-slate-100 bg-white transition-[max-height] duration-300 ease-in-out dark:border-slate-800 dark:bg-slate-950 lg:hidden ${mobileOpen ? "max-h-[600px]" : "max-h-0 border-t-0"
-          }`}
+        className={`overflow-hidden border-t border-slate-100 bg-white/95 backdrop-blur-xl transition-[max-height] duration-300 ease-in-out dark:border-slate-800 dark:bg-slate-950/95 lg:hidden ${
+          mobileOpen ? "max-h-[600px]" : "max-h-0 border-t-0"
+        }`}
       >
         <nav className="px-6 py-4">
           {navLinks.map((link) => (
@@ -210,6 +241,6 @@ export function Navbar() {
           ))}
         </nav>
       </div>
-    </header>
+    </motion.header>
   );
 }
