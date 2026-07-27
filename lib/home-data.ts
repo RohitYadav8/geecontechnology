@@ -45,6 +45,15 @@ export const facts = [
 
 export const services = [
   {
+    id: "website-development",
+    image: "/service-grid-6.png",
+    tag: "Website Development",
+    title: "Website Development",
+    description:
+      "\"Design is thinking made visual\". That's where we step in. We believe in designing a website that influences the user to take certain actions based on how the user feels about the website.",
+    href: "/website-development",
+  },
+  {
     id: "software-support",
     image: "/service-grid.png",
     tag: "Software Support & Maintenance",
