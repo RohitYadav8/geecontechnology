@@ -1,6 +1,3 @@
-
-
-
 export interface ServiceDetail {
   title: string;
   gradient: string;
@@ -12,24 +9,61 @@ export interface ServiceDetail {
   closing: string;
   coverage: string[];
   qa: string[];
+  sections?: { title: string; body: string }[];
 }
-export interface ServiceDetail {
-  title: string;
-  gradient: string;
-  intro: string[];
-  challenges: string[];
-  middle: string[];
-  benefits: string[];
-  closing: string;
-  coverage: string[];
-  qa: string[];
-}
+
+export const defaultStats = [
+  { label: "Years Experience", value: 10, suffix: "+" },
+  { label: "Clients Served", value: 500, suffix: "+" },
+  { label: "Support", value: 24, suffix: "/7" },
+  { label: "Uptime", value: 99.9, suffix: "%" },
+];
+
+export const defaultWhyChooseUs = [
+  { icon: "zap", title: "Fast Delivery", description: "Agile process that keeps projects moving without cutting corners." },
+  { icon: "lock", title: "Secure by Design", description: "Security best practices built in from day one, not bolted on later." },
+  { icon: "smartphone", title: "Fully Responsive", description: "Every solution works seamlessly across desktop, tablet, and mobile." },
+  { icon: "cloud", title: "Cloud Ready", description: "Built to scale on modern cloud infrastructure from the start." },
+];
+
+export const defaultProcess = [
+  "Requirement",
+  "Planning",
+  "Design",
+  "Development",
+  "Testing",
+  "Deployment",
+  "Support",
+];
+
+export const defaultTechStack = [
+  "React", "Next.js", "TypeScript", "Node.js", "Laravel", "PHP", "AWS", "Docker", "MySQL",
+];
+
+export const defaultFaqs = [
+  {
+    question: "What does this service actually include?",
+    answer: "Scope varies by project, but typically covers discovery, design, development, testing, and post-launch support, all outlined clearly before we start.",
+  },
+  {
+    question: "How much does it cost?",
+    answer: "Pricing depends on complexity and scope. We provide a detailed quote after understanding your requirements, with no hidden costs.",
+  },
+  {
+    question: "How long does a typical project take?",
+    answer: "Most projects range from a few weeks to a few months depending on scope. We'll give you a realistic timeline during the planning phase.",
+  },
+  {
+    question: "Do you provide support after delivery?",
+    answer: "Yes, we offer ongoing support and maintenance packages so your solution keeps running smoothly long after launch.",
+  },
+];
 
 export const serviceDetails: Record<string, ServiceDetail> = {
-
   "cloud-services": {
     title: "Cloud Services",
     gradient: "from-sky-500 to-teal-300",
+     bannerImage: "/cloud-service.png",
     intro: [
       "One of the most powerful technological evolution of our times has been the rollout of cloud computing. With time cloud computing has continued to mature as a useful technology and most organisations are reaping its rewards.",
       "Cloud technologies can be an organisation's greatest and most reliable resource when it comes to solving some of the modern business IT related challenges. At Geecon, we have been involved with cloud computing from its infant stages. Using our end to end cloud solution we have been able to transform our client's capacity and efficiency for the better.",
@@ -62,7 +96,8 @@ export const serviceDetails: Record<string, ServiceDetail> = {
     coverage: [],
     qa: [],
   },
- "vps-servers": {
+
+  "vps-servers": {
     title: "VPS/Dedicated Servers",
     gradient: "from-slate-700 to-slate-500",
     bannerImage: "/vps.png",
@@ -116,6 +151,7 @@ export const serviceDetails: Record<string, ServiceDetail> = {
     ],
     qa: [],
   },
+
   "website-development": {
     title: "Website Development",
     gradient: "from-blue-700 to-cyan-300",
@@ -138,9 +174,11 @@ export const serviceDetails: Record<string, ServiceDetail> = {
     coverage: [],
     qa: [],
   },
+
   "software-support": {
     title: "Software Support & Maintenance",
     gradient: "from-blue-500 to-cyan-400",
+    bannerImage: "/software-support.png",
     intro: [
       "If ICT is not planned and managed properly, it can be a restriction to the achievements of a business. To allow business stability and growth, your ICT support team has to be carefully structured and well equipped but most times even the most well planned support structure is not enough to sustain the ambitions of your organisation. The many challenges include:",
     ],
@@ -181,8 +219,64 @@ export const serviceDetails: Record<string, ServiceDetail> = {
       "Assurance – Quality assurance services can help you make sure that the final product you sell uses the highest quality possible. By ensuring that the final product runs smoothly, customers will trust that the website and apps you sell will always work as advertised. In addition to quality assurance testing, software companies may conduct audits, source code audits, bug hits, performance, security, refactoring, and maintenance on your websites and apps to make sure everything was done right. When you build an online business, it is imperative that the website and apps you create are run smoothly and effectively for your customers. Many website development companies offer quality assurance services for both web testing and mobile testing. When using a third-party testing company to perform software testing, you have the benefit of a dedicated team that knows how your application works and will be the most effective in fixing any problems. While quality assurance services for software testing services companies provide many benefits to small businesses, there are a few things you should consider before hiring one of these services. While some businesses have chosen to perform testing and bug fixes in-house, it is much more cost-effective to contract with a quality assurance services because it allows you to save money on having to pay staff to do the job in-house.",
     ],
   },
-};
+  "seo": {
+    title: "Search Engine Optimisation",
+    gradient: "from-orange-500 to-amber-300",
+    bannerImage: "/search-engine-optimisation.png",
+    intro: [
+      "Search Engine Optimisation is a complex and constantly changing arena. It is one of the most effective (in ROI) marketing techniques used in the digital age in improving bottom line figures. An SEO (Search Engine Optimiser) helps improve a websites visibility on search engines like Google, Bing and Yahoo for a given number of target keywords normally related to the products and services you offer.",
+      "SEO offers one of the highest returns on marketing investment and so has become an essential marketing strategy for businesses who wish to reach new clients and customers.",
+      "If carried out in an effective manner, search engine optimisation can significantly increase the traffic to your website and grow your business by way of high search engine rankings or alternative techniques that bring on good returns (ROI). It is crucial to ensure that your website and business stays ahead of the game and continues to follow Google's guidelines outlined in their webmasters section.",
+      "Search Engine Optimization is fundamental and essential and our Search Engine Optimization strategies will get you a high-ranking placement in search results. We all provide a full SEO keyword rankings report, as well as link building profile report and indexed page information. Our customer focused team will improve your traffic flow and increase sales for your internet based operations.",
+    ],
+    challenges: [],
+    middle: [
+      "We provide a detailed results of your website SEO performance evaluation, as well as data about your traffic, top referring keywords and a full break down of search engine activity.",
+      "Important SEO element is the target keywords. Let our team determine the best future strategy for all your link building activities and you all increase your search engine traffic and get profitability.",
+    ],
+    benefits: [],
+    closing:
+      "Search Engine Optimization is not a simple accompaniment to online marketing – it is Online Marketing itself. We are aware of Search Engine Optimization importance for businesses that is why we offer to our valued clients the high quality complete package at a low price. We keep up-to-date with the very latest guidelines from all major search engines such as Google, Bing, Yandex and Yahoo. Visit the site for other services.",
+    coverage: [],
+    qa: [],
+  },
 
+  "social-media": {
+    title: "Social Media Marketing Services",
+    gradient: "from-fuchsia-500 to-orange-400",
+     bannerImage: "/social-media-marketing.png",
+    intro: [
+      "We are a full service SEO agency and our social media experts help establish your business objectives and identify your target audience, create engaging and shareable content and finally link up your social media marketing with all other aspects of your online presence.",
+      "We will tailor Social Media Marketing strategy specifically for your brand and your audience. You all get fully supported and managed social programs, content planning and generation, as well as blogger outreach and video distribution among other services that are aimed to attract new customers and increase your profitability.",
+      "Our Social Media Services gives you the possibility to connect and share information leading to an increase of the brand, products or services awareness. The results of Social Media Advertising are reflected in the number of retweets, shares, comments, likes and views.",
+      "Social Media Marketing encourage user-generated content in most popular being Facebook, Google+, Twitter, Pinterest and LinkedIn.",
+    ],
+    challenges: [],
+    middle: [],
+    benefits: [],
+    closing: "Visit the site for other services.",
+    coverage: [],
+    qa: [],
+    sections: [
+      {
+        title: "Brand Monitoring",
+        body: "Improve your business' reputation using the social media tools within the software marketing. Detect and record every mention of your brand to find out what your clients and potential customers are saying in relation to key industry term.",
+      },
+      {
+        title: "Social Media Contests",
+        body: "Facebook, Twitter or Pinterest contest can highly increases the quality traffic in your business in a short period of time. Our experts will determine which types of contest and which social networking platforms are the most suitable for your brand.",
+      },
+      {
+        title: "Social Media Management",
+        body: "Our social media professionals via Facebook, Twitter and LinkedIn will communicate with your current and potential customers, increase traffic to your website and achieve great results in influencing and building relations with your target audience.",
+      },
+      {
+        title: "Setup & Custom Profile Design",
+        body: "Social media profiles created and tailored with awesome images, fantastic graphics and striking page designs will definitely attract attention from interested parties over a competitor company.",
+      },
+    ],
+  },
+};
 
 export const fallbackDetail = (title: string, description: string): ServiceDetail => ({
   title,
