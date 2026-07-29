@@ -23,7 +23,7 @@ export const products: Product[] = [
         gradient: "from-orange-500 to-red-400",
         logoText: "HR",
         logo: "/global-hr.png",
-        href: "/global-hr",
+        href: "/products/global-hr",
     },
     {
         id: "facewebinar",
@@ -36,7 +36,7 @@ export const products: Product[] = [
         gradient: "from-slate-400 to-slate-200",
         logoText: "FW",
         logo: "/facewebinar-1.png",
-        href: "/facewebinar",
+        href: "/products/facewebinar",
     },
     {
         id: "gift-aid-claims",
@@ -49,7 +49,7 @@ export const products: Product[] = [
         gradient: "from-blue-600 to-blue-400",
         logoText: "GA",
         logo: "/giftaid-1.png",
-        href: "/gift-aid-claims",
+        href: "/products/gift-aid-claims",
     },
     {
         id: "invoice-made-simple",
@@ -62,7 +62,7 @@ export const products: Product[] = [
         gradient: "from-blue-700 to-indigo-500",
         logoText: "IS",
         logo: "/invoice.png",
-        href: "/invoice-made-simple",
+        href: "/products/invoice-made-simple",
     },
     {
         id: "crm-360",
@@ -74,7 +74,7 @@ export const products: Product[] = [
         gradient: "from-green-600 to-emerald-400",
         logoText: "360",
         logo: "/crm-1.png",
-        href: "/crm-360",
+        href: "/products/crm-360",
     },
     {
         id: "bulk-sms-solution",
@@ -86,7 +86,7 @@ export const products: Product[] = [
         gradient: "from-indigo-700 to-purple-500",
         logoText: "SMS",
         logo: "/sms-1.png",
-        href: "/bulk-sms-solution",
+        href: "/products/bulk-sms-solution",
         variant: "info",
         socials: true,
     },
@@ -100,7 +100,7 @@ export const products: Product[] = [
         gradient: "from-amber-800 to-orange-600",
         logoText: "MP",
         logo: "/myprojects-1.png",
-        href: "/my-projects",
+        href: "/products/my-projects",
     },
     {
         id: "cms-avatar",
@@ -112,7 +112,7 @@ export const products: Product[] = [
         gradient: "from-amber-900 to-red-700",
         logoText: "CMS",
         logo: "/cms-1.png",
-        href: "/cms-avatar",
+        href: "/products/cms-avatar",
     },
     {
         id: "Online Directory",
@@ -124,7 +124,7 @@ export const products: Product[] = [
         gradient: "from-orange-600 to-amber-500",
         logoText: "LP",
         logo:"/onlinedirectory.png",
-        href: "/listing-based-portals",
+        href: "/products/listing-based-portals",
         variant: "info",
         socials: true,
     },
@@ -138,7 +138,7 @@ export const products: Product[] = [
         gradient: "from-sky-500 to-blue-300",
         logoText: "SD",
         logo: "/syncmydoc.png",
-        href: "/syncmydocs",
+        href: "/products/syncmydocs",
     },
     {
         id: "data360",
@@ -150,6 +150,6 @@ export const products: Product[] = [
         gradient: "from-teal-600 to-cyan-400",
         logoText: "D360",
         logo: "/data-360.jpg",
-        href: "/data360",
+        href: "/products/data360",
     },
 ];

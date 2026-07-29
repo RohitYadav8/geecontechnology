@@ -1,0 +1,269 @@
+"use client";
+
+import { useRef, useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { motion, useScroll, useTransform } from "motion/react";
+import { Upload, Send, CheckCircle } from "lucide-react";
+import { Navbar } from "../../../components/navbar";
+import { Footer } from "../../../components/footer";
+import { AnimateIn } from "../../../components/animate-in";
+import { AnimatedHeading } from "../../../components/animated-heading";
+import { FloatingBlob } from "../../../components/floating-blob";
+import { StatCounter } from "../../../components/stat-counter";
+import { MouseGlow } from "../../../components/mouse-glow";
+import { RippleButton } from "../../../components/ripple-button";
+
+// DUMMY STATS — replace with your real numbers.
+const careerStats = [
+  { label: "Team Members", value: 50, suffix: "+" },
+  { label: "Years of Experience", value: 10, suffix: "+" },
+  { label: "Client Satisfaction", value: 95, suffix: "%" },
+];
+
+export default function CareersPage() {
+  const [form, setForm] = useState({ firstName: "", lastName: "", email: "", phone: "" });
+  const [fileName, setFileName] = useState("");
+  const [isDragging, setIsDragging] = useState(false);
+  const [showToast, setShowToast] = useState(false);
+
+  const imageRef = useRef<HTMLDivElement>(null);
+  const { scrollYProgress } = useScroll({ target: imageRef, offset: ["start end", "end start"] });
+  const parallaxY = useTransform(scrollYProgress, [0, 1], ["-12%", "12%"]);
+
+  const handleChange = (field: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement>) => {
+    setForm((prev) => ({ ...prev, [field]: e.target.value }));
+  };
+
+  const handleFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) setFileName(e.target.files[0].name);
+  };
+
+  const handleDrop = (e: React.DragEvent<HTMLLabelElement>) => {
+    e.preventDefault();
+    setIsDragging(false);
+    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
+      setFileName(e.dataTransfer.files[0].name);
+    }
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    setShowToast(true);
+    window.setTimeout(() => setShowToast(false), 4000);
+  };
+
+  return (
+    <div className="flex min-h-screen flex-col bg-white dark:bg-slate-950">
+      <Navbar />
+      <main className="relative flex-1 overflow-hidden">
+        {/* Background grid + floating blobs */}
+        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,#e5e7eb_1px,transparent_1px),linear-gradient(to_bottom,#e5e7eb_1px,transparent_1px)] bg-[size:48px_48px] opacity-20 dark:opacity-10" />
+        <FloatingBlob className="-right-20 top-10 h-72 w-72" color="bg-blue-400/10" duration={16} />
+        <FloatingBlob className="-left-16 top-96 h-64 w-64" color="bg-cyan-300/10" duration={20} />
+
+        <section className="relative mx-auto max-w-7xl px-6 pb-16 pt-16 sm:pt-20">
+          <AnimatedHeading
+            text="Career With Us"
+            as="h1"
+            className="text-2xl font-semibold text-blue-600 dark:text-blue-400 sm:text-3xl"
+          />
+
+          <div className="mt-8 grid gap-10 lg:grid-cols-[1fr_320px]">
+            {/* ===== Left: content + form ===== */}
+            <AnimateIn delay={0.15}>
+              <div className="space-y-4 text-sm leading-7 text-slate-600 dark:text-slate-400">
+                <p>Come on, join US. And we will help You to explore your values and valuate your skills.</p>
+                <p>
+                  <span className="font-semibold text-slate-900 dark:text-white">Geecon</span>{" "}
+                  Group has many years experience of providing software solutions and affordable
+                  for small, mid and large companies &amp; corporations. We also provide services
+                  in different industries like Resourcing, Corporate Training and Design. We have
+                  the history of working hard to ensure the customer confidence in us and have
+                  mission to continue the same with the dedication to serve our customers. We
+                  care about it and will never change it as this is our heritage.
+                </p>
+                <p>
+                  The first appeal: you are the star. All we want to know is: Are you capable enough to
+                  &lsquo;outcast&rsquo; the dreams in you? At Geecon Technology, we believe in &lsquo;optimism&rsquo;.
+                  After lots of efforts we decided to throw out the &lsquo;creative persona test&rsquo; among you.
+                  Once you realise you have the &lsquo;stardom&rsquo; in you, unleash it. The world is yours, and
+                  your career is ready to go heights. Explore yourselves with us. Valuate your skills. Take the
+                  test, take the challenge. This is our work &lsquo;pledge&rsquo;. If you think you have your own
+                  rules, you are most welcome to share them with us. We want fresh or experienced candidates for
+                  our described services.
+                </p>
+              </div>
+
+              {/* Animated stat counters — scroll reveal */}
+              <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true, margin: "-60px" }}
+                transition={{ duration: 0.6 }}
+                className="mt-10 grid grid-cols-3 gap-6 border-t border-slate-100 pt-8 dark:border-slate-800"
+              >
+                {careerStats.map((stat) => (
+                  <div key={stat.label}>
+                    <div className="text-2xl font-bold text-[#1a2b4a] dark:text-blue-400 sm:text-3xl">
+                      <StatCounter value={stat.value} suffix={stat.suffix} />
+                    </div>
+                    <div className="mt-1 text-xs uppercase tracking-wide text-slate-400 dark:text-slate-500">
+                      {stat.label}
+                    </div>
+                  </div>
+                ))}
+              </motion.div>
+            </AnimateIn>
+
+            {/* ===== Right: parallax banner image + gradient border + View Openings ===== */}
+            <AnimateIn delay={0.25} direction="left" className="lg:sticky lg:top-24 lg:self-start">
+              <div className="rounded-2xl bg-gradient-to-br from-blue-400/50 via-cyan-300/40 to-blue-600/50 p-[2px]">
+                <div ref={imageRef} className="relative h-80 w-full overflow-hidden rounded-2xl">
+                  <motion.div style={{ y: parallaxY }} className="absolute -top-[12%] left-0 h-[124%] w-full">
+                    <Image
+                      src="/career-banner.jpg"
+                      alt="Career with Geecon"
+                      fill
+                      sizes="320px"
+                      className="object-cover"
+                    />
+                  </motion.div>
+                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
+                  <p className="absolute bottom-4 left-4 text-3xl font-extrabold uppercase tracking-wide text-white">
+                    Career
+                  </p>
+                </div>
+              </div>
+
+              <Link href="#current-openings">
+                <RippleButton
+                  as="div"
+                  className="mt-4 flex items-center justify-center rounded-lg bg-[#1a2b4a] py-3 text-sm font-semibold text-white dark:bg-blue-600"
+                >
+                  View Openings
+                </RippleButton>
+              </Link>
+            </AnimateIn>
+          </div>
+
+          {/* ===== Submit your details form — glassmorphism + gradient border + mouse glow ===== */}
+          <AnimateIn delay={0.35} className="mt-16 max-w-xl">
+            <h2 className="text-xl font-semibold text-blue-600 dark:text-blue-400">Submit Your Details</h2>
+
+            <div className="mt-6 rounded-2xl bg-gradient-to-br from-blue-400/30 via-cyan-300/20 to-blue-600/30 p-[1px]">
+              <MouseGlow className="rounded-2xl">
+                <div className="rounded-2xl border border-slate-200/60 bg-white/70 p-6 backdrop-blur-xl dark:border-slate-800/60 dark:bg-slate-900/70">
+                  <form onSubmit={handleSubmit} className="space-y-4">
+                    <div>
+                      <label className="mb-1 block text-sm text-slate-600 dark:text-slate-400">First name</label>
+                      <input
+                        type="text"
+                        value={form.firstName}
+                        onChange={handleChange("firstName")}
+                        className="w-full rounded-md border border-slate-200 bg-white/80 px-3 py-2.5 text-sm text-slate-900 focus:border-[#1a2b4a] focus:outline-none dark:border-slate-700 dark:bg-slate-900/80 dark:text-white"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="mb-1 block text-sm text-slate-600 dark:text-slate-400">Last name</label>
+                      <input
+                        type="text"
+                        value={form.lastName}
+                        onChange={handleChange("lastName")}
+                        className="w-full rounded-md border border-slate-200 bg-white/80 px-3 py-2.5 text-sm text-slate-900 focus:border-[#1a2b4a] focus:outline-none dark:border-slate-700 dark:bg-slate-900/80 dark:text-white"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="mb-1 block text-sm text-slate-600 dark:text-slate-400">Your email</label>
+                      <input
+                        type="email"
+                        value={form.email}
+                        onChange={handleChange("email")}
+                        className="w-full rounded-md border border-slate-200 bg-white/80 px-3 py-2.5 text-sm text-slate-900 focus:border-[#1a2b4a] focus:outline-none dark:border-slate-700 dark:bg-slate-900/80 dark:text-white"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="mb-1 block text-sm text-slate-600 dark:text-slate-400">Phone</label>
+                      <input
+                        type="tel"
+                        value={form.phone}
+                        onChange={handleChange("phone")}
+                        className="w-full rounded-md border border-slate-200 bg-white/80 px-3 py-2.5 text-sm text-slate-900 focus:border-[#1a2b4a] focus:outline-none dark:border-slate-700 dark:bg-slate-900/80 dark:text-white"
+                      />
+                    </div>
+
+                    <div>
+                      <label className="mb-1 block text-sm text-slate-600 dark:text-slate-400">Upload Resume</label>
+                      <label
+                        onDragOver={(e) => {
+                          e.preventDefault();
+                          setIsDragging(true);
+                        }}
+                        onDragLeave={() => setIsDragging(false)}
+                        onDrop={handleDrop}
+                        className={`flex w-full cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed px-4 py-8 text-center text-sm font-medium transition-colors ${
+                          isDragging
+                            ? "border-blue-400 bg-blue-50/60 text-[#1a2b4a] dark:bg-blue-500/10 dark:text-blue-400"
+                            : "border-slate-300 text-slate-600 hover:border-[#1a2b4a] hover:text-[#1a2b4a] dark:border-slate-700 dark:text-slate-300 dark:hover:border-blue-400 dark:hover:text-blue-400"
+                        }`}
+                      >
+                        <Upload size={20} />
+                        <span>{fileName || "Drag & drop your resume, or click to browse"}</span>
+                        <input type="file" accept=".pdf,.doc,.docx" onChange={handleFile} className="hidden" />
+                      </label>
+                    </div>
+
+                    <RippleButton
+                      type="submit"
+                      className="rounded-full bg-[#1a2b4a] px-8 py-3 text-sm font-semibold text-white dark:bg-blue-600"
+                    >
+                      <Send size={15} />
+                      Submit
+                    </RippleButton>
+                  </form>
+                </div>
+              </MouseGlow>
+            </div>
+          </AnimateIn>
+
+          {/* ===== Current Openings placeholder — scroll reveal ===== */}
+          <motion.div
+            initial={{ opacity: 0, y: 30 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true, margin: "-80px" }}
+            transition={{ duration: 0.6 }}
+            className="mt-20 border-t border-slate-100 pt-12 dark:border-slate-800"
+            id="current-openings"
+          >
+            <h2 className="text-xl font-semibold text-slate-900 dark:text-white">Current Openings</h2>
+            <p className="mt-3 text-sm text-slate-500 dark:text-slate-400">
+              No current openings listed right now. Please check back soon, or submit your details above and
+              we&apos;ll reach out when a suitable role opens up.
+            </p>
+          </motion.div>
+        </section>
+      </main>
+      <Footer />
+
+      {/* Success toast */}
+      {showToast && (
+        <div
+          className="fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-lg bg-[#1a2b4a] px-5 py-3 text-sm font-medium text-white shadow-2xl dark:bg-blue-600"
+          style={{ animation: "geecon-toast-in 0.3s ease-out" }}
+        >
+          <style>{`
+            @keyframes geecon-toast-in {
+              from { transform: translateY(12px); opacity: 0; }
+              to { transform: translateY(0); opacity: 1; }
+            }
+          `}</style>
+          <CheckCircle size={16} />
+          Application submitted successfully!
+        </div>
+      )}
+    </div>
+  );
+}
