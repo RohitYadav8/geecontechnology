@@ -8,7 +8,7 @@ import { FloatingBlob } from "../../../../components/floating-blob";
 import { BrochureForm } from "../../../../components/brochure-form";
 
 // NOTE: update this path to wherever your actual Online Directory banner image lives in /public.
-const BANNER_SRC = "/online-directory-banner.jpg";
+const BANNER_SRC = "/online-directory.png";
 
 const badges = [
     { icon: Wrench, label: "Easy Installation" },
@@ -44,7 +44,7 @@ export default function OnlineDirectoryPage() {
                                             alt="Online Directory"
                                             fill
                                             sizes="(max-width: 1024px) 100vw, 800px"
-                                            className="object-cover"
+                                            className="object-contain"
                                         />
                                     </div>
                                 </div>

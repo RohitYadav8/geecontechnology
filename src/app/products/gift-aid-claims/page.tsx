@@ -7,7 +7,7 @@ import { FloatingBlob } from "../../../../components/floating-blob";
 import { BrochureForm } from "../../../../components/brochure-form";
 
 // NOTE: update this path to wherever your actual Gift Aid banner image lives in /public.
-const BANNER_SRC = "/gift-aid-banner.jpg";
+const BANNER_SRC = "/giftaid..1.png";
 
 const teamResponsibilities = [
     "Check declarations (including sponsorship forms) for validity, and flag those that do not meet the rules for follow-up.",
@@ -42,7 +42,7 @@ export default function GiftAidPage() {
                                             alt="Gift Aid Claims"
                                             fill
                                             sizes="(max-width: 1024px) 100vw, 800px"
-                                            className="object-cover"
+                                            className="object-contain"
                                         />
                                     </div>
                                 </div>

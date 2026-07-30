@@ -8,7 +8,7 @@ import { FloatingBlob } from "../../../../components/floating-blob";
 import { BrochureForm } from "../../../../components/brochure-form";
 
 // NOTE: update this path to wherever your actual CMS Avatar banner image lives in /public.
-const BANNER_SRC = "/cms-avatar-banner.jpg";
+const BANNER_SRC = "/cms-avatar-1.png";
 
 const sections = [
     {
@@ -61,7 +61,7 @@ export default function CmsAvatarPage() {
                                             alt="CMS Avatar 2"
                                             fill
                                             sizes="(max-width: 1024px) 100vw, 800px"
-                                            className="object-cover"
+                                            className="object-contain"
                                         />
                                     </div>
                                 </div>

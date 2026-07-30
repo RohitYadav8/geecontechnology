@@ -8,7 +8,7 @@ import { FloatingBlob } from "../../../../components/floating-blob";
 import { BrochureForm } from "../../../../components/brochure-form";
 
 // NOTE: update this path to wherever your actual SyncMyDocs banner image lives in /public.
-const BANNER_SRC = "/syncmydocs-banner.jpg";
+const BANNER_SRC = "/sync-new.png";
 
 const sections = [
     {
@@ -62,7 +62,7 @@ export default function SyncMyDocsPage() {
                                             alt="SyncMyDocs"
                                             fill
                                             sizes="(max-width: 1024px) 100vw, 800px"
-                                            className="object-cover"
+                                            className="object-contain"
                                         />
                                     </div>
                                 </div>

@@ -8,7 +8,7 @@ import { BrochureForm } from "../../../../components/brochure-form";
 import { FaqAccordion } from "../../../../components/faq-accordion";
 
 // NOTE: update this path to wherever your actual CRM360 banner image lives in /public.
-const BANNER_SRC = "/crm360-banner.jpg";
+const BANNER_SRC = "/crm-banner.png";
 
 const faqItems = [
     {
@@ -74,7 +74,7 @@ export default function Crm360Page() {
                                             alt="CRM360"
                                             fill
                                             sizes="(max-width: 1024px) 100vw, 800px"
-                                            className="object-cover"
+                                            className="object-contain"
                                         />
                                     </div>
                                 </div>

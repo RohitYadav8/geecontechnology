@@ -7,7 +7,7 @@ import { FloatingBlob } from "../../../../components/floating-blob";
 import { BrochureForm } from "../../../../components/brochure-form";
 
 // NOTE: update this path to wherever your actual My Projects banner image lives in /public.
-const BANNER_SRC = "/my-projects-banner.jpg";
+const BANNER_SRC = "/my-project-1.png";
 
 export default function MyProjectsPage() {
     return (
@@ -36,7 +36,7 @@ export default function MyProjectsPage() {
                                             alt="My Projects"
                                             fill
                                             sizes="(max-width: 1024px) 100vw, 800px"
-                                            className="object-cover"
+                                            className="object-contain"
                                         />
                                     </div>
                                 </div>

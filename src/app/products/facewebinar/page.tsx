@@ -8,7 +8,7 @@ import { FloatingBlob } from "../../../../components/floating-blob";
 import { BrochureForm } from "../../../../components/brochure-form";
 
 // NOTE: update this path to wherever your actual FaceWebinar banner image lives in /public.
-const BANNER_SRC = "/facewebinar-banner.jpg";
+const BANNER_SRC = "/FWbanner.png";
 
 const highlights = [
     { icon: Video, label: "Video & Audio chat" },
@@ -48,7 +48,7 @@ export default function FacewebinarPage() {
                                             alt="FaceWebinar"
                                             fill
                                             sizes="(max-width: 1024px) 100vw, 800px"
-                                            className="object-cover"
+                                            className="object-contain"
                                         />
                                     </div>
                                 </div>

@@ -7,7 +7,7 @@ import { FloatingBlob } from "../../../../components/floating-blob";
 import { BrochureForm } from "../../../../components/brochure-form";
 
 // NOTE: update this path to wherever your actual Invoice Made Simple banner image lives in /public.
-const BANNER_SRC = "/invoice-made-simple-banner.jpg";
+const BANNER_SRC = "/invoice..1.png";
 
 const features = [
     "Track All Invoices",
@@ -47,7 +47,7 @@ export default function InvoiceMadeSimplePage() {
                                             alt="Invoice Made Simple"
                                             fill
                                             sizes="(max-width: 1024px) 100vw, 800px"
-                                            className="object-cover"
+                                            className="object-contain"
                                         />
                                     </div>
                                 </div>

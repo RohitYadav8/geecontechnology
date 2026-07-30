@@ -8,7 +8,7 @@ import { BrochureForm } from "../../../../components/brochure-form";
 import { FaqAccordion } from "../../../../components/faq-accordion";
 
 // NOTE: update this path to wherever your actual Global HR banner image lives in /public.
-const BANNER_SRC = "/global-hr-banner.jpg";
+const BANNER_SRC = "/global-hr-1.png";
 
 const modules = [
     {
@@ -122,7 +122,7 @@ export default function GlobalHrPage() {
                                             alt="Global HR — Progress Starts Inside"
                                             fill
                                             sizes="(max-width: 1024px) 100vw, 800px"
-                                            className="object-cover"
+                                            className="object-contain"
                                         />
                                     </div>
                                 </div>
