@@ -6,34 +6,64 @@ import type { ReactNode } from "react";
 type Theme = "light" | "dark";
 
 interface ThemeContextValue {
-    theme: Theme;
-    setTheme: (theme: Theme) => void;
+  theme: Theme;
+  setTheme: (theme: Theme) => void;
 }
 
 const ThemeContext = createContext<ThemeContextValue | undefined>(undefined);
+
 const STORAGE_KEY = "theme";
 
+function getInitialTheme(): Theme {
+  if (typeof window === "undefined") {
+    return "light";
+  }
+
+  try {
+    const stored = window.localStorage.getItem(STORAGE_KEY);
+
+    if (stored === "dark" || stored === "light") {
+      return stored;
+    }
+
+    return window.matchMedia("(prefers-color-scheme: dark)").matches
+      ? "dark"
+      : "light";
+  } catch {
+    return "light";
+  }
+}
+
 export function ThemeProvider({ children }: { children: ReactNode }) {
-    const [theme, setThemeState] = useState<Theme>("light");
+  const [theme, setThemeState] = useState<Theme>(getInitialTheme);
 
-    // Sync state with whatever the anti-flash script (in layout.tsx) already
-    // applied to <html> before hydration, so React and the DOM agree.
-    useEffect(() => {
-        const isDark = document.documentElement.classList.contains("dark");
-        setThemeState(isDark ? "dark" : "light");
-    }, []);
+  useEffect(() => {
+    document.documentElement.classList.toggle("dark", theme === "dark");
 
-    const setTheme = (next: Theme) => {
-        setThemeState(next);
-        window.localStorage.setItem(STORAGE_KEY, next);
-        document.documentElement.classList.toggle("dark", next === "dark");
-    };
+    try {
+      window.localStorage.setItem(STORAGE_KEY, theme);
+    } catch {
+      // Ignore localStorage errors
+    }
+  }, [theme]);
 
-    return <ThemeContext.Provider value={{ theme, setTheme }}>{children}</ThemeContext.Provider>;
+  const setTheme = (next: Theme) => {
+    setThemeState(next);
+  };
+
+  return (
+    <ThemeContext.Provider value={{ theme, setTheme }}>
+      {children}
+    </ThemeContext.Provider>
+  );
 }
 
 export function useTheme() {
-    const ctx = useContext(ThemeContext);
-    if (!ctx) throw new Error("useTheme must be used within a ThemeProvider");
-    return ctx;
+  const ctx = useContext(ThemeContext);
+
+  if (!ctx) {
+    throw new Error("useTheme must be used within a ThemeProvider");
+  }
+
+  return ctx;
 }

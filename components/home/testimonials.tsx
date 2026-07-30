@@ -6,107 +6,264 @@ import { Quote, Star } from "lucide-react";
 import { testimonials } from "../../lib/home-data";
 import { AnimateIn } from "../../components/animate-in";
 
+const AUTO_SLIDE_DURATION = 6000;
+
 function getInitials(name: string) {
   return name
-    .split(" ")
-    .map((word) => word[0])
+    .trim()
+    .split(/\s+/)
+    .map((word) => word.charAt(0))
     .join("")
+    .slice(0, 2)
     .toUpperCase();
 }
 
-const AUTO_SLIDE_DURATION = 6000;
-
 export function Testimonials() {
   const [active, setActive] = useState(0);
+  const [isPaused, setIsPaused] = useState(false);
 
   const goTo = useCallback((index: number) => {
+    if (testimonials.length === 0) return;
+
     setActive((index + testimonials.length) % testimonials.length);
   }, []);
 
-  useEffect(() => {
-    const timer = setInterval(() => goTo(active + 1), AUTO_SLIDE_DURATION);
-    return () => clearInterval(timer);
+  const next = useCallback(() => {
+    goTo(active + 1);
   }, [active, goTo]);
 
-  const t = testimonials[active];
+  const previous = useCallback(() => {
+    goTo(active - 1);
+  }, [active, goTo]);
+
+  useEffect(() => {
+    if (isPaused || testimonials.length <= 1) return;
+
+    const timer = window.setInterval(() => {
+      setActive((current) => (current + 1) % testimonials.length);
+    }, AUTO_SLIDE_DURATION);
+
+    return () => window.clearInterval(timer);
+  }, [isPaused]);
+
+  if (!testimonials.length) {
+    return null;
+  }
+
+  const testimonial = testimonials[active];
 
   return (
-    <section className="relative overflow-hidden bg-slate-50 py-20 dark:bg-slate-900/40">
-      {/* Ambient glow behind card */}
-      <div className="pointer-events-none absolute left-1/2 top-1/2 h-96 w-96 -translate-x-1/2 -translate-y-1/2 rounded-full bg-blue-400/10 blur-3xl dark:bg-blue-500/10" />
+    <section
+      className="relative overflow-hidden bg-slate-50 py-20 dark:bg-slate-900/40 sm:py-24"
+      aria-label="Client testimonials"
+    >
+      {/* Background Glow */}
+      <div className="pointer-events-none absolute left-1/2 top-1/2 h-[420px] w-[420px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-blue-400/10 blur-[100px] dark:bg-blue-500/10" />
+
+      {/* Decorative circles */}
+      <div className="pointer-events-none absolute -left-24 top-20 h-56 w-56 rounded-full border border-blue-500/10" />
+      <div className="pointer-events-none absolute -right-24 bottom-10 h-72 w-72 rounded-full border border-cyan-500/10" />
 
       <div className="relative mx-auto max-w-7xl px-6">
+        {/* Section Heading */}
         <AnimateIn className="text-center">
-          <span className="text-xs font-semibold uppercase tracking-widest text-[#1a2b4a] dark:text-blue-400">
+          <span className="inline-flex rounded-full border border-blue-200 bg-blue-50 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-[#1a2b4a] dark:border-blue-500/20 dark:bg-blue-500/10 dark:text-blue-400">
             Testimonials
           </span>
-          <h2 className="mt-3 text-3xl font-semibold text-slate-900 dark:text-white">
-            Clients testimonial
+
+          <h2 className="mt-4 text-3xl font-semibold tracking-tight text-slate-900 dark:text-white sm:text-4xl">
+            What Our Clients Say
           </h2>
+
+          <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-slate-500 dark:text-slate-400 sm:text-base">
+            We value the trust our clients place in us. Here is what they have
+            to say about their experience working with our team.
+          </p>
         </AnimateIn>
 
-        <div className="relative mx-auto mt-14 max-w-2xl">
-          <AnimatePresence mode="wait">
-            <motion.div
-              key={t.id}
-              initial={{ opacity: 0, scale: 0.94, filter: "blur(8px)" }}
-              animate={{ opacity: 1, scale: 1, filter: "blur(0px)" }}
-              exit={{ opacity: 0, scale: 0.94, filter: "blur(8px)" }}
-              transition={{ duration: 0.5, ease: [0.21, 0.47, 0.32, 0.98] }}
-              className="relative overflow-hidden rounded-3xl border border-white/40 bg-white/60 p-8 shadow-xl shadow-slate-900/5 backdrop-blur-xl dark:border-white/10 dark:bg-slate-900/50 dark:shadow-black/30 sm:p-10"
+        {/* Testimonial Area */}
+        <div
+          className="relative mx-auto mt-14 max-w-3xl"
+          onMouseEnter={() => setIsPaused(true)}
+          onMouseLeave={() => setIsPaused(false)}
+          onFocus={() => setIsPaused(true)}
+          onBlur={() => setIsPaused(false)}
+        >
+          {/* Previous Button */}
+          {testimonials.length > 1 && (
+            <button
+              type="button"
+              onClick={previous}
+              aria-label="Previous testimonial"
+              className="absolute left-0 top-1/2 z-20 hidden h-10 w-10 -translate-x-5 -translate-y-1/2 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-600 shadow-lg transition-all duration-300 hover:-translate-x-6 hover:border-blue-400 hover:text-blue-600 sm:flex dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:border-blue-500 dark:hover:text-blue-400"
             >
+              <span className="text-lg">‹</span>
+            </button>
+          )}
+
+          {/* Testimonial Card */}
+          <AnimatePresence mode="wait">
+            <motion.article
+              key={testimonial.id}
+              initial={{
+                opacity: 0,
+                y: 20,
+                scale: 0.97,
+                filter: "blur(6px)",
+              }}
+              animate={{
+                opacity: 1,
+                y: 0,
+                scale: 1,
+                filter: "blur(0px)",
+              }}
+              exit={{
+                opacity: 0,
+                y: -20,
+                scale: 0.97,
+                filter: "blur(6px)",
+              }}
+              transition={{
+                duration: 0.55,
+                ease: [0.21, 0.47, 0.32, 0.98],
+              }}
+              className="group relative overflow-hidden rounded-3xl border border-slate-200/70 bg-white/80 p-7 shadow-xl shadow-slate-900/5 backdrop-blur-xl sm:p-10 dark:border-white/10 dark:bg-slate-900/70 dark:shadow-black/30"
+            >
+              {/* Top Gradient Line */}
+              <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-blue-500 via-cyan-400 to-blue-600" />
+
+              {/* Quote Icon */}
               <Quote
-                size={72}
+                size={90}
                 strokeWidth={1}
-                className="absolute -right-3 -top-3 text-[#1a2b4a]/5 dark:text-blue-400/10"
+                className="pointer-events-none absolute -right-5 -top-5 rotate-6 text-blue-500/5 transition-transform duration-500 group-hover:rotate-12 dark:text-blue-400/10"
               />
 
-              <div className="relative flex justify-center gap-0.5 text-amber-400">
-                {Array.from({ length: 5 }).map((_, i) => (
-                  <Star key={i} size={16} fill="currentColor" strokeWidth={0} />
+              {/* Rating */}
+              <div
+                className="relative flex justify-center gap-1 text-amber-400"
+                aria-label="5 out of 5 stars"
+              >
+                {Array.from({ length: 5 }).map((_, index) => (
+                  <Star
+                    key={index}
+                    size={17}
+                    fill="currentColor"
+                    strokeWidth={0}
+                  />
                 ))}
               </div>
 
-              <p className="relative mt-6 text-center text-base leading-8 text-slate-600 dark:text-slate-300">
-                {t.quote}
+              {/* Quote */}
+              <p className="relative mx-auto mt-7 max-w-2xl text-center text-base leading-8 text-slate-600 dark:text-slate-300 sm:text-lg sm:leading-9">
+                &ldquo;{testimonial.quote}&rdquo;
               </p>
 
-              <div className="relative mt-7 flex items-center justify-center gap-3 border-t border-slate-200/60 pt-6 dark:border-white/10">
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-[#1a2b4a]/10 text-sm font-semibold text-[#1a2b4a] dark:bg-blue-500/10 dark:text-blue-400">
-                  {getInitials(t.name)}
+              {/* Client */}
+              <div className="relative mt-8 flex items-center justify-center gap-4 border-t border-slate-200/70 pt-7 dark:border-white/10">
+                {/* Avatar */}
+                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#1a2b4a] to-blue-600 text-sm font-bold text-white shadow-lg shadow-blue-500/20">
+                  {getInitials(testimonial.name)}
                 </div>
+
+                {/* Client Info */}
                 <div className="text-left">
                   <p className="text-sm font-semibold text-slate-900 dark:text-white">
-                    {t.name}
+                    {testimonial.name}
                   </p>
-                  <p className="text-xs text-slate-400 dark:text-slate-500">Verified client</p>
+
+                  <div className="mt-1 flex items-center gap-2">
+                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+
+                    <p className="text-xs text-slate-400 dark:text-slate-500">
+                      Verified Client
+                    </p>
+                  </div>
                 </div>
               </div>
-            </motion.div>
+            </motion.article>
           </AnimatePresence>
+
+          {/* Next Button */}
+          {testimonials.length > 1 && (
+            <button
+              type="button"
+              onClick={next}
+              aria-label="Next testimonial"
+              className="absolute right-0 top-1/2 z-20 hidden h-10 w-10 translate-x-5 -translate-y-1/2 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-600 shadow-lg transition-all duration-300 hover:translate-x-6 hover:border-blue-400 hover:text-blue-600 sm:flex dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:border-blue-500 dark:hover:text-blue-400"
+            >
+              <span className="text-lg">›</span>
+            </button>
+          )}
         </div>
 
-        <div className="mt-8 flex justify-center gap-2">
-          {testimonials.map((_, index) => (
+        {/* Mobile Navigation */}
+        {testimonials.length > 1 && (
+          <div className="mt-8 flex justify-center gap-2 sm:hidden">
             <button
-              key={index}
-              onClick={() => goTo(index)}
-              aria-label={`Testimonial ${index + 1}`}
-              className="h-2 overflow-hidden rounded-full bg-slate-300 dark:bg-slate-700"
-              style={{ width: index === active ? 24 : 8 }}
+              type="button"
+              onClick={previous}
+              aria-label="Previous testimonial"
+              className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-600 shadow-sm dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300"
             >
-              {index === active && (
-                <motion.div
-                  key={active}
-                  initial={{ width: "0%" }}
-                  animate={{ width: "100%" }}
-                  transition={{ duration: AUTO_SLIDE_DURATION / 1000, ease: "linear" }}
-                  className="h-full bg-[#1a2b4a] dark:bg-white"
-                />
-              )}
+              ‹
             </button>
-          ))}
-        </div>
+
+            <button
+              type="button"
+              onClick={next}
+              aria-label="Next testimonial"
+              className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-600 shadow-sm dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300"
+            >
+              ›
+            </button>
+          </div>
+        )}
+
+        {/* Progress Indicators */}
+        {testimonials.length > 1 && (
+          <div className="mt-8 flex justify-center gap-2">
+            {testimonials.map((item, index) => (
+              <button
+                key={item.id}
+                type="button"
+                onClick={() => goTo(index)}
+                aria-label={`Go to testimonial ${index + 1}`}
+                aria-current={index === active ? "true" : undefined}
+                className={`relative h-2 overflow-hidden rounded-full transition-all duration-300 ${
+                  index === active
+                    ? "w-10 bg-slate-300 dark:bg-slate-700"
+                    : "w-2 bg-slate-300 hover:bg-blue-400 dark:bg-slate-700 dark:hover:bg-blue-500"
+                }`}
+              >
+                {index === active && (
+                  <motion.span
+                    key={`${active}-${isPaused}`}
+                    initial={{ width: "0%" }}
+                    animate={{
+                      width: isPaused ? "0%" : "100%",
+                    }}
+                    transition={{
+                      duration: isPaused
+                        ? 0
+                        : AUTO_SLIDE_DURATION / 1000,
+                      ease: "linear",
+                    }}
+                    className="absolute inset-y-0 left-0 rounded-full bg-[#1a2b4a] dark:bg-blue-400"
+                  />
+                )}
+              </button>
+            ))}
+          </div>
+        )}
+
+        {/* Slide Counter */}
+        {testimonials.length > 1 && (
+          <p className="mt-4 text-center text-xs font-medium tracking-wider text-slate-400 dark:text-slate-500">
+            {String(active + 1).padStart(2, "0")} /{" "}
+            {String(testimonials.length).padStart(2, "0")}
+          </p>
+        )}
       </div>
     </section>
   );

@@ -1,4 +1,8 @@
+
+"use client";
+
 import Link from "next/link";
+import { motion } from "motion/react";
 import { ArrowRight } from "lucide-react";
 import { Navbar } from "../../../components/navbar";
 import { Footer } from "../../../components/footer";

@@ -4,7 +4,8 @@ import { useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, useScroll, useTransform } from "motion/react";
-import { Upload, Send, CheckCircle } from "lucide-react";
+import { Upload, Send, CheckCircle, ArrowRight } from "lucide-react";
+
 import { Navbar } from "../../../components/navbar";
 import { Footer } from "../../../components/footer";
 import { AnimateIn } from "../../../components/animate-in";
@@ -14,101 +15,316 @@ import { StatCounter } from "../../../components/stat-counter";
 import { MouseGlow } from "../../../components/mouse-glow";
 import { RippleButton } from "../../../components/ripple-button";
 
-// DUMMY STATS — replace with your real numbers.
+// -------------------------------------------------------------
+// Career statistics
+// Replace these values with your real company statistics.
+// -------------------------------------------------------------
+
 const careerStats = [
-  { label: "Team Members", value: 50, suffix: "+" },
-  { label: "Years of Experience", value: 10, suffix: "+" },
-  { label: "Client Satisfaction", value: 95, suffix: "%" },
+  {
+    label: "Team Members",
+    value: 50,
+    suffix: "+",
+  },
+  {
+    label: "Years of Experience",
+    value: 10,
+    suffix: "+",
+  },
+  {
+    label: "Client Satisfaction",
+    value: 95,
+    suffix: "%",
+  },
 ];
 
 export default function CareersPage() {
-  const [form, setForm] = useState({ firstName: "", lastName: "", email: "", phone: "" });
+  const [form, setForm] = useState({
+    firstName: "",
+    lastName: "",
+    email: "",
+    phone: "",
+  });
+
   const [fileName, setFileName] = useState("");
   const [isDragging, setIsDragging] = useState(false);
   const [showToast, setShowToast] = useState(false);
 
-  const imageRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({ target: imageRef, offset: ["start end", "end start"] });
-  const parallaxY = useTransform(scrollYProgress, [0, 1], ["-12%", "12%"]);
+  // -----------------------------------------------------------
+  // Parallax image
+  // -----------------------------------------------------------
 
-  const handleChange = (field: keyof typeof form) => (e: React.ChangeEvent<HTMLInputElement>) => {
-    setForm((prev) => ({ ...prev, [field]: e.target.value }));
-  };
+  const imageRef = useRef<HTMLDivElement>(null);
+
+  const { scrollYProgress } = useScroll({
+    target: imageRef,
+    offset: ["start end", "end start"],
+  });
+
+  const parallaxY = useTransform(
+    scrollYProgress,
+    [0, 1],
+    ["-12%", "12%"]
+  );
+
+  // -----------------------------------------------------------
+  // Form change handler
+  // -----------------------------------------------------------
+
+  const handleChange =
+    (field: keyof typeof form) =>
+    (e: React.ChangeEvent<HTMLInputElement>) => {
+      setForm((prev) => ({
+        ...prev,
+        [field]: e.target.value,
+      }));
+    };
+
+  // -----------------------------------------------------------
+  // File upload
+  // -----------------------------------------------------------
 
   const handleFile = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) setFileName(e.target.files[0].name);
-  };
+    const file = e.target.files?.[0];
 
-  const handleDrop = (e: React.DragEvent<HTMLLabelElement>) => {
-    e.preventDefault();
-    setIsDragging(false);
-    if (e.dataTransfer.files && e.dataTransfer.files[0]) {
-      setFileName(e.dataTransfer.files[0].name);
+    if (file) {
+      setFileName(file.name);
     }
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  // -----------------------------------------------------------
+  // Drag & drop
+  // -----------------------------------------------------------
+
+  const handleDrop = (e: React.DragEvent<HTMLLabelElement>) => {
     e.preventDefault();
+
+    setIsDragging(false);
+
+    const file = e.dataTransfer.files?.[0];
+
+    if (file) {
+      setFileName(file.name);
+    }
+  };
+
+  // -----------------------------------------------------------
+  // Submit
+  // -----------------------------------------------------------
+
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+
+    console.log("Career application:", {
+      ...form,
+      resume: fileName,
+    });
+
     setShowToast(true);
-    window.setTimeout(() => setShowToast(false), 4000);
+
+    window.setTimeout(() => {
+      setShowToast(false);
+    }, 4000);
   };
 
   return (
     <div className="flex min-h-screen flex-col bg-white dark:bg-slate-950">
+      {/* =======================================================
+          NAVBAR
+      ======================================================== */}
+
       <Navbar />
+
+      {/* =======================================================
+          MAIN
+      ======================================================== */}
+
       <main className="relative flex-1 overflow-hidden">
-        {/* Background grid + floating blobs */}
-        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,#e5e7eb_1px,transparent_1px),linear-gradient(to_bottom,#e5e7eb_1px,transparent_1px)] bg-[size:48px_48px] opacity-20 dark:opacity-10" />
-        <FloatingBlob className="-right-20 top-10 h-72 w-72" color="bg-blue-400/10" duration={16} />
-        <FloatingBlob className="-left-16 top-96 h-64 w-64" color="bg-cyan-300/10" duration={20} />
+        {/* Background grid */}
+
+        <div
+          className="
+            pointer-events-none
+            absolute
+            inset-0
+            bg-[linear-gradient(to_right,#e5e7eb_1px,transparent_1px),linear-gradient(to_bottom,#e5e7eb_1px,transparent_1px)]
+            bg-[size:48px_48px]
+            opacity-20
+            dark:opacity-10
+          "
+        />
+
+        {/* Top radial glow */}
+
+        <div
+          className="
+            pointer-events-none
+            absolute
+            inset-0
+            bg-[radial-gradient(circle_at_top,rgba(59,130,246,.15),transparent_60%)]
+          "
+        />
+
+        {/* Floating blobs */}
+
+        <FloatingBlob
+          className="-right-20 top-10 h-72 w-72"
+          color="bg-blue-400/10"
+          duration={16}
+        />
+
+        <FloatingBlob
+          className="-left-16 top-96 h-64 w-64"
+          color="bg-cyan-300/10"
+          duration={20}
+        />
+
+        {/* =====================================================
+            CONTENT
+        ====================================================== */}
 
         <section className="relative mx-auto max-w-7xl px-6 pb-16 pt-16 sm:pt-20">
+          {/* ===================================================
+              PAGE HEADING
+          ==================================================== */}
+
           <AnimatedHeading
             text="Career With Us"
             as="h1"
-            className="text-2xl font-semibold text-blue-600 dark:text-blue-400 sm:text-3xl"
+            className="
+              text-2xl
+              font-semibold
+              text-blue-600
+              dark:text-blue-400
+              sm:text-3xl
+            "
           />
 
+          {/* ===================================================
+              INTRO + CAREER IMAGE
+          ==================================================== */}
+
           <div className="mt-8 grid gap-10 lg:grid-cols-[1fr_320px]">
-            {/* ===== Left: content + form ===== */}
+            {/* =================================================
+                LEFT CONTENT
+            ================================================== */}
+
             <AnimateIn delay={0.15}>
               <div className="space-y-4 text-sm leading-7 text-slate-600 dark:text-slate-400">
-                <p>Come on, join US. And we will help You to explore your values and valuate your skills.</p>
                 <p>
-                  <span className="font-semibold text-slate-900 dark:text-white">Geecon</span>{" "}
-                  Group has many years experience of providing software solutions and affordable
-                  for small, mid and large companies &amp; corporations. We also provide services
-                  in different industries like Resourcing, Corporate Training and Design. We have
-                  the history of working hard to ensure the customer confidence in us and have
-                  mission to continue the same with the dedication to serve our customers. We
-                  care about it and will never change it as this is our heritage.
+                  Come on, join US. And we will help You to explore
+                  your values and valuate your skills.
                 </p>
+
                 <p>
-                  The first appeal: you are the star. All we want to know is: Are you capable enough to
-                  &lsquo;outcast&rsquo; the dreams in you? At Geecon Technology, we believe in &lsquo;optimism&rsquo;.
-                  After lots of efforts we decided to throw out the &lsquo;creative persona test&rsquo; among you.
-                  Once you realise you have the &lsquo;stardom&rsquo; in you, unleash it. The world is yours, and
-                  your career is ready to go heights. Explore yourselves with us. Valuate your skills. Take the
-                  test, take the challenge. This is our work &lsquo;pledge&rsquo;. If you think you have your own
-                  rules, you are most welcome to share them with us. We want fresh or experienced candidates for
-                  our described services.
+                  <span className="font-semibold text-slate-900 dark:text-white">
+                    Geecon
+                  </span>{" "}
+                  Group has many years experience of providing
+                  software solutions and affordable services for
+                  small, mid and large companies &amp; corporations.
+                  We also provide services in different industries
+                  like Resourcing, Corporate Training and Design.
+                  We have the history of working hard to ensure the
+                  customer confidence in us and have mission to
+                  continue the same with the dedication to serve our
+                  customers.
+                </p>
+
+                <p>
+                  The first appeal: you are the star. All we want to
+                  know is: Are you capable enough to &lsquo;outcast&rsquo;
+                  the dreams in you?
+                </p>
+
+                <p>
+                  At Geecon Technology, we believe in
+                  &lsquo;optimism&rsquo;. After lots of efforts we
+                  decided to throw out the &lsquo;creative persona
+                  test&rsquo; among you.
+                </p>
+
+                <p>
+                  Once you realise you have the &lsquo;stardom&rsquo;
+                  in you, unleash it. The world is yours, and your
+                  career is ready to go heights.
+                </p>
+
+                <p>
+                  Explore yourselves with us. Valuate your skills.
+                  Take the test, take the challenge. This is our work
+                  &lsquo;pledge&rsquo;.
+                </p>
+
+                <p>
+                  If you think you have your own rules, you are most
+                  welcome to share them with us.
+                </p>
+
+                <p>
+                  We want fresh or experienced candidates for our
+                  described services.
                 </p>
               </div>
 
-              {/* Animated stat counters — scroll reveal */}
+              {/* =================================================
+                  STATS
+              ================================================== */}
+
               <motion.div
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true, margin: "-60px" }}
-                transition={{ duration: 0.6 }}
-                className="mt-10 grid grid-cols-3 gap-6 border-t border-slate-100 pt-8 dark:border-slate-800"
+                initial={{
+                  opacity: 0,
+                  y: 30,
+                }}
+                whileInView={{
+                  opacity: 1,
+                  y: 0,
+                }}
+                viewport={{
+                  once: true,
+                  margin: "-60px",
+                }}
+                transition={{
+                  duration: 0.6,
+                }}
+                className="
+                  mt-10
+                  grid
+                  grid-cols-3
+                  gap-6
+                  border-t
+                  border-slate-100
+                  pt-8
+                  dark:border-slate-800
+                "
               >
                 {careerStats.map((stat) => (
                   <div key={stat.label}>
-                    <div className="text-2xl font-bold text-[#1a2b4a] dark:text-blue-400 sm:text-3xl">
-                      <StatCounter value={stat.value} suffix={stat.suffix} />
+                    <div
+                      className="
+                        text-2xl
+                        font-bold
+                        text-[#1a2b4a]
+                        dark:text-blue-400
+                        sm:text-3xl
+                      "
+                    >
+                      <StatCounter
+                        value={stat.value}
+                        suffix={stat.suffix}
+                      />
                     </div>
-                    <div className="mt-1 text-xs uppercase tracking-wide text-slate-400 dark:text-slate-500">
+
+                    <div
+                      className="
+                        mt-1
+                        text-xs
+                        uppercase
+                        tracking-wide
+                        text-slate-400
+                        dark:text-slate-500
+                      "
+                    >
                       {stat.label}
                     </div>
                   </div>
@@ -116,11 +332,47 @@ export default function CareersPage() {
               </motion.div>
             </AnimateIn>
 
-            {/* ===== Right: parallax banner image + gradient border + View Openings ===== */}
-            <AnimateIn delay={0.25} direction="left" className="lg:sticky lg:top-24 lg:self-start">
-              <div className="rounded-2xl bg-gradient-to-br from-blue-400/50 via-cyan-300/40 to-blue-600/50 p-[2px]">
-                <div ref={imageRef} className="relative h-80 w-full overflow-hidden rounded-2xl">
-                  <motion.div style={{ y: parallaxY }} className="absolute -top-[12%] left-0 h-[124%] w-full">
+            {/* =================================================
+                RIGHT IMAGE
+            ================================================== */}
+
+            <AnimateIn
+              delay={0.25}
+              direction="left"
+              className="lg:sticky lg:top-24 lg:self-start"
+            >
+              <div
+                className="
+                  rounded-2xl
+                  bg-gradient-to-br
+                  from-blue-400/50
+                  via-cyan-300/40
+                  to-blue-600/50
+                  p-[2px]
+                "
+              >
+                <div
+                  ref={imageRef}
+                  className="
+                    relative
+                    h-80
+                    w-full
+                    overflow-hidden
+                    rounded-2xl
+                  "
+                >
+                  <motion.div
+                    style={{
+                      y: parallaxY,
+                    }}
+                    className="
+                      absolute
+                      -top-[12%]
+                      left-0
+                      h-[124%]
+                      w-full
+                    "
+                  >
                     <Image
                       src="/career-banner.jpg"
                       alt="Career with Geecon"
@@ -129,96 +381,410 @@ export default function CareersPage() {
                       className="object-cover"
                     />
                   </motion.div>
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/10 to-transparent" />
-                  <p className="absolute bottom-4 left-4 text-3xl font-extrabold uppercase tracking-wide text-white">
+
+                  {/* Image overlay */}
+
+                  <div
+                    className="
+                      absolute
+                      inset-0
+                      bg-gradient-to-t
+                      from-black/70
+                      via-black/10
+                      to-transparent
+                    "
+                  />
+
+                  {/* Image title */}
+
+                  <p
+                    className="
+                      absolute
+                      bottom-4
+                      left-4
+                      text-3xl
+                      font-extrabold
+                      uppercase
+                      tracking-wide
+                      text-white
+                    "
+                  >
                     Career
                   </p>
                 </div>
               </div>
 
-              <Link href="#current-openings">
-                <RippleButton
-                  as="div"
-                  className="mt-4 flex items-center justify-center rounded-lg bg-[#1a2b4a] py-3 text-sm font-semibold text-white dark:bg-blue-600"
-                >
-                  View Openings
-                </RippleButton>
+              {/* =================================================
+                  VIEW OPENINGS
+                  No `as="div"` because RippleButton doesn't support
+                  polymorphic `as` prop.
+              ================================================== */}
+
+              <Link
+                href="#current-openings"
+                className="
+                  group
+                  mt-4
+                  flex
+                  w-full
+                  items-center
+                  justify-center
+                  gap-2
+                  rounded-lg
+                  bg-[#1a2b4a]
+                  py-3
+                  text-sm
+                  font-semibold
+                  text-white
+                  transition-all
+                  duration-300
+                  hover:bg-[#0d1830]
+                  hover:shadow-lg
+                  hover:shadow-blue-900/20
+                  dark:bg-blue-600
+                  dark:hover:bg-blue-500
+                "
+              >
+                View Openings
+
+                <ArrowRight
+                  size={15}
+                  className="
+                    transition-transform
+                    duration-300
+                    group-hover:translate-x-1
+                  "
+                />
               </Link>
             </AnimateIn>
           </div>
 
-          {/* ===== Submit your details form — glassmorphism + gradient border + mouse glow ===== */}
-          <AnimateIn delay={0.35} className="mt-16 max-w-xl">
-            <h2 className="text-xl font-semibold text-blue-600 dark:text-blue-400">Submit Your Details</h2>
+          {/* =====================================================
+              SUBMIT DETAILS
+          ====================================================== */}
 
-            <div className="mt-6 rounded-2xl bg-gradient-to-br from-blue-400/30 via-cyan-300/20 to-blue-600/30 p-[1px]">
+          <AnimateIn
+            delay={0.35}
+            className="mt-16 max-w-xl"
+          >
+            <h2
+              className="
+                text-xl
+                font-semibold
+                text-blue-600
+                dark:text-blue-400
+              "
+            >
+              Submit Your Details
+            </h2>
+
+            {/* Gradient border */}
+
+            <div
+              className="
+                mt-6
+                rounded-2xl
+                bg-gradient-to-br
+                from-blue-400/30
+                via-cyan-300/20
+                to-blue-600/30
+                p-[1px]
+              "
+            >
               <MouseGlow className="rounded-2xl">
-                <div className="rounded-2xl border border-slate-200/60 bg-white/70 p-6 backdrop-blur-xl dark:border-slate-800/60 dark:bg-slate-900/70">
-                  <form onSubmit={handleSubmit} className="space-y-4">
+                <div
+                  className="
+                    rounded-2xl
+                    border
+                    border-slate-200/60
+                    bg-white/70
+                    p-6
+                    backdrop-blur-xl
+                    dark:border-slate-800/60
+                    dark:bg-slate-900/70
+                  "
+                >
+                  <form
+                    onSubmit={handleSubmit}
+                    className="space-y-4"
+                  >
+                    {/* =================================================
+                        FIRST NAME
+                    ================================================== */}
+
                     <div>
-                      <label className="mb-1 block text-sm text-slate-600 dark:text-slate-400">First name</label>
+                      <label
+                        htmlFor="firstName"
+                        className="
+                          mb-1
+                          block
+                          text-sm
+                          text-slate-600
+                          dark:text-slate-400
+                        "
+                      >
+                        First name
+                      </label>
+
                       <input
+                        id="firstName"
                         type="text"
                         value={form.firstName}
                         onChange={handleChange("firstName")}
-                        className="w-full rounded-md border border-slate-200 bg-white/80 px-3 py-2.5 text-sm text-slate-900 focus:border-[#1a2b4a] focus:outline-none dark:border-slate-700 dark:bg-slate-900/80 dark:text-white"
+                        required
+                        className="
+                          w-full
+                          rounded-md
+                          border
+                          border-slate-200
+                          bg-white/80
+                          px-3
+                          py-2.5
+                          text-sm
+                          text-slate-900
+                          outline-none
+                          transition
+                          focus:border-[#1a2b4a]
+                          focus:ring-2
+                          focus:ring-blue-500/10
+                          dark:border-slate-700
+                          dark:bg-slate-900/80
+                          dark:text-white
+                        "
                       />
                     </div>
 
+                    {/* =================================================
+                        LAST NAME
+                    ================================================== */}
+
                     <div>
-                      <label className="mb-1 block text-sm text-slate-600 dark:text-slate-400">Last name</label>
+                      <label
+                        htmlFor="lastName"
+                        className="
+                          mb-1
+                          block
+                          text-sm
+                          text-slate-600
+                          dark:text-slate-400
+                        "
+                      >
+                        Last name
+                      </label>
+
                       <input
+                        id="lastName"
                         type="text"
                         value={form.lastName}
                         onChange={handleChange("lastName")}
-                        className="w-full rounded-md border border-slate-200 bg-white/80 px-3 py-2.5 text-sm text-slate-900 focus:border-[#1a2b4a] focus:outline-none dark:border-slate-700 dark:bg-slate-900/80 dark:text-white"
+                        required
+                        className="
+                          w-full
+                          rounded-md
+                          border
+                          border-slate-200
+                          bg-white/80
+                          px-3
+                          py-2.5
+                          text-sm
+                          text-slate-900
+                          outline-none
+                          transition
+                          focus:border-[#1a2b4a]
+                          focus:ring-2
+                          focus:ring-blue-500/10
+                          dark:border-slate-700
+                          dark:bg-slate-900/80
+                          dark:text-white
+                        "
                       />
                     </div>
 
+                    {/* =================================================
+                        EMAIL
+                    ================================================== */}
+
                     <div>
-                      <label className="mb-1 block text-sm text-slate-600 dark:text-slate-400">Your email</label>
+                      <label
+                        htmlFor="email"
+                        className="
+                          mb-1
+                          block
+                          text-sm
+                          text-slate-600
+                          dark:text-slate-400
+                        "
+                      >
+                        Your email
+                      </label>
+
                       <input
+                        id="email"
                         type="email"
                         value={form.email}
                         onChange={handleChange("email")}
-                        className="w-full rounded-md border border-slate-200 bg-white/80 px-3 py-2.5 text-sm text-slate-900 focus:border-[#1a2b4a] focus:outline-none dark:border-slate-700 dark:bg-slate-900/80 dark:text-white"
+                        required
+                        className="
+                          w-full
+                          rounded-md
+                          border
+                          border-slate-200
+                          bg-white/80
+                          px-3
+                          py-2.5
+                          text-sm
+                          text-slate-900
+                          outline-none
+                          transition
+                          focus:border-[#1a2b4a]
+                          focus:ring-2
+                          focus:ring-blue-500/10
+                          dark:border-slate-700
+                          dark:bg-slate-900/80
+                          dark:text-white
+                        "
                       />
                     </div>
 
+                    {/* =================================================
+                        PHONE
+                    ================================================== */}
+
                     <div>
-                      <label className="mb-1 block text-sm text-slate-600 dark:text-slate-400">Phone</label>
+                      <label
+                        htmlFor="phone"
+                        className="
+                          mb-1
+                          block
+                          text-sm
+                          text-slate-600
+                          dark:text-slate-400
+                        "
+                      >
+                        Phone
+                      </label>
+
                       <input
+                        id="phone"
                         type="tel"
                         value={form.phone}
                         onChange={handleChange("phone")}
-                        className="w-full rounded-md border border-slate-200 bg-white/80 px-3 py-2.5 text-sm text-slate-900 focus:border-[#1a2b4a] focus:outline-none dark:border-slate-700 dark:bg-slate-900/80 dark:text-white"
+                        required
+                        className="
+                          w-full
+                          rounded-md
+                          border
+                          border-slate-200
+                          bg-white/80
+                          px-3
+                          py-2.5
+                          text-sm
+                          text-slate-900
+                          outline-none
+                          transition
+                          focus:border-[#1a2b4a]
+                          focus:ring-2
+                          focus:ring-blue-500/10
+                          dark:border-slate-700
+                          dark:bg-slate-900/80
+                          dark:text-white
+                        "
                       />
                     </div>
 
+                    {/* =================================================
+                        RESUME
+                    ================================================== */}
+
                     <div>
-                      <label className="mb-1 block text-sm text-slate-600 dark:text-slate-400">Upload Resume</label>
                       <label
+                        htmlFor="resume"
+                        className="
+                          mb-1
+                          block
+                          text-sm
+                          text-slate-600
+                          dark:text-slate-400
+                        "
+                      >
+                        Upload Resume
+                      </label>
+
+                      <label
+                        htmlFor="resume"
                         onDragOver={(e) => {
                           e.preventDefault();
                           setIsDragging(true);
                         }}
-                        onDragLeave={() => setIsDragging(false)}
+                        onDragLeave={() => {
+                          setIsDragging(false);
+                        }}
                         onDrop={handleDrop}
-                        className={`flex w-full cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed px-4 py-8 text-center text-sm font-medium transition-colors ${
-                          isDragging
-                            ? "border-blue-400 bg-blue-50/60 text-[#1a2b4a] dark:bg-blue-500/10 dark:text-blue-400"
-                            : "border-slate-300 text-slate-600 hover:border-[#1a2b4a] hover:text-[#1a2b4a] dark:border-slate-700 dark:text-slate-300 dark:hover:border-blue-400 dark:hover:text-blue-400"
-                        }`}
+                        className={`
+                          flex
+                          w-full
+                          cursor-pointer
+                          flex-col
+                          items-center
+                          justify-center
+                          gap-2
+                          rounded-xl
+                          border-2
+                          border-dashed
+                          px-4
+                          py-8
+                          text-center
+                          text-sm
+                          font-medium
+                          transition-all
+                          ${
+                            isDragging
+                              ? "border-blue-400 bg-blue-50/60 text-[#1a2b4a] dark:bg-blue-500/10 dark:text-blue-400"
+                              : "border-slate-300 text-slate-600 hover:border-[#1a2b4a] hover:bg-slate-50 dark:border-slate-700 dark:text-slate-300 dark:hover:border-blue-400 dark:hover:bg-slate-800/50 dark:hover:text-blue-400"
+                          }
+                        `}
                       >
                         <Upload size={20} />
-                        <span>{fileName || "Drag & drop your resume, or click to browse"}</span>
-                        <input type="file" accept=".pdf,.doc,.docx" onChange={handleFile} className="hidden" />
+
+                        <span>
+                          {fileName ||
+                            "Drag & drop your resume, or click to browse"}
+                        </span>
+
+                        <input
+                          id="resume"
+                          type="file"
+                          accept=".pdf,.doc,.docx"
+                          onChange={handleFile}
+                          className="hidden"
+                        />
                       </label>
                     </div>
 
+                    {/* =================================================
+                        SUBMIT BUTTON
+
+                        RippleButton only receives props that it supports.
+                        No `disabled` or `as` prop is passed here.
+                    ================================================== */}
+
                     <RippleButton
                       type="submit"
-                      className="rounded-full bg-[#1a2b4a] px-8 py-3 text-sm font-semibold text-white dark:bg-blue-600"
+                      className="
+                        rounded-full
+                        bg-[#1a2b4a]
+                        px-8
+                        py-3
+                        text-sm
+                        font-semibold
+                        text-white
+                        shadow-md
+                        transition-all
+                        hover:bg-[#0d1830]
+                        hover:shadow-lg
+                        dark:bg-blue-600
+                        dark:hover:bg-blue-500
+                      "
                     >
                       <Send size={15} />
                       Submit
@@ -229,38 +795,113 @@ export default function CareersPage() {
             </div>
           </AnimateIn>
 
-          {/* ===== Current Openings placeholder — scroll reveal ===== */}
+          {/* =====================================================
+              CURRENT OPENINGS
+          ====================================================== */}
+
           <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true, margin: "-80px" }}
-            transition={{ duration: 0.6 }}
-            className="mt-20 border-t border-slate-100 pt-12 dark:border-slate-800"
+            initial={{
+              opacity: 0,
+              y: 30,
+            }}
+            whileInView={{
+              opacity: 1,
+              y: 0,
+            }}
+            viewport={{
+              once: true,
+              margin: "-80px",
+            }}
+            transition={{
+              duration: 0.6,
+            }}
+            className="
+              mt-20
+              border-t
+              border-slate-100
+              pt-12
+              dark:border-slate-800
+            "
             id="current-openings"
           >
-            <h2 className="text-xl font-semibold text-slate-900 dark:text-white">Current Openings</h2>
-            <p className="mt-3 text-sm text-slate-500 dark:text-slate-400">
-              No current openings listed right now. Please check back soon, or submit your details above and
-              we&apos;ll reach out when a suitable role opens up.
+            <h2
+              className="
+                text-xl
+                font-semibold
+                text-slate-900
+                dark:text-white
+              "
+            >
+              Current Openings
+            </h2>
+
+            <p
+              className="
+                mt-3
+                text-sm
+                leading-6
+                text-slate-500
+                dark:text-slate-400
+              "
+            >
+              No current openings listed right now. Please check
+              back soon, or submit your details above and we&apos;ll
+              reach out when a suitable role opens up.
             </p>
           </motion.div>
         </section>
       </main>
+
+      {/* =======================================================
+          FOOTER
+      ======================================================== */}
+
       <Footer />
 
-      {/* Success toast */}
+      {/* =======================================================
+          SUCCESS TOAST
+      ======================================================== */}
+
       {showToast && (
         <div
-          className="fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-lg bg-[#1a2b4a] px-5 py-3 text-sm font-medium text-white shadow-2xl dark:bg-blue-600"
-          style={{ animation: "geecon-toast-in 0.3s ease-out" }}
+          className="
+            fixed
+            bottom-6
+            right-6
+            z-50
+            flex
+            items-center
+            gap-2
+            rounded-lg
+            bg-[#1a2b4a]
+            px-5
+            py-3
+            text-sm
+            font-medium
+            text-white
+            shadow-2xl
+            dark:bg-blue-600
+          "
+          style={{
+            animation: "geecon-toast-in 0.3s ease-out",
+          }}
         >
           <style>{`
             @keyframes geecon-toast-in {
-              from { transform: translateY(12px); opacity: 0; }
-              to { transform: translateY(0); opacity: 1; }
+              from {
+                transform: translateY(12px);
+                opacity: 0;
+              }
+
+              to {
+                transform: translateY(0);
+                opacity: 1;
+              }
             }
           `}</style>
+
           <CheckCircle size={16} />
+
           Application submitted successfully!
         </div>
       )}
