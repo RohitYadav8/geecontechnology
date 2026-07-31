@@ -1,39 +1,39 @@
+
 "use client";
 
-import { motion } from "motion/react";
-import { ClientCard } from "./client-card";
-import type { Client } from "../lib/clients-data";
+import Image from "next/image";
 
-const ROW_VARIANTS = [
-    { hidden: { opacity: 0, y: 40 }, visible: { opacity: 1, y: 0 } }, // fade up
-    { hidden: { opacity: 0, x: -40 }, visible: { opacity: 1, x: 0 } }, // slide left
-    { hidden: { opacity: 0, scale: 0.85 }, visible: { opacity: 1, scale: 1 } }, // scale
-    { hidden: { opacity: 0, x: 40 }, visible: { opacity: 1, x: 0 } }, // fade right
-];
+type Client = {
+  id: string;
+  name: string;
+  logo: string;
+  featured?: boolean;
+};
 
-const COLS = 4;
-
-export function ClientLogoGrid({ clients }: { clients: Client[] }) {
-    const rows: Client[][] = [];
-    for (let i = 0; i < clients.length; i += COLS) rows.push(clients.slice(i, i + COLS));
-
-    return (
-        <div className="space-y-6">
-            {rows.map((row, rowIndex) => (
-                <motion.div
-                    key={rowIndex}
-                    initial="hidden"
-                    whileInView="visible"
-                    viewport={{ once: true, margin: "-80px" }}
-                    transition={{ duration: 0.6 }}
-                    variants={ROW_VARIANTS[rowIndex % ROW_VARIANTS.length]}
-                    className="grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4"
-                >
-                    {row.map((client) => (
-                        <ClientCard key={client.id} client={client} />
-                    ))}
-                </motion.div>
-            ))}
-        </div>
-    );
+interface ClientLogoGridProps {
+  clients: Client[];
 }
+
+export default function ClientLogoGrid({
+  clients,
+}: ClientLogoGridProps) {
+  return (
+    <div className="grid grid-cols-2 gap-5 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+      {clients.map((client) => (
+        <div
+          key={client.id}
+          className="group flex h-28 items-center justify-center rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg dark:border-slate-800 dark:bg-slate-900"
+        >
+          <Image
+            src={client.logo}
+            alt={client.name}
+            width={180}
+            height={80}
+            className="max-h-16 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+          />
+        </div>
+      ))}
+    </div>
+  );
+}
+

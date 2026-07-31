@@ -1,3 +1,4 @@
+
 import { Navbar } from "../../../components/navbar";
 import { Footer } from "../../../components/footer";
 import { CtaSection } from "../../../components/cta-section";
@@ -8,7 +9,7 @@ import {
 import { BackgroundEffects } from "../../../components/background-effects";
 import { ClientHero } from "../../../components/client-hero";
 import { ClientMarquee } from "../../../components/client-marquee";
-import { ClientLogoGrid } from "../../../components/client-logo-grid";
+import ClientLogoGrid from "../../../components/client-logo-grid";
 import { ClientCard } from "../../../components/client-card";
 import { clients } from "../../../lib/clients-data";
 
@@ -89,6 +90,7 @@ export default function ClienteleEngagementPage() {
               </p>
             </div>
 
+            {/* Client Logo Grid */}
             <ClientLogoGrid clients={otherClients} />
           </section>
         )}

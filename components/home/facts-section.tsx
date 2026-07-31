@@ -71,69 +71,12 @@ export function FactsSection() {
 
             return (
               <StaggerItem key={fact.title}>
-                <div
-                  className="
-                    group
-                    relative
-                    h-full
-                    overflow-hidden
-                    rounded-2xl
-                    border
-                    border-slate-200
-                    bg-white
-                    p-7
-                    shadow-sm
-                    transition-all
-                    duration-500
-                    hover:-translate-y-2
-                    hover:border-blue-300
-                    hover:shadow-2xl
-                    hover:shadow-blue-500/10
-
-                    dark:border-slate-800
-                    dark:bg-slate-900
-                    dark:hover:border-blue-500/40
-                    dark:hover:shadow-black/40
-                  "
-                >
+                <article className="group relative h-full overflow-hidden rounded-2xl border border-slate-200 bg-white p-7 shadow-sm transition-all duration-500 hover:-translate-y-2 hover:border-blue-300 hover:shadow-2xl hover:shadow-blue-500/10 dark:border-slate-800 dark:bg-slate-900 dark:hover:border-blue-500/40 dark:hover:shadow-black/40">
                   {/* Top animated line */}
-                  <span
-                    className="
-                      pointer-events-none
-                      absolute
-                      inset-x-0
-                      top-0
-                      h-1
-                      origin-left
-                      scale-x-0
-                      bg-gradient-to-r
-                      from-[#1a2b4a]
-                      via-blue-500
-                      to-cyan-400
-                      transition-transform
-                      duration-500
-                      group-hover:scale-x-100
-                    "
-                  />
+                  <span className="pointer-events-none absolute inset-x-0 top-0 h-1 origin-left scale-x-0 bg-gradient-to-r from-[#1a2b4a] via-blue-500 to-cyan-400 transition-transform duration-500 group-hover:scale-x-100" />
 
                   {/* Card glow */}
-                  <div
-                    className="
-                      pointer-events-none
-                      absolute
-                      -right-16
-                      -top-16
-                      h-32
-                      w-32
-                      rounded-full
-                      bg-blue-500/10
-                      opacity-0
-                      blur-2xl
-                      transition-opacity
-                      duration-500
-                      group-hover:opacity-100
-                    "
-                  />
+                  <div className="pointer-events-none absolute -right-16 -top-16 h-32 w-32 rounded-full bg-blue-500/10 opacity-0 blur-2xl transition-opacity duration-500 group-hover:opacity-100" />
 
                   {/* Icon */}
                   <motion.div
@@ -145,28 +88,7 @@ export function FactsSection() {
                       duration: 0.5,
                       ease: "easeInOut",
                     }}
-                    className="
-                      relative
-                      z-10
-                      flex
-                      h-14
-                      w-14
-                      items-center
-                      justify-center
-                      rounded-xl
-                      bg-[#1a2b4a]/10
-                      text-[#1a2b4a]
-                      transition-all
-                      duration-300
-
-                      group-hover:bg-[#1a2b4a]
-                      group-hover:text-white
-
-                      dark:bg-blue-500/10
-                      dark:text-blue-400
-                      dark:group-hover:bg-blue-500
-                      dark:group-hover:text-white
-                    "
+                    className="relative z-10 flex h-14 w-14 items-center justify-center rounded-xl bg-[#1a2b4a]/10 text-[#1a2b4a] transition-all duration-300 group-hover:bg-[#1a2b4a] group-hover:text-white dark:bg-blue-500/10 dark:text-blue-400 dark:group-hover:bg-blue-500 dark:group-hover:text-white"
                   >
                     <Icon size={24} strokeWidth={1.75} />
                   </motion.div>
@@ -182,29 +104,11 @@ export function FactsSection() {
                   </p>
 
                   {/* Bottom arrow */}
-                  <div
-                    className="
-                      relative
-                      z-10
-                      mt-6
-                      flex
-                      items-center
-                      gap-2
-                      text-xs
-                      font-semibold
-                      text-[#1a2b4a]
-                      opacity-0
-                      transition-all
-                      duration-300
-                      group-hover:translate-x-1
-                      group-hover:opacity-100
-                      dark:text-blue-400
-                    "
-                  >
+                  <div className="relative z-10 mt-6 flex items-center gap-2 text-xs font-semibold text-[#1a2b4a] opacity-0 transition-all duration-300 group-hover:translate-x-1 group-hover:opacity-100 dark:text-blue-400">
                     <span>Learn more</span>
                     <span className="text-base">→</span>
                   </div>
-                </div>
+                </article>
               </StaggerItem>
             );
           })}
