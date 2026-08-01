@@ -16,20 +16,7 @@ export function ClientLogos() {
 
       {/* Heading */}
       <div className="relative mx-auto max-w-7xl px-6">
-        <AnimateIn direction="up" className="mb-12 text-center">
-          <span className="inline-flex rounded-full border border-blue-200 bg-blue-50 px-4 py-1 text-sm font-medium text-blue-700 dark:border-cyan-500/30 dark:bg-cyan-500/10 dark:text-cyan-400">
-            Trusted By
-          </span>
-
-          <h2 className="mt-4 text-3xl font-bold tracking-tight text-slate-900 dark:text-white md:text-4xl">
-            Our Happy Clients
-          </h2>
-
-          <p className="mx-auto mt-3 max-w-2xl text-slate-600 dark:text-slate-400">
-            We are proud to work with businesses across different industries,
-            delivering reliable digital solutions and long-term partnerships.
-          </p>
-        </AnimateIn>
+        
       </div>
 
       {/* Left Fade */}

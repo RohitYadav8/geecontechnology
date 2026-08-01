@@ -121,16 +121,16 @@ export const testimonials = [
 ];
 
 export const clients = [
-  { id: "emiada", name: "EMIADA", logo: "/emiadda.jpg" },
-  { id: "cubot", name: "Cubot", logo: "/cubot.jpg" },
-  { id: "toc-events", name: "TOC Events", logo: "/toc.jpg" },
-  { id: "green-valley", name: "Green Valley Infinity", logo: "/gv.jpg" },
-  { id: "wsd", name: "WSD", logo: "/wsd.jpg" },
+  { id: "emiada", name: "EMIADA", logo: "/emiadda.png" },
+  { id: "cubot", name: "Cubot", logo: "/cubot.png" },
+  { id: "toc-events", name: "TOC Events", logo: "/toc.png" },
+  { id: "green-valley", name: "Green Valley Infinity", logo: "/gv.png" },
+  { id: "wsd", name: "WSD", logo: "/wsd.png" },
   { id: "sacotina-dalip", name: "Sacotina & Dalip", logo: "/sacorinadalip.png" },
   { id: "cisco", name: "Cisco", logo: "/cisco-logo.png" },
-  { id: "poundsoft", name: "Poundsoft", logo: "/poundsoft.jpg" },
-  { id: "findus", name: "Findus NWEB", logo: "/findusonweb.jpg" },
-  { id: "oracle", name: "Oracle Gold Partner", logo: "/oracle-gold.jpg" },
+  { id: "poundsoft", name: "Poundsoft", logo: "/poundsoft.png" },
+  { id: "findus", name: "Findus NWEB", logo: "/findusonweb.png" },
+  { id: "oracle", name: "Oracle Gold Partner", logo: "/oracle-gold.png" },
 ];
 
 export const footerLinks = {

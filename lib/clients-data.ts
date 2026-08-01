@@ -9,15 +9,14 @@ export type ClientCategory =
 export interface Client {
     id: string;
     name: string;
-    /** Path relative to /public. Put your logo files in /public/clients/ and update these. */
+
     logo: string;
     category: ClientCategory;
-    /** Shown in the larger "Featured Clients" section at the top of the grid. */
+
     featured?: boolean;
 }
 
-// DUMMY DATA — replace name, logo path, and category for each real client.
-// Keep the same shape (id/name/logo/category/featured) and everything downstream just works.
+
 export const clients: Client[] = [
     { id: "client-01", name: "Client One", logo: "/wsd.png", category: "Technology", featured: true },
     { id: "client-02", name: "Client Two", logo: "/cisco-logo.png", category: "Finance", featured: true },
