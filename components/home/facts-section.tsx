@@ -93,7 +93,7 @@ export function FactsSection() {
                     <Icon size={24} strokeWidth={1.75} />
                   </motion.div>
 
-                  {/* Title */}
+                
                   <h3 className="relative z-10 mt-5 text-base font-semibold text-slate-900 dark:text-white">
                     {fact.title}
                   </h3>

@@ -562,7 +562,7 @@ export function HeroSlider() {
               Geecon Technology
             </motion.div>
 
-            {/* Heading */}
+          
 
             <AnimatedHeading
               text={slide.title}
@@ -579,7 +579,7 @@ export function HeroSlider() {
               "
             />
 
-            {/* Description */}
+          
 
             <motion.p
               initial={{

@@ -54,7 +54,7 @@ export function Testimonials() {
 
   return (
     <section
-      className="relative overflow-hidden bg-slate-50 py-20 dark:bg-slate-900/40 sm:py-24"
+      className="relative overflow-hidden bg-slate-50 py-20 dark:bg-slate-900/40 sm:py-20"
       aria-label="Client testimonials"
     >
       {/* Background Glow */}
@@ -65,22 +65,7 @@ export function Testimonials() {
       <div className="pointer-events-none absolute -right-24 bottom-10 h-72 w-72 rounded-full border border-cyan-500/10" />
 
       <div className="relative mx-auto max-w-7xl px-6">
-        {/* Section Heading */}
-        <AnimateIn className="text-center">
-          <span className="inline-flex rounded-full border border-blue-200 bg-blue-50 px-4 py-1.5 text-xs font-semibold uppercase tracking-widest text-[#1a2b4a] dark:border-blue-500/20 dark:bg-blue-500/10 dark:text-blue-400">
-            Testimonials
-          </span>
-
-          <h2 className="mt-4 text-3xl font-semibold tracking-tight text-slate-900 dark:text-white sm:text-4xl">
-            What Our Clients Say
-          </h2>
-
-          <p className="mx-auto mt-4 max-w-2xl text-sm leading-7 text-slate-500 dark:text-slate-400 sm:text-base">
-            We value the trust our clients place in us. Here is what they have
-            to say about their experience working with our team.
-          </p>
-        </AnimateIn>
-
+       
         {/* Testimonial Area */}
         <div
           className="relative mx-auto mt-14 max-w-3xl"
@@ -174,10 +159,6 @@ export function Testimonials() {
 
                   <div className="mt-1 flex items-center gap-2">
                     <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-
-                    <p className="text-xs text-slate-400 dark:text-slate-500">
-                      Verified Client
-                    </p>
                   </div>
                 </div>
               </div>
@@ -257,7 +238,7 @@ export function Testimonials() {
           </div>
         )}
 
-        {/* Slide Counter */}
+        
         {testimonials.length > 1 && (
           <p className="mt-4 text-center text-xs font-medium tracking-wider text-slate-400 dark:text-slate-500">
             {String(active + 1).padStart(2, "0")} /{" "}

@@ -12,7 +12,7 @@ import { TiltCard } from "../../components/tilt-card";
 
 export function ServicesGrid() {
   return (
-    <section className="relative overflow-hidden bg-white py-20 dark:bg-slate-950 sm:py-24">
+    <section className="relative overflow-hidden bg-white py-20 dark:bg-slate-950 sm:py-15">
       {/* Background Grid */}
       <div
         className="pointer-events-none absolute inset-0 opacity-40 dark:opacity-20"
@@ -42,11 +42,7 @@ export function ServicesGrid() {
             {/* Heading */}
             <div>
               <div className="inline-flex items-center gap-2">
-                <span className="h-px w-8 bg-blue-500" />
-
-                <span className="text-xs font-semibold uppercase tracking-[0.2em] text-[#1a2b4a] dark:text-blue-400">
-                  What we do
-                </span>
+                
               </div>
 
               <h2 className="mt-4 text-3xl font-semibold leading-tight tracking-tight text-slate-900 dark:text-white sm:text-4xl">
@@ -56,13 +52,7 @@ export function ServicesGrid() {
                 </span>
               </h2>
 
-              <div className="mt-5 flex items-center gap-2 text-xs text-slate-400">
-                <Sparkles size={14} />
-
-                <span>
-                  Innovative • Scalable • Business Focused
-                </span>
-              </div>
+             
             </div>
 
             {/* Description */}
@@ -115,14 +105,8 @@ export function ServicesGrid() {
                       {/* Blue Hover Glow */}
                       <div className="pointer-events-none absolute inset-0 bg-blue-500/0 transition-colors duration-500 group-hover:bg-blue-500/10" />
 
-                      {/* =================================================
-                          TOP TAG
-                      ================================================= */}
-
                       <div className="absolute left-4 top-4">
-                        <span className="inline-flex items-center rounded-full border border-white/20 bg-black/20 px-3 py-1 text-[10px] font-semibold uppercase tracking-[0.15em] text-white backdrop-blur-md">
-                          {service.tag}
-                        </span>
+                        
                       </div>
 
                       {/* =================================================
@@ -173,9 +157,7 @@ export function ServicesGrid() {
                       </Link>
                     </div>
 
-                    {/* =================================================
-                        BOTTOM HOVER GLOW
-                    ================================================= */}
+              
 
                     <div className="pointer-events-none absolute -bottom-20 left-1/2 h-32 w-64 -translate-x-1/2 rounded-full bg-blue-500/0 blur-3xl transition-all duration-700 group-hover:bg-blue-500/20" />
                   </article>
