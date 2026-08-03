@@ -32,6 +32,13 @@ function TwitterIcon({ size = 14 }: { size?: number }) {
   );
 }
 
+// Update once you have the real X/Twitter handle for Geecon.
+const SOCIAL_LINKS = {
+  facebook: "https://www.facebook.com/pages/Geecon-Systems-Pvt-Ltd/595625870489482",
+  twitter: "https://x.com/geecongloballtd",
+  linkedin: "https://www.linkedin.com/company/geecon-systems-pvt-ltd/?originalSubdomain=in",
+};
+
 const navLinks = [
   { label: "HOME", href: "/" },
   {
@@ -89,13 +96,31 @@ export function Navbar() {
       >
         <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-2">
           <div className="flex items-center gap-3.5">
-            <a href="#" aria-label="Facebook" className="text-slate-400 transition-colors duration-200 hover:text-[#1a2b4a] dark:text-slate-500 dark:hover:text-white">
+            <a
+              href={SOCIAL_LINKS.facebook}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Facebook"
+              className="text-slate-400 transition-colors duration-200 hover:text-[#1a2b4a] dark:text-slate-500 dark:hover:text-white"
+            >
               <FacebookIcon size={14} />
             </a>
-            <a href="#" aria-label="Twitter" className="text-slate-400 transition-colors duration-200 hover:text-[#1a2b4a] dark:text-slate-500 dark:hover:text-white">
+            <a
+              href={SOCIAL_LINKS.twitter}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="Twitter"
+              className="text-slate-400 transition-colors duration-200 hover:text-[#1a2b4a] dark:text-slate-500 dark:hover:text-white"
+            >
               <TwitterIcon size={14} />
             </a>
-            <a href="#" aria-label="LinkedIn" className="text-slate-400 transition-colors duration-200 hover:text-[#1a2b4a] dark:text-slate-500 dark:hover:text-white">
+            <a
+              href={SOCIAL_LINKS.linkedin}
+              target="_blank"
+              rel="noopener noreferrer"
+              aria-label="LinkedIn"
+              className="text-slate-400 transition-colors duration-200 hover:text-[#1a2b4a] dark:text-slate-500 dark:hover:text-white"
+            >
               <LinkedinIcon size={14} />
             </a>
           </div>

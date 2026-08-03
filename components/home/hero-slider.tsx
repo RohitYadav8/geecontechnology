@@ -514,54 +514,7 @@ export function HeroSlider() {
               px-6
             "
           >
-            {/* Badge */}
-
-            <motion.div
-              initial={{
-                opacity: 0,
-                y: 15,
-                filter: "blur(6px)",
-              }}
-              animate={{
-                opacity: 1,
-                y: 0,
-                filter: "blur(0px)",
-              }}
-              transition={{
-                duration: 0.6,
-                delay: 0.15,
-              }}
-              className="
-                mb-4
-                inline-flex
-                w-fit
-                items-center
-                gap-2
-                rounded-full
-                border
-                border-blue-400/30
-                bg-blue-500/10
-                px-4
-                py-1.5
-                text-xs
-                font-medium
-                text-blue-300
-                backdrop-blur-md
-              "
-            >
-              <span
-                className="
-                  h-1.5
-                  w-1.5
-                  animate-pulse
-                  rounded-full
-                  bg-blue-400
-                "
-              />
-
-              Geecon Technology
-            </motion.div>
-
+           
           
 
             <AnimatedHeading
@@ -632,13 +585,6 @@ export function HeroSlider() {
                 gap-3
               "
             >
-              <GlowButton variant="primary">
-                Get Started
-              </GlowButton>
-
-              <GlowButton variant="outline">
-                Our Services
-              </GlowButton>
             </motion.div>
           </div>
         </motion.div>
