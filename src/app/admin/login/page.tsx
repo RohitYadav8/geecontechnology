@@ -1,11 +1,15 @@
+
+
 "use client";
 
 import { useState } from "react";
 import Image from "next/image";
+import { useRouter } from "next/navigation";
 import { Lock, Mail, Eye, EyeOff, LogIn } from "lucide-react";
 import { RippleButton } from "../../../../components/ripple-button";
 
 export default function AdminLoginPage() {
+    const router = useRouter();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [showPassword, setShowPassword] = useState(false);
@@ -18,21 +22,26 @@ export default function AdminLoginPage() {
         setError("");
         setLoading(true);
 
-        // TODO: replace with the real auth API call once the admin backend exists.
-        // Example shape for later:
-        // const res = await fetch("/api/admin/login", {
-        //   method: "POST",
-        //   headers: { "Content-Type": "application/json" },
-        //   body: JSON.stringify({ email, password, remember }),
-        // });
-        // if (!res.ok) { setError("Invalid email or password."); setLoading(false); return; }
-        // router.push("/admin/dashboard");
+        try {
+            const res = await fetch("/api/admin/login", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ email, password }),
+            });
 
-        console.log("Admin login submission (placeholder):", { email, remember });
-        window.setTimeout(() => {
+            const data = await res.json();
+
+            if (!res.ok) {
+                setError(data.error || "Invalid email or password.");
+                setLoading(false);
+                return;
+            }
+
+            router.push("/admin/dashboard");
+        } catch {
+            setError("Could not reach the server. Please try again.");
             setLoading(false);
-            setError("Backend not connected yet — this is a placeholder.");
-        }, 800);
+        }
     };
 
     return (
