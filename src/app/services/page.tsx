@@ -58,9 +58,7 @@ export default function ServicesPage() {
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-[#1a2b4a]/80 via-[#1a2b4a]/10 to-transparent" />
                       <div className="absolute inset-4 border border-white/40" />
-                      <p className="absolute bottom-8 left-8 right-8 text-lg font-bold uppercase leading-snug tracking-wide text-white">
-                        {service.tag}
-                      </p>
+                     
                     </div>
 
                     {/* Text */}
