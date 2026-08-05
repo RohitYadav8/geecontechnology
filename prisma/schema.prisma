@@ -1,10 +1,10 @@
 generator client {
-  provider = "prisma-client-js"
+  provider = "prisma-client"
+  output   = "./generated/client"
 }
 
 datasource db {
   provider = "mysql"
-  url      = env("DATABASE_URL")
 }
 
 model AdminUser {
@@ -19,34 +19,34 @@ model AdminUser {
 }
 
 model CandidateSubmission {
-  id                    String   @id @default(cuid())
-  fullName              String
-  email                 String
-  phone                 String
-  dob                   String?
-  qualification         String?
-  qualificationYear     String?
-  pursuingDegree        String?
-  position              String?
-  totalExperience       String?
-  relevantExperience    String?
-  currentLocation       String?
-  relocate              String?
-  travelAbroad          String?
-  passport               String?
-  visa                  String?
-  currentlyWorking      String?
-  reasonForChange       String?  @db.Text
-  currentCtc            String?
-  inHandSalary          String?
-  expectedCtc           String?
-  expectedInHand        String?
-  noticePeriod          String?
-  earliestJoinDate      String?
-  dependents            String?
-  readyOnCurrentCtc     String?
-  resumeUrl             String?
-  createdAt             DateTime @default(now())
+  id                 String   @id @default(cuid())
+  fullName           String
+  email              String
+  phone              String
+  dob                String?
+  qualification      String?
+  qualificationYear  String?
+  pursuingDegree     String?
+  position           String?
+  totalExperience    String?
+  relevantExperience String?
+  currentLocation    String?
+  relocate           String?
+  travelAbroad       String?
+  passport           String?
+  visa               String?
+  currentlyWorking   String?
+  reasonForChange    String?  @db.Text
+  currentCtc         String?
+  inHandSalary       String?
+  expectedCtc        String?
+  expectedInHand     String?
+  noticePeriod       String?
+  earliestJoinDate   String?
+  dependents         String?
+  readyOnCurrentCtc  String?
+  resumeUrl          String?
+  createdAt          DateTime @default(now())
 
   @@map("candidate_submissions")
 }
