@@ -1,6 +1,5 @@
 generator client {
-  provider = "prisma-client"
-  output   = "./generated/client"
+  provider = "prisma-client-js"
 }
 
 datasource db {
@@ -49,4 +48,41 @@ model CandidateSubmission {
   createdAt          DateTime @default(now())
 
   @@map("candidate_submissions")
+}
+
+model Service {
+  id          String   @id @default(cuid())
+  tag         String?
+  title       String
+  description String   @db.Text
+  image       String
+  href        String
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("services")
+}
+
+model Product {
+  id               String  @id @default(cuid())
+  title            String
+  slug             String  @unique
+  bannerImage      String?
+  shortDescription String? @db.Text
+  description      String? @db.Text
+
+  features Json?
+  benefits Json?
+  sections Json?
+  faqs     Json?
+
+  brochureUrl String?
+  isActive    Boolean @default(true)
+  order       Int     @default(0)
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("products")
 }

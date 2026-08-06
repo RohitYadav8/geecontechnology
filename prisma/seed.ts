@@ -1,5 +1,6 @@
+
 import bcrypt from "bcryptjs";
-import { PrismaClient } from "./generated/client/client";
+import { PrismaClient } from "@prisma/client";
 import { PrismaMariaDb } from "@prisma/adapter-mariadb";
 
 const adapter = new PrismaMariaDb({
@@ -7,7 +8,7 @@ const adapter = new PrismaMariaDb({
   user: process.env.DATABASE_USER!,
   password: process.env.DATABASE_PASSWORD!,
   database: process.env.DATABASE_NAME!,
-  port: 3306,
+  port: Number(process.env.DATABASE_PORT || 3306),
 });
 
 const prisma = new PrismaClient({
@@ -43,3 +44,4 @@ main()
   .finally(async () => {
     await prisma.$disconnect();
   });
+
