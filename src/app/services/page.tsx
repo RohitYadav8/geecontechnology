@@ -61,7 +61,7 @@ export default function ServicesPage() {
                      
                     </div>
 
-                    {/* Text */}
+                    {/* Text */}  
                     <div
                       className={`flex flex-col justify-center bg-slate-50 p-8 dark:bg-slate-900/60 sm:p-10 ${
                         imageFirst ? "sm:order-2" : "sm:order-1"
