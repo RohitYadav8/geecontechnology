@@ -98,27 +98,7 @@ export const services = [
   },
 ];
 
-export const testimonials = [
-  {
-    id: 1,
-    quote:
-      "We have built a partnership with the SharePoint technical team of Geecon over last three years. Having a dedicated SharePoint team from Geecon, that truly understands our environment, our project plans. Geecon delivery capabilities have enabled the Jet Intranet portal to be accessible 24X7.",
-    name: "Andy Ridley",
-  },
-  {
-    id: 2,
-    quote:
-      "We are extremely grateful to team Geecon for their great help and excellent coordination to streamline the entire process of account opening which has resulted in zero pending today. Never happened before! Keep it up and up.",
-    name: "Neil Wilkings",
-  },
-  {
-    id:3,
-    quote:
-    "It was indeed a great pleasure to work with the Geecon team on Documentum based Project for Tata Power. Tata Power’s matured business processes and Geecon’ domain expertise helped in successful integration of Documentum with our existing systems.",
-    name:"Devesh",
 
-  }
-];
 
 export const clients = [
   { id: "emiada", name: "EMIADA", logo: "/emiadda.png" },

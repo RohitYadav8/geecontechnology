@@ -85,4 +85,47 @@ model Product {
   updatedAt DateTime @updatedAt
 
   @@map("products")
+  brochureRequests BrochureRequest[]
+}
+model BrochureRequest {
+  id        String   @id @default(cuid())
+
+  name      String
+  phone     String
+  email     String
+  company   String?
+  website   String?
+
+  productId String?
+  product   Product? @relation(fields: [productId], references: [id], onDelete: SetNull)
+
+  status    String   @default("pending")
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([email])
+  @@index([productId])
+  @@index([status])
+  @@map("brochure_requests")
+}
+model Testimonial {
+  id        Int      @id @default(autoincrement())
+  quote     String   @db.Text
+  name      String
+  isActive  Boolean  @default(true)
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+model Client {
+  id          Int      @id @default(autoincrement())
+  name        String
+  logo        String
+  category    String
+  featured    Boolean  @default(false)
+  isActive    Boolean  @default(true)
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
 }

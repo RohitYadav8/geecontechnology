@@ -193,25 +193,34 @@ const ALLOWED_FILE_TYPES = [
 ];
 
 export default function CandidateScreeningPage() {
-    const [form, setForm] = useState<Record<string, string>>(initialForm);
+    const [form, setForm] =
+        useState<Record<string, string>>(initialForm);
 
-    const [resumeFile, setResumeFile] = useState<File | null>(null);
+    const [resumeFile, setResumeFile] =
+        useState<File | null>(null);
 
-    const [isDragging, setIsDragging] = useState(false);
+    const [isDragging, setIsDragging] =
+        useState(false);
 
-    const [recaptchaChecked, setRecaptchaChecked] = useState(false);
+    const [recaptchaChecked, setRecaptchaChecked] =
+        useState(false);
 
-    const [isSubmitting, setIsSubmitting] = useState(false);
+    const [isSubmitting, setIsSubmitting] =
+        useState(false);
 
-    const [showToast, setShowToast] = useState(false);
+    const [showToast, setShowToast] =
+        useState(false);
 
-    const [errorMessage, setErrorMessage] = useState("");
+    const [errorMessage, setErrorMessage] =
+        useState("");
 
     const handleChange =
         (name: string) =>
         (
             e: React.ChangeEvent<
-                HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement
+                HTMLInputElement |
+                    HTMLTextAreaElement |
+                    HTMLSelectElement
             >
         ) => {
             setForm((prev) => ({
@@ -229,7 +238,9 @@ export default function CandidateScreeningPage() {
         }
 
         if (file.size > MAX_FILE_SIZE) {
-            setErrorMessage("Resume size must be less than 5 MB.");
+            setErrorMessage(
+                "Resume size must be less than 5 MB."
+            );
             return false;
         }
 
@@ -237,7 +248,9 @@ export default function CandidateScreeningPage() {
         return true;
     };
 
-    const handleFileSelect = (file: File | undefined) => {
+    const handleFileSelect = (
+        file: File | undefined
+    ) => {
         if (!file) return;
 
         if (!validateFile(file)) {
@@ -248,15 +261,21 @@ export default function CandidateScreeningPage() {
         setResumeFile(file);
     };
 
-    const handleFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const handleFile = (
+        e: React.ChangeEvent<HTMLInputElement>
+    ) => {
         handleFileSelect(e.target.files?.[0]);
     };
 
-    const handleDrop = (e: React.DragEvent<HTMLLabelElement>) => {
+    const handleDrop = (
+        e: React.DragEvent<HTMLLabelElement>
+    ) => {
         e.preventDefault();
         setIsDragging(false);
 
-        handleFileSelect(e.dataTransfer.files?.[0]);
+        handleFileSelect(
+            e.dataTransfer.files?.[0]
+        );
     };
 
     const removeFile = () => {
@@ -278,18 +297,24 @@ export default function CandidateScreeningPage() {
         }, 4000);
     };
 
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (
+        e: React.FormEvent<HTMLFormElement>
+    ) => {
         e.preventDefault();
 
         setErrorMessage("");
 
         if (!recaptchaChecked) {
-            setErrorMessage("Please confirm that you're not a robot.");
+            setErrorMessage(
+                "Please confirm that you're not a robot."
+            );
             return;
         }
 
         if (!resumeFile) {
-            setErrorMessage("Please upload your resume before submitting.");
+            setErrorMessage(
+                "Please upload your resume before submitting."
+            );
             return;
         }
 
@@ -297,47 +322,84 @@ export default function CandidateScreeningPage() {
 
         try {
             /*
-             * ---------------------------------------------------------
-             * BACKEND API INTEGRATION
-             * ---------------------------------------------------------
-             *
-             * Jab API ready ho jaye to is FormData ko:
-             *
-             * fetch("/api/candidate-screening", {
-             *     method: "POST",
-             *     body: payload,
-             * });
-             *
-             * se send kar sakte ho.
+             * ==========================================
+             * CREATE FORM DATA
+             * ==========================================
              */
 
             const payload = new FormData();
 
-            Object.entries(form).forEach(([key, value]) => {
-                payload.append(key, value);
-            });
+            Object.entries(form).forEach(
+                ([key, value]) => {
+                    payload.append(key, value);
+                }
+            );
 
             payload.append("resume", resumeFile);
 
-            // Temporary development log
-            console.log("Candidate Screening Payload:", {
-                form,
-                resume: resumeFile.name,
-                resumeSize: resumeFile.size,
-                resumeType: resumeFile.type,
-            });
+            /*
+             * ==========================================
+             * SEND DATA TO BACKEND
+             * ==========================================
+             */
 
-            // Temporary delay to simulate API request
-            await new Promise((resolve) => setTimeout(resolve, 800));
+            const response = await fetch(
+                "/api/candidate-screening",
+                {
+                    method: "POST",
+                    body: payload,
+                }
+            );
+
+            /*
+             * ==========================================
+             * READ BACKEND RESPONSE
+             * ==========================================
+             */
+
+            const data = await response.json();
+
+            console.log(
+                "Candidate Screening API Response:",
+                data
+            );
+
+            /*
+             * ==========================================
+             * HANDLE ERROR
+             * ==========================================
+             */
+
+            if (!response.ok) {
+                throw new Error(
+                    data.error ||
+                        "Failed to submit application."
+                );
+            }
+
+            /*
+             * ==========================================
+             * SUCCESS
+             * ==========================================
+             */
+
+            console.log(
+                "Candidate application submitted successfully."
+            );
 
             showSuccessToast();
 
             resetForm();
         } catch (error) {
-            console.error("Candidate screening submission error:", error);
+            console.error(
+                "Candidate screening submission error:",
+                error
+            );
 
             setErrorMessage(
-                "Something went wrong while submitting your application. Please try again."
+                error instanceof Error
+                    ? error.message
+                    : "Something went wrong while submitting your application. Please try again."
             );
         } finally {
             setIsSubmitting(false);
@@ -350,16 +412,19 @@ export default function CandidateScreeningPage() {
 
             <main className="relative flex-1 overflow-hidden">
                 {/* Grid Background */}
+
                 <div
                     className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,#e5e7eb_1px,transparent_1px),linear-gradient(to_bottom,#e5e7eb_1px,transparent_1px)] bg-[size:48px_48px] opacity-20 dark:opacity-10"
                 />
 
                 {/* Radial Background */}
+
                 <div
                     className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(59,130,246,.15),transparent_60%)]"
                 />
 
                 {/* Floating Blobs */}
+
                 <FloatingBlob
                     className="-right-20 top-10 h-72 w-72"
                     color="bg-blue-400/10"
@@ -374,6 +439,7 @@ export default function CandidateScreeningPage() {
 
                 <section className="relative mx-auto max-w-3xl px-6 pb-20 pt-16 sm:pt-20">
                     {/* Heading */}
+
                     <AnimateIn>
                         <div className="text-center">
                             <AnimatedHeading
@@ -383,15 +449,19 @@ export default function CandidateScreeningPage() {
                             />
 
                             <p className="mx-auto mt-4 max-w-xl text-sm leading-6 text-slate-500 dark:text-slate-400">
-                                Please complete the following information carefully.
-                                Our recruitment team will review your application
-                                and contact you if your profile matches our
+                                Please complete the
+                                following information
+                                carefully. Our recruitment
+                                team will review your
+                                application and contact you
+                                if your profile matches our
                                 requirements.
                             </p>
                         </div>
                     </AnimateIn>
 
                     {/* Form */}
+
                     <AnimateIn
                         delay={0.1}
                         className="mt-10"
@@ -400,99 +470,141 @@ export default function CandidateScreeningPage() {
                             <MouseGlow className="rounded-2xl">
                                 <div className="rounded-2xl border border-slate-200/60 bg-white/80 p-6 shadow-xl shadow-slate-900/5 backdrop-blur-xl dark:border-slate-800/60 dark:bg-slate-900/80 dark:shadow-black/20 sm:p-8">
                                     <form
-                                        onSubmit={handleSubmit}
+                                        onSubmit={
+                                            handleSubmit
+                                        }
                                         className="space-y-6"
                                     >
-                                        {fields.map((field) => (
-                                            <div key={field.name}>
-                                                <label
-                                                    htmlFor={field.name}
-                                                    className="mb-1.5 block text-sm font-medium text-[#1a2b4a] dark:text-blue-400"
+                                        {fields.map(
+                                            (field) => (
+                                                <div
+                                                    key={
+                                                        field.name
+                                                    }
                                                 >
-                                                    {field.label}
-
-                                                    {field.required && (
-                                                        <span className="ml-1 text-red-500">
-                                                            *
-                                                        </span>
-                                                    )}
-                                                </label>
-
-                                                {field.type === "textarea" ? (
-                                                    <textarea
-                                                        id={field.name}
-                                                        name={field.name}
-                                                        value={
-                                                            form[field.name]
-                                                        }
-                                                        onChange={handleChange(
+                                                    <label
+                                                        htmlFor={
                                                             field.name
-                                                        )}
-                                                        rows={5}
-                                                        required={
-                                                            field.required
                                                         }
-                                                        placeholder="Enter your answer..."
-                                                        className="w-full resize-y rounded-lg border border-slate-200 bg-white px-3.5 py-3 text-sm text-slate-900 outline-none transition-all placeholder:text-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 dark:border-slate-700 dark:bg-slate-900 dark:text-white dark:placeholder:text-slate-500"
-                                                    />
-                                                ) : field.type ===
-                                                  "select" ? (
-                                                    <select
-                                                        id={field.name}
-                                                        name={field.name}
-                                                        value={
-                                                            form[field.name]
-                                                        }
-                                                        onChange={handleChange(
-                                                            field.name
-                                                        )}
-                                                        required={
-                                                            field.required
-                                                        }
-                                                        className="w-full rounded-lg border border-slate-200 bg-white px-3.5 py-3 text-sm text-slate-700 outline-none transition-all focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300"
+                                                        className="mb-1.5 block text-sm font-medium text-[#1a2b4a] dark:text-blue-400"
                                                     >
-                                                        <option value="">
-                                                            Select an option
-                                                        </option>
-
-                                                        <option value="Yes">
-                                                            Yes
-                                                        </option>
-
-                                                        <option value="No">
-                                                            No
-                                                        </option>
-                                                    </select>
-                                                ) : (
-                                                    <input
-                                                        id={field.name}
-                                                        name={field.name}
-                                                        type={field.type}
-                                                        value={
-                                                            form[field.name]
+                                                        {
+                                                            field.label
                                                         }
-                                                        onChange={handleChange(
-                                                            field.name
+
+                                                        {field.required && (
+                                                            <span className="ml-1 text-red-500">
+                                                                *
+                                                            </span>
                                                         )}
-                                                        required={
-                                                            field.required
-                                                        }
-                                                        placeholder={
-                                                            field.type ===
-                                                            "date"
-                                                                ? undefined
-                                                                : "Enter your answer..."
-                                                        }
-                                                        className="w-full rounded-lg border border-slate-200 bg-white px-3.5 py-3 text-sm text-slate-900 outline-none transition-all placeholder:text-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 dark:border-slate-700 dark:bg-slate-900 dark:text-white dark:placeholder:text-slate-500"
-                                                    />
-                                                )}
-                                            </div>
-                                        ))}
+                                                    </label>
+
+                                                    {field.type ===
+                                                    "textarea" ? (
+                                                        <textarea
+                                                            id={
+                                                                field.name
+                                                            }
+                                                            name={
+                                                                field.name
+                                                            }
+                                                            value={
+                                                                form[
+                                                                    field
+                                                                        .name
+                                                                ]
+                                                            }
+                                                            onChange={handleChange(
+                                                                field.name
+                                                            )}
+                                                            rows={
+                                                                5
+                                                            }
+                                                            required={
+                                                                field.required
+                                                            }
+                                                            placeholder="Enter your answer..."
+                                                            className="w-full resize-y rounded-lg border border-slate-200 bg-white px-3.5 py-3 text-sm text-slate-900 outline-none transition-all placeholder:text-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 dark:border-slate-700 dark:bg-slate-900 dark:text-white dark:placeholder:text-slate-500"
+                                                        />
+                                                    ) : field.type ===
+                                                      "select" ? (
+                                                        <select
+                                                            id={
+                                                                field.name
+                                                            }
+                                                            name={
+                                                                field.name
+                                                            }
+                                                            value={
+                                                                form[
+                                                                    field
+                                                                        .name
+                                                                ]
+                                                            }
+                                                            onChange={handleChange(
+                                                                field.name
+                                                            )}
+                                                            required={
+                                                                field.required
+                                                            }
+                                                            className="w-full rounded-lg border border-slate-200 bg-white px-3.5 py-3 text-sm text-slate-700 outline-none transition-all focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300"
+                                                        >
+                                                            <option value="">
+                                                                Select
+                                                                an
+                                                                option
+                                                            </option>
+
+                                                            <option value="Yes">
+                                                                Yes
+                                                            </option>
+
+                                                            <option value="No">
+                                                                No
+                                                            </option>
+                                                        </select>
+                                                    ) : (
+                                                        <input
+                                                            id={
+                                                                field.name
+                                                            }
+                                                            name={
+                                                                field.name
+                                                            }
+                                                            type={
+                                                                field.type
+                                                            }
+                                                            value={
+                                                                form[
+                                                                    field
+                                                                        .name
+                                                                ]
+                                                            }
+                                                            onChange={handleChange(
+                                                                field.name
+                                                            )}
+                                                            required={
+                                                                field.required
+                                                            }
+                                                            placeholder={
+                                                                field.type ===
+                                                                "date"
+                                                                    ? undefined
+                                                                    : "Enter your answer..."
+                                                            }
+                                                            className="w-full rounded-lg border border-slate-200 bg-white px-3.5 py-3 text-sm text-slate-900 outline-none transition-all placeholder:text-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 dark:border-slate-700 dark:bg-slate-900 dark:text-white dark:placeholder:text-slate-500"
+                                                        />
+                                                    )}
+                                                </div>
+                                            )
+                                        )}
 
                                         {/* Resume Upload */}
+
                                         <div>
                                             <label className="mb-1.5 block text-sm font-medium text-[#1a2b4a] dark:text-blue-400">
                                                 Upload Resume
+
                                                 <span className="ml-1 text-red-500">
                                                     *
                                                 </span>
@@ -500,14 +612,22 @@ export default function CandidateScreeningPage() {
 
                                             {!resumeFile ? (
                                                 <label
-                                                    onDragOver={(e) => {
+                                                    onDragOver={(
+                                                        e
+                                                    ) => {
                                                         e.preventDefault();
-                                                        setIsDragging(true);
+                                                        setIsDragging(
+                                                            true
+                                                        );
                                                     }}
                                                     onDragLeave={() =>
-                                                        setIsDragging(false)
+                                                        setIsDragging(
+                                                            false
+                                                        )
                                                     }
-                                                    onDrop={handleDrop}
+                                                    onDrop={
+                                                        handleDrop
+                                                    }
                                                     className={`flex w-full cursor-pointer flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed px-4 py-10 text-center transition-all ${
                                                         isDragging
                                                             ? "border-blue-500 bg-blue-50 text-blue-600 dark:bg-blue-500/10 dark:text-blue-400"
@@ -516,30 +636,41 @@ export default function CandidateScreeningPage() {
                                                 >
                                                     <div className="flex h-12 w-12 items-center justify-center rounded-full bg-blue-500/10 text-blue-600 dark:text-blue-400">
                                                         <Upload
-                                                            size={22}
+                                                            size={
+                                                                22
+                                                            }
                                                         />
                                                     </div>
 
                                                     <div>
                                                         <p className="text-sm font-semibold">
-                                                            Drag & drop your
+                                                            Drag
+                                                            & drop
+                                                            your
                                                             resume
                                                         </p>
 
                                                         <p className="mt-1 text-xs text-slate-400">
-                                                            or click to browse
+                                                            or
+                                                            click
+                                                            to
+                                                            browse
                                                         </p>
                                                     </div>
 
                                                     <p className="text-xs text-slate-400">
-                                                        PDF, DOC or DOCX • Max
+                                                        PDF, DOC
+                                                        or DOCX
+                                                        • Max
                                                         5MB
                                                     </p>
 
                                                     <input
                                                         type="file"
                                                         accept=".pdf,.doc,.docx"
-                                                        onChange={handleFile}
+                                                        onChange={
+                                                            handleFile
+                                                        }
                                                         className="hidden"
                                                     />
                                                 </label>
@@ -548,7 +679,9 @@ export default function CandidateScreeningPage() {
                                                     <div className="flex min-w-0 items-center gap-3">
                                                         <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-blue-500/10 text-blue-600 dark:text-blue-400">
                                                             <FileText
-                                                                size={20}
+                                                                size={
+                                                                    20
+                                                                }
                                                             />
                                                         </div>
 
@@ -574,69 +707,101 @@ export default function CandidateScreeningPage() {
 
                                                     <button
                                                         type="button"
-                                                        onClick={removeFile}
+                                                        onClick={
+                                                            removeFile
+                                                        }
                                                         aria-label="Remove resume"
                                                         className="ml-3 flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-slate-400 transition-colors hover:bg-red-500/10 hover:text-red-500"
                                                     >
-                                                        <X size={17} />
+                                                        <X
+                                                            size={
+                                                                17
+                                                            }
+                                                        />
                                                     </button>
                                                 </div>
                                             )}
                                         </div>
 
                                         {/* Error */}
+
                                         {errorMessage && (
                                             <div
                                                 role="alert"
                                                 className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600 dark:border-red-500/20 dark:bg-red-500/10 dark:text-red-400"
                                             >
-                                                {errorMessage}
+                                                {
+                                                    errorMessage
+                                                }
                                             </div>
                                         )}
 
                                         {/* Captcha */}
+
                                         <label className="flex w-fit cursor-pointer items-center gap-3 rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 transition-colors hover:border-blue-300 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300">
                                             <input
                                                 type="checkbox"
-                                                checked={recaptchaChecked}
-                                                onChange={(e) =>
+                                                checked={
+                                                    recaptchaChecked
+                                                }
+                                                onChange={(
+                                                    e
+                                                ) =>
                                                     setRecaptchaChecked(
-                                                        e.target.checked
+                                                        e
+                                                            .target
+                                                            .checked
                                                     )
                                                 }
                                                 className="h-4 w-4 cursor-pointer accent-blue-600"
                                             />
 
                                             <span>
-                                                I&apos;m not a robot
+                                                I&apos;m not
+                                                a robot
                                             </span>
                                         </label>
 
                                         {/* Submit */}
+
                                         <div className="pt-2">
                                             <RippleButton
                                                 type="submit"
-                                                disabled={isSubmitting}
+                                                disabled={
+                                                    isSubmitting
+                                                }
                                                 className="flex w-full items-center justify-center gap-2 rounded-full bg-[#1a2b4a] px-8 py-3.5 text-sm font-semibold text-white transition-all hover:bg-[#0d1830] disabled:cursor-not-allowed disabled:opacity-60 dark:bg-blue-600 dark:hover:bg-blue-500"
                                             >
                                                 {isSubmitting ? (
                                                     <>
                                                         <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />
+
                                                         Submitting...
                                                     </>
                                                 ) : (
                                                     <>
-                                                        <Send size={15} />
-                                                        Submit Application
+                                                        <Send
+                                                            size={
+                                                                15
+                                                            }
+                                                        />
+
+                                                        Submit
+                                                        Application
                                                     </>
                                                 )}
                                             </RippleButton>
                                         </div>
 
                                         <p className="text-center text-xs leading-5 text-slate-400 dark:text-slate-500">
-                                            By submitting this form, you confirm
-                                            that the information provided is
-                                            accurate and complete.
+                                            By submitting
+                                            this form,
+                                            you confirm
+                                            that the
+                                            information
+                                            provided is
+                                            accurate and
+                                            complete.
                                         </p>
                                     </form>
                                 </div>
@@ -649,6 +814,7 @@ export default function CandidateScreeningPage() {
             <Footer />
 
             {/* Success Toast */}
+
             {showToast && (
                 <div
                     role="status"
@@ -668,7 +834,8 @@ export default function CandidateScreeningPage() {
                         </p>
 
                         <p className="mt-0.5 text-xs text-slate-500 dark:text-slate-400">
-                            Your application has been received successfully.
+                            Your application has been
+                            received successfully.
                         </p>
                     </div>
 

@@ -3,10 +3,16 @@
 import { useState, useEffect, useCallback } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { Quote, Star } from "lucide-react";
-import { testimonials } from "../../lib/home-data";
-import { AnimateIn } from "../../components/animate-in";
 
 const AUTO_SLIDE_DURATION = 6000;
+
+type Testimonial = {
+  id: number;
+  quote: string;
+  name: string;
+  isActive: boolean;
+  order: number;
+};
 
 function getInitials(name: string) {
   return name
@@ -19,14 +25,44 @@ function getInitials(name: string) {
 }
 
 export function Testimonials() {
+  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
   const [active, setActive] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  const goTo = useCallback((index: number) => {
-    if (testimonials.length === 0) return;
+  // Fetch testimonials from database
+  useEffect(() => {
+    async function fetchTestimonials() {
+      try {
+        const response = await fetch("/api/testimonials");
 
-    setActive((index + testimonials.length) % testimonials.length);
+        if (!response.ok) {
+          throw new Error("Failed to fetch testimonials");
+        }
+
+        const data: Testimonial[] = await response.json();
+
+        setTestimonials(data);
+      } catch (error) {
+        console.error("Testimonials fetch error:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
+
+    fetchTestimonials();
   }, []);
+
+  const goTo = useCallback(
+    (index: number) => {
+      if (testimonials.length === 0) return;
+
+      setActive(
+        (index + testimonials.length) % testimonials.length
+      );
+    },
+    [testimonials.length]
+  );
 
   const next = useCallback(() => {
     goTo(active + 1);
@@ -36,16 +72,26 @@ export function Testimonials() {
     goTo(active - 1);
   }, [active, goTo]);
 
+  // Auto slide
   useEffect(() => {
     if (isPaused || testimonials.length <= 1) return;
 
     const timer = window.setInterval(() => {
-      setActive((current) => (current + 1) % testimonials.length);
+      setActive(
+        (current) =>
+          (current + 1) % testimonials.length
+      );
     }, AUTO_SLIDE_DURATION);
 
     return () => window.clearInterval(timer);
-  }, [isPaused]);
+  }, [isPaused, testimonials.length]);
 
+  // Loading
+  if (loading) {
+    return null;
+  }
+
+  // No testimonials
   if (!testimonials.length) {
     return null;
   }
@@ -53,19 +99,15 @@ export function Testimonials() {
   const testimonial = testimonials[active];
 
   return (
-    <section
-      className="relative overflow-hidden bg-slate-50 py-20 dark:bg-slate-900/40 sm:py-20"
-      aria-label="Client testimonials"
-    >
+    <section className="relative overflow-hidden">
       {/* Background Glow */}
-      <div className="pointer-events-none absolute left-1/2 top-1/2 h-[420px] w-[420px] -translate-x-1/2 -translate-y-1/2 rounded-full bg-blue-400/10 blur-[100px] dark:bg-blue-500/10" />
 
       {/* Decorative circles */}
       <div className="pointer-events-none absolute -left-24 top-20 h-56 w-56 rounded-full border border-blue-500/10" />
+
       <div className="pointer-events-none absolute -right-24 bottom-10 h-72 w-72 rounded-full border border-cyan-500/10" />
 
       <div className="relative mx-auto max-w-7xl px-6">
-       
         {/* Testimonial Area */}
         <div
           className="relative mx-auto mt-14 max-w-3xl"
@@ -210,7 +252,9 @@ export function Testimonials() {
                 type="button"
                 onClick={() => goTo(index)}
                 aria-label={`Go to testimonial ${index + 1}`}
-                aria-current={index === active ? "true" : undefined}
+                aria-current={
+                  index === active ? "true" : undefined
+                }
                 className={`relative h-2 overflow-hidden rounded-full transition-all duration-300 ${
                   index === active
                     ? "w-10 bg-slate-300 dark:bg-slate-700"
@@ -238,7 +282,7 @@ export function Testimonials() {
           </div>
         )}
 
-        
+        {/* Counter */}
         {testimonials.length > 1 && (
           <p className="mt-4 text-center text-xs font-medium tracking-wider text-slate-400 dark:text-slate-500">
             {String(active + 1).padStart(2, "0")} /{" "}
