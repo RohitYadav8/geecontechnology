@@ -38,6 +38,7 @@ const navItems = [
         ],
     },
     { label: "Applications", href: "/admin/applications", icon: UserCheck },
+    { label: "Job Openings", href: "/admin/job-openings", icon: Briefcase },
     { label: "Candidate Screening", href: "/admin/candidate-screening", icon: UserSearch },
     { label: "Testimonials", href: "/admin/testimonials", icon: Star },
     { label: "Clients", href: "/admin/clients", icon: Building2 },

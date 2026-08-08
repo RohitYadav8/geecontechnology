@@ -1,11 +1,16 @@
 
 "use client";
 
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, useScroll, useTransform } from "motion/react";
-import { Upload, Send, CheckCircle, ArrowRight } from "lucide-react";
+import {
+  Upload,
+  Send,
+  CheckCircle,
+  ArrowRight,
+} from "lucide-react";
 
 import { Navbar } from "../../../components/navbar";
 import { Footer } from "../../../components/footer";
@@ -34,6 +39,17 @@ const careerStats = [
   },
 ];
 
+type JobOpening = {
+  id: string;
+  title: string;
+  department?: string | null;
+  location?: string | null;
+  type?: string | null;
+  description: string;
+  isActive?: boolean;
+  order?: number;
+};
+
 export default function CareersPage() {
   const [form, setForm] = useState({
     firstName: "",
@@ -46,11 +62,15 @@ export default function CareersPage() {
   const [isDragging, setIsDragging] = useState(false);
   const [showToast, setShowToast] = useState(false);
 
+  // Job openings
+  const [openings, setOpenings] = useState<JobOpening[]>([]);
+  const [loadingOpenings, setLoadingOpenings] = useState(true);
+
   /* ---------------------------------------------------------
      Parallax image
   --------------------------------------------------------- */
 
-  const imageRef = useRef<HTMLDivElement>(null);
+  const imageRef = useRef<HTMLDivElement | null>(null);
 
   const { scrollYProgress } = useScroll({
     target: imageRef,
@@ -62,6 +82,46 @@ export default function CareersPage() {
     [0, 1],
     ["-12%", "12%"]
   );
+
+  /* ---------------------------------------------------------
+     Fetch job openings
+  --------------------------------------------------------- */
+
+  useEffect(() => {
+    const fetchOpenings = async () => {
+      try {
+        setLoadingOpenings(true);
+
+        const response = await fetch("/api/careers/openings", {
+          method: "GET",
+          cache: "no-store",
+        });
+
+        if (!response.ok) {
+          throw new Error("Failed to fetch job openings");
+        }
+
+        const data = await response.json();
+
+        console.log("Career openings:", data);
+
+        if (Array.isArray(data)) {
+          setOpenings(data);
+        } else if (Array.isArray(data.openings)) {
+          setOpenings(data.openings);
+        } else {
+          setOpenings([]);
+        }
+      } catch (error) {
+        console.error("Failed to fetch openings:", error);
+        setOpenings([]);
+      } finally {
+        setLoadingOpenings(false);
+      }
+    };
+
+    fetchOpenings();
+  }, []);
 
   /* ---------------------------------------------------------
      Form handler
@@ -123,7 +183,7 @@ export default function CareersPage() {
   };
 
   return (
-    <div className="flex min-h-screen flex-col bg-white dark:bg-slate-950">
+    <div className="relative min-h-screen">
       <Navbar />
 
       <main className="relative flex-1 overflow-hidden">
@@ -160,8 +220,8 @@ export default function CareersPage() {
             <AnimateIn delay={0.15}>
               <div className="space-y-4 text-sm leading-7 text-slate-600 dark:text-slate-400">
                 <p>
-                  Come on, join US. And we will help You to explore your values
-                  and valuate your skills.
+                  Come on, join US. And we will help You to explore your
+                  values and valuate your skills.
                 </p>
 
                 <p>
@@ -179,20 +239,20 @@ export default function CareersPage() {
 
                 <p>
                   The first appeal: you are the star. All we want to know is:
-                  Are you capable enough to &lsquo;outcast&rsquo; the dreams in
-                  you?
+                  Are you capable enough to &lsquo;outcast&rsquo; the dreams
+                  in you?
                 </p>
 
                 <p>
-                  At Geecon Technology, we believe in
-                  &lsquo;optimism&rsquo;. After lots of efforts we decided to
-                  throw out the &lsquo;creative persona test&rsquo; among you.
+                  At Geecon Technology, we believe in &lsquo;optimism&rsquo;.
+                  After lots of efforts we decided to throw out the
+                  &lsquo;creative persona test&rsquo; among you.
                 </p>
 
                 <p>
                   Once you realise you have the &lsquo;stardom&rsquo; in you,
-                  unleash it. The world is yours, and your career is ready to go
-                  heights.
+                  unleash it. The world is yours, and your career is ready to
+                  go heights.
                 </p>
 
                 <p>
@@ -302,7 +362,11 @@ export default function CareersPage() {
             <div className="mt-6 rounded-2xl bg-gradient-to-br from-blue-400/30 via-cyan-300/20 to-blue-600/30 p-[1px]">
               <MouseGlow className="rounded-2xl">
                 <div className="rounded-2xl border border-slate-200/60 bg-white/70 p-6 backdrop-blur-xl dark:border-slate-800/60 dark:bg-slate-900/70">
-                  <form onSubmit={handleSubmit} className="space-y-4">
+                  <form
+                    id="application-form"
+                    onSubmit={handleSubmit}
+                    className="space-y-4"
+                  >
                     {/* First name */}
                     <div>
                       <label
@@ -460,10 +524,97 @@ export default function CareersPage() {
             </h2>
 
             <p className="mt-3 text-sm leading-6 text-slate-500 dark:text-slate-400">
-              No current openings listed right now. Please check back soon, or
-              submit your details above and we&apos;ll reach out when a suitable
-              role opens up.
+              Explore our current career opportunities and find a role that
+              matches your skills and experience.
             </p>
+
+            {/* Loading */}
+            {loadingOpenings && (
+              <div className="mt-8 rounded-2xl border border-slate-200 bg-white p-6 dark:border-slate-800 dark:bg-slate-900">
+                <p className="text-sm text-slate-500 dark:text-slate-400">
+                  Loading current openings...
+                </p>
+              </div>
+            )}
+
+            {/* No openings */}
+            {!loadingOpenings && openings.length === 0 && (
+              <div className="mt-8 rounded-2xl border border-slate-200 bg-white p-6 dark:border-slate-800 dark:bg-slate-900">
+                <p className="text-sm leading-6 text-slate-500 dark:text-slate-400">
+                  No current openings listed right now. Please check back
+                  soon, or submit your details above and we&apos;ll reach out
+                  when a suitable role opens up.
+                </p>
+              </div>
+            )}
+
+            {/* Openings */}
+            {!loadingOpenings && openings.length > 0 && (
+              <div className="mt-8 grid gap-6 md:grid-cols-2">
+                {openings.map((opening) => (
+                  <motion.div
+                    key={opening.id}
+                    initial={{ opacity: 0, y: 20 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 0.4 }}
+                    className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg dark:border-slate-800 dark:bg-slate-900"
+                  >
+                    {/* Title */}
+                    <h3 className="text-lg font-semibold text-slate-900 dark:text-white">
+                      {opening.title}
+                    </h3>
+
+                    {/* Tags */}
+                    <div className="mt-3 flex flex-wrap gap-2">
+                      {opening.department && (
+                        <span className="rounded-full bg-blue-50 px-3 py-1 text-xs font-medium text-blue-700 dark:bg-blue-500/10 dark:text-blue-400">
+                          {opening.department}
+                        </span>
+                      )}
+
+                      {opening.location && (
+                        <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600 dark:bg-slate-800 dark:text-slate-300">
+                          {opening.location}
+                        </span>
+                      )}
+
+                      {opening.type && (
+                        <span className="rounded-full bg-cyan-50 px-3 py-1 text-xs font-medium text-cyan-700 dark:bg-cyan-500/10 dark:text-cyan-400">
+                          {opening.type}
+                        </span>
+                      )}
+                    </div>
+
+                    {/* Description */}
+                    <p className="mt-4 whitespace-pre-line text-sm leading-7 text-slate-600 dark:text-slate-400">
+                      {opening.description}
+                    </p>
+
+                    {/* Apply */}
+                    <button
+                      type="button"
+                      onClick={() => {
+                        document
+                          .getElementById("application-form")
+                          ?.scrollIntoView({
+                            behavior: "smooth",
+                            block: "start",
+                          });
+                      }}
+                      className="group mt-6 inline-flex items-center gap-2 rounded-full bg-[#1a2b4a] px-6 py-3 text-sm font-semibold text-white transition-all hover:bg-[#0d1830] hover:shadow-lg dark:bg-blue-600 dark:hover:bg-blue-500"
+                    >
+                      Apply Now
+
+                      <ArrowRight
+                        size={15}
+                        className="transition-transform duration-300 group-hover:translate-x-1"
+                      />
+                    </button>
+                  </motion.div>
+                ))}
+              </div>
+            )}
           </motion.div>
         </section>
       </main>
@@ -486,4 +637,3 @@ export default function CareersPage() {
     </div>
   );
 }
-
