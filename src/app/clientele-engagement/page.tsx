@@ -76,7 +76,7 @@ export default function ClienteleEngagementPage() {
         {/* Hero Section */}
         <ClientHero />
 
-        {/* Loading */}
+        
         {loading ? (
           <section className="relative mx-auto flex min-h-60 max-w-7xl items-center justify-center px-6 py-16">
             <div className="text-center">
