@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
@@ -23,21 +23,9 @@ import {
 } from "lucide-react";
 
 const navItems = [
-  {
-    label: "Dashboard",
-    href: "/admin/dashboard",
-    icon: LayoutDashboard,
-  },
-  {
-    label: "Services",
-    href: "/admin/services",
-    icon: Briefcase,
-  },
-  {
-    label: "Products",
-    href: "/admin/products",
-    icon: Package,
-  },
+  { label: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },
+  { label: "Services", href: "/admin/services", icon: Briefcase },
+  { label: "Products", href: "/admin/products", icon: Package },
   {
     label: "Brochure Requests",
     href: "/admin/brochure-requests",
@@ -113,107 +101,125 @@ const navItems = [
 export function AdminSidebar() {
   const pathname = usePathname();
 
-  const [blogOpen, setBlogOpen] = useState(
-    pathname?.startsWith("/admin/blog-posts") ?? false
-  );
+  const [blogOpen, setBlogOpen] = useState(false);
+
+  useEffect(() => {
+    if (pathname?.startsWith("/admin/blog-posts")) {
+      setBlogOpen(true);
+    }
+  }, [pathname]);
 
   return (
-    <aside className="flex h-screen w-64 shrink-0 flex-col overflow-y-auto border-r border-white/5 bg-[#0a0e1a] px-3 py-4">
-      {/* Brand / Logo */}
-      <Link
-        href="/admin/dashboard"
-        className="flex items-center gap-3 px-3 py-2"
-      >
-        <div className="relative h-10 w-full">
+    <aside className="fixed left-0 top-0 z-40 flex h-screen w-64 shrink-0 flex-col overflow-hidden border-r border-slate-200 bg-white dark:border-slate-800 dark:bg-[#0a0e1a]">
+      {/* Logo */}
+      <div className="shrink-0 border-b border-slate-200 px-4 py-4 dark:border-slate-800">
+        <Link
+          href="/admin/dashboard"
+          className="group flex items-center gap-2.5"
+        >
           <Image
             src="/logo-icon-1.png"
             alt="Geecon Technology"
-            fill
+            width={44}
+            height={40}
             priority
-            sizes="220px"
-            className="object-contain object-left"
+            className="h-10 w-auto shrink-0 object-contain transition-transform duration-300 group-hover:scale-105"
           />
-        </div>
-      </Link>
+
+          <div className="min-w-0 leading-tight">
+            <div className="text-xl font-extrabold tracking-tight text-slate-900 dark:text-white">
+              GEECON
+            </div>
+
+            <div className="whitespace-nowrap text-[7px] font-medium tracking-[0.08em] text-slate-400 dark:text-slate-500">
+              SIMPLE SOLUTIONS ENGINEERED FOR EXTREME
+            </div>
+          </div>
+        </Link>
+      </div>
 
       {/* Navigation */}
-      <nav className="mt-6 flex flex-col gap-1">
-        {navItems.map((item) => {
-          // Dashboard should be active only on exact dashboard URL
-          const isActive =
-            item.href === "/admin/dashboard"
-              ? pathname === "/admin/dashboard"
-              : pathname === item.href ||
-                pathname?.startsWith(`${item.href}/`);
+      <nav className="flex-1 overflow-y-auto px-3 py-5">
+        <div className="flex flex-col gap-1">
+          {navItems.map((item) => {
+            const isActive =
+              pathname === item.href ||
+              pathname?.startsWith(`${item.href}/`);
 
-          {/* Blog Posts */}
-          if (item.children) {
-            return (
-              <div key={item.label}>
-                <button
-                  type="button"
-                  onClick={() => setBlogOpen((value) => !value)}
-                  className={`flex w-full items-center justify-between rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
-                    isActive
-                      ? "bg-violet-600 text-white"
-                      : "text-slate-400 hover:bg-white/5 hover:text-white"
-                  }`}
-                >
-                  <span className="flex items-center gap-3">
-                    <item.icon size={17} />
-                    <span>{item.label}</span>
-                  </span>
-
-                  <ChevronDown
-                    size={14}
-                    className={`transition-transform duration-200 ${
-                      blogOpen ? "rotate-180" : ""
+            if (item.children) {
+              return (
+                <div key={item.label}>
+                  <button
+                    type="button"
+                    onClick={() => setBlogOpen((value) => !value)}
+                    className={`flex w-full items-center justify-between rounded-lg px-3 py-2.5 text-sm font-medium transition-all ${
+                      isActive
+                        ? "bg-violet-600 text-white"
+                        : "text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-white/5 dark:hover:text-white"
                     }`}
-                  />
-                </button>
+                  >
+                    <span className="flex items-center gap-3">
+                      <item.icon size={17} />
+                      <span>{item.label}</span>
+                    </span>
 
-                {blogOpen && (
-                  <div className="ml-8 mt-1 flex flex-col gap-1">
-                    {item.children.map((child) => {
-                      const childActive = pathname === child.href;
+                    <ChevronDown
+                      size={14}
+                      className={`transition-transform duration-200 ${
+                        blogOpen ? "rotate-180" : ""
+                      }`}
+                    />
+                  </button>
 
-                      return (
-                        <Link
-                          key={child.href}
-                          href={child.href}
-                          className={`rounded-lg px-3 py-2 text-sm transition-colors ${
-                            childActive
-                              ? "bg-white/10 text-white"
-                              : "text-slate-500 hover:bg-white/5 hover:text-white"
-                          }`}
-                        >
-                          {child.label}
-                        </Link>
-                      );
-                    })}
-                  </div>
-                )}
-              </div>
+                  {blogOpen && (
+                    <div className="ml-7 mt-1 flex flex-col gap-1 border-l border-slate-200 pl-2 dark:border-slate-700">
+                      {item.children.map((child) => {
+                        const childActive = pathname === child.href;
+
+                        return (
+                          <Link
+                            key={child.href}
+                            href={child.href}
+                            className={`rounded-md px-3 py-2 text-sm transition-all ${
+                              childActive
+                                ? "bg-violet-50 font-medium text-violet-600 dark:bg-violet-500/10 dark:text-violet-400"
+                                : "text-slate-500 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-500 dark:hover:bg-white/5 dark:hover:text-white"
+                            }`}
+                          >
+                            {child.label}
+                          </Link>
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+              );
+            }
+
+            return (
+              <Link
+                key={item.href}
+                href={item.href}
+                className={`group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all ${
+                  isActive
+                    ? "bg-violet-600 text-white shadow-sm"
+                    : "text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-white/5 dark:hover:text-white"
+                }`}
+              >
+                <item.icon size={17} />
+                <span>{item.label}</span>
+              </Link>
             );
-          }
-
-          {/* Normal Navigation Item */}
-          return (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={`flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-colors ${
-                isActive
-                  ? "bg-violet-600 text-white"
-                  : "text-slate-400 hover:bg-white/5 hover:text-white"
-              }`}
-            >
-              <item.icon size={17} />
-              <span>{item.label}</span>
-            </Link>
-          );
-        })}
+          })}
+        </div>
       </nav>
+
+      {/* Footer */}
+      <div className="shrink-0 border-t border-slate-200 px-4 py-3 dark:border-slate-800">
+        <p className="text-center text-[10px] text-slate-400 dark:text-slate-600">
+          Geecon Technology
+        </p>
+      </div>
     </aside>
   );
 }

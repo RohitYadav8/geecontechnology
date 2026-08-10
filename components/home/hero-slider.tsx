@@ -24,7 +24,6 @@ import {
 
 import { heroSlides } from "../../lib/home-data";
 import { AnimatedHeading } from "../../components/animated-heading";
-import { GlowButton } from "../../components/glow-button";
 import { FloatingBlob } from "../../components/floating-blob";
 
 const SLIDE_DURATION = 6000;
@@ -32,7 +31,7 @@ const SLIDE_DURATION = 6000;
 export function HeroSlider() {
   const [current, setCurrent] = useState(0);
 
-  const sectionRef = useRef<HTMLElement>(null);
+  const sectionRef = useRef<HTMLElement | null>(null);
 
   /* -------------------------------------------------------
      Mouse position
@@ -195,12 +194,12 @@ export function HeroSlider() {
       onMouseLeave={handleMouseLeave}
       className="
         relative
-        h-[460px]
+        min-h-[620px]
         w-full
         overflow-hidden
         bg-[#070c1a]
-        sm:h-[520px]
-        lg:h-[600px]
+        sm:min-h-[680px]
+        lg:min-h-[720px]
       "
     >
       {/* ===================================================
@@ -223,7 +222,6 @@ export function HeroSlider() {
         style={{
           backgroundImage:
             "radial-gradient(at 20% 20%, rgba(59,130,246,0.25) 0px, transparent 50%), radial-gradient(at 80% 30%, rgba(56,189,248,0.20) 0px, transparent 50%), radial-gradient(at 50% 80%, rgba(30,64,175,0.30) 0px, transparent 50%)",
-
           backgroundSize: "200% 200%",
         }}
         className="
@@ -349,47 +347,43 @@ export function HeroSlider() {
           PARTICLES
       ==================================================== */}
 
-      {[...Array(10)].map((_, index) => {
-        const positions = [
-          { left: "10%", top: "20%" },
-          { left: "20%", top: "65%" },
-          { left: "32%", top: "30%" },
-          { left: "45%", top: "75%" },
-          { left: "55%", top: "18%" },
-          { left: "66%", top: "50%" },
-          { left: "75%", top: "25%" },
-          { left: "82%", top: "70%" },
-          { left: "90%", top: "40%" },
-          { left: "38%", top: "55%" },
-        ];
-
-        return (
-          <motion.span
-            key={index}
-            animate={{
-              y: [0, -18, 0],
-              opacity: [0.15, 0.8, 0.15],
-              scale: [0.8, 1.2, 0.8],
-            }}
-            transition={{
-              duration: 4 + index * 0.4,
-              repeat: Infinity,
-              ease: "easeInOut",
-              delay: index * 0.3,
-            }}
-            className="
-              pointer-events-none
-              absolute
-              z-[3]
-              h-1
-              w-1
-              rounded-full
-              bg-white
-            "
-            style={positions[index]}
-          />
-        );
-      })}
+      {[
+        { left: "10%", top: "20%" },
+        { left: "20%", top: "65%" },
+        { left: "32%", top: "30%" },
+        { left: "45%", top: "75%" },
+        { left: "55%", top: "18%" },
+        { left: "66%", top: "50%" },
+        { left: "75%", top: "25%" },
+        { left: "82%", top: "70%" },
+        { left: "90%", top: "40%" },
+        { left: "38%", top: "55%" },
+      ].map((position, index) => (
+        <motion.span
+          key={index}
+          animate={{
+            y: [0, -18, 0],
+            opacity: [0.15, 0.8, 0.15],
+            scale: [0.8, 1.2, 0.8],
+          }}
+          transition={{
+            duration: 4 + index * 0.4,
+            repeat: Infinity,
+            ease: "easeInOut",
+            delay: index * 0.3,
+          }}
+          className="
+            pointer-events-none
+            absolute
+            z-[3]
+            h-1
+            w-1
+            rounded-full
+            bg-white
+          "
+          style={position}
+        />
+      ))}
 
       {/* ===================================================
           SLIDE
@@ -458,9 +452,7 @@ export function HeroSlider() {
                 alt={slide.title}
                 fill
                 priority={current === 0}
-                sizes="
-                  100vw
-                "
+                sizes="100vw"
                 className="
                   object-cover
                   opacity-65
@@ -508,31 +500,114 @@ export function HeroSlider() {
               mx-auto
               flex
               h-full
+              w-full
               max-w-7xl
               flex-col
               justify-center
               px-6
+              sm:px-8
+              lg:px-10
             "
           >
-           
-          
+            {/* Badge */}
+
+            <motion.div
+              initial={{
+                opacity: 0,
+                y: 15,
+              }}
+              animate={{
+                opacity: 1,
+                y: 0,
+              }}
+              transition={{
+                duration: 0.6,
+                delay: 0.1,
+              }}
+              className="
+                mb-5
+                inline-flex
+                w-fit
+                items-center
+                gap-2
+                rounded-full
+                border
+                border-blue-400/20
+                bg-blue-500/10
+                px-3.5
+                py-1.5
+                backdrop-blur-md
+              "
+            >
+              <span
+                className="
+                  h-1.5
+                  w-1.5
+                  rounded-full
+                  bg-cyan-400
+                  shadow-[0_0_10px_rgba(34,211,238,0.8)]
+                "
+              />
+
+              <span
+                className="
+                  text-xs
+                  font-medium
+                  uppercase
+                  tracking-[0.18em]
+                  text-blue-200
+                "
+              >
+                Geecon Technology
+              </span>
+            </motion.div>
+
+            {/* Main Heading */}
 
             <AnimatedHeading
               text={slide.title}
               delay={0.2}
               className="
-                max-w-2xl
-                text-3xl
+                max-w-4xl
+                text-4xl
                 font-semibold
-                leading-[1.08]
-                tracking-tight
+                leading-[1.05]
+                tracking-[-0.03em]
                 text-white
-                sm:text-4xl
-                lg:text-6xl
+                sm:text-5xl
+                md:text-6xl
+                lg:text-7xl
               "
             />
 
-          
+            {/* Accent Line */}
+
+            <motion.div
+              initial={{
+                scaleX: 0,
+                opacity: 0,
+              }}
+              animate={{
+                scaleX: 1,
+                opacity: 1,
+              }}
+              transition={{
+                duration: 0.7,
+                delay: 0.45,
+              }}
+              className="
+                mt-6
+                h-1
+                w-[72px]
+                origin-left
+                rounded-full
+                bg-gradient-to-r
+                from-blue-500
+                to-cyan-400
+              "
+            />
+
+            {/* Description */}
 
             <motion.p
               initial={{
@@ -551,18 +626,20 @@ export function HeroSlider() {
                 ease: [0.21, 0.47, 0.32, 0.98],
               }}
               className="
-                mt-5
-                max-w-xl
+                mt-6
+                max-w-2xl
                 text-sm
                 leading-7
                 text-slate-300
                 sm:text-base
+                sm:leading-8
+                lg:text-lg
               "
             >
               {slide.description}
             </motion.p>
 
-            {/* Buttons */}
+            {/* CTA Buttons */}
 
             <motion.div
               initial={{
@@ -583,8 +660,130 @@ export function HeroSlider() {
                 flex-wrap
                 items-center
                 gap-3
+                sm:gap-4
               "
             >
+              {/* Primary Button */}
+
+              <a
+                href="/services"
+                className="
+                  group
+                  inline-flex
+                  items-center
+                  gap-2
+                  rounded-xl
+                  bg-gradient-to-r
+                  from-blue-600
+                  to-cyan-500
+                  px-6
+                  py-3.5
+                  text-sm
+                  font-semibold
+                  text-white
+                  shadow-[0_10px_35px_rgba(37,99,235,0.25)]
+                  transition-all
+                  duration-300
+                  hover:-translate-y-0.5
+                  hover:shadow-[0_15px_45px_rgba(37,99,235,0.4)]
+                "
+              >
+                Explore Our Services
+
+                <ChevronRight
+                  size={17}
+                  className="
+                    transition-transform
+                    duration-300
+                    group-hover:translate-x-1
+                  "
+                />
+              </a>
+
+              {/* Secondary Button */}
+
+              <a
+                href="/contact"
+                className="
+                  group
+                  inline-flex
+                  items-center
+                  gap-2
+                  rounded-xl
+                  border
+                  border-white/15
+                  bg-white/5
+                  px-6
+                  py-3.5
+                  text-sm
+                  font-semibold
+                  text-white
+                  backdrop-blur-md
+                  transition-all
+                  duration-300
+                  hover:-translate-y-0.5
+                  hover:border-white/30
+                  hover:bg-white/10
+                "
+              >
+                Get in Touch
+
+                <ChevronRight
+                  size={17}
+                  className="
+                    transition-transform
+                    duration-300
+                    group-hover:translate-x-1
+                  "
+                />
+              </a>
+            </motion.div>
+
+            {/* Trust / Highlights */}
+
+            <motion.div
+              initial={{
+                opacity: 0,
+                y: 15,
+              }}
+              animate={{
+                opacity: 1,
+                y: 0,
+              }}
+              transition={{
+                duration: 0.6,
+                delay: 1,
+              }}
+              className="
+                mt-10
+                flex
+                flex-wrap
+                items-center
+                gap-x-7
+                gap-y-3
+                text-xs
+                text-slate-400
+                sm:text-sm
+              "
+            >
+              <div className="flex items-center gap-2">
+                <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
+                <span>Innovative Solutions</span>
+              </div>
+
+              <div className="hidden h-4 w-px bg-white/10 sm:block" />
+
+              <div className="flex items-center gap-2">
+                <span className="h-1.5 w-1.5 rounded-full bg-blue-400" />
+                <span>Scalable Technology</span>
+              </div>
+
+              <div className="hidden h-4 w-px bg-white/10 sm:block" />
+
+              <div className="flex items-center gap-2">
+                <span className="h-1.5 w-1.5 rounded-full bg-cyan-400" />
+                <span>Business-Focused</span>
+              </div>
             </motion.div>
           </div>
         </motion.div>
