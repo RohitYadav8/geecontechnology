@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "../../../../../lib/prisma";
 import { getAdminFromRequest } from "../../../../../lib/require-admin";
+import {sidebar} from "../../../../../././../"
 
 export async function GET(request: NextRequest) {
     const admin = getAdminFromRequest(request);

@@ -2,8 +2,8 @@ import { cookies } from "next/headers";
 import { redirect, notFound } from "next/navigation";
 import { verifyAdminToken } from "../../../../../lib/auth";
 import { prisma } from "../../../../../lib/prisma";
-import { AdminSidebar } from "../../../../../components/admin/admin-sidebar";
-import { AdminTopbar } from "../../../../../components/admin/admin-topbar";
+import { AdminSidebar } from "../../sidebar";
+import { AdminTopbar } from "../../topbar";
 import { JobOpeningForm } from "../../../../../components/admin/job-opening-form";
 
 export default async function EditJobOpeningPage({ params }: { params: Promise<{ id: string }> }) {
