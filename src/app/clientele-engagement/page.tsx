@@ -1,3 +1,4 @@
+
 "use client";
 
 import { useEffect, useState } from "react";
@@ -17,15 +18,7 @@ import { ClientMarquee } from "../../../components/client-marquee";
 import ClientLogoGrid from "../../../components/client-logo-grid";
 import { ClientCard } from "../../../components/client-card";
 
-type Client = {
-  id: number;
-  name: string;
-  logo: string;
-  category: string;
-  featured: boolean;
-  isActive: boolean;
-  order: number;
-};
+import type { Client } from "../../../lib/clients-data";
 
 export default function ClienteleEngagementPage() {
   const [clients, setClients] = useState<Client[]>([]);
@@ -76,7 +69,6 @@ export default function ClienteleEngagementPage() {
         {/* Hero Section */}
         <ClientHero />
 
-        
         {loading ? (
           <section className="relative mx-auto flex min-h-60 max-w-7xl items-center justify-center px-6 py-16">
             <div className="text-center">

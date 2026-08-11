@@ -1,3 +1,4 @@
+
 import jwt from "jsonwebtoken";
 
 const JWT_SECRET = process.env.JWT_SECRET;
@@ -17,7 +18,7 @@ export interface AdminTokenPayload {
  * Expires in 7 days.
  */
 export function signAdminToken(payload: AdminTokenPayload): string {
-  return jwt.sign(payload, JWT_SECRET, {
+  return jwt.sign(payload, JWT_SECRET as string, {
     expiresIn: "7d",
   });
 }
@@ -30,7 +31,7 @@ export function verifyAdminToken(
   token: string
 ): AdminTokenPayload | null {
   try {
-    const decoded = jwt.verify(token, JWT_SECRET);
+    const decoded = jwt.verify(token, JWT_SECRET as string);
 
     if (
       typeof decoded !== "object" ||
@@ -52,3 +53,4 @@ export function verifyAdminToken(
     return null;
   }
 }
+
