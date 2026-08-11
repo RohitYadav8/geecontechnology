@@ -1,4 +1,3 @@
-
 import bcrypt from "bcryptjs";
 import { PrismaClient } from "@prisma/client";
 import { PrismaMariaDb } from "@prisma/adapter-mariadb";
@@ -22,18 +21,26 @@ async function main() {
     where: {
       email: "admin@geecontechnology.com",
     },
+
     update: {
       passwordHash,
       name: "Admin",
+      role: "SUPER_ADMIN",
+      isActive: true,
     },
+
     create: {
       email: "admin@geecontechnology.com",
       passwordHash,
       name: "Admin",
+      role: "SUPER_ADMIN",
+      isActive: true,
     },
   });
 
   console.log("Admin created successfully:", admin.email);
+  console.log("Role:", admin.role);
+  console.log("Status:", admin.isActive ? "Active" : "Inactive");
 }
 
 main()
@@ -44,4 +51,3 @@ main()
   .finally(async () => {
     await prisma.$disconnect();
   });
-
