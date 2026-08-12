@@ -1,13 +1,13 @@
 import { NextResponse } from "next/server";
-import { prisma } from "../../../../lib/prisma";
+import { prisma } from "../../.././../lib/prisma";
 
 export async function GET() {
   try {
-    const result = await prisma.$queryRaw`SELECT 1 AS connected`;
+    await prisma.$queryRaw`SELECT 1 AS connected`;
 
     return NextResponse.json({
       success: true,
-      result,
+      message: "TiDB connection successful",
     });
   } catch (error) {
     console.error("DB TEST ERROR:", error);
