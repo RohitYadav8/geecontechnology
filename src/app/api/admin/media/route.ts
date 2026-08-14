@@ -1,66 +1,142 @@
 import { NextRequest, NextResponse } from "next/server";
 import { writeFile, mkdir } from "fs/promises";
 import path from "path";
+import { randomUUID } from "crypto";
+
 import { prisma } from "../../../../../lib/prisma";
 import { getAdminFromRequest } from "../../../../../lib/require-admin";
 
 function getFileType(mimeType: string): string {
     if (mimeType.startsWith("image/")) return "IMAGE";
-    if (mimeType === "application/pdf") return "DOCUMENT";
+
+    if (mimeType === "application/pdf") {
+        return "DOCUMENT";
+    }
+
     return "OTHER";
 }
 
 export async function GET(request: NextRequest) {
     const admin = getAdminFromRequest(request);
-    if (!admin) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-    const { searchParams } = new URL(request.url);
-    const type = searchParams.get("type");
+    if (!admin) {
+        return NextResponse.json(
+            { error: "Unauthorized" },
+            { status: 401 }
+        );
+    }
 
-    const media = await prisma.media.findMany({
-        where: type ? { type } : undefined,
-        orderBy: { createdAt: "desc" },
-    });
+    try {
+        const { searchParams } = new URL(request.url);
+        const type = searchParams.get("type");
 
-    return NextResponse.json(media);
+        const media = await prisma.media.findMany({
+            where: type ? { type } : undefined,
+            orderBy: {
+                createdAt: "desc",
+            },
+        });
+
+        return NextResponse.json(media);
+    } catch (error) {
+        console.error("GET media error:", error);
+
+        return NextResponse.json(
+            {
+                error: "Failed to fetch media.",
+            },
+            { status: 500 }
+        );
+    }
 }
 
 export async function POST(request: NextRequest) {
     const admin = getAdminFromRequest(request);
-    if (!admin) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+
+    if (!admin) {
+        return NextResponse.json(
+            { error: "Unauthorized" },
+            { status: 401 }
+        );
+    }
 
     try {
         const formData = await request.formData();
+
         const file = formData.get("file") as File | null;
-        const folder = formData.get("folder") as string | null;
-        const altText = formData.get("altText") as string | null;
+        const folderValue = formData.get("folder");
+        const altTextValue = formData.get("altText");
+
+        const folder =
+            typeof folderValue === "string"
+                ? folderValue.trim()
+                : null;
+
+        const altText =
+            typeof altTextValue === "string"
+                ? altTextValue.trim()
+                : null;
 
         if (!file || file.size === 0) {
-            return NextResponse.json({ error: "No file provided." }, { status: 400 });
+            return NextResponse.json(
+                {
+                    error: "No file provided.",
+                },
+                { status: 400 }
+            );
         }
 
         const bytes = await file.arrayBuffer();
         const buffer = Buffer.from(bytes);
 
-        const uploadsDir = path.join(process.cwd(), "public", "uploads", "media");
-        await mkdir(uploadsDir, { recursive: true });
+        const uploadsDir = path.join(
+            process.cwd(),
+            "public",
+            "uploads",
+            "media"
+        );
 
-        const safeName = `${Date.now()}-${file.name.replace(/[^a-zA-Z0-9._-]/g, "_")}`;
-        await writeFile(path.join(uploadsDir, safeName), buffer);
+        await mkdir(uploadsDir, {
+            recursive: true,
+        });
+
+        const originalName = file.name;
+
+        const safeName = `${Date.now()}-${originalName.replace(
+            /[^a-zA-Z0-9._-]/g,
+            "_"
+        )}`;
+
+        const filePath = path.join(
+            uploadsDir,
+            safeName
+        );
+
+        await writeFile(filePath, buffer);
 
         const media = await prisma.media.create({
             data: {
-                fileName: file.name,
+                id: randomUUID(),
+                fileName: originalName,
                 url: `/uploads/media/${safeName}`,
                 type: getFileType(file.type),
                 folder: folder || null,
                 altText: altText || null,
+                updatedAt: new Date(),
             },
         });
 
-        return NextResponse.json(media, { status: 201 });
+        return NextResponse.json(media, {
+            status: 201,
+        });
     } catch (error) {
         console.error("Media upload error:", error);
-        return NextResponse.json({ error: "Something went wrong during upload." }, { status: 500 });
+
+        return NextResponse.json(
+            {
+                error: "Something went wrong during upload.",
+            },
+            { status: 500 }
+        );
     }
 }

@@ -1,4 +1,3 @@
-
 "use client";
 
 import { FormEvent, useState } from "react";
@@ -9,6 +8,13 @@ type ProductForm = {
     title: string;
     slug: string;
     bannerImage: string;
+
+    // Card Content
+    cardLogo: string;
+    cardBadge: string;
+    cardHeading: string;
+    cardDescription: string;
+
     shortDescription: string;
     description: string;
     features: string;
@@ -27,6 +33,13 @@ export default function NewProductPage() {
         title: "",
         slug: "",
         bannerImage: "",
+
+        // Card Content
+        cardLogo: "",
+        cardBadge: "",
+        cardHeading: "",
+        cardDescription: "",
+
         shortDescription: "",
         description: "",
         features: "",
@@ -68,7 +81,10 @@ export default function NewProductPage() {
         }));
     };
 
-    const parseJsonField = (value: string, fieldName: string) => {
+    const parseJsonField = (
+        value: string,
+        fieldName: string
+    ) => {
         if (!value.trim()) {
             return null;
         }
@@ -76,11 +92,15 @@ export default function NewProductPage() {
         try {
             return JSON.parse(value);
         } catch {
-            throw new Error(`${fieldName} must contain valid JSON.`);
+            throw new Error(
+                `${fieldName} must contain valid JSON.`
+            );
         }
     };
 
-    const handleSubmit = async (event: FormEvent<HTMLFormElement>) => {
+    const handleSubmit = async (
+        event: FormEvent<HTMLFormElement>
+    ) => {
         event.preventDefault();
 
         setError("");
@@ -101,10 +121,28 @@ export default function NewProductPage() {
             const payload = {
                 title: form.title.trim(),
                 slug: form.slug.trim(),
-                bannerImage: form.bannerImage.trim() || null,
+
+                bannerImage:
+                    form.bannerImage.trim() || null,
+
+                // Card Content
+                cardLogo:
+                    form.cardLogo.trim() || null,
+
+                cardBadge:
+                    form.cardBadge.trim() || null,
+
+                cardHeading:
+                    form.cardHeading.trim() || null,
+
+                cardDescription:
+                    form.cardDescription.trim() || null,
+
                 shortDescription:
                     form.shortDescription.trim() || null,
-                description: form.description.trim() || null,
+
+                description:
+                    form.description.trim() || null,
 
                 features: parseJsonField(
                     form.features,
@@ -126,33 +164,41 @@ export default function NewProductPage() {
                     "FAQs"
                 ),
 
-                brochureUrl: form.brochureUrl.trim() || null,
+                brochureUrl:
+                    form.brochureUrl.trim() || null,
 
                 isActive: form.isActive,
 
                 order: Number(form.order) || 0,
             };
 
-            const response = await fetch("/api/admin/products", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify(payload),
-            });
+            const response = await fetch(
+                "/api/admin/products",
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify(payload),
+                }
+            );
 
             const data = await response.json();
 
             if (!response.ok) {
                 throw new Error(
-                    data.error || "Failed to create product"
+                    data.error ||
+                        "Failed to create product"
                 );
             }
 
             router.push("/admin/products");
             router.refresh();
         } catch (err) {
-            console.error("Create product error:", err);
+            console.error(
+                "Create product error:",
+                err
+            );
 
             setError(
                 err instanceof Error
@@ -167,6 +213,7 @@ export default function NewProductPage() {
     return (
         <div className="min-h-screen bg-slate-50 p-6 dark:bg-slate-950">
             <div className="mx-auto max-w-5xl">
+
                 {/* Header */}
                 <div className="mb-8 flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
                     <div>
@@ -194,14 +241,20 @@ export default function NewProductPage() {
                     </div>
                 )}
 
-                <form onSubmit={handleSubmit} className="space-y-6">
-                    {/* Basic Information */}
+                <form
+                    onSubmit={handleSubmit}
+                    className="space-y-6"
+                >
+
+                    {/* ================= BASIC INFORMATION ================= */}
                     <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+
                         <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
                             Basic Information
                         </h2>
 
                         <div className="mt-6 grid gap-5 sm:grid-cols-2">
+
                             {/* Title */}
                             <div>
                                 <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
@@ -313,8 +366,125 @@ export default function NewProductPage() {
                         </div>
                     </section>
 
-                    {/* Features & Benefits */}
+                    {/* ================= CARD CONTENT ================= */}
+                    <section className="rounded-2xl border border-blue-200 bg-blue-50/40 p-6 shadow-sm dark:border-blue-900/40 dark:bg-blue-950/10">
+
+                        <div>
+                            <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
+                                Card Content
+                            </h2>
+
+                            <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
+                                Optional content used on the product card.
+                                You only need to enter the content. HTML is
+                                not required.
+                            </p>
+                        </div>
+
+                        <div className="mt-6 grid gap-5 sm:grid-cols-2">
+
+                            {/* Card Logo */}
+                            <div className="sm:col-span-2">
+                                <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                                    Card Logo URL
+                                </label>
+
+                                <input
+                                    type="text"
+                                    value={form.cardLogo}
+                                    onChange={(e) =>
+                                        handleChange(
+                                            "cardLogo",
+                                            e.target.value
+                                        )
+                                    }
+                                    placeholder="/images/crm360-logo.png"
+                                    className="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+                                />
+
+                                <p className="mt-1 text-xs text-slate-400">
+                                    Optional. Example:
+                                    /images/crm360-logo.png
+                                </p>
+                            </div>
+
+                            {/* Card Badge */}
+                            <div>
+                                <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                                    Card Badge
+                                </label>
+
+                                <input
+                                    type="text"
+                                    value={form.cardBadge}
+                                    onChange={(e) =>
+                                        handleChange(
+                                            "cardBadge",
+                                            e.target.value
+                                        )
+                                    }
+                                    placeholder="BUSINESS MANAGEMENT"
+                                    className="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+                                />
+
+                                <p className="mt-1 text-xs text-slate-400">
+                                    Optional small text displayed on the card.
+                                </p>
+                            </div>
+
+                            {/* Card Heading */}
+                            <div>
+                                <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                                    Card Heading
+                                </label>
+
+                                <input
+                                    type="text"
+                                    value={form.cardHeading}
+                                    onChange={(e) =>
+                                        handleChange(
+                                            "cardHeading",
+                                            e.target.value
+                                        )
+                                    }
+                                    placeholder="CRM360"
+                                    className="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+                                />
+
+                                <p className="mt-1 text-xs text-slate-400">
+                                    If empty, Product Title will be used.
+                                </p>
+                            </div>
+
+                            {/* Card Description */}
+                            <div className="sm:col-span-2">
+                                <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                                    Card Description
+                                </label>
+
+                                <textarea
+                                    value={form.cardDescription}
+                                    onChange={(e) =>
+                                        handleChange(
+                                            "cardDescription",
+                                            e.target.value
+                                        )
+                                    }
+                                    rows={4}
+                                    placeholder="Complete customer relationship management solution for modern businesses."
+                                    className="w-full resize-y rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+                                />
+
+                                <p className="mt-1 text-xs text-slate-400">
+                                    If empty, Short Description will be used.
+                                </p>
+                            </div>
+                        </div>
+                    </section>
+
+                    {/* ================= FEATURES & BENEFITS ================= */}
                     <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+
                         <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
                             Features & Benefits
                         </h2>
@@ -324,6 +494,7 @@ export default function NewProductPage() {
                         </p>
 
                         <div className="mt-6 grid gap-5 sm:grid-cols-2">
+
                             {/* Features */}
                             <div>
                                 <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
@@ -375,8 +546,9 @@ export default function NewProductPage() {
                         </div>
                     </section>
 
-                    {/* Sections */}
+                    {/* ================= SECTIONS ================= */}
                     <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+
                         <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
                             Content Sections
                         </h2>
@@ -410,8 +582,9 @@ export default function NewProductPage() {
                         </div>
                     </section>
 
-                    {/* FAQs */}
+                    {/* ================= FAQ ================= */}
                     <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+
                         <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
                             FAQs
                         </h2>
@@ -445,13 +618,15 @@ export default function NewProductPage() {
                         </div>
                     </section>
 
-                    {/* Settings */}
+                    {/* ================= SETTINGS ================= */}
                     <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+
                         <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
                             Product Settings
                         </h2>
 
                         <div className="mt-6 grid gap-5 sm:grid-cols-2">
+
                             {/* Brochure */}
                             <div className="sm:col-span-2">
                                 <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
@@ -515,8 +690,9 @@ export default function NewProductPage() {
                         </div>
                     </section>
 
-                    {/* Actions */}
+                    {/* ================= ACTIONS ================= */}
                     <div className="flex flex-col-reverse justify-end gap-3 sm:flex-row">
+
                         <Link
                             href="/admin/products"
                             className="inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white px-6 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:bg-slate-800"
@@ -539,4 +715,3 @@ export default function NewProductPage() {
         </div>
     );
 }
-

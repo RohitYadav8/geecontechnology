@@ -50,6 +50,7 @@ export async function POST(request: NextRequest) {
         featured: featured ?? false,
         isActive: isActive ?? true,
         order: Number(order) || 0,
+        updatedAt: new Date(),
       },
     });
 
@@ -67,3 +68,4 @@ export async function POST(request: NextRequest) {
     );
   }
 }
+

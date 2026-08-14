@@ -46,6 +46,7 @@ export async function POST(request: NextRequest) {
                 name: name.trim(),
                 isActive: isActive ?? true,
                 order: Number(order) || 0,
+                updatedAt: new Date(),
             },
         });
 

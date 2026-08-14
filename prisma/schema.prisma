@@ -7,17 +7,15 @@ datasource db {
 }
 
 model AdminUser {
-  id           String  @id @default(cuid())
-  email        String  @unique
+  id           String    @id @default(cuid())
+  email        String    @unique
   passwordHash String
   name         String?
-
-  role        String    @default("ADMIN")
-  isActive    Boolean   @default(true)
-  lastLoginAt DateTime?
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
+  createdAt    DateTime  @default(now())
+  updatedAt    DateTime  @updatedAt
+  isActive     Boolean   @default(true)
+  lastLoginAt  DateTime?
+  role         String    @default("ADMIN")
 
   @@index([role])
   @@index([isActive])
@@ -72,88 +70,44 @@ model Service {
 }
 
 model Product {
-  id               String  @id @default(cuid())
+  id               String            @id @default(cuid())
   title            String
-  slug             String  @unique
+  slug             String            @unique
   bannerImage      String?
-  shortDescription String? @db.Text
-  description      String? @db.Text
-
-  features Json?
-  benefits Json?
-  sections Json?
-  faqs     Json?
-
-  brochureUrl String?
-  isActive    Boolean @default(true)
-  order       Int     @default(0)
-
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
+  shortDescription String?           @db.Text
+  description      String?           @db.Text
+  features         Json?
+  benefits         Json?
+  sections         Json?
+  faqs             Json?
+  brochureUrl      String?
+  isActive         Boolean           @default(true)
+  order            Int               @default(0)
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
   brochureRequests BrochureRequest[]
 
   @@map("products")
 }
 
 model BrochureRequest {
-  id String @id @default(cuid())
-
-  name    String
-  phone   String
-  email   String
-  company String?
-  website String?
-
+  id        String   @id @default(cuid())
+  name      String
+  phone     String
+  email     String
+  company   String?
+  website   String?
   productId String?
-  product   Product? @relation(fields: [productId], references: [id], onDelete: SetNull)
-
-  status String @default("pending")
-
+  status    String   @default("pending")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
+
+  product Product? @relation(fields: [productId], references: [id])
 
   @@index([email])
   @@index([productId])
   @@index([status])
   @@map("brochure_requests")
-}
-
-model Testimonial {
-  id        Int      @id @default(autoincrement())
-  quote     String   @db.Text
-  name      String
-  isActive  Boolean  @default(true)
-  order     Int      @default(0)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model Client {
-  id        Int      @id @default(autoincrement())
-  name      String
-  logo      String
-  category  String
-  featured  Boolean  @default(false)
-  isActive  Boolean  @default(true)
-  order     Int      @default(0)
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model Media {
-  id        String   @id @default(cuid())
-  fileName  String
-  url       String
-  type      String   @default("OTHER")
-  folder    String?
-  altText   String?
-  relatedId String?
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@index([type])
-  @@index([relatedId])
 }
 
 model JobOpening {
@@ -200,4 +154,46 @@ model ContactSubmission {
   @@index([status])
   @@index([createdAt])
   @@map("contact_submissions")
+}
+
+model Client {
+  id        Int      @id @default(autoincrement())
+  name      String
+  logo      String
+  category  String
+  featured  Boolean  @default(false)
+  isActive  Boolean  @default(true)
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime
+
+  @@map("Client")
+}
+
+model Media {
+  id        String   @id
+  fileName  String
+  url       String
+  type      String   @default("OTHER")
+  folder    String?
+  altText   String?
+  relatedId String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime
+
+  @@index([relatedId], map: "Media_relatedId_idx")
+  @@index([type], map: "Media_type_idx")
+  @@map("Media")
+}
+
+model Testimonial {
+  id        Int      @id @default(autoincrement())
+  quote     String   @db.Text
+  name      String
+  isActive  Boolean  @default(true)
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+  updatedAt DateTime
+
+  @@map("Testimonial")
 }
