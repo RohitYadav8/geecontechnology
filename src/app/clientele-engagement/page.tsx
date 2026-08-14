@@ -66,7 +66,7 @@ export default function ClienteleEngagementPage() {
         {/* Background Effects */}
         <BackgroundEffects />
 
-        {/* Hero Section */}
+        
         <ClientHero />
 
         {loading ? (
