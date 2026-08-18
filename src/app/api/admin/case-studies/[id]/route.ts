@@ -10,9 +10,7 @@ type RouteContext = {
   }>;
 };
 
-/* =========================================================
-   GET SINGLE CASE STUDY
-========================================================= */
+
 
 export async function GET(
   request: NextRequest,
