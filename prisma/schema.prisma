@@ -101,8 +101,7 @@ model BrochureRequest {
   status    String   @default("pending")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-
-  product Product? @relation(fields: [productId], references: [id])
+  product   Product? @relation(fields: [productId], references: [id])
 
   @@index([email])
   @@index([productId])
@@ -181,8 +180,8 @@ model Media {
   createdAt DateTime @default(now())
   updatedAt DateTime
 
-  @@index([relatedId], map: "Media_relatedId_idx")
-  @@index([type], map: "Media_type_idx")
+  @@index([relatedId])
+  @@index([type])
   @@map("Media")
 }
 
@@ -196,4 +195,29 @@ model Testimonial {
   updatedAt DateTime
 
   @@map("Testimonial")
+}
+
+model CaseStudy {
+  id               String   @id @default(cuid())
+  title            String
+  slug             String   @unique
+  clientName       String?
+  industry         String?
+  shortDescription String   @db.Text
+  description      String?  @db.Text
+  image            String?
+  challenge        String?  @db.Text
+  solution         String?  @db.Text
+  results          String?  @db.Text
+  technologies     Json?
+  projectUrl       String?
+  isActive         Boolean  @default(true)
+  order            Int      @default(0)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@index([slug])
+  @@index([isActive])
+  @@index([order])
+  @@map("case_studies")
 }

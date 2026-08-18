@@ -23,9 +23,21 @@ import {
 } from "lucide-react";
 
 const navItems = [
-  { label: "Dashboard", href: "/admin/dashboard", icon: LayoutDashboard },
-  { label: "Services", href: "/admin/services", icon: Briefcase },
-  { label: "Products", href: "/admin/products", icon: Package },
+  {
+    label: "Dashboard",
+    href: "/admin/dashboard",
+    icon: LayoutDashboard,
+  },
+  {
+    label: "Services",
+    href: "/admin/services",
+    icon: Briefcase,
+  },
+  {
+    label: "Products",
+    href: "/admin/products",
+    icon: Package,
+  },
   {
     label: "Brochure Requests",
     href: "/admin/brochure-requests",
@@ -109,6 +121,18 @@ export function AdminSidebar() {
     }
   }, [pathname]);
 
+  const isItemActive = (href: string, hasChildren = false) => {
+    if (!pathname) {
+      return false;
+    }
+
+    if (hasChildren) {
+      return pathname === href || pathname.startsWith(`${href}/`);
+    }
+
+    return pathname === href || pathname.startsWith(`${href}/`);
+  };
+
   return (
     <aside className="fixed left-0 top-0 z-40 flex h-screen w-64 shrink-0 flex-col overflow-hidden border-r border-slate-200 bg-white dark:border-slate-800 dark:bg-[#0a0e1a]">
       {/* Logo */}
@@ -142,9 +166,10 @@ export function AdminSidebar() {
       <nav className="flex-1 overflow-y-auto px-3 py-5">
         <div className="flex flex-col gap-1">
           {navItems.map((item) => {
-            const isActive =
-              pathname === item.href ||
-              pathname?.startsWith(`${item.href}/`);
+            const isActive = isItemActive(
+              item.href,
+              Boolean(item.children)
+            );
 
             if (item.children) {
               return (
@@ -154,7 +179,7 @@ export function AdminSidebar() {
                     onClick={() => setBlogOpen((value) => !value)}
                     className={`flex w-full items-center justify-between rounded-lg px-3 py-2.5 text-sm font-medium transition-all ${
                       isActive
-                        ? "bg-violet-600 text-white"
+                        ? "bg-violet-600 text-white shadow-sm"
                         : "text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-white/5 dark:hover:text-white"
                     }`}
                   >
@@ -174,7 +199,8 @@ export function AdminSidebar() {
                   {blogOpen && (
                     <div className="ml-7 mt-1 flex flex-col gap-1 border-l border-slate-200 pl-2 dark:border-slate-700">
                       {item.children.map((child) => {
-                        const childActive = pathname === child.href;
+                        const childActive =
+                          pathname === child.href;
 
                         return (
                           <Link
