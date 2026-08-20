@@ -44,11 +44,9 @@ export const facts = [
 ];
 
 export const services = [
- 
   {
     id: "software-support",
     image: "/software-support-maintenance.png",
-    
     title: "Software Support Maintenance",
     description:
       "If ICT is not planned and managed properly, it can be a restriction to the achievements of a business. To allow business stability and growth, your ICT support team has to be carefully structured and well equipped.",
@@ -57,7 +55,6 @@ export const services = [
   {
     id: "seo",
     image: "/service-grid-1.png",
-  
     title: "Search Engine Optimization & Maintenance",
     description:
       "SEO offers a visible and effective search presence which leads to a considerable increase of sales, profitability, and cost efficiency for our clients.",
@@ -82,7 +79,6 @@ export const services = [
   {
     id: "cloud-services",
     image: "/service-grid-4.png",
-
     title: "Cloud Services",
     description:
       "Cloud technologies can be an organisation's greatest and most reliable resource when it comes to solving some of the modern business IT related challenges. At Geecon, we have been involved with cloud computing from its infant stages.",
@@ -98,61 +94,181 @@ export const services = [
   },
 ];
 
-
-
 export const clients = [
   { id: "emiada", name: "EMIADA", logo: "/emiadda.png" },
   { id: "cubot", name: "Cubot", logo: "/cubot.png" },
   { id: "toc-events", name: "TOC Events", logo: "/toc.png" },
-  { id: "green-valley", name: "Green Valley Infinity", logo: "/gv.png" },
+  {
+    id: "green-valley",
+    name: "Green Valley Infinity",
+    logo: "/gv.png",
+  },
   { id: "wsd", name: "WSD", logo: "/wsd.png" },
-  { id: "sacotina-dalip", name: "Sacotina & Dalip", logo: "/sacorinadalip.png" },
+  {
+    id: "sacotina-dalip",
+    name: "Sacotina & Dalip",
+    logo: "/sacorinadalip.png",
+  },
   { id: "cisco", name: "Cisco", logo: "/cisco-logo.png" },
-  { id: "poundsoft", name: "Poundsoft", logo: "/poundsoft.png" },
-  { id: "findus", name: "Findus NWEB", logo: "/findusonweb.png" },
-  { id: "oracle", name: "Oracle Gold Partner", logo: "/oracle-gold.png" },
+  {
+    id: "poundsoft",
+    name: "Poundsoft",
+    logo: "/poundsoft.png",
+  },
+  {
+    id: "findus",
+    name: "Findus NWEB",
+    logo: "/findusonweb.png",
+  },
+  {
+    id: "oracle",
+    name: "Oracle Gold Partner",
+    logo: "/oracle-gold.png",
+  },
 ];
 
 export const footerLinks = {
   services: [
-    { label: "Candidate Screening", href: "/candidate-screening" },
-    { label: "Cloud Services", href: "/cloud-services" },
-    { label: "Current Openings", href: "/careers" },
-    { label: "Customised Software Development", href: "/customised-software-development" },
-    { label: "Search Engine Optimisation", href: "/search-engine-optimization" },
-    { label: "Social Media Marketing", href: "/social-media-marketing-services" },
-    { label: "Software Support & Maintenance", href: "/software-support-maintenance" },
-    { label: "VPS/Dedicated Servers", href: "/vps-dedicated-servers" },
-    { label: "Website Development", href: "/website-development" },
+    {
+      label: "Candidate Screening",
+      href: "/candidate-screening",
+    },
+    {
+      label: "Cloud Services",
+      href: "/cloud-services",
+    },
+    {
+      label: "Current Openings",
+      href: "/careers",
+    },
+    {
+      label: "Customised Software Development",
+      href: "/customised-software-development",
+    },
+    {
+      label: "Search Engine Optimisation",
+      href: "/search-engine-optimization",
+    },
+    {
+      label: "Social Media Marketing",
+      href: "/social-media-marketing-services",
+    },
+    {
+      label: "Software Support & Maintenance",
+      href: "/software-support-maintenance",
+    },
+    {
+      label: "VPS/Dedicated Servers",
+      href: "/vps-dedicated-servers",
+    },
+    {
+      label: "Website Development",
+      href: "/website-development",
+    },
   ],
+
   products: [
-    { label: "Candidate Screening", href: "/candidate-screening" },
-    { label: "Corporate Branding", href: "/corporate-branding" },
-    { label: "Corporate Training", href: "/corporate-training" },
-    { label: "Current Openings", href: "/careers" },
-    { label: "ERP Solutions", href: "/erp-solutions" },
-    { label: "Internet Technology", href: "/internet-technology" },
-    { label: "Mobile Solution", href: "/mobile-solution" },
-    { label: "Resource & HR Management", href: "/hr-management" },
-    { label: "Software Products", href: "/software-products" },
-    { label: "Web Hosting Services", href: "/web-hosting" },
+    {
+      label: "Candidate Screening",
+      href: "/candidate-screening",
+    },
+    {
+      label: "Corporate Branding",
+      href: "/corporate-branding",
+    },
+    {
+      label: "Corporate Training",
+      href: "/corporate-training",
+    },
+    {
+      label: "Current Openings",
+      href: "/careers",
+    },
+    {
+      label: "ERP Solutions",
+      href: "/erp-solutions",
+    },
+    {
+      label: "Internet Technology",
+      href: "/internet-technology",
+    },
+    {
+      label: "Mobile Solution",
+      href: "/mobile-solution",
+    },
+    {
+      label: "Resource & HR Management",
+      href: "/hr-management",
+    },
+    {
+      label: "Software Products",
+      href: "/software-products",
+    },
+    {
+      label: "Web Hosting Services",
+      href: "/web-hosting",
+    },
   ],
+
   about: [
-    { label: "Benefits", href: "/about/benefits" },
-    { label: "Candidate Screening", href: "/candidate-screening" },
-    { label: "Core Practise", href: "/about/core-practise" },
-    { label: "Core Values", href: "/about/core-values" },
-    { label: "Current Openings", href: "/careers" },
-    { label: "History", href: "/about/history" },
-    { label: "Mission & Vision", href: "/about/mission-vision" },
-    { label: "Strengths", href: "/about/strengths" },
-    { label: "Why us", href: "/about/why-us" },
+    {
+      label: "Benefits",
+      href: "/about/benefits",
+    },
+    {
+      label: "Candidate Screening",
+      href: "/candidate-screening",
+    },
+    {
+      label: "Core Practise",
+      href: "/about/core-practise",
+    },
+    {
+      label: "Core Values",
+      href: "/about/core-values",
+    },
+    {
+      label: "Current Openings",
+      href: "/careers",
+    },
+    {
+      label: "History",
+      href: "/about/history",
+    },
+    {
+      label: "Mission & Vision",
+      href: "/about/mission-vision",
+    },
+    {
+      label: "Strengths",
+      href: "/about/strengths",
+    },
+    {
+      label: "Why us",
+      href: "/about/why-us",
+    },
   ],
+
   popular: [
-    { label: "Blogs", href: "/blogs" },
-    { label: "Candidate Screening", href: "/candidate-screening" },
-    { label: "Careers", href: "/careers" },
-    { label: "Case Studies", href: "/case-studies" },
-    { label: "Current Openings", href: "/careers" },
+    {
+      label: "Blogs",
+      href: "/blogs",
+    },
+    {
+      label: "Candidate Screening",
+      href: "/candidate-screening",
+    },
+    {
+      label: "Careers",
+      href: "/careers",
+    },
+    {
+      label: "Case Studies",
+      href: "/case-studies",
+    },
+    {
+      label: "Current Openings",
+      href: "/careers",
+    },
   ],
 };

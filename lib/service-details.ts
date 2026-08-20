@@ -153,27 +153,42 @@ export const serviceDetails: Record<string, ServiceDetail> = {
   },
 
   "website-development": {
-    title: "Website Development",
-    gradient: "from-blue-700 to-cyan-300",
-    intro: [
-      "\"Design is thinking made visual\". That's where we step in. We believe in designing a website, that influences the user to take certain actions based on how the user feels about the website. Desktop, smartphone, or tablet …you name it, our team helps plan, design and develop visually appealing websites that will help increase conversion rates and overall traffic. You dream it…we will execute it!",
-      "Geecon Systems specializes in professional Website development in India that are focused on your objectives and business goals. From custom informational websites to data-rich applications or online stores, our Mumbai based in-house team have the latest technology at their disposal to create actionable results and create a return on your investment. Of the myriad services, some of the key website design services are:",
-    ],
-    challenges: [
-      "Customized and superbly unique web design templates.",
-      "Thorough expertise in HTML & .net website design.",
-      "Ability to re-design and change the visual outlook of the client's existing website.",
-      "A dedicated team of professional web designers catered to design your website as per your requirement.",
-      "Though site construction times vary as per project specifics, once we have all of your provided information, we'll agree on a schedule and stick to it.",
-    ],
-    middle: [
-      "Our job does not end here. In fact, we'll help market your website. We will help build your site with search engine optimisation in mind. This means more people will find your site via search engines and thereby lead to an increase in visitors. Search engines are the best way to gain website viewers for free. We can also work with you to create a paid online marketing campaign.",
-    ],
-    benefits: [],
-    closing: "Other Services we provide.",
-    coverage: [],
-    qa: [],
-  },
+  title: "Website Development",
+
+  gradient: "from-blue-700 to-cyan-300",
+
+  bannerImage: "/web-devlopment.png",
+
+  intro: [
+    `"Design is thinking made visual". That's where we step in. We believe in designing a website, that influences the user to take certain actions based on how the user feels about the website. Desktop, smartphone, or tablet …you name it, our team helps plan, design and develop visually appealing websites that will help increase conversion rates and overall traffic. You dream it…we will execute it!`,
+
+    `Geecon Systems specializes in professional Website development in India that are focused on your objectives and business goals. From custom informational websites to data-rich applications or online stores, our Mumbai based in-house team have the latest technology at their disposal to create actionable results and create a return on your investment. Of the myriad services, some of the key website design services are:`,
+  ],
+
+  challenges: [
+    "Customized and superbly unique web design templates.",
+
+    "Thorough expertise in HTML & .net website design.",
+
+    "Ability to re-design and change the visual outlook of the client's existing website.",
+
+    "A dedicated team of professional web designers catered to design your website as per your requirement.",
+
+    "Though site construction times vary as per project specifics, once we have all of your provided information, we'll agree on a schedule and stick to it.",
+  ],
+
+  middle: [
+    `Our job does not end here. In fact, we'll help market your website. We will help build your site with search engine optimisation in mind. This means more people will find your site via search engines and thereby lead to an increase in visitors. Search engines are the best way to gain website viewers for free. We can also work with you to create a paid online marketing campaign.`,
+  ],
+
+  benefits: [],
+
+  closing: "Other Services we provide.",
+
+  coverage: [],
+
+  qa: [],
+},
 
   "software-support": {
     title: "Software Support & Maintenance",

@@ -221,3 +221,46 @@ model CaseStudy {
   @@index([order])
   @@map("case_studies")
 }
+model ProductSolution {
+  id              String   @id @default(cuid())
+
+  // Basic
+  name            String
+  slug            String   @unique
+  projectTag      String?
+  cardBackTitle   String?
+  excerpt         String?  @db.Text
+
+  // Old content - abhi retain karo
+  content         String?  @db.LongText
+
+  // New dynamic page content
+  contentSections Json?
+  benefitsTitle   String?
+  benefits        Json?
+  highlightCards  Json?
+
+  // Display
+  order           Int      @default(0)
+  isActive        Boolean  @default(true)
+
+  // Images
+  logoImage       String?
+  bannerImage     String?
+  sidebarImage    String?
+
+  // SEO
+  metaTitle       String?
+  metaDescription String?  @db.Text
+  keywords        String?
+  canonicalUrl    String?
+  openGraphImage  String?
+
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  @@index([slug])
+  @@index([isActive])
+  @@index([order])
+  @@map("product_solutions")
+}

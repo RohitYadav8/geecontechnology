@@ -11,23 +11,30 @@ export default function AdminLayout({
 }) {
   const pathname = usePathname();
 
-  // Only login page should be without sidebar and topbar
+  // Login page without sidebar/topbar
   if (pathname === "/admin/login") {
     return <>{children}</>;
   }
 
-  // Every other admin page gets sidebar + topbar
   return (
     <div className="min-h-screen bg-slate-50 dark:bg-slate-950">
-      <div className="fixed inset-y-0 left-0 z-40">
+      {/* Sidebar */}
+      <aside className="fixed inset-y-0 left-0 z-40 w-64">
         <AdminSidebar />
-      </div>
+      </aside>
 
+      {/* Right side */}
       <div className="ml-64 min-h-screen">
-        <AdminTopbar />
+        {/* Sticky topbar */}
+        <div className="sticky top-0 z-30">
+          <AdminTopbar />
+        </div>
 
-        <main className="p-6">
-          {children}
+        {/* Normal browser scroll */}
+        <main className="w-full overflow-x-hidden">
+          <div className="p-6">
+            {children}
+          </div>
         </main>
       </div>
     </div>

@@ -80,11 +80,21 @@ export function generateStaticParams() {
     slug: service.href.replace(/^\/+/, ""),
   }));
 
+  const standaloneServiceParams = [
+    {
+      slug: "website-development",
+    },
+  ];
+
   const productParams = products.map((product) => ({
     slug: product.href.replace(/^\/+/, ""),
   }));
 
-  return [...serviceParams, ...productParams];
+  return [
+    ...serviceParams,
+    ...standaloneServiceParams,
+    ...productParams,
+  ];
 }
 
 /* -------------------------------------------------------------------------- */
@@ -98,9 +108,37 @@ export default async function SlugPage({
 }) {
   const { slug } = await params;
 
+  /* ------------------------------------------------------------------------
+     NORMAL HOME SERVICES
+  ------------------------------------------------------------------------ */
+
   const service = services.find(
     (item) => item.href === `/${slug}`
   );
+
+  /* ------------------------------------------------------------------------
+     STANDALONE SERVICES
+
+     Website Development should work from Navbar / direct URL,
+     but should NOT be added to the home page services array.
+  ------------------------------------------------------------------------ */
+
+  const standaloneService =
+    slug === "website-development"
+      ? {
+          id: "website-development",
+          title: "Website Development",
+          description: "",
+          href: "/website-development",
+        }
+      : null;
+
+  const matchedService =
+    service ?? standaloneService;
+
+  /* ------------------------------------------------------------------------
+     PRODUCTS
+  ------------------------------------------------------------------------ */
 
   const product = products.find(
     (item) => item.href === `/${slug}`
@@ -110,12 +148,12 @@ export default async function SlugPage({
   /*                              SERVICE PAGE                                */
   /* ======================================================================== */
 
-  if (service) {
+  if (matchedService) {
     const detail =
-      serviceDetails[service.id] ??
+      serviceDetails[matchedService.id] ??
       fallbackDetail(
-        service.title,
-        service.description
+        matchedService.title,
+        matchedService.description
       );
 
     return (
@@ -124,6 +162,7 @@ export default async function SlugPage({
 
         <main className="relative flex-1 overflow-hidden">
           {/* Background grid */}
+
           <div
             className="
               pointer-events-none
@@ -137,6 +176,7 @@ export default async function SlugPage({
           />
 
           {/* Background glow */}
+
           <div
             className="
               pointer-events-none
@@ -148,7 +188,7 @@ export default async function SlugPage({
 
           <section className="relative mx-auto max-w-7xl px-6 pb-20 pt-16 sm:pt-20">
             {/* ---------------------------------------------------------------- */}
-            {/* Heading                                                           */}
+            {/* Heading                                                          */}
             {/* ---------------------------------------------------------------- */}
 
             <AnimatedHeading
@@ -164,7 +204,7 @@ export default async function SlugPage({
             />
 
             {/* ---------------------------------------------------------------- */}
-            {/* Banner                                                            */}
+            {/* Banner                                                           */}
             {/* ---------------------------------------------------------------- */}
 
             <AnimateIn delay={0.15}>
@@ -222,6 +262,7 @@ export default async function SlugPage({
                   `}
                 >
                   {/* Decorative circles */}
+
                   <div className="pointer-events-none absolute inset-0 opacity-20">
                     {[...Array(4)].map((_, index) => (
                       <div
@@ -243,6 +284,7 @@ export default async function SlugPage({
                   </div>
 
                   {/* Icon */}
+
                   <div
                     className="
                       relative
@@ -272,7 +314,7 @@ export default async function SlugPage({
             </AnimateIn>
 
             {/* ---------------------------------------------------------------- */}
-            {/* Main Content                                                      */}
+            {/* Main Content                                                     */}
             {/* ---------------------------------------------------------------- */}
 
             <div className="mt-10 grid gap-10 lg:grid-cols-[minmax(0,1fr)_320px]">
@@ -291,6 +333,7 @@ export default async function SlugPage({
                   "
                 >
                   {/* Intro */}
+
                   {detail.intro.map((paragraph, index) => (
                     <p key={`intro-${index}`}>
                       {paragraph}
@@ -298,6 +341,7 @@ export default async function SlugPage({
                   ))}
 
                   {/* Challenges */}
+
                   {detail.challenges.length > 0 && (
                     <StaggerContainer className="space-y-2 pt-1">
                       {detail.challenges.map((point, index) => (
@@ -323,6 +367,7 @@ export default async function SlugPage({
                   )}
 
                   {/* Middle Content */}
+
                   {detail.middle.map((paragraph, index) => (
                     <p
                       key={`middle-${index}`}
@@ -333,6 +378,7 @@ export default async function SlugPage({
                   ))}
 
                   {/* Benefits */}
+
                   {detail.benefits.length > 0 && (
                     <StaggerContainer className="space-y-2 pt-1">
                       {detail.benefits.map((point, index) => (
@@ -358,6 +404,7 @@ export default async function SlugPage({
                   )}
 
                   {/* Closing */}
+
                   {detail.closing && (
                     <p className="pt-1">
                       {detail.closing}
@@ -365,7 +412,7 @@ export default async function SlugPage({
                   )}
 
                   {/* ======================================================== */}
-                  {/* Coverage                                                    */}
+                  {/* Coverage                                                  */}
                   {/* ======================================================== */}
 
                   {detail.coverage.length > 0 && (
@@ -429,7 +476,7 @@ export default async function SlugPage({
                   )}
 
                   {/* ======================================================== */}
-                  {/* Q&A                                                         */}
+                  {/* Q&A                                                       */}
                   {/* ======================================================== */}
 
                   {detail.qa.length > 0 && (
@@ -443,7 +490,7 @@ export default async function SlugPage({
                   )}
 
                   {/* ======================================================== */}
-                  {/* Custom Sections                                             */}
+                  {/* Custom Sections                                           */}
                   {/* ======================================================== */}
 
                   {detail.sections &&
@@ -526,6 +573,7 @@ export default async function SlugPage({
 
         <main className="relative flex flex-1 items-center justify-center overflow-hidden px-6 py-20">
           {/* Background glow */}
+
           <div
             className="
               pointer-events-none
@@ -622,6 +670,7 @@ export default async function SlugPage({
                 </p>
 
                 {/* Social Links */}
+
                 <div
                   className="
                     mt-8
