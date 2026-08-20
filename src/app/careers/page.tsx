@@ -424,7 +424,7 @@ export default function CareersPage() {
                 </Link>
 
                 <Link
-                  href="/contact-us"
+                  href="/contact"
                   className="
                     inline-flex
                     items-center

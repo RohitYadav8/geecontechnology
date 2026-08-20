@@ -204,7 +204,7 @@ export default async function SlugPage({
             />
 
             {/* ---------------------------------------------------------------- */}
-            {/* Banner                                                           */}
+            {/* Banner - fixed same size for every service                      */}
             {/* ---------------------------------------------------------------- */}
 
             <AnimateIn delay={0.15}>
@@ -213,6 +213,8 @@ export default async function SlugPage({
                   className="
                     relative
                     mt-8
+                    h-[240px]
+                    w-full
                     overflow-hidden
                     rounded-2xl
                     border
@@ -221,25 +223,21 @@ export default async function SlugPage({
                     shadow-sm
                     dark:border-slate-800
                     dark:bg-slate-900
+                    sm:h-[320px]
+                    lg:h-[380px]
                   "
                 >
                   <Image
                     src={detail.bannerImage}
                     alt={detail.title}
-                    width={1200}
-                    height={400}
+                    fill
+                    priority
                     sizes="
                       (max-width: 640px) 100vw,
                       (max-width: 1024px) 90vw,
                       1200px
                     "
-                    className="
-                      h-auto
-                      max-h-[420px]
-                      w-full
-                      object-contain
-                    "
-                    priority
+                    className="object-contain p-4 sm:p-5 lg:p-6"
                   />
                 </div>
               ) : (
@@ -248,7 +246,8 @@ export default async function SlugPage({
                     relative
                     mt-8
                     flex
-                    h-56
+                    h-[240px]
+                    w-full
                     items-center
                     justify-end
                     overflow-hidden
@@ -257,8 +256,9 @@ export default async function SlugPage({
                     ${detail.gradient}
                     px-8
                     shadow-lg
-                    sm:h-64
+                    sm:h-[320px]
                     sm:px-10
+                    lg:h-[380px]
                   `}
                 >
                   {/* Decorative circles */}
