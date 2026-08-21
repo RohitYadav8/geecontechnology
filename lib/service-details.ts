@@ -118,6 +118,7 @@ export const serviceDetails: Record<string, ServiceDetail> = {
   "custom-development": {
     title: "Customised Software Development",
     gradient: "from-indigo-600 to-blue-400",
+      bannerImage: "/customized-software.png",
     intro: [
       "Off-the-shelf software rarely fits every business perfectly. Every organisation has its own workflows, data structures, and operational quirks, and forcing a generic tool to accommodate them often creates more friction than it solves. We build custom software that is designed around how your business actually works, not the other way around.",
       "Our engineering team works closely with you to understand your processes before writing a single line of code. From there, we design, build, and deploy applications that are scalable, secure, and maintainable — covering everything from internal tools and client-server systems to full-scale web and intranet applications.",
