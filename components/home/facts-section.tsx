@@ -1,15 +1,22 @@
 "use client";
 
-import { motion } from "motion/react";
-import { Award, Briefcase, Megaphone } from "lucide-react";
+import {
+  Award,
+  Briefcase,
+  Megaphone,
+} from "lucide-react";
 
 import { facts } from "../../lib/home-data";
-import { AnimateIn } from "../../components/animate-in";
+
+import { AnimateIn } from "../animate-in";
+import { AnimatedHeading } from "../animated-heading";
+import { BackgroundEffects } from "../background-effects";
+import { MouseGlow } from "../mouse-glow";
+
 import {
   StaggerContainer,
   StaggerItem,
-} from "../../components/stagger-container";
-import { AnimatedHeading } from "../../components/animated-heading";
+} from "../stagger-container";
 
 const icons = {
   award: Award,
@@ -19,38 +26,41 @@ const icons = {
 
 export function FactsSection() {
   return (
-    <section className="relative overflow-hidden bg-slate-50 py-20 dark:bg-slate-900/40">
-      {/* Background glow */}
-      <div className="pointer-events-none absolute -right-40 top-20 h-80 w-80 rounded-full bg-blue-500/10 blur-3xl dark:bg-blue-500/5" />
+    <section className="relative overflow-hidden border-b border-slate-100 bg-slate-50/80 py-20 sm:py-24 dark:border-white/[0.05] dark:bg-[#080e1a]">
+      {/* Existing project background animation */}
+      <BackgroundEffects />
 
-      <div className="pointer-events-none absolute -left-40 bottom-0 h-80 w-80 rounded-full bg-cyan-400/10 blur-3xl dark:bg-cyan-400/5" />
-
-      <div className="relative mx-auto max-w-7xl px-6">
-        {/* Header */}
-        <div className="grid gap-10 lg:grid-cols-[320px_1fr] lg:gap-16">
-          {/* Heading */}
+      <div className="relative mx-auto max-w-7xl px-6 sm:px-8 lg:px-10">
+        {/* Top Content */}
+        <div className="grid gap-8 lg:grid-cols-[360px_minmax(0,1fr)] lg:gap-20">
+          {/* Left */}
           <div>
             <AnimateIn direction="left">
-              <span className="inline-flex rounded-full border border-blue-200 bg-blue-50 px-4 py-1 text-xs font-semibold uppercase tracking-widest text-[#1a2b4a] dark:border-blue-500/30 dark:bg-blue-500/10 dark:text-blue-400">
+              <span className="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-3.5 py-1.5 text-[11px] font-semibold uppercase tracking-[0.2em] text-blue-600 dark:border-blue-500/20 dark:bg-blue-500/[0.08] dark:text-blue-400">
+                <span className="h-1.5 w-1.5 rounded-full bg-cyan-400" />
                 Who we are
               </span>
             </AnimateIn>
 
             <AnimatedHeading
               text="Some facts to know"
-              delay={0.1}
-              className="mt-4 text-3xl font-semibold tracking-tight text-slate-900 dark:text-white sm:text-4xl"
+              as="h2"
+              delay={0.08}
+              className="mt-5 text-3xl font-semibold leading-tight tracking-[-0.035em] text-slate-950 sm:text-4xl dark:text-white"
             />
 
-            {/* Decorative line */}
-            <AnimateIn delay={0.2}>
-              <div className="mt-5 h-1 w-16 rounded-full bg-gradient-to-r from-[#1a2b4a] to-blue-400 dark:from-blue-500 dark:to-cyan-400" />
+            <AnimateIn delay={0.18}>
+              <div className="mt-5 h-[3px] w-16 rounded-full bg-gradient-to-r from-blue-600 to-cyan-400" />
             </AnimateIn>
           </div>
 
-          {/* Description */}
-          <AnimateIn delay={0.15} direction="right">
-            <p className="max-w-3xl text-sm leading-7 text-slate-500 dark:text-slate-400">
+          {/* Right */}
+          <AnimateIn
+            direction="right"                                                                                          
+            delay={0.12}
+            className="lg:pt-7"
+          >
+            <p className="max-w-3xl text-sm leading-7 text-slate-500 sm:text-[15px] sm:leading-8 dark:text-slate-400">
               We are a diverse team of competent, dynamic and experienced
               individuals passionate about our work and company. Our ascendancy
               lies in business and management consultancy, development of
@@ -65,50 +75,40 @@ export function FactsSection() {
         </div>
 
         {/* Facts Cards */}
-        <StaggerContainer className="mt-14 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <StaggerContainer className="mt-14 grid gap-5 md:grid-cols-3">
           {facts.map((fact) => {
-            const Icon = icons[fact.icon as keyof typeof icons];
+            const Icon =
+              icons[fact.icon as keyof typeof icons];
 
             return (
-              <StaggerItem key={fact.title}>
-                <article className="group relative h-full overflow-hidden rounded-2xl border border-slate-200 bg-white p-7 shadow-sm transition-all duration-500 hover:-translate-y-2 hover:border-blue-300 hover:shadow-2xl hover:shadow-blue-500/10 dark:border-slate-800 dark:bg-slate-900 dark:hover:border-blue-500/40 dark:hover:shadow-black/40">
-                  {/* Top animated line */}
-                  <span className="pointer-events-none absolute inset-x-0 top-0 h-1 origin-left scale-x-0 bg-gradient-to-r from-[#1a2b4a] via-blue-500 to-cyan-400 transition-transform duration-500 group-hover:scale-x-100" />
+              <StaggerItem
+                key={fact.title}
+                className="h-full"
+              >
+                <MouseGlow className="h-full">
+                  <article className="group relative h-full overflow-hidden rounded-[24px] border border-slate-200/80 bg-white/80 p-7 shadow-[0_20px_60px_-35px_rgba(15,23,42,.35)] backdrop-blur-xl transition-all duration-500 hover:-translate-y-1.5 hover:border-blue-300/70 hover:shadow-[0_25px_70px_-30px_rgba(37,99,235,.25)] dark:border-white/[0.07] dark:bg-white/[0.035] dark:hover:border-blue-400/20">
+                    {/* Animated top border */}
+                    <span className="absolute inset-x-0 top-0 h-[2px] origin-left scale-x-0 bg-gradient-to-r from-blue-600 via-cyan-400 to-transparent transition-transform duration-500 group-hover:scale-x-100" />
 
-                  {/* Card glow */}
-                  <div className="pointer-events-none absolute -right-16 -top-16 h-32 w-32 rounded-full bg-blue-500/10 opacity-0 blur-2xl transition-opacity duration-500 group-hover:opacity-100" />
+                    {/* Icon */}
+                    <div className="flex h-14 w-14 items-center justify-center rounded-2xl border border-blue-100 bg-blue-50 text-[#1a2b4a] shadow-sm transition-all duration-300 group-hover:-rotate-3 group-hover:scale-105 group-hover:bg-[#1a2b4a] group-hover:text-white dark:border-blue-500/10 dark:bg-blue-500/10 dark:text-blue-400 dark:group-hover:bg-blue-500">
+                      <Icon
+                        size={23}
+                        strokeWidth={1.7}
+                      />
+                    </div>
 
-                  {/* Icon */}
-                  <motion.div
-                    whileHover={{
-                      rotate: [0, -8, 8, -4, 0],
-                      scale: 1.08,
-                    }}
-                    transition={{
-                      duration: 0.5,
-                      ease: "easeInOut",
-                    }}
-                    className="relative z-10 flex h-14 w-14 items-center justify-center rounded-xl bg-[#1a2b4a]/10 text-[#1a2b4a] transition-all duration-300 group-hover:bg-[#1a2b4a] group-hover:text-white dark:bg-blue-500/10 dark:text-blue-400 dark:group-hover:bg-blue-500 dark:group-hover:text-white"
-                  >
-                    <Icon size={24} strokeWidth={1.75} />
-                  </motion.div>
+                    {/* Title */}
+                    <h3 className="mt-6 text-[17px] font-semibold text-slate-950 dark:text-white">
+                      {fact.title}
+                    </h3>
 
-                
-                  <h3 className="relative z-10 mt-5 text-base font-semibold text-slate-900 dark:text-white">
-                    {fact.title}
-                  </h3>
-
-                  {/* Description */}
-                  <p className="relative z-10 mt-2.5 text-sm leading-6 text-slate-500 dark:text-slate-400">
-                    {fact.description}
-                  </p>
-
-                  {/* Bottom arrow */}
-                  <div className="relative z-10 mt-6 flex items-center gap-2 text-xs font-semibold text-[#1a2b4a] opacity-0 transition-all duration-300 group-hover:translate-x-1 group-hover:opacity-100 dark:text-blue-400">
-                    <span>Learn more</span>
-                    <span className="text-base">→</span>
-                  </div>
-                </article>
+                    {/* Description */}
+                    <p className="mt-3 text-sm leading-7 text-slate-500 dark:text-slate-400">
+                      {fact.description}
+                    </p>
+                  </article>
+                </MouseGlow>
               </StaggerItem>
             );
           })}

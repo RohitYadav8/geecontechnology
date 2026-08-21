@@ -1,13 +1,14 @@
 "use client";
 
 import {
-  useState,
-  useEffect,
   useCallback,
+  useEffect,
   useRef,
+  useState,
 } from "react";
 
 import Image from "next/image";
+import Link from "next/link";
 
 import {
   AnimatePresence,
@@ -18,93 +19,65 @@ import {
 } from "motion/react";
 
 import {
+  ArrowRight,
   ChevronLeft,
   ChevronRight,
 } from "lucide-react";
 
 import { heroSlides } from "../../lib/home-data";
-import { AnimatedHeading } from "../../components/animated-heading";
-import { FloatingBlob } from "../../components/floating-blob";
+import { AnimatedHeading } from "../animated-heading";
+import { FloatingBlob } from "../floating-blob";
 
 const SLIDE_DURATION = 6000;
 
 export function HeroSlider() {
   const [current, setCurrent] = useState(0);
+  const [mounted, setMounted] = useState(false);
 
   const sectionRef = useRef<HTMLElement | null>(null);
-
-  /* -------------------------------------------------------
-     Mouse position
-  ------------------------------------------------------- */
 
   const mouseX = useMotionValue(0);
   const mouseY = useMotionValue(0);
 
-  /* -------------------------------------------------------
-     Smooth mouse values
-  ------------------------------------------------------- */
-
-  const spotlightX = useSpring(mouseX, {
-    stiffness: 150,
-    damping: 30,
+  const smoothX = useSpring(mouseX, {
+    stiffness: 120,
+    damping: 28,
   });
 
-  const spotlightY = useSpring(mouseY, {
-    stiffness: 150,
-    damping: 30,
+  const smoothY = useSpring(mouseY, {
+    stiffness: 120,
+    damping: 28,
   });
-
-  /* -------------------------------------------------------
-     Background parallax
-  ------------------------------------------------------- */
 
   const backgroundX = useTransform(
-    mouseX,
-    (value) => value * 0.02
+    smoothX,
+    (value) => value * 0.018
   );
 
   const backgroundY = useTransform(
-    mouseY,
-    (value) => value * 0.02
+    smoothY,
+    (value) => value * 0.018
   );
 
-  const parallaxBgX = useSpring(backgroundX, {
-    stiffness: 60,
-    damping: 20,
-  });
-
-  const parallaxBgY = useSpring(backgroundY, {
-    stiffness: 60,
-    damping: 20,
-  });
-
-  /* -------------------------------------------------------
-     Image parallax
-  ------------------------------------------------------- */
-
   const imageX = useTransform(
-    mouseX,
-    (value) => value * -0.015
+    smoothX,
+    (value) => value * -0.012
   );
 
   const imageY = useTransform(
-    mouseY,
-    (value) => value * -0.015
+    smoothY,
+    (value) => value * -0.012
   );
 
-  const parallaxImgX = useSpring(imageX, {
-    stiffness: 80,
-    damping: 20,
-  });
+  const spotlight = useTransform(
+    [smoothX, smoothY],
+    ([x, y]: number[]) =>
+      `radial-gradient(500px circle at calc(50% + ${x}px) calc(50% + ${y}px), rgba(59,130,246,.22), transparent 70%)`
+  );
 
-  const parallaxImgY = useSpring(imageY, {
-    stiffness: 80,
-    damping: 20,
-  });
-
-  /* -------------------------------------------------------
-     Mouse move
-  ------------------------------------------------------- */
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const handleMouseMove = (
     event: React.MouseEvent<HTMLElement>
@@ -114,72 +87,62 @@ export function HeroSlider() {
     const rect =
       sectionRef.current.getBoundingClientRect();
 
-    const x =
+    mouseX.set(
       event.clientX -
-      rect.left -
-      rect.width / 2;
+        rect.left -
+        rect.width / 2
+    );
 
-    const y =
+    mouseY.set(
       event.clientY -
-      rect.top -
-      rect.height / 2;
-
-    mouseX.set(x);
-    mouseY.set(y);
+        rect.top -
+        rect.height / 2
+    );
   };
-
-  /* -------------------------------------------------------
-     Reset mouse position
-  ------------------------------------------------------- */
 
   const handleMouseLeave = () => {
     mouseX.set(0);
     mouseY.set(0);
   };
 
-  /* -------------------------------------------------------
-     Slide navigation
-  ------------------------------------------------------- */
+  const goTo = useCallback((index: number) => {
+    if (!heroSlides.length) return;
 
-  const goTo = useCallback(
-    (index: number) => {
-      if (!heroSlides.length) return;
-
-      setCurrent(
-        (index + heroSlides.length) %
-          heroSlides.length
-      );
-    },
-    []
-  );
+    setCurrent(
+      (index + heroSlides.length) %
+        heroSlides.length
+    );
+  }, []);
 
   const next = useCallback(() => {
-    goTo(current + 1);
-  }, [current, goTo]);
+    setCurrent((prev) =>
+      (prev + 1) % heroSlides.length
+    );
+  }, []);
 
-  const prev = useCallback(() => {
-    goTo(current - 1);
-  }, [current, goTo]);
-
-  /* -------------------------------------------------------
-     Auto slide
-  ------------------------------------------------------- */
+  const previous = useCallback(() => {
+    setCurrent((prev) =>
+      (prev - 1 + heroSlides.length) %
+        heroSlides.length
+    );
+  }, []);
 
   useEffect(() => {
-    if (heroSlides.length <= 1) return;
+    if (!mounted || heroSlides.length <= 1) {
+      return;
+    }
 
-    const timer = setInterval(() => {
-      setCurrent((previous) =>
-        (previous + 1) % heroSlides.length
+    const timer = window.setInterval(() => {
+      setCurrent(
+        (prev) =>
+          (prev + 1) % heroSlides.length
       );
     }, SLIDE_DURATION);
 
-    return () => clearInterval(timer);
-  }, []);
-
-  /* -------------------------------------------------------
-     Empty state
-  ------------------------------------------------------- */
+    return () => {
+      window.clearInterval(timer);
+    };
+  }, [mounted]);
 
   if (!heroSlides.length) {
     return null;
@@ -192,21 +155,11 @@ export function HeroSlider() {
       ref={sectionRef}
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
-      className="
-        relative
-        min-h-[620px]
-        w-full
-        overflow-hidden
-        bg-[#070c1a]
-        sm:min-h-[680px]
-        lg:min-h-[720px]
-      "
+      className="relative min-h-[650px] overflow-hidden bg-[#050914] sm:min-h-[700px] lg:min-h-[760px]"
     >
-      {/* ===================================================
-          BACKGROUND
-      ==================================================== */}
-
+      {/* Background Gradient */}
       <motion.div
+        initial={false}
         animate={{
           backgroundPosition: [
             "0% 0%",
@@ -215,186 +168,70 @@ export function HeroSlider() {
           ],
         }}
         transition={{
-          duration: 20,
+          duration: 22,
           repeat: Infinity,
           ease: "linear",
         }}
         style={{
           backgroundImage:
-            "radial-gradient(at 20% 20%, rgba(59,130,246,0.25) 0px, transparent 50%), radial-gradient(at 80% 30%, rgba(56,189,248,0.20) 0px, transparent 50%), radial-gradient(at 50% 80%, rgba(30,64,175,0.30) 0px, transparent 50%)",
-          backgroundSize: "200% 200%",
+            "radial-gradient(at 15% 20%, rgba(37,99,235,.22), transparent 45%), radial-gradient(at 85% 25%, rgba(6,182,212,.16), transparent 42%), radial-gradient(at 50% 85%, rgba(29,78,216,.20), transparent 50%)",
+          backgroundSize: "180% 180%",
         }}
-        className="
-          pointer-events-none
-          absolute
-          inset-0
-        "
+        className="pointer-events-none absolute inset-0"
       />
 
-      {/* ===================================================
-          GRID
-      ==================================================== */}
-
+      {/* Background Grid */}
       <div
-        className="
-          pointer-events-none
-          absolute
-          inset-0
-          opacity-[0.08]
-        "
+        className="pointer-events-none absolute inset-0 opacity-[0.08]"
         style={{
           backgroundImage:
-            "linear-gradient(rgba(255,255,255,0.08) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.08) 1px, transparent 1px)",
-          backgroundSize: "48px 48px",
+            "linear-gradient(rgba(255,255,255,.08) 1px, transparent 1px), linear-gradient(90deg,rgba(255,255,255,.08) 1px,transparent 1px)",
+          backgroundSize: "52px 52px",
         }}
       />
 
-      {/* ===================================================
-          NOISE TEXTURE
-      ==================================================== */}
-
-      <div
-        className="
-          pointer-events-none
-          absolute
-          inset-0
-          opacity-[0.035]
-        "
-        style={{
-          backgroundImage:
-            "url(\"data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='100'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E\")",
-        }}
-      />
-
-      {/* ===================================================
-          FLOATING BLOBS
-      ==================================================== */}
-
+      {/* Floating Background */}
       <motion.div
         style={{
-          x: parallaxBgX,
-          y: parallaxBgY,
+          x: backgroundX,
+          y: backgroundY,
         }}
-        className="
-          pointer-events-none
-          absolute
-          inset-0
-        "
+        className="pointer-events-none absolute inset-0"
       >
         <FloatingBlob
-          className="
-            -right-16
-            top-0
-            h-72
-            w-72
-          "
+          className="-right-20 top-10 h-80 w-80"
           color="bg-blue-500/20"
-          duration={12}
+          duration={14}
         />
 
         <FloatingBlob
-          className="
-            -bottom-24
-            left-1/4
-            h-80
-            w-80
-          "
+          className="-bottom-32 left-[24%] h-96 w-96"
           color="bg-cyan-400/15"
-          duration={16}
+          duration={18}
         />
 
         <FloatingBlob
-          className="
-            left-1/2
-            top-1/3
-            h-56
-            w-56
-          "
-          color="bg-indigo-400/10"
-          duration={10}
+          className="left-[58%] top-[28%] h-64 w-64"
+          color="bg-indigo-500/10"
+          duration={12}
         />
       </motion.div>
 
-      {/* ===================================================
-          MOUSE SPOTLIGHT
-      ==================================================== */}
-
+      {/* Mouse Spotlight */}
       <motion.div
-        className="
-          pointer-events-none
-          absolute
-          inset-0
-          z-[2]
-          opacity-50
-          mix-blend-screen
-        "
         style={{
-          background: useTransform(
-            [spotlightX, spotlightY],
-            ([x, y]: number[]) =>
-              `radial-gradient(
-                420px circle at
-                calc(50% + ${x}px)
-                calc(50% + ${y}px),
-                rgba(59,130,246,0.25),
-                transparent 70%
-              )`
-          ),
+          background: spotlight,
         }}
+        className="pointer-events-none absolute inset-0 z-[3] opacity-60 mix-blend-screen"
       />
 
-      {/* ===================================================
-          PARTICLES
-      ==================================================== */}
-
-      {[
-        { left: "10%", top: "20%" },
-        { left: "20%", top: "65%" },
-        { left: "32%", top: "30%" },
-        { left: "45%", top: "75%" },
-        { left: "55%", top: "18%" },
-        { left: "66%", top: "50%" },
-        { left: "75%", top: "25%" },
-        { left: "82%", top: "70%" },
-        { left: "90%", top: "40%" },
-        { left: "38%", top: "55%" },
-      ].map((position, index) => (
-        <motion.span
-          key={index}
-          animate={{
-            y: [0, -18, 0],
-            opacity: [0.15, 0.8, 0.15],
-            scale: [0.8, 1.2, 0.8],
-          }}
-          transition={{
-            duration: 4 + index * 0.4,
-            repeat: Infinity,
-            ease: "easeInOut",
-            delay: index * 0.3,
-          }}
-          className="
-            pointer-events-none
-            absolute
-            z-[3]
-            h-1
-            w-1
-            rounded-full
-            bg-white
-          "
-          style={position}
-        />
-      ))}
-
-      {/* ===================================================
-          SLIDE
-      ==================================================== */}
-
+      {/* Slides */}
       <AnimatePresence mode="wait">
         <motion.div
           key={slide.id}
           initial={{
             opacity: 0,
-            scale: 1.03,
+            scale: 1.025,
           }}
           animate={{
             opacity: 1,
@@ -402,50 +239,33 @@ export function HeroSlider() {
           }}
           exit={{
             opacity: 0,
-            scale: 1.02,
+            scale: 1.015,
           }}
           transition={{
             duration: 0.8,
             ease: [0.21, 0.47, 0.32, 0.98],
           }}
-          className="
-            absolute
-            inset-0
-          "
+          className="absolute inset-0"
         >
-          {/* =================================================
-              IMAGE PARALLAX
-          ================================================== */}
-
+          {/* Background Image */}
           <motion.div
             style={{
-              x: parallaxImgX,
-              y: parallaxImgY,
+              x: imageX,
+              y: imageY,
             }}
-            className="
-              absolute
-              -inset-6
-            "
+            className="absolute -inset-5"
           >
             <motion.div
+              initial={false}
               animate={{
-                scale: [
-                  1,
-                  1.04,
-                  1.02,
-                  1,
-                ],
+                scale: [1, 1.035, 1],
               }}
               transition={{
-                duration: 20,
+                duration: 18,
                 repeat: Infinity,
                 ease: "easeInOut",
               }}
-              className="
-                relative
-                h-full
-                w-full
-              "
+              className="relative h-full w-full"
             >
               <Image
                 src={slide.image}
@@ -453,523 +273,192 @@ export function HeroSlider() {
                 fill
                 priority={current === 0}
                 sizes="100vw"
-                className="
-                  object-cover
-                  opacity-65
-                "
+                className="object-cover opacity-60"
               />
             </motion.div>
           </motion.div>
 
-          {/* =================================================
-              IMAGE OVERLAY
-          ================================================== */}
+          {/* Image Overlays */}
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#050914] via-[#050914]/90 to-[#050914]/30" />
 
-          <div
-            className="
-              pointer-events-none
-              absolute
-              inset-0
-              bg-gradient-to-r
-              from-[#070c1a]
-              via-[#070c1a]/80
-              to-[#070c1a]/20
-            "
-          />
+          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#050914] via-transparent to-[#050914]/20" />
 
-          <div
-            className="
-              pointer-events-none
-              absolute
-              inset-0
-              bg-gradient-to-t
-              from-[#070c1a]
-              via-transparent
-              to-transparent
-            "
-          />
+          {/* Content */}
+          <div className="relative z-10 mx-auto flex h-full max-w-7xl items-center px-6 sm:px-8 lg:px-10">
+            <div className="max-w-[850px]">
+              {/* Badge */}
+              <motion.div
+                initial={{
+                  opacity: 0,
+                  y: 15,
+                }}
+                animate={{
+                  opacity: 1,
+                  y: 0,
+                }}
+                transition={{
+                  delay: 0.12,
+                  duration: 0.55,
+                }}
+                className="mb-6 inline-flex items-center gap-2 rounded-full border border-blue-400/20 bg-blue-400/[0.08] px-3.5 py-1.5 backdrop-blur-xl"
+              >
+                <span className="relative flex h-2 w-2">
+                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-cyan-400 opacity-60" />
+                  <span className="relative inline-flex h-2 w-2 rounded-full bg-cyan-400" />
+                </span>
 
-          {/* =================================================
-              CONTENT
-          ================================================== */}
+                <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-blue-200">
+                  Geecon Technology
+                </span>
+              </motion.div>
 
-          <div
-            className="
-              relative
-              z-10
-              mx-auto
-              flex
-              h-full
-              w-full
-              max-w-7xl
-              flex-col
-              justify-center
-              px-6
-              sm:px-8
-              lg:px-10
-            "
-          >
-            {/* Badge */}
-
-            <motion.div
-              initial={{
-                opacity: 0,
-                y: 15,
-              }}
-              animate={{
-                opacity: 1,
-                y: 0,
-              }}
-              transition={{
-                duration: 0.6,
-                delay: 0.1,
-              }}
-              className="
-                mb-5
-                inline-flex
-                w-fit
-                items-center
-                gap-2
-                rounded-full
-                border
-                border-blue-400/20
-                bg-blue-500/10
-                px-3.5
-                py-1.5
-                backdrop-blur-md
-              "
-            >
-              <span
-                className="
-                  h-1.5
-                  w-1.5
-                  rounded-full
-                  bg-cyan-400
-                  shadow-[0_0_10px_rgba(34,211,238,0.8)]
-                "
+              {/* Heading */}
+              <AnimatedHeading
+                text={slide.title}
+                delay={0.2}
+                className="max-w-4xl text-4xl font-semibold leading-[1.03] tracking-[-0.045em] text-white sm:text-5xl md:text-6xl lg:text-[68px]"
               />
 
-              <span
-                className="
-                  text-xs
-                  font-medium
-                  uppercase
-                  tracking-[0.18em]
-                  text-blue-200
-                "
+              {/* Decorative Line */}
+              <motion.div
+                initial={{
+                  scaleX: 0,
+                }}
+                animate={{
+                  scaleX: 1,
+                }}
+                transition={{
+                  delay: 0.45,
+                  duration: 0.7,
+                }}
+                className="mt-7 h-[3px] w-20 origin-left rounded-full bg-gradient-to-r from-blue-500 to-cyan-300"
+              />
+
+              {/* Description */}
+              <motion.p
+                initial={{
+                  opacity: 0,
+                  y: 20,
+                }}
+                animate={{
+                  opacity: 1,
+                  y: 0,
+                }}
+                transition={{
+                  delay: 0.55,
+                  duration: 0.65,
+                }}
+                className="mt-6 max-w-2xl text-sm leading-7 text-slate-300 sm:text-base sm:leading-8 lg:text-[17px]"
               >
-                Geecon Technology
-              </span>
-            </motion.div>
+                {slide.description}
+              </motion.p>
 
-            {/* Main Heading */}
-
-            <AnimatedHeading
-              text={slide.title}
-              delay={0.2}
-              className="
-                max-w-4xl
-                text-4xl
-                font-semibold
-                leading-[1.05]
-                tracking-[-0.03em]
-                text-white
-                sm:text-5xl
-                md:text-6xl
-                lg:text-7xl
-              "
-            />
-
-            {/* Accent Line */}
-
-            <motion.div
-              initial={{
-                scaleX: 0,
-                opacity: 0,
-              }}
-              animate={{
-                scaleX: 1,
-                opacity: 1,
-              }}
-              transition={{
-                duration: 0.7,
-                delay: 0.45,
-              }}
-              className="
-                mt-6
-                h-1
-                w-[72px]
-                origin-left
-                rounded-full
-                bg-gradient-to-r
-                from-blue-500
-                to-cyan-400
-              "
-            />
-
-            {/* Description */}
-
-            <motion.p
-              initial={{
-                opacity: 0,
-                y: 20,
-                filter: "blur(6px)",
-              }}
-              animate={{
-                opacity: 1,
-                y: 0,
-                filter: "blur(0px)",
-              }}
-              transition={{
-                duration: 0.7,
-                delay: 0.55,
-                ease: [0.21, 0.47, 0.32, 0.98],
-              }}
-              className="
-                mt-6
-                max-w-2xl
-                text-sm
-                leading-7
-                text-slate-300
-                sm:text-base
-                sm:leading-8
-                lg:text-lg
-              "
-            >
-              {slide.description}
-            </motion.p>
-
-            {/* CTA Buttons */}
-
-            <motion.div
-              initial={{
-                opacity: 0,
-                y: 18,
-              }}
-              animate={{
-                opacity: 1,
-                y: 0,
-              }}
-              transition={{
-                duration: 0.6,
-                delay: 0.8,
-              }}
-              className="
-                mt-8
-                flex
-                flex-wrap
-                items-center
-                gap-3
-                sm:gap-4
-              "
-            >
-              {/* Primary Button */}
-
-              <a
-                href="/services"
-                className="
-                  group
-                  inline-flex
-                  items-center
-                  gap-2
-                  rounded-xl
-                  bg-gradient-to-r
-                  from-blue-600
-                  to-cyan-500
-                  px-6
-                  py-3.5
-                  text-sm
-                  font-semibold
-                  text-white
-                  shadow-[0_10px_35px_rgba(37,99,235,0.25)]
-                  transition-all
-                  duration-300
-                  hover:-translate-y-0.5
-                  hover:shadow-[0_15px_45px_rgba(37,99,235,0.4)]
-                "
+              {/* CTA Buttons */}
+              <motion.div
+                initial={{
+                  opacity: 0,
+                  y: 15,
+                }}
+                animate={{
+                  opacity: 1,
+                  y: 0,
+                }}
+                transition={{
+                  delay: 0.75,
+                  duration: 0.6,
+                }}
+                className="mt-8 flex flex-wrap gap-3"
               >
-                Explore Our Services
+                <Link
+                  href="/services"
+                  className="group inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-500 px-6 py-3.5 text-sm font-semibold text-white shadow-[0_15px_40px_-15px_rgba(37,99,235,.8)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_50px_-15px_rgba(37,99,235,.9)]"
+                >
+                  Explore Our Services
 
-                <ChevronRight
-                  size={17}
-                  className="
-                    transition-transform
-                    duration-300
-                    group-hover:translate-x-1
-                  "
-                />
-              </a>
+                  <ArrowRight
+                    size={16}
+                    className="transition-transform group-hover:translate-x-1"
+                  />
+                </Link>
 
-              {/* Secondary Button */}
+                <Link
+                  href="/contact"
+                  className="group inline-flex items-center gap-2 rounded-xl border border-white/15 bg-white/[0.06] px-6 py-3.5 text-sm font-semibold text-white backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:border-white/30 hover:bg-white/10"
+                >
+                  Get in Touch
 
-              <a
-                href="/contact"
-                className="
-                  group
-                  inline-flex
-                  items-center
-                  gap-2
-                  rounded-xl
-                  border
-                  border-white/15
-                  bg-white/5
-                  px-6
-                  py-3.5
-                  text-sm
-                  font-semibold
-                  text-white
-                  backdrop-blur-md
-                  transition-all
-                  duration-300
-                  hover:-translate-y-0.5
-                  hover:border-white/30
-                  hover:bg-white/10
-                "
-              >
-                Get in Touch
-
-                <ChevronRight
-                  size={17}
-                  className="
-                    transition-transform
-                    duration-300
-                    group-hover:translate-x-1
-                  "
-                />
-              </a>
-            </motion.div>
-
-            {/* Trust / Highlights */}
-
-            <motion.div
-              initial={{
-                opacity: 0,
-                y: 15,
-              }}
-              animate={{
-                opacity: 1,
-                y: 0,
-              }}
-              transition={{
-                duration: 0.6,
-                delay: 1,
-              }}
-              className="
-                mt-10
-                flex
-                flex-wrap
-                items-center
-                gap-x-7
-                gap-y-3
-                text-xs
-                text-slate-400
-                sm:text-sm
-              "
-            >
-              <div className="flex items-center gap-2">
-                <span className="h-1.5 w-1.5 rounded-full bg-emerald-400" />
-                <span>Innovative Solutions</span>
-              </div>
-
-              <div className="hidden h-4 w-px bg-white/10 sm:block" />
-
-              <div className="flex items-center gap-2">
-                <span className="h-1.5 w-1.5 rounded-full bg-blue-400" />
-                <span>Scalable Technology</span>
-              </div>
-
-              <div className="hidden h-4 w-px bg-white/10 sm:block" />
-
-              <div className="flex items-center gap-2">
-                <span className="h-1.5 w-1.5 rounded-full bg-cyan-400" />
-                <span>Business-Focused</span>
-              </div>
-            </motion.div>
+                  <ArrowRight
+                    size={16}
+                    className="transition-transform group-hover:translate-x-1"
+                  />
+                </Link>
+              </motion.div>
+            </div>
           </div>
         </motion.div>
       </AnimatePresence>
 
-      {/* ===================================================
-          PREVIOUS BUTTON
-      ==================================================== */}
-
-      <motion.button
-        type="button"
-        onClick={prev}
-        whileHover={{
-          scale: 1.12,
-          x: -2,
-        }}
-        whileTap={{
-          scale: 0.9,
-        }}
-        aria-label="Previous slide"
-        className="
-          absolute
-          left-3
-          top-1/2
-          z-30
-          flex
-          h-10
-          w-10
-          -translate-y-1/2
-          items-center
-          justify-center
-          rounded-full
-          border
-          border-white/10
-          bg-white/10
-          text-white
-          backdrop-blur-md
-          transition-all
-          duration-300
-          hover:border-white/20
-          hover:bg-white/20
-          sm:left-5
-          sm:h-11
-          sm:w-11
-        "
-      >
-        <ChevronLeft size={21} />
-      </motion.button>
-
-      {/* ===================================================
-          NEXT BUTTON
-      ==================================================== */}
-
-      <motion.button
-        type="button"
-        onClick={next}
-        whileHover={{
-          scale: 1.12,
-          x: 2,
-        }}
-        whileTap={{
-          scale: 0.9,
-        }}
-        aria-label="Next slide"
-        className="
-          absolute
-          right-3
-          top-1/2
-          z-30
-          flex
-          h-10
-          w-10
-          -translate-y-1/2
-          items-center
-          justify-center
-          rounded-full
-          border
-          border-white/10
-          bg-white/10
-          text-white
-          backdrop-blur-md
-          transition-all
-          duration-300
-          hover:border-white/20
-          hover:bg-white/20
-          sm:right-5
-          sm:h-11
-          sm:w-11
-        "
-      >
-        <ChevronRight size={21} />
-      </motion.button>
-
-      {/* ===================================================
-          SLIDE PROGRESS
-      ==================================================== */}
-
-      <div
-        className="
-          absolute
-          bottom-6
-          left-1/2
-          z-30
-          flex
-          -translate-x-1/2
-          items-center
-          gap-2
-        "
-      >
-        {heroSlides.map((_, index) => (
+      {/* Previous / Next */}
+      {heroSlides.length > 1 && (
+        <>
           <button
             type="button"
-            key={index}
-            onClick={() => goTo(index)}
-            aria-label={`Go to slide ${index + 1}`}
-            className="
-              relative
-              h-1
-              w-8
-              overflow-hidden
-              rounded-full
-              bg-white/20
-              transition-all
-              duration-300
-              hover:bg-white/40
-              sm:w-10
-            "
+            onClick={previous}
+            aria-label="Previous slide"
+            className="absolute left-4 top-1/2 z-30 hidden h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/10 bg-black/10 text-white backdrop-blur-xl transition-all hover:border-white/25 hover:bg-white/10 sm:flex"
           >
-            {index === current && (
-              <motion.div
-                key={`progress-${current}`}
-                initial={{
-                  width: "0%",
-                }}
-                animate={{
-                  width: "100%",
-                }}
-                transition={{
-                  duration:
-                    SLIDE_DURATION / 1000,
-                  ease: "linear",
-                }}
-                className="
-                  absolute
-                  inset-y-0
-                  left-0
-                  rounded-full
-                  bg-white
-                "
-              />
-            )}
+            <ChevronLeft size={20} />
           </button>
-        ))}
+
+          <button
+            type="button"
+            onClick={next}
+            aria-label="Next slide"
+            className="absolute right-4 top-1/2 z-30 hidden h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/10 bg-black/10 text-white backdrop-blur-xl transition-all hover:border-white/25 hover:bg-white/10 sm:flex"
+          >
+            <ChevronRight size={20} />
+          </button>
+        </>
+      )}
+
+      {/* Slider Progress */}
+      <div className="absolute bottom-7 left-1/2 z-30 flex -translate-x-1/2 items-center gap-2">
+        {heroSlides.map((item, index) => {
+          const active = index === current;
+
+          return (
+            <button
+              type="button"
+              key={item.id}
+              onClick={() => goTo(index)}
+              aria-label={`Go to slide ${index + 1}`}
+              className={`relative h-1.5 overflow-hidden rounded-full bg-white/20 transition-all duration-300 ${
+                active
+                  ? "w-12"
+                  : "w-5 hover:bg-white/40"
+              }`}
+            >
+              {active && (
+                <motion.span
+                  key={`progress-${current}`}
+                  initial={{
+                    width: "0%",
+                  }}
+                  animate={{
+                    width: "100%",
+                  }}
+                  transition={{
+                    duration:
+                      SLIDE_DURATION / 1000,
+                    ease: "linear",
+                  }}
+                  className="absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-blue-400 to-cyan-300"
+                />
+              )}
+            </button>
+          );
+        })}
       </div>
-
-      {/* ===================================================
-          BOTTOM DECORATION
-      ==================================================== */}
-
-      <motion.div
-        initial={{
-          scaleX: 0,
-          opacity: 0,
-        }}
-        animate={{
-          scaleX: 1,
-          opacity: 1,
-        }}
-        transition={{
-          duration: 1.2,
-          delay: 0.5,
-        }}
-        className="
-          absolute
-          bottom-0
-          left-0
-          right-0
-          z-20
-          h-px
-          origin-left
-          bg-gradient-to-r
-          from-transparent
-          via-blue-400/50
-          to-transparent
-        "
-      />
     </section>
   );
 }

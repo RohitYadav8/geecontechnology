@@ -1,8 +1,25 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
-import { AnimatePresence, motion } from "motion/react";
-import { Quote, Star } from "lucide-react";
+import {
+  useCallback,
+  useEffect,
+  useState,
+} from "react";
+
+import {
+  AnimatePresence,
+  motion,
+} from "motion/react";
+
+import {
+  ChevronLeft,
+  ChevronRight,
+  Quote,
+  Star,
+} from "lucide-react";
+
+import { BackgroundEffects } from "../background-effects";
+import { MouseGlow } from "../mouse-glow";
 
 const AUTO_SLIDE_DURATION = 6000;
 
@@ -25,26 +42,37 @@ function getInitials(name: string) {
 }
 
 export function Testimonials() {
-  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
-  const [active, setActive] = useState(0);
-  const [isPaused, setIsPaused] = useState(false);
-  const [loading, setLoading] = useState(true);
+  const [testimonials, setTestimonials] =
+    useState<Testimonial[]>([]);
 
-  // Fetch testimonials from database
+  const [active, setActive] = useState(0);
+  const [isPaused, setIsPaused] =
+    useState(false);
+  const [loading, setLoading] =
+    useState(true);
+
   useEffect(() => {
     async function fetchTestimonials() {
       try {
-        const response = await fetch("/api/testimonials");
+        const response = await fetch(
+          "/api/testimonials"
+        );
 
         if (!response.ok) {
-          throw new Error("Failed to fetch testimonials");
+          throw new Error(
+            "Failed to fetch testimonials"
+          );
         }
 
-        const data: Testimonial[] = await response.json();
+        const data: Testimonial[] =
+          await response.json();
 
         setTestimonials(data);
       } catch (error) {
-        console.error("Testimonials fetch error:", error);
+        console.error(
+          "Testimonials fetch error:",
+          error
+        );
       } finally {
         setLoading(false);
       }
@@ -55,10 +83,11 @@ export function Testimonials() {
 
   const goTo = useCallback(
     (index: number) => {
-      if (testimonials.length === 0) return;
+      if (!testimonials.length) return;
 
       setActive(
-        (index + testimonials.length) % testimonials.length
+        (index + testimonials.length) %
+          testimonials.length
       );
     },
     [testimonials.length]
@@ -72,221 +101,335 @@ export function Testimonials() {
     goTo(active - 1);
   }, [active, goTo]);
 
-  // Auto slide
   useEffect(() => {
-    if (isPaused || testimonials.length <= 1) return;
+    if (
+      isPaused ||
+      testimonials.length <= 1
+    ) {
+      return;
+    }
 
     const timer = window.setInterval(() => {
       setActive(
         (current) =>
-          (current + 1) % testimonials.length
+          (current + 1) %
+          testimonials.length
       );
     }, AUTO_SLIDE_DURATION);
 
-    return () => window.clearInterval(timer);
+    return () =>
+      window.clearInterval(timer);
   }, [isPaused, testimonials.length]);
 
-  // Loading
-  if (loading) {
+  if (loading || !testimonials.length) {
     return null;
   }
 
-  // No testimonials
-  if (!testimonials.length) {
-    return null;
-  }
-
-  const testimonial = testimonials[active];
+  const testimonial =
+    testimonials[active];
 
   return (
-    <section className="relative overflow-hidden">
-      {/* Background Glow */}
+    <section
+      className="
+        relative
+        overflow-hidden
+        bg-white
+        py-20
+        sm:py-24
+        dark:bg-[#060b16]
+      "
+    >
+      <BackgroundEffects />
 
-      {/* Decorative circles */}
-      <div className="pointer-events-none absolute -left-24 top-20 h-56 w-56 rounded-full border border-blue-500/10" />
-
-      <div className="pointer-events-none absolute -right-24 bottom-10 h-72 w-72 rounded-full border border-cyan-500/10" />
-
-      <div className="relative mx-auto max-w-7xl px-6">
-        {/* Testimonial Area */}
+      <div className="relative mx-auto max-w-7xl px-6 sm:px-8 lg:px-10">
         <div
-          className="relative mx-auto mt-14 max-w-3xl"
-          onMouseEnter={() => setIsPaused(true)}
-          onMouseLeave={() => setIsPaused(false)}
-          onFocus={() => setIsPaused(true)}
-          onBlur={() => setIsPaused(false)}
+          className="relative mx-auto max-w-4xl"
+          onMouseEnter={() =>
+            setIsPaused(true)
+          }
+          onMouseLeave={() =>
+            setIsPaused(false)
+          }
+          onFocus={() =>
+            setIsPaused(true)
+          }
+          onBlur={() =>
+            setIsPaused(false)
+          }
         >
-          {/* Previous Button */}
-          {testimonials.length > 1 && (
-            <button
-              type="button"
-              onClick={previous}
-              aria-label="Previous testimonial"
-              className="absolute left-0 top-1/2 z-20 hidden h-10 w-10 -translate-x-5 -translate-y-1/2 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-600 shadow-lg transition-all duration-300 hover:-translate-x-6 hover:border-blue-400 hover:text-blue-600 sm:flex dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:border-blue-500 dark:hover:text-blue-400"
-            >
-              <span className="text-lg">‹</span>
-            </button>
-          )}
-
-          {/* Testimonial Card */}
-          <AnimatePresence mode="wait">
-            <motion.article
-              key={testimonial.id}
-              initial={{
-                opacity: 0,
-                y: 20,
-                scale: 0.97,
-                filter: "blur(6px)",
-              }}
-              animate={{
-                opacity: 1,
-                y: 0,
-                scale: 1,
-                filter: "blur(0px)",
-              }}
-              exit={{
-                opacity: 0,
-                y: -20,
-                scale: 0.97,
-                filter: "blur(6px)",
-              }}
-              transition={{
-                duration: 0.55,
-                ease: [0.21, 0.47, 0.32, 0.98],
-              }}
-              className="group relative overflow-hidden rounded-3xl border border-slate-200/70 bg-white/80 p-7 shadow-xl shadow-slate-900/5 backdrop-blur-xl sm:p-10 dark:border-white/10 dark:bg-slate-900/70 dark:shadow-black/30"
-            >
-              {/* Top Gradient Line */}
-              <div className="absolute inset-x-0 top-0 h-1 bg-gradient-to-r from-blue-500 via-cyan-400 to-blue-600" />
-
-              {/* Quote Icon */}
-              <Quote
-                size={90}
-                strokeWidth={1}
-                className="pointer-events-none absolute -right-5 -top-5 rotate-6 text-blue-500/5 transition-transform duration-500 group-hover:rotate-12 dark:text-blue-400/10"
-              />
-
-              {/* Rating */}
-              <div
-                className="relative flex justify-center gap-1 text-amber-400"
-                aria-label="5 out of 5 stars"
+          <MouseGlow>
+            <AnimatePresence mode="wait">
+              <motion.article
+                key={testimonial.id}
+                initial={{
+                  opacity: 0,
+                  y: 20,
+                  scale: 0.98,
+                  filter: "blur(5px)",
+                }}
+                animate={{
+                  opacity: 1,
+                  y: 0,
+                  scale: 1,
+                  filter: "blur(0px)",
+                }}
+                exit={{
+                  opacity: 0,
+                  y: -15,
+                  scale: 0.98,
+                  filter: "blur(5px)",
+                }}
+                transition={{
+                  duration: 0.5,
+                }}
+                className="
+                  group
+                  relative
+                  overflow-hidden
+                  rounded-[30px]
+                  border
+                  border-slate-200
+                  bg-white/85
+                  px-7
+                  py-10
+                  shadow-[0_30px_100px_-45px_rgba(15,23,42,.4)]
+                  backdrop-blur-xl
+                  sm:px-12
+                  sm:py-12
+                  dark:border-white/[0.08]
+                  dark:bg-white/[0.035]
+                "
               >
-                {Array.from({ length: 5 }).map((_, index) => (
-                  <Star
-                    key={index}
-                    size={17}
-                    fill="currentColor"
-                    strokeWidth={0}
-                  />
-                ))}
-              </div>
+                <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-transparent via-blue-500 to-transparent" />
 
-              {/* Quote */}
-              <p className="relative mx-auto mt-7 max-w-2xl text-center text-base leading-8 text-slate-600 dark:text-slate-300 sm:text-lg sm:leading-9">
-                &ldquo;{testimonial.quote}&rdquo;
-              </p>
+                <Quote
+                  size={120}
+                  strokeWidth={0.8}
+                  className="
+                    pointer-events-none
+                    absolute
+                    -right-8
+                    -top-9
+                    rotate-6
+                    text-blue-500/[0.04]
+                    transition-transform
+                    duration-500
+                    group-hover:rotate-12
+                    dark:text-blue-400/[0.08]
+                  "
+                />
 
-              {/* Client */}
-              <div className="relative mt-8 flex items-center justify-center gap-4 border-t border-slate-200/70 pt-7 dark:border-white/10">
-                {/* Avatar */}
-                <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#1a2b4a] to-blue-600 text-sm font-bold text-white shadow-lg shadow-blue-500/20">
-                  {getInitials(testimonial.name)}
+                <div className="flex justify-center gap-1 text-amber-400">
+                  {Array.from({
+                    length: 5,
+                  }).map((_, index) => (
+                    <Star
+                      key={index}
+                      size={17}
+                      fill="currentColor"
+                      strokeWidth={0}
+                    />
+                  ))}
                 </div>
 
-                {/* Client Info */}
-                <div className="text-left">
-                  <p className="text-sm font-semibold text-slate-900 dark:text-white">
-                    {testimonial.name}
-                  </p>
+                <p
+                  className="
+                    relative
+                    mx-auto
+                    mt-7
+                    max-w-3xl
+                    text-center
+                    text-base
+                    leading-8
+                    text-slate-600
+                    sm:text-lg
+                    sm:leading-9
+                    dark:text-slate-300
+                  "
+                >
+                  &ldquo;
+                  {testimonial.quote}
+                  &rdquo;
+                </p>
 
-                  <div className="mt-1 flex items-center gap-2">
-                    <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                <div className="relative mt-9 flex items-center justify-center gap-4 border-t border-slate-200 pt-7 dark:border-white/[0.08]">
+                  <div
+                    className="
+                      flex
+                      h-12
+                      w-12
+                      items-center
+                      justify-center
+                      rounded-full
+                      bg-gradient-to-br
+                      from-[#1a2b4a]
+                      to-blue-600
+                      text-sm
+                      font-bold
+                      text-white
+                      shadow-lg
+                      shadow-blue-500/20
+                    "
+                  >
+                    {getInitials(
+                      testimonial.name
+                    )}
+                  </div>
+
+                  <div>
+                    <p className="text-sm font-semibold text-slate-950 dark:text-white">
+                      {testimonial.name}
+                    </p>
+
+                    <div className="mt-2 flex items-center gap-2">
+                      <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
+                    </div>
                   </div>
                 </div>
-              </div>
-            </motion.article>
-          </AnimatePresence>
+              </motion.article>
+            </AnimatePresence>
+          </MouseGlow>
 
-          {/* Next Button */}
           {testimonials.length > 1 && (
-            <button
-              type="button"
-              onClick={next}
-              aria-label="Next testimonial"
-              className="absolute right-0 top-1/2 z-20 hidden h-10 w-10 translate-x-5 -translate-y-1/2 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-600 shadow-lg transition-all duration-300 hover:translate-x-6 hover:border-blue-400 hover:text-blue-600 sm:flex dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:border-blue-500 dark:hover:text-blue-400"
-            >
-              <span className="text-lg">›</span>
-            </button>
+            <>
+              <button
+                type="button"
+                onClick={previous}
+                aria-label="Previous testimonial"
+                className="
+                  absolute
+                  left-0
+                  top-1/2
+                  z-20
+                  hidden
+                  h-11
+                  w-11
+                  -translate-x-1/2
+                  -translate-y-1/2
+                  items-center
+                  justify-center
+                  rounded-full
+                  border
+                  border-slate-200
+                  bg-white
+                  text-slate-600
+                  shadow-lg
+                  transition-all
+                  hover:-translate-x-[55%]
+                  hover:border-blue-400
+                  hover:text-blue-600
+                  sm:flex
+                  dark:border-white/[0.08]
+                  dark:bg-[#0b1220]
+                  dark:text-slate-300
+                "
+              >
+                <ChevronLeft size={18} />
+              </button>
+
+              <button
+                type="button"
+                onClick={next}
+                aria-label="Next testimonial"
+                className="
+                  absolute
+                  right-0
+                  top-1/2
+                  z-20
+                  hidden
+                  h-11
+                  w-11
+                  translate-x-1/2
+                  -translate-y-1/2
+                  items-center
+                  justify-center
+                  rounded-full
+                  border
+                  border-slate-200
+                  bg-white
+                  text-slate-600
+                  shadow-lg
+                  transition-all
+                  hover:translate-x-[55%]
+                  hover:border-blue-400
+                  hover:text-blue-600
+                  sm:flex
+                  dark:border-white/[0.08]
+                  dark:bg-[#0b1220]
+                  dark:text-slate-300
+                "
+              >
+                <ChevronRight size={18} />
+              </button>
+            </>
           )}
         </div>
 
-        {/* Mobile Navigation */}
-        {testimonials.length > 1 && (
-          <div className="mt-8 flex justify-center gap-2 sm:hidden">
-            <button
-              type="button"
-              onClick={previous}
-              aria-label="Previous testimonial"
-              className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-600 shadow-sm dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300"
-            >
-              ‹
-            </button>
-
-            <button
-              type="button"
-              onClick={next}
-              aria-label="Next testimonial"
-              className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-600 shadow-sm dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300"
-            >
-              ›
-            </button>
-          </div>
-        )}
-
-        {/* Progress Indicators */}
         {testimonials.length > 1 && (
           <div className="mt-8 flex justify-center gap-2">
-            {testimonials.map((item, index) => (
-              <button
-                key={item.id}
-                type="button"
-                onClick={() => goTo(index)}
-                aria-label={`Go to testimonial ${index + 1}`}
-                aria-current={
-                  index === active ? "true" : undefined
-                }
-                className={`relative h-2 overflow-hidden rounded-full transition-all duration-300 ${
-                  index === active
-                    ? "w-10 bg-slate-300 dark:bg-slate-700"
-                    : "w-2 bg-slate-300 hover:bg-blue-400 dark:bg-slate-700 dark:hover:bg-blue-500"
-                }`}
-              >
-                {index === active && (
-                  <motion.span
-                    key={`${active}-${isPaused}`}
-                    initial={{ width: "0%" }}
-                    animate={{
-                      width: isPaused ? "0%" : "100%",
-                    }}
-                    transition={{
-                      duration: isPaused
-                        ? 0
-                        : AUTO_SLIDE_DURATION / 1000,
-                      ease: "linear",
-                    }}
-                    className="absolute inset-y-0 left-0 rounded-full bg-[#1a2b4a] dark:bg-blue-400"
-                  />
-                )}
-              </button>
-            ))}
+            {testimonials.map(
+              (item, index) => (
+                <button
+                  key={item.id}
+                  type="button"
+                  onClick={() =>
+                    goTo(index)
+                  }
+                  aria-label={`Go to testimonial ${
+                    index + 1
+                  }`}
+                  className={`
+                    relative
+                    h-1.5
+                    overflow-hidden
+                    rounded-full
+                    bg-slate-200
+                    transition-all
+                    dark:bg-white/10
+                    ${
+                      index === active
+                        ? "w-12"
+                        : "w-4"
+                    }
+                  `}
+                >
+                  {index === active && (
+                    <motion.span
+                      key={`${active}-${isPaused}`}
+                      initial={{
+                        width: "0%",
+                      }}
+                      animate={{
+                        width: isPaused
+                          ? "0%"
+                          : "100%",
+                      }}
+                      transition={{
+                        duration: isPaused
+                          ? 0
+                          : AUTO_SLIDE_DURATION /
+                            1000,
+                        ease: "linear",
+                      }}
+                      className="absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-blue-600 to-cyan-400"
+                    />
+                  )}
+                </button>
+              )
+            )}
           </div>
         )}
 
-        {/* Counter */}
         {testimonials.length > 1 && (
-          <p className="mt-4 text-center text-xs font-medium tracking-wider text-slate-400 dark:text-slate-500">
-            {String(active + 1).padStart(2, "0")} /{" "}
-            {String(testimonials.length).padStart(2, "0")}
+          <p className="mt-4 text-center font-mono text-[11px] tracking-wider text-slate-400">
+            {String(active + 1).padStart(
+              2,
+              "0"
+            )}{" "}
+            /{" "}
+            {String(
+              testimonials.length
+            ).padStart(2, "0")}
           </p>
         )}
       </div>
