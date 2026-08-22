@@ -1,142 +1,263 @@
 import { NextRequest, NextResponse } from "next/server";
-import { writeFile, mkdir } from "fs/promises";
+
+import { mkdir, writeFile } from "fs/promises";
 import path from "path";
 import { randomUUID } from "crypto";
 
 import { prisma } from "../../../../../lib/prisma";
 import { getAdminFromRequest } from "../../../../../lib/require-admin";
 
+const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10 MB
+
+const ALLOWED_MIME_TYPES = [
+  "image/jpeg",
+  "image/png",
+  "image/webp",
+  "image/gif",
+  "image/svg+xml",
+  "application/pdf",
+];
+
 function getFileType(mimeType: string): string {
-    if (mimeType.startsWith("image/")) return "IMAGE";
+  if (mimeType.startsWith("image/")) {
+    return "IMAGE";
+  }
 
-    if (mimeType === "application/pdf") {
-        return "DOCUMENT";
-    }
+  if (mimeType === "application/pdf") {
+    return "DOCUMENT";
+  }
 
-    return "OTHER";
+  return "OTHER";
 }
+
+// =========================================================
+// GET MEDIA
+// Example:
+// /api/admin/media
+// /api/admin/media?type=IMAGE
+// =========================================================
 
 export async function GET(request: NextRequest) {
-    const admin = getAdminFromRequest(request);
+  const admin = getAdminFromRequest(request);
 
-    if (!admin) {
-        return NextResponse.json(
-            { error: "Unauthorized" },
-            { status: 401 }
-        );
-    }
+  if (!admin) {
+    return NextResponse.json(
+      {
+        error: "Unauthorized",
+      },
+      {
+        status: 401,
+      }
+    );
+  }
 
-    try {
-        const { searchParams } = new URL(request.url);
-        const type = searchParams.get("type");
+  try {
+    const { searchParams } = new URL(request.url);
 
-        const media = await prisma.media.findMany({
-            where: type ? { type } : undefined,
-            orderBy: {
-                createdAt: "desc",
-            },
-        });
+    const type = searchParams.get("type");
 
-        return NextResponse.json(media);
-    } catch (error) {
-        console.error("GET media error:", error);
+    const media = await prisma.media.findMany({
+      where: type
+        ? {
+            type,
+          }
+        : undefined,
 
-        return NextResponse.json(
-            {
-                error: "Failed to fetch media.",
-            },
-            { status: 500 }
-        );
-    }
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+
+    return NextResponse.json(media);
+  } catch (error) {
+    console.error("GET media error:", error);
+
+    return NextResponse.json(
+      {
+        error: "Failed to fetch media.",
+      },
+      {
+        status: 500,
+      }
+    );
+  }
 }
 
+// =========================================================
+// UPLOAD MEDIA
+// =========================================================
+
 export async function POST(request: NextRequest) {
-    const admin = getAdminFromRequest(request);
+  const admin = getAdminFromRequest(request);
 
-    if (!admin) {
-        return NextResponse.json(
-            { error: "Unauthorized" },
-            { status: 401 }
-        );
-    }
+  if (!admin) {
+    return NextResponse.json(
+      {
+        error: "Unauthorized",
+      },
+      {
+        status: 401,
+      }
+    );
+  }
 
-    try {
-        const formData = await request.formData();
+  try {
+    const formData = await request.formData();
 
-        const file = formData.get("file") as File | null;
-        const folderValue = formData.get("folder");
-        const altTextValue = formData.get("altText");
+    const file = formData.get("file");
 
-        const folder =
-            typeof folderValue === "string"
-                ? folderValue.trim()
-                : null;
+    const folderValue = formData.get("folder");
 
-        const altText =
-            typeof altTextValue === "string"
-                ? altTextValue.trim()
-                : null;
+    const altTextValue = formData.get("altText");
 
-        if (!file || file.size === 0) {
-            return NextResponse.json(
-                {
-                    error: "No file provided.",
-                },
-                { status: 400 }
-            );
+    if (!(file instanceof File) || file.size === 0) {
+      return NextResponse.json(
+        {
+          error: "No file provided.",
+        },
+        {
+          status: 400,
         }
-
-        const bytes = await file.arrayBuffer();
-        const buffer = Buffer.from(bytes);
-
-        const uploadsDir = path.join(
-            process.cwd(),
-            "public",
-            "uploads",
-            "media"
-        );
-
-        await mkdir(uploadsDir, {
-            recursive: true,
-        });
-
-        const originalName = file.name;
-
-        const safeName = `${Date.now()}-${originalName.replace(
-            /[^a-zA-Z0-9._-]/g,
-            "_"
-        )}`;
-
-        const filePath = path.join(
-            uploadsDir,
-            safeName
-        );
-
-        await writeFile(filePath, buffer);
-
-        const media = await prisma.media.create({
-            data: {
-                id: randomUUID(),
-                fileName: originalName,
-                url: `/uploads/media/${safeName}`,
-                type: getFileType(file.type),
-                folder: folder || null,
-                altText: altText || null,
-                updatedAt: new Date(),
-            },
-        });
-
-        return NextResponse.json(media, {
-            status: 201,
-        });
-    } catch (error) {
-        console.error("Media upload error:", error);
-
-        return NextResponse.json(
-            {
-                error: "Something went wrong during upload.",
-            },
-            { status: 500 }
-        );
+      );
     }
+
+    // -----------------------------------------------------
+    // FILE TYPE VALIDATION
+    // -----------------------------------------------------
+
+    if (!ALLOWED_MIME_TYPES.includes(file.type)) {
+      return NextResponse.json(
+        {
+          error:
+            "Unsupported file type. Please upload an image or PDF.",
+        },
+        {
+          status: 400,
+        }
+      );
+    }
+
+    // -----------------------------------------------------
+    // FILE SIZE VALIDATION
+    // -----------------------------------------------------
+
+    if (file.size > MAX_FILE_SIZE) {
+      return NextResponse.json(
+        {
+          error: "File size must be less than 10 MB.",
+        },
+        {
+          status: 400,
+        }
+      );
+    }
+
+    // -----------------------------------------------------
+    // OPTIONAL VALUES
+    // -----------------------------------------------------
+
+    const folder =
+      typeof folderValue === "string"
+        ? folderValue.trim()
+        : null;
+
+    const altText =
+      typeof altTextValue === "string"
+        ? altTextValue.trim()
+        : null;
+
+    // -----------------------------------------------------
+    // CONVERT FILE TO BUFFER
+    // -----------------------------------------------------
+
+    const bytes = await file.arrayBuffer();
+
+    const buffer = Buffer.from(bytes);
+
+    // -----------------------------------------------------
+    // CREATE UPLOAD DIRECTORY
+    // public/uploads/media
+    // -----------------------------------------------------
+
+    const uploadsDir = path.join(
+      process.cwd(),
+      "public",
+      "uploads",
+      "media"
+    );
+
+    await mkdir(uploadsDir, {
+      recursive: true,
+    });
+
+    // -----------------------------------------------------
+    // SAFE FILE NAME
+    // -----------------------------------------------------
+
+    const originalName = file.name;
+
+    const sanitizedName = originalName.replace(
+      /[^a-zA-Z0-9._-]/g,
+      "_"
+    );
+
+    const safeName = `${Date.now()}-${randomUUID()}-${sanitizedName}`;
+
+    // -----------------------------------------------------
+    // SAVE ACTUAL FILE
+    // -----------------------------------------------------
+
+    const filePath = path.join(
+      uploadsDir,
+      safeName
+    );
+
+    await writeFile(filePath, buffer);
+
+    // -----------------------------------------------------
+    // PUBLIC URL
+    // -----------------------------------------------------
+
+    const mediaUrl = `/uploads/media/${safeName}`;
+
+    // -----------------------------------------------------
+    // SAVE MEDIA RECORD
+    // -----------------------------------------------------
+
+    const media = await prisma.media.create({
+      data: {
+        id: randomUUID(),
+
+        fileName: originalName,
+
+        url: mediaUrl,
+
+        type: getFileType(file.type),
+
+        folder: folder || null,
+
+        altText: altText || null,
+
+        updatedAt: new Date(),
+      },
+    });
+
+    return NextResponse.json(
+      media,
+      {
+        status: 201,
+      }
+    );
+  } catch (error) {
+    console.error("Media upload error:", error);
+
+    return NextResponse.json(
+      {
+        error: "Something went wrong during upload.",
+      },
+      {
+        status: 500,
+      }
+    );
+  }
 }

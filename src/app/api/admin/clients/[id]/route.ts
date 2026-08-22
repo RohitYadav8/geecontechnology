@@ -1,5 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
+
 import { prisma } from "../../../../../../lib/prisma";
+import { getAdminFromRequest } from "../../../../../../lib/require-admin";
 
 type RouteContext = {
   params: Promise<{
@@ -12,6 +14,15 @@ export async function PUT(
   request: NextRequest,
   { params }: RouteContext
 ) {
+  const admin = getAdminFromRequest(request);
+
+  if (!admin) {
+    return NextResponse.json(
+      { error: "Unauthorized" },
+      { status: 401 }
+    );
+  }
+
   try {
     const { id } = await params;
 
@@ -35,7 +46,11 @@ export async function PUT(
       order,
     } = body;
 
-    if (!name?.trim() || !logo?.trim() || !category?.trim()) {
+    if (
+      !name?.trim() ||
+      !logo?.trim() ||
+      !category?.trim()
+    ) {
       return NextResponse.json(
         {
           error: "Name, logo and category are required.",
@@ -48,6 +63,7 @@ export async function PUT(
       where: {
         id: clientId,
       },
+
       data: {
         name: name.trim(),
         logo: logo.trim(),
@@ -55,6 +71,7 @@ export async function PUT(
         featured: featured ?? false,
         isActive: isActive ?? true,
         order: Number(order) || 0,
+        updatedAt: new Date(),
       },
     });
 
@@ -73,9 +90,18 @@ export async function PUT(
 
 // DELETE CLIENT
 export async function DELETE(
-  _request: NextRequest,
+  request: NextRequest,
   { params }: RouteContext
 ) {
+  const admin = getAdminFromRequest(request);
+
+  if (!admin) {
+    return NextResponse.json(
+      { error: "Unauthorized" },
+      { status: 401 }
+    );
+  }
+
   try {
     const { id } = await params;
 

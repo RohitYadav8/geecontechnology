@@ -1,7 +1,18 @@
 import { NextRequest, NextResponse } from "next/server";
-import { prisma } from "../../../../../lib/prisma";
 
-export async function GET() {
+import { prisma } from "../../../../../lib/prisma";
+import { getAdminFromRequest } from "../../../../../lib/require-admin";
+
+export async function GET(request: NextRequest) {
+  const admin = getAdminFromRequest(request);
+
+  if (!admin) {
+    return NextResponse.json(
+      { error: "Unauthorized" },
+      { status: 401 }
+    );
+  }
+
   try {
     const clients = await prisma.client.findMany({
       orderBy: {
@@ -21,6 +32,15 @@ export async function GET() {
 }
 
 export async function POST(request: NextRequest) {
+  const admin = getAdminFromRequest(request);
+
+  if (!admin) {
+    return NextResponse.json(
+      { error: "Unauthorized" },
+      { status: 401 }
+    );
+  }
+
   try {
     const body = await request.json();
 
@@ -33,7 +53,11 @@ export async function POST(request: NextRequest) {
       order,
     } = body;
 
-    if (!name?.trim() || !logo?.trim() || !category?.trim()) {
+    if (
+      !name?.trim() ||
+      !logo?.trim() ||
+      !category?.trim()
+    ) {
       return NextResponse.json(
         {
           error: "Name, logo and category are required.",
@@ -68,4 +92,3 @@ export async function POST(request: NextRequest) {
     );
   }
 }
-

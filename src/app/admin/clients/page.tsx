@@ -1,13 +1,22 @@
 "use client";
 
-import { FormEvent, useCallback, useEffect, useState } from "react";
+import {
+  FormEvent,
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+} from "react";
+
 import {
   Check,
   Eye,
   EyeOff,
+  ImageIcon,
   Pencil,
   Plus,
   RefreshCw,
+  Search,
   Star,
   Trash2,
   X,
@@ -31,6 +40,18 @@ type Client = {
   order: number;
   createdAt: string;
   updatedAt: string;
+};
+
+type MediaItem = {
+  id: string;
+  fileName: string;
+  url: string;
+  type: string;
+  folder: string | null;
+  altText: string | null;
+  relatedId?: string | null;
+  createdAt: string;
+  updatedAt?: string;
 };
 
 type FormData = {
@@ -73,6 +94,12 @@ export default function ClientsAdminPage() {
 
   const [form, setForm] = useState<FormData>(initialForm);
 
+  // Media Library
+  const [mediaOpen, setMediaOpen] = useState(false);
+  const [mediaItems, setMediaItems] = useState<MediaItem[]>([]);
+  const [mediaLoading, setMediaLoading] = useState(false);
+  const [mediaSearch, setMediaSearch] = useState("");
+
   // ----------------------------------------
   // FETCH CLIENTS
   // ----------------------------------------
@@ -93,7 +120,7 @@ export default function ClientsAdminPage() {
         throw new Error(data.error || "Failed to fetch clients");
       }
 
-      setClients(data);
+      setClients(Array.isArray(data) ? data : []);
     } catch (error) {
       console.error("Clients fetch error:", error);
 
@@ -110,6 +137,45 @@ export default function ClientsAdminPage() {
   useEffect(() => {
     fetchClients();
   }, [fetchClients]);
+
+  // ----------------------------------------
+  // FETCH MEDIA LIBRARY
+  // ----------------------------------------
+
+  const fetchMedia = useCallback(async () => {
+    try {
+      setMediaLoading(true);
+      setError("");
+
+      const response = await fetch(
+        "/api/admin/media?type=IMAGE",
+        {
+          method: "GET",
+          cache: "no-store",
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.error || "Failed to fetch media");
+      }
+
+      setMediaItems(Array.isArray(data) ? data : []);
+    } catch (error) {
+      console.error("Media fetch error:", error);
+
+      setError(
+        error instanceof Error
+          ? error.message
+          : "Failed to fetch media"
+      );
+
+      setMediaOpen(false);
+    } finally {
+      setMediaLoading(false);
+    }
+  }, []);
 
   // ----------------------------------------
   // FORM CHANGE
@@ -135,6 +201,8 @@ export default function ClientsAdminPage() {
     setError("");
     setSuccess("");
     setShowForm(true);
+    setMediaOpen(false);
+    setMediaSearch("");
   };
 
   // ----------------------------------------
@@ -173,7 +241,69 @@ export default function ClientsAdminPage() {
     setShowForm(false);
     setEditingId(null);
     setForm(initialForm);
+    setMediaOpen(false);
+    setMediaSearch("");
   };
+
+  // ----------------------------------------
+  // OPEN MEDIA LIBRARY
+  // ----------------------------------------
+
+  const openMediaLibrary = async () => {
+    setMediaOpen(true);
+    setMediaSearch("");
+
+    if (mediaItems.length === 0) {
+      await fetchMedia();
+    }
+  };
+
+  // ----------------------------------------
+  // CLOSE MEDIA LIBRARY
+  // ----------------------------------------
+
+  const closeMediaLibrary = () => {
+    setMediaOpen(false);
+    setMediaSearch("");
+  };
+
+  // ----------------------------------------
+  // SELECT MEDIA
+  // ----------------------------------------
+
+  const selectMedia = (media: MediaItem) => {
+    setForm((previous) => ({
+      ...previous,
+      logo: media.url,
+    }));
+
+    setMediaOpen(false);
+    setMediaSearch("");
+  };
+
+  // ----------------------------------------
+  // FILTER MEDIA
+  // ----------------------------------------
+
+  const filteredMedia = useMemo(() => {
+    const search = mediaSearch.trim().toLowerCase();
+
+    if (!search) {
+      return mediaItems;
+    }
+
+    return mediaItems.filter((media) => {
+      const fileName = media.fileName.toLowerCase();
+      const altText = media.altText?.toLowerCase() ?? "";
+      const folder = media.folder?.toLowerCase() ?? "";
+
+      return (
+        fileName.includes(search) ||
+        altText.includes(search) ||
+        folder.includes(search)
+      );
+    });
+  }, [mediaItems, mediaSearch]);
 
   // ----------------------------------------
   // SUBMIT
@@ -193,7 +323,7 @@ export default function ClientsAdminPage() {
     }
 
     if (!form.logo.trim()) {
-      setError("Logo path is required.");
+      setError("Please choose a logo from Media Library.");
       return;
     }
 
@@ -260,6 +390,8 @@ export default function ClientsAdminPage() {
       setShowForm(false);
       setEditingId(null);
       setForm(initialForm);
+      setMediaOpen(false);
+      setMediaSearch("");
     } catch (error) {
       console.error(
         editingId
@@ -469,9 +601,7 @@ export default function ClientsAdminPage() {
             >
               <RefreshCw
                 size={16}
-                className={
-                  loading ? "animate-spin" : ""
-                }
+                className={loading ? "animate-spin" : ""}
               />
 
               Refresh
@@ -580,59 +710,79 @@ export default function ClientsAdminPage() {
                 />
               </div>
 
-              {/* LOGO */}
+              {/* CLIENT LOGO */}
 
               <div>
                 <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
-                  Logo Path *
+                  Client Logo *
                 </label>
 
-                <input
-                  type="text"
-                  value={form.logo}
-                  onChange={(event) =>
-                    handleChange(
-                      "logo",
-                      event.target.value
-                    )
-                  }
-                  required
-                  placeholder="/cisco-logo.png"
-                  className="w-full rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
-                />
+                <div
+                  role="button"
+                  tabIndex={0}
+                  onClick={openMediaLibrary}
+                  onKeyDown={(event) => {
+                    if (
+                      event.key === "Enter" ||
+                      event.key === " "
+                    ) {
+                      event.preventDefault();
+                      openMediaLibrary();
+                    }
+                  }}
+                  className="group cursor-pointer rounded-xl border border-dashed border-slate-300 bg-slate-50 p-5 transition hover:border-blue-400 hover:bg-blue-50/50 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-slate-700 dark:bg-slate-950 dark:hover:border-blue-500 dark:hover:bg-blue-950/20"
+                >
+                  {form.logo ? (
+                    <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
+                      <div className="flex h-24 w-32 shrink-0 items-center justify-center rounded-xl border border-slate-200 bg-white p-3 dark:border-slate-700 dark:bg-slate-900">
+                        <img
+                          src={form.logo}
+                          alt="Selected client logo"
+                          className="max-h-16 max-w-full object-contain"
+                        />
+                      </div>
 
-                <p className="mt-1 text-xs text-slate-400">
-                  Example: /cisco-logo.png
-                </p>
-              </div>
+                      <div className="min-w-0">
+                        <div className="flex items-center gap-2">
+                          <div className="flex h-6 w-6 items-center justify-center rounded-full bg-emerald-100 text-emerald-600 dark:bg-emerald-950/50 dark:text-emerald-400">
+                            <Check size={13} />
+                          </div>
 
-              {/* LOGO PREVIEW */}
+                          <p className="text-sm font-semibold text-slate-800 dark:text-white">
+                            Logo selected
+                          </p>
+                        </div>
 
-              {form.logo.trim() && (
-                <div className="rounded-xl border border-slate-200 bg-slate-50 p-4 dark:border-slate-700 dark:bg-slate-950">
-                  <p className="mb-3 text-xs font-medium text-slate-500 dark:text-slate-400">
-                    Logo Preview
-                  </p>
+                        <p className="mt-2 max-w-xl truncate text-xs text-slate-500 dark:text-slate-400">
+                          {form.logo}
+                        </p>
 
-                  <div className="flex h-28 items-center justify-center rounded-lg bg-white p-4 dark:bg-slate-900">
-                    <img
-                      src={form.logo}
-                      alt="Logo preview"
-                      className="max-h-20 max-w-[220px] object-contain"
-                      onError={(event) => {
-                        event.currentTarget.style.display =
-                          "none";
-                      }}
-                    />
-                  </div>
+                        <p className="mt-2 text-xs font-medium text-blue-600 dark:text-blue-400">
+                          Click to choose another image from Media Library
+                        </p>
+                      </div>
+                    </div>
+                  ) : (
+                    <div className="flex min-h-28 flex-col items-center justify-center text-center">
+                      <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 text-blue-600 transition group-hover:scale-105 dark:bg-blue-950/40 dark:text-blue-400">
+                        <ImageIcon size={21} />
+                      </div>
+
+                      <p className="mt-3 text-sm font-medium text-slate-700 dark:text-slate-300">
+                        Choose logo from Media Library
+                      </p>
+
+                      <p className="mt-1 text-xs text-slate-400">
+                        Click anywhere in this area to select an image
+                      </p>
+                    </div>
+                  )}
                 </div>
-              )}
+              </div>
 
               {/* CATEGORY + ORDER */}
 
               <div className="grid gap-5 sm:grid-cols-2">
-
-                {/* CATEGORY */}
 
                 <div>
                   <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
@@ -660,8 +810,6 @@ export default function ClientsAdminPage() {
                   </select>
                 </div>
 
-                {/* ORDER */}
-
                 <div>
                   <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
                     Display Order
@@ -686,8 +834,6 @@ export default function ClientsAdminPage() {
 
               <div className="grid gap-4 sm:grid-cols-2">
 
-                {/* FEATURED */}
-
                 <label className="flex cursor-pointer items-center justify-between rounded-lg border border-slate-200 bg-slate-50 px-4 py-3 dark:border-slate-700 dark:bg-slate-950">
                   <div>
                     <p className="text-sm font-medium text-slate-700 dark:text-slate-300">
@@ -711,8 +857,6 @@ export default function ClientsAdminPage() {
                     className="h-5 w-5 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
                   />
                 </label>
-
-                {/* ACTIVE */}
 
                 <label className="flex cursor-pointer items-center justify-between rounded-lg border border-slate-200 bg-slate-50 px-4 py-3 dark:border-slate-700 dark:bg-slate-950">
                   <div>
@@ -775,16 +919,173 @@ export default function ClientsAdminPage() {
         )}
 
         {/* -------------------------------- */}
+        {/* MEDIA LIBRARY MODAL */}
+        {/* -------------------------------- */}
+
+        {mediaOpen && (
+          <div
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-black/55 p-4 backdrop-blur-sm"
+            onMouseDown={(event) => {
+              if (event.target === event.currentTarget) {
+                closeMediaLibrary();
+              }
+            }}
+          >
+            <div className="flex max-h-[88vh] w-full max-w-5xl flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl dark:border-slate-800 dark:bg-slate-900">
+
+              {/* MODAL HEADER */}
+
+              <div className="flex items-center justify-between border-b border-slate-200 px-6 py-4 dark:border-slate-800">
+                <div>
+                  <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
+                    Select Client Logo
+                  </h2>
+
+                  <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
+                    Choose an image from your Media Library.
+                  </p>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={closeMediaLibrary}
+                  className="rounded-lg p-2 text-slate-500 transition hover:bg-slate-100 hover:text-slate-700 dark:hover:bg-slate-800 dark:hover:text-slate-200"
+                >
+                  <X size={19} />
+                </button>
+              </div>
+
+              {/* SEARCH */}
+
+              <div className="border-b border-slate-200 p-5 dark:border-slate-800">
+                <div className="relative">
+                  <Search
+                    size={16}
+                    className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"
+                  />
+
+                  <input
+                    type="text"
+                    value={mediaSearch}
+                    onChange={(event) =>
+                      setMediaSearch(event.target.value)
+                    }
+                    placeholder="Search by file name, alt text or folder..."
+                    className="w-full rounded-lg border border-slate-200 bg-white py-2.5 pl-10 pr-4 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+                  />
+                </div>
+              </div>
+
+              {/* MEDIA CONTENT */}
+
+              <div className="overflow-y-auto p-5">
+                {mediaLoading ? (
+                  <div className="flex min-h-72 flex-col items-center justify-center gap-3 text-sm text-slate-500 dark:text-slate-400">
+                    <RefreshCw
+                      size={24}
+                      className="animate-spin text-blue-600"
+                    />
+
+                    Loading Media Library...
+                  </div>
+                ) : filteredMedia.length === 0 ? (
+                  <div className="flex min-h-72 flex-col items-center justify-center text-center">
+                    <div className="flex h-14 w-14 items-center justify-center rounded-full bg-slate-100 text-slate-400 dark:bg-slate-800">
+                      <ImageIcon size={25} />
+                    </div>
+
+                    <h3 className="mt-4 text-sm font-semibold text-slate-800 dark:text-white">
+                      {mediaSearch
+                        ? "No matching images found"
+                        : "No images available"}
+                    </h3>
+
+                    <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
+                      {mediaSearch
+                        ? "Try another search term."
+                        : "Upload images from Media Library first."}
+                    </p>
+                  </div>
+                ) : (
+                  <>
+                    <div className="mb-4 flex items-center justify-between">
+                      <p className="text-xs text-slate-500 dark:text-slate-400">
+                        {filteredMedia.length} image
+                        {filteredMedia.length !== 1 ? "s" : ""}
+                      </p>
+
+                      {form.logo && (
+                        <p className="text-xs font-medium text-blue-600 dark:text-blue-400">
+                          Current logo is highlighted
+                        </p>
+                      )}
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
+                      {filteredMedia.map((media) => {
+                        const selected =
+                          form.logo === media.url;
+
+                        return (
+                          <button
+                            type="button"
+                            key={media.id}
+                            onClick={() =>
+                              selectMedia(media)
+                            }
+                            className={`group relative overflow-hidden rounded-xl border bg-white text-left shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md dark:bg-slate-950 ${
+                              selected
+                                ? "border-blue-500 ring-2 ring-blue-500/20"
+                                : "border-slate-200 hover:border-blue-300 dark:border-slate-700 dark:hover:border-blue-500"
+                            }`}
+                          >
+                            <div className="relative flex h-28 items-center justify-center overflow-hidden bg-slate-100 p-3 dark:bg-slate-800">
+                              <img
+                                src={media.url}
+                                alt={
+                                  media.altText ||
+                                  media.fileName
+                                }
+                                className="max-h-full max-w-full object-contain transition-transform duration-200 group-hover:scale-105"
+                              />
+
+                              {selected && (
+                                <div className="absolute right-2 top-2 flex h-6 w-6 items-center justify-center rounded-full bg-blue-600 text-white shadow-md">
+                                  <Check size={14} />
+                                </div>
+                              )}
+                            </div>
+
+                            <div className="p-2.5">
+                              <p className="truncate text-xs font-medium text-slate-700 dark:text-slate-300">
+                                {media.fileName}
+                              </p>
+
+                              {media.folder && (
+                                <p className="mt-1 truncate text-[10px] text-slate-400">
+                                  {media.folder}
+                                </p>
+                              )}
+                            </div>
+                          </button>
+                        );
+                      })}
+                    </div>
+                  </>
+                )}
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* -------------------------------- */}
         {/* CLIENT LIST */}
         {/* -------------------------------- */}
 
         <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
 
-          {/* LIST HEADER */}
-
           <div className="border-b border-slate-200 px-6 py-4 dark:border-slate-800">
             <div className="flex items-center justify-between">
-
               <div>
                 <h2 className="font-semibold text-slate-900 dark:text-white">
                   All Clients
@@ -792,16 +1093,11 @@ export default function ClientsAdminPage() {
 
                 <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
                   {clients.length} client
-                  {clients.length !== 1
-                    ? "s"
-                    : ""}
+                  {clients.length !== 1 ? "s" : ""}
                 </p>
               </div>
-
             </div>
           </div>
-
-          {/* LOADING */}
 
           {loading ? (
             <div className="flex min-h-60 items-center justify-center">
@@ -815,10 +1111,7 @@ export default function ClientsAdminPage() {
               </div>
             </div>
           ) : clients.length === 0 ? (
-            /* EMPTY */
-
             <div className="flex min-h-60 flex-col items-center justify-center px-6 text-center">
-
               <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-blue-50 text-blue-600 dark:bg-blue-950/40 dark:text-blue-400">
                 <Star size={25} />
               </div>
@@ -838,12 +1131,11 @@ export default function ClientsAdminPage() {
                 className="mt-5 inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700"
               >
                 <Plus size={16} />
+
                 Add Client
               </button>
             </div>
           ) : (
-            /* LIST */
-
             <div className="divide-y divide-slate-200 dark:divide-slate-800">
 
               {clients.map((client) => (
@@ -851,14 +1143,11 @@ export default function ClientsAdminPage() {
                   key={client.id}
                   className="p-6 transition hover:bg-slate-50/70 dark:hover:bg-slate-800/30"
                 >
-
                   <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
 
                     {/* CLIENT INFO */}
 
                     <div className="flex min-w-0 items-center gap-4">
-
-                      {/* LOGO */}
 
                       <div className="flex h-16 w-24 shrink-0 items-center justify-center rounded-xl border border-slate-200 bg-white p-3 dark:border-slate-700 dark:bg-slate-950">
                         <img
@@ -867,8 +1156,6 @@ export default function ClientsAdminPage() {
                           className="max-h-12 max-w-full object-contain"
                         />
                       </div>
-
-                      {/* INFO */}
 
                       <div className="min-w-0">
 
@@ -884,6 +1171,7 @@ export default function ClientsAdminPage() {
                                 size={12}
                                 fill="currentColor"
                               />
+
                               Featured
                             </span>
                           )}
@@ -916,7 +1204,6 @@ export default function ClientsAdminPage() {
                               {client.order}
                             </strong>
                           </span>
-
                         </div>
 
                         <p className="mt-1 truncate text-xs text-slate-400">
@@ -928,8 +1215,6 @@ export default function ClientsAdminPage() {
                     {/* ACTIONS */}
 
                     <div className="flex shrink-0 flex-wrap items-center gap-2">
-
-                      {/* ACTIVE */}
 
                       <button
                         type="button"
@@ -957,8 +1242,6 @@ export default function ClientsAdminPage() {
                           ? "Active"
                           : "Inactive"}
                       </button>
-
-                      {/* FEATURED */}
 
                       <button
                         type="button"
@@ -988,8 +1271,6 @@ export default function ClientsAdminPage() {
                         Featured
                       </button>
 
-                      {/* EDIT */}
-
                       <button
                         type="button"
                         onClick={() =>
@@ -1001,8 +1282,6 @@ export default function ClientsAdminPage() {
 
                         Edit
                       </button>
-
-                      {/* DELETE */}
 
                       <button
                         type="button"

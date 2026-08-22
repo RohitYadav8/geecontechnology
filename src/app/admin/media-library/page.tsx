@@ -10,20 +10,16 @@ import { MediaUploadButton } from "../../../../components/admin/media-upload-but
 import { MediaCardActions } from "../../../../components/admin/media-card-actions";
 
 export default async function MediaLibraryPage() {
-  // Get cookies first
   const cookieStore = await cookies();
 
-  // Then get admin session
   const token = cookieStore.get("admin_session")?.value;
 
-  // Verify admin
   const payload = token ? verifyAdminToken(token) : null;
 
   if (!payload) {
     redirect("/admin/login");
   }
 
-  // Get media files
   const files = await prisma.media.findMany({
     orderBy: {
       createdAt: "desc",
@@ -62,17 +58,17 @@ export default async function MediaLibraryPage() {
           {files.map((file) => (
             <div
               key={file.id}
-              className="group overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900"
+              className="group overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm transition hover:shadow-md dark:border-slate-800 dark:bg-slate-900"
             >
               {/* Preview */}
-              <div className="relative flex h-32 items-center justify-center bg-slate-100 dark:bg-slate-800">
+              <div className="relative flex h-32 items-center justify-center overflow-hidden bg-slate-100 dark:bg-slate-800">
                 {file.type === "IMAGE" ? (
                   <Image
                     src={file.url}
                     alt={file.altText || file.fileName}
                     fill
                     sizes="(max-width: 640px) 50vw, (max-width: 1024px) 33vw, 20vw"
-                    className="object-cover"
+                    className="object-contain p-3"
                   />
                 ) : (
                   <FileText
@@ -95,6 +91,12 @@ export default async function MediaLibraryPage() {
                 <p className="truncate text-xs font-medium text-slate-700 dark:text-slate-300">
                   {file.fileName}
                 </p>
+
+                {file.folder && (
+                  <p className="mt-0.5 truncate text-[11px] text-slate-400">
+                    Folder: {file.folder}
+                  </p>
+                )}
 
                 <p className="mt-0.5 text-[11px] text-slate-400">
                   {file.createdAt.toLocaleDateString()}
