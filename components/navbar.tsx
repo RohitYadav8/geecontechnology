@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+
 import {
   ChevronDown,
   Mail,
@@ -11,59 +12,10 @@ import {
   Phone,
   X,
 } from "lucide-react";
+
 import { AnimatePresence, motion } from "motion/react";
 
 import { ThemeToggle } from "./theme-toggle";
-
-function FacebookIcon({ size = 14 }: { size?: number }) {
-  return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      fill="currentColor"
-      aria-hidden="true"
-    >
-      <path d="M22 12.06C22 6.505 17.523 2 12 2S2 6.505 2 12.06c0 5.02 3.657 9.184 8.438 9.94v-7.03H7.898v-2.91h2.54V9.845c0-2.507 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562v1.878h2.773l-.443 2.91h-2.33V22c4.78-.756 8.437-4.92 8.437-9.94z" />
-    </svg>
-  );
-}
-
-function LinkedinIcon({ size = 14 }: { size?: number }) {
-  return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      fill="currentColor"
-      aria-hidden="true"
-    >
-      <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.446-2.136 2.94v5.666H9.351V9h3.414v1.561h.049c.476-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 1 1 0-4.124 2.062 2.062 0 0 1 0 4.124zM7.114 20.452H3.558V9h3.556v11.452z" />
-    </svg>
-  );
-}
-
-function TwitterIcon({ size = 14 }: { size?: number }) {
-  return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      fill="currentColor"
-      aria-hidden="true"
-    >
-      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-    </svg>
-  );
-}
-
-const SOCIAL_LINKS = {
-  facebook:
-    "https://www.facebook.com/pages/Geecon-Systems-Pvt-Ltd/595625870489482",
-  twitter: "https://x.com/geecongloballtd",
-  linkedin:
-    "https://www.linkedin.com/company/geecon-systems-pvt-ltd/?originalSubdomain=in",
-};
 
 const navLinks = [
   {
@@ -129,8 +81,6 @@ export function Navbar() {
   const [mobileOpen, setMobileOpen] = useState(false);
   const [servicesOpen, setServicesOpen] = useState(false);
 
-  // Normal browser scroll listener.
-  // Initial server + client render both start with scrolled = false.
   useEffect(() => {
     const handleScroll = () => {
       setScrolled(window.scrollY > 30);
@@ -186,39 +136,7 @@ export function Navbar() {
             }}
             className="hidden overflow-hidden border-b border-slate-100 bg-slate-50/80 text-xs text-slate-500 md:block dark:border-white/[0.05] dark:bg-white/[0.025] dark:text-slate-400"
           >
-            <div className="mx-auto flex max-w-7xl items-center justify-between px-6 py-2">
-              <div className="flex items-center gap-4">
-                <a
-                  href={SOCIAL_LINKS.facebook}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Facebook"
-                  className="transition-colors hover:text-blue-600 dark:hover:text-blue-400"
-                >
-                  <FacebookIcon />
-                </a>
-
-                <a
-                  href={SOCIAL_LINKS.twitter}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="Twitter"
-                  className="transition-colors hover:text-blue-600 dark:hover:text-blue-400"
-                >
-                  <TwitterIcon />
-                </a>
-
-                <a
-                  href={SOCIAL_LINKS.linkedin}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label="LinkedIn"
-                  className="transition-colors hover:text-blue-600 dark:hover:text-blue-400"
-                >
-                  <LinkedinIcon />
-                </a>
-              </div>
-
+            <div className="mx-auto flex max-w-7xl items-center justify-end px-6 py-2">
               <div className="flex items-center gap-6">
                 <Link
                   href="/candidate-screening"
@@ -319,7 +237,9 @@ export function Navbar() {
 
                     <span
                       className={`absolute -bottom-1 left-0 h-[2px] rounded-full bg-gradient-to-r from-blue-600 to-cyan-400 transition-all duration-300 ${
-                        active ? "w-full" : "w-0 group-hover:w-full"
+                        active
+                          ? "w-full"
+                          : "w-0 group-hover:w-full"
                       }`}
                     />
                   </Link>
@@ -334,7 +254,8 @@ export function Navbar() {
                   >
                     <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white/95 p-2 shadow-[0_25px_70px_-25px_rgba(15,23,42,.35)] backdrop-blur-2xl dark:border-white/[0.08] dark:bg-[#0b1220]/95 dark:shadow-black/40">
                       {link.children.map((child) => {
-                        const childActive = pathname === child.href;
+                        const childActive =
+                          pathname === child.href;
 
                         return (
                           <Link
@@ -370,7 +291,9 @@ export function Navbar() {
 
                 <span
                   className={`absolute -bottom-1 left-0 h-[2px] rounded-full bg-gradient-to-r from-blue-600 to-cyan-400 transition-all duration-300 ${
-                    active ? "w-full" : "w-0 group-hover:w-full"
+                    active
+                      ? "w-full"
+                      : "w-0 group-hover:w-full"
                   }`}
                 />
               </Link>
@@ -384,12 +307,18 @@ export function Navbar() {
 
           <button
             type="button"
-            onClick={() => setMobileOpen((prev) => !prev)}
+            onClick={() =>
+              setMobileOpen((prev) => !prev)
+            }
             aria-label="Toggle navigation menu"
             aria-expanded={mobileOpen}
             className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-700 shadow-sm transition-all hover:border-blue-300 hover:text-blue-600 lg:hidden dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-slate-200"
           >
-            {mobileOpen ? <X size={20} /> : <Menu size={20} />}
+            {mobileOpen ? (
+              <X size={20} />
+            ) : (
+              <Menu size={20} />
+            )}
           </button>
         </div>
       </div>
@@ -397,7 +326,9 @@ export function Navbar() {
       {/* Mobile Navigation */}
       <div
         className={`overflow-hidden border-t border-slate-100 bg-white/95 backdrop-blur-2xl transition-[max-height] duration-300 lg:hidden dark:border-white/[0.05] dark:bg-[#070c18]/95 ${
-          mobileOpen ? "max-h-[700px]" : "max-h-0 border-t-0"
+          mobileOpen
+            ? "max-h-[700px]"
+            : "max-h-0 border-t-0"
         }`}
       >
         <nav className="px-6 py-4">

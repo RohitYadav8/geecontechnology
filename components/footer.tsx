@@ -23,11 +23,7 @@ import {
   StaggerItem,
 } from "./stagger-container";
 
-function FacebookIcon({
-  size = 16,
-}: {
-  size?: number;
-}) {
+function FacebookIcon({ size = 16 }: { size?: number }) {
   return (
     <svg
       width={size}
@@ -41,11 +37,7 @@ function FacebookIcon({
   );
 }
 
-function LinkedinIcon({
-  size = 16,
-}: {
-  size?: number;
-}) {
+function LinkedinIcon({ size = 16 }: { size?: number }) {
   return (
     <svg
       width={size}
@@ -59,11 +51,7 @@ function LinkedinIcon({
   );
 }
 
-function TwitterIcon({
-  size = 16,
-}: {
-  size?: number;
-}) {
+function TwitterIcon({ size = 16 }: { size?: number }) {
   return (
     <svg
       width={size}
@@ -77,11 +65,7 @@ function TwitterIcon({
   );
 }
 
-function InstagramIcon({
-  size = 16,
-}: {
-  size?: number;
-}) {
+function InstagramIcon({ size = 16 }: { size?: number }) {
   return (
     <svg
       width={size}
@@ -92,18 +76,8 @@ function InstagramIcon({
       strokeWidth="1.8"
       aria-hidden="true"
     >
-      <rect
-        x="3"
-        y="3"
-        width="18"
-        height="18"
-        rx="5"
-      />
-      <circle
-        cx="12"
-        cy="12"
-        r="4"
-      />
+      <rect x="3" y="3" width="18" height="18" rx="5" />
+      <circle cx="12" cy="12" r="4" />
       <circle
         cx="17.3"
         cy="6.7"
@@ -139,32 +113,12 @@ function FooterColumn({
     href: string;
   }[];
 }) {
-  const Icon =
-    columnIcons[columnKey];
+  const Icon = columnIcons[columnKey];
 
   return (
     <div>
-      <div
-        className="
-          flex
-          h-10
-          w-10
-          items-center
-          justify-center
-          rounded-xl
-          border
-          border-blue-100
-          bg-blue-50
-          text-blue-600
-          dark:border-blue-500/10
-          dark:bg-blue-500/10
-          dark:text-blue-400
-        "
-      >
-        <Icon
-          size={18}
-          strokeWidth={1.7}
-        />
+      <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-blue-100 bg-blue-50 text-blue-600 dark:border-blue-500/10 dark:bg-blue-500/10 dark:text-blue-400">
+        <Icon size={18} strokeWidth={1.7} />
       </div>
 
       <h4 className="mt-4 text-sm font-semibold text-slate-950 dark:text-white">
@@ -178,32 +132,13 @@ function FooterColumn({
           <li key={link.label}>
             <Link
               href={link.href}
-              className="
-                group
-                flex
-                items-center
-                justify-between
-                gap-3
-                text-sm
-                text-slate-500
-                transition-colors
-                hover:text-blue-600
-                dark:text-slate-400
-                dark:hover:text-white
-              "
+              className="group flex items-center justify-between gap-3 text-sm text-slate-500 transition-colors hover:text-blue-600 dark:text-slate-400 dark:hover:text-white"
             >
               <span>{link.label}</span>
 
               <ChevronRight
                 size={13}
-                className="
-                  shrink-0
-                  text-slate-300
-                  transition-all
-                  group-hover:translate-x-0.5
-                  group-hover:text-blue-500
-                  dark:text-slate-700
-                "
+                className="shrink-0 text-slate-300 transition-all group-hover:translate-x-0.5 group-hover:text-blue-500 dark:text-slate-700"
               />
             </Link>
           </li>
@@ -214,46 +149,16 @@ function FooterColumn({
 }
 
 export function Footer() {
-  const [email, setEmail] =
-    useState("");
+  const [email, setEmail] = useState("");
 
   return (
-    <footer
-      className="
-        relative
-        overflow-hidden
-        border-t
-        border-slate-200
-        bg-white
-        text-slate-500
-        dark:border-white/[0.05]
-        dark:bg-[#050914]
-        dark:text-slate-400
-      "
-    >
-      <div
-        className="
-          pointer-events-none
-          absolute
-          left-1/2
-          top-0
-          h-72
-          w-[800px]
-          -translate-x-1/2
-          rounded-full
-          bg-blue-500/[0.06]
-          blur-[120px]
-          dark:bg-blue-500/[0.08]
-        "
-      />
+    <footer className="relative overflow-hidden border-t border-slate-200 bg-white text-slate-500 dark:border-white/[0.05] dark:bg-[#050914] dark:text-slate-400">
+      <div className="pointer-events-none absolute left-1/2 top-0 h-72 w-[800px] -translate-x-1/2 rounded-full bg-blue-500/[0.06] blur-[120px] dark:bg-blue-500/[0.08]" />
 
       <div className="relative mx-auto max-w-7xl px-6 sm:px-8 lg:px-10">
         <div className="grid gap-14 py-16 lg:grid-cols-[270px_minmax(0,1fr)] lg:py-20">
           <AnimateIn direction="left">
-            <Link
-              href="/"
-              className="flex items-center gap-3"
-            >
+            <Link href="/" className="flex items-center gap-3">
               <Image
                 src="/logo-icon-1.png"
                 alt="Geecon Technology"
@@ -274,10 +179,8 @@ export function Footer() {
             </Link>
 
             <p className="mt-5 text-sm leading-7">
-              Delivering innovative technology
-              solutions that help businesses grow,
-              transform and succeed in the digital
-              world.
+              Delivering innovative technology solutions that help businesses
+              grow, transform and succeed in the digital world.
             </p>
 
             <div className="mt-8">
@@ -286,74 +189,25 @@ export function Footer() {
               </h4>
 
               <p className="mt-2 text-sm leading-6">
-                Subscribe to our newsletter for the
-                latest updates and insights.
+                Subscribe to our newsletter for the latest updates and insights.
               </p>
 
               <form
-                onSubmit={(e) =>
-                  e.preventDefault()
-                }
-                className="
-                  mt-4
-                  flex
-                  items-center
-                  gap-2
-                  rounded-xl
-                  border
-                  border-slate-200
-                  bg-slate-50
-                  p-1.5
-                  transition-colors
-                  focus-within:border-blue-400
-                  dark:border-white/[0.08]
-                  dark:bg-white/[0.04]
-                "
+                onSubmit={(e) => e.preventDefault()}
+                className="mt-4 flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 p-1.5 transition-colors focus-within:border-blue-400 dark:border-white/[0.08] dark:bg-white/[0.04]"
               >
                 <input
                   type="email"
                   value={email}
-                  onChange={(e) =>
-                    setEmail(
-                      e.target.value
-                    )
-                  }
+                  onChange={(e) => setEmail(e.target.value)}
                   placeholder="Enter your email"
-                  className="
-                    min-w-0
-                    flex-1
-                    bg-transparent
-                    px-3
-                    py-2
-                    text-sm
-                    text-slate-900
-                    outline-none
-                    placeholder:text-slate-400
-                    dark:text-white
-                    dark:placeholder:text-slate-600
-                  "
+                  className="min-w-0 flex-1 bg-transparent px-3 py-2 text-sm text-slate-900 outline-none placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600"
                 />
 
                 <button
                   type="submit"
                   aria-label="Subscribe"
-                  className="
-                    flex
-                    h-9
-                    w-9
-                    shrink-0
-                    items-center
-                    justify-center
-                    rounded-lg
-                    bg-gradient-to-br
-                    from-blue-600
-                    to-cyan-500
-                    text-white
-                    shadow-lg
-                    shadow-blue-500/20
-                    transition-transform
-                    hover:scale-105
-                  "
+                  className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-blue-600 to-cyan-500 text-white shadow-lg shadow-blue-500/20 transition-transform hover:scale-105"
                 >
                   <Send size={15} />
                 </button>
@@ -365,68 +219,36 @@ export function Footer() {
             <StaggerItem>
               <FooterColumn
                 columnKey="services"
-                links={
-                  footerLinks.services
-                }
+                links={footerLinks.services}
               />
             </StaggerItem>
 
             <StaggerItem>
               <FooterColumn
                 columnKey="products"
-                links={
-                  footerLinks.products
-                }
+                links={footerLinks.products}
               />
             </StaggerItem>
 
             <StaggerItem>
               <FooterColumn
                 columnKey="about"
-                links={
-                  footerLinks.about
-                }
+                links={footerLinks.about}
               />
             </StaggerItem>
 
             <StaggerItem>
               <FooterColumn
                 columnKey="popular"
-                links={
-                  footerLinks.popular
-                }
+                links={footerLinks.popular}
               />
             </StaggerItem>
           </StaggerContainer>
         </div>
 
-        <div
-          className="
-            grid
-            gap-6
-            border-t
-            border-slate-200
-            py-8
-            md:grid-cols-3
-            md:items-center
-            dark:border-white/[0.08]
-          "
-        >
+        <div className="grid gap-6 border-t border-slate-200 py-8 md:grid-cols-3 md:items-center dark:border-white/[0.08]">
           <div className="flex items-center gap-3">
-            <div
-              className="
-                flex
-                h-10
-                w-10
-                items-center
-                justify-center
-                rounded-xl
-                bg-blue-50
-                text-blue-600
-                dark:bg-blue-500/10
-                dark:text-blue-400
-              "
-            >
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-500/10 dark:text-blue-400">
               <Phone size={17} />
             </div>
 
@@ -442,20 +264,7 @@ export function Footer() {
           </div>
 
           <div className="flex items-center gap-3 md:justify-center">
-            <div
-              className="
-                flex
-                h-10
-                w-10
-                items-center
-                justify-center
-                rounded-xl
-                bg-blue-50
-                text-blue-600
-                dark:bg-blue-500/10
-                dark:text-blue-400
-              "
-            >
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-500/10 dark:text-blue-400">
               <ShieldCheck size={17} />
             </div>
 
@@ -479,59 +288,26 @@ export function Footer() {
               {[
                 {
                   label: "Facebook",
-                  icon: (
-                    <FacebookIcon
-                      size={14}
-                    />
-                  ),
+                  icon: <FacebookIcon size={14} />,
                 },
                 {
                   label: "Twitter",
-                  icon: (
-                    <TwitterIcon
-                      size={14}
-                    />
-                  ),
+                  icon: <TwitterIcon size={14} />,
                 },
                 {
                   label: "LinkedIn",
-                  icon: (
-                    <LinkedinIcon
-                      size={14}
-                    />
-                  ),
+                  icon: <LinkedinIcon size={14} />,
                 },
                 {
                   label: "Instagram",
-                  icon: (
-                    <InstagramIcon
-                      size={14}
-                    />
-                  ),
+                  icon: <InstagramIcon size={14} />,
                 },
               ].map((item) => (
                 <a
                   key={item.label}
                   href="#"
                   aria-label={item.label}
-                  className="
-                    flex
-                    h-9
-                    w-9
-                    items-center
-                    justify-center
-                    rounded-full
-                    border
-                    border-slate-200
-                    text-slate-600
-                    transition-all
-                    hover:-translate-y-0.5
-                    hover:border-blue-500
-                    hover:bg-blue-500
-                    hover:text-white
-                    dark:border-white/[0.08]
-                    dark:text-slate-300
-                  "
+                  className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 text-slate-600 transition-all hover:-translate-y-0.5 hover:border-blue-500 hover:bg-blue-500 hover:text-white dark:border-white/[0.08] dark:text-slate-300"
                 >
                   {item.icon}
                 </a>
@@ -540,27 +316,8 @@ export function Footer() {
           </div>
         </div>
 
-        <div
-          className="
-            flex
-            flex-col
-            items-center
-            justify-between
-            gap-3
-            border-t
-            border-slate-200
-            py-5
-            text-xs
-            text-slate-400
-            sm:flex-row
-            dark:border-white/[0.08]
-            dark:text-slate-600
-          "
-        >
-          <p>
-            © {new Date().getFullYear()} Geecon
-            Technology. All Rights Reserved.
-          </p>
+        <div className="flex flex-col items-center justify-between gap-3 border-t border-slate-200 py-5 text-xs text-slate-400 sm:flex-row dark:border-white/[0.08] dark:text-slate-600">
+          <p>© 2026 Geecon Technology. All Rights Reserved.</p>
 
           <div className="flex flex-wrap items-center justify-center gap-3">
             <Link

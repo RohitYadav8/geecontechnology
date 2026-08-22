@@ -514,8 +514,7 @@ export default function AdminLoginPage() {
                         "
                       >
                         {card.text}
-                      </p>
-                    </motion.div>
+                      </p>                                                                                                                                      
                   </StaggerItem>
                 );
               })}
