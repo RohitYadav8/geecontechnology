@@ -1,39 +1,63 @@
 "use client";
 
-import { useRef } from "react";
-import { motion, useMotionValue, useTransform } from "motion/react";
-import type { ReactNode, MouseEvent } from "react";
+import {
+  useRef,
+  type PointerEvent,
+  type ReactNode,
+} from "react";
 
-/**
- * Wraps content with a radial glow that follows the mouse.
- * Unlike TiltCard, this doesn't rotate the content — useful for
- * forms and text-heavy sections where a 3D tilt would feel odd.
- */
-export function MouseGlow({ children, className = "" }: { children: ReactNode; className?: string }) {
-    const ref = useRef<HTMLDivElement>(null);
-    const x = useMotionValue(0.5);
-    const y = useMotionValue(0.5);
+type MouseGlowProps = {
+  children: ReactNode;
+  className?: string;
+};
 
-    const glowX = useTransform(x, [0, 1], ["0%", "100%"]);
-    const glowY = useTransform(y, [0, 1], ["0%", "100%"]);
-    const background = useTransform([glowX, glowY], ([gx, gy]: string[]) =>
-        `radial-gradient(320px circle at ${gx} ${gy}, rgba(59,130,246,0.14), transparent 70%)`
+export function MouseGlow({
+  children,
+  className = "",
+}: MouseGlowProps) {
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  const handlePointerMove = (
+    event: PointerEvent<HTMLDivElement>
+  ) => {
+    const element = containerRef.current;
+
+    if (!element) return;
+
+    const rect = element.getBoundingClientRect();
+
+    const x = event.clientX - rect.left;
+    const y = event.clientY - rect.top;
+
+    element.style.setProperty(
+      "--mouse-x",
+      `${x}px`
     );
 
-    const handleMouseMove = (e: MouseEvent<HTMLDivElement>) => {
-        if (!ref.current) return;
-        const rect = ref.current.getBoundingClientRect();
-        x.set((e.clientX - rect.left) / rect.width);
-        y.set((e.clientY - rect.top) / rect.height);
-    };
-
-    return (
-        <div ref={ref} onMouseMove={handleMouseMove} className={`group relative ${className}`}>
-            <motion.div
-                style={{ background }}
-                className="pointer-events-none absolute inset-0 z-0 rounded-2xl opacity-0 transition-opacity duration-300 group-hover:opacity-100"
-            />
-            <div className="relative z-10">{children}</div>
-        </div>
+    element.style.setProperty(
+      "--mouse-y",
+      `${y}px`
     );
+  };
+
+  return (
+    <div
+      ref={containerRef}
+      onPointerMove={handlePointerMove}
+      className={`group relative ${className}`}
+    >
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 z-20 opacity-0 transition-opacity duration-300 group-hover:opacity-100"
+        style={{
+          background:
+            "radial-gradient(420px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(59,130,246,0.16), rgba(59,130,246,0.06) 35%, transparent 70%)",
+        }}
+      />
+
+      <div className="relative z-10">
+        {children}
+      </div>
+    </div>
+  );
 }
