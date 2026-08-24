@@ -73,18 +73,41 @@ model Product {
   id               String            @id @default(cuid())
   title            String
   slug             String            @unique
+
+  // Main product media
   bannerImage      String?
+  logoImage        String?
+
+  // Main content
   shortDescription String?           @db.Text
   description      String?           @db.Text
+
+  // Front card content
+  cardTagline       String?
+  cardSecondaryText String?
+
+  // Flip / back card content
+  flipEyebrow       String?
+  flipTitle         String?
+  flipDescription   String?          @db.Text
+
+  // Product detail page content
   features         Json?
   benefits         Json?
   sections         Json?
   faqs             Json?
+
   brochureUrl      String?
+
+  // Display
   isActive         Boolean           @default(true)
   order            Int               @default(0)
+
+  // Dates
   createdAt        DateTime          @default(now())
   updatedAt        DateTime          @updatedAt
+
+  // Relations
   brochureRequests BrochureRequest[]
 
   @@map("products")

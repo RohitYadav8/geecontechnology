@@ -5,713 +5,872 @@ import { useRouter } from "next/navigation";
 import Link from "next/link";
 
 type ProductForm = {
-    title: string;
-    slug: string;
-    bannerImage: string;
+  title: string;
+  slug: string;
 
-    // Card Content
-    cardLogo: string;
-    cardBadge: string;
-    cardHeading: string;
-    cardDescription: string;
+  bannerImage: string;
+  logoImage: string;
 
-    shortDescription: string;
-    description: string;
-    features: string;
-    benefits: string;
-    sections: string;
-    faqs: string;
-    brochureUrl: string;
-    isActive: boolean;
-    order: string;
+  shortDescription: string;
+  description: string;
+
+  // Front card
+  cardTagline: string;
+  cardSecondaryText: string;
+
+  // Flip card
+  flipEyebrow: string;
+  flipTitle: string;
+  flipDescription: string;
+
+  // Detail page
+  features: string;
+  benefits: string;
+  sections: string;
+  faqs: string;
+
+  brochureUrl: string;
+
+  isActive: boolean;
+  order: string;
 };
 
 export default function NewProductPage() {
-    const router = useRouter();
-
-    const [form, setForm] = useState<ProductForm>({
-        title: "",
-        slug: "",
-        bannerImage: "",
-
-        // Card Content
-        cardLogo: "",
-        cardBadge: "",
-        cardHeading: "",
-        cardDescription: "",
-
-        shortDescription: "",
-        description: "",
-        features: "",
-        benefits: "",
-        sections: "",
-        faqs: "",
-        brochureUrl: "",
-        isActive: true,
-        order: "0",
-    });
-
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState("");
-
-    const handleChange = (
-        field: keyof ProductForm,
-        value: string | boolean
-    ) => {
-        setForm((prev) => ({
-            ...prev,
-            [field]: value,
-        }));
-    };
-
-    const generateSlug = (value: string) => {
-        return value
-            .toLowerCase()
-            .trim()
-            .replace(/[^a-z0-9\s-]/g, "")
-            .replace(/\s+/g, "-")
-            .replace(/-+/g, "-");
-    };
-
-    const handleTitleChange = (value: string) => {
-        setForm((prev) => ({
-            ...prev,
-            title: value,
-            slug: generateSlug(value),
-        }));
-    };
-
-    const parseJsonField = (
-        value: string,
-        fieldName: string
-    ) => {
-        if (!value.trim()) {
-            return null;
-        }
-
-        try {
-            return JSON.parse(value);
-        } catch {
-            throw new Error(
-                `${fieldName} must contain valid JSON.`
-            );
-        }
-    };
-
-    const handleSubmit = async (
-        event: FormEvent<HTMLFormElement>
-    ) => {
-        event.preventDefault();
-
-        setError("");
-
-        if (!form.title.trim()) {
-            setError("Product title is required.");
-            return;
-        }
-
-        if (!form.slug.trim()) {
-            setError("Product slug is required.");
-            return;
-        }
-
-        try {
-            setLoading(true);
-
-            const payload = {
-                title: form.title.trim(),
-                slug: form.slug.trim(),
-
-                bannerImage:
-                    form.bannerImage.trim() || null,
-
-                // Card Content
-                cardLogo:
-                    form.cardLogo.trim() || null,
-
-                cardBadge:
-                    form.cardBadge.trim() || null,
-
-                cardHeading:
-                    form.cardHeading.trim() || null,
-
-                cardDescription:
-                    form.cardDescription.trim() || null,
-
-                shortDescription:
-                    form.shortDescription.trim() || null,
-
-                description:
-                    form.description.trim() || null,
-
-                features: parseJsonField(
-                    form.features,
-                    "Features"
-                ),
-
-                benefits: parseJsonField(
-                    form.benefits,
-                    "Benefits"
-                ),
-
-                sections: parseJsonField(
-                    form.sections,
-                    "Sections"
-                ),
-
-                faqs: parseJsonField(
-                    form.faqs,
-                    "FAQs"
-                ),
-
-                brochureUrl:
-                    form.brochureUrl.trim() || null,
-
-                isActive: form.isActive,
-
-                order: Number(form.order) || 0,
-            };
-
-            const response = await fetch(
-                "/api/admin/products",
-                {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify(payload),
-                }
-            );
-
-            const data = await response.json();
-
-            if (!response.ok) {
-                throw new Error(
-                    data.error ||
-                        "Failed to create product"
-                );
-            }
-
-            router.push("/admin/products");
-            router.refresh();
-        } catch (err) {
-            console.error(
-                "Create product error:",
-                err
-            );
-
-            setError(
-                err instanceof Error
-                    ? err.message
-                    : "Failed to create product"
-            );
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    return (
-        <div className="min-h-screen bg-slate-50 p-6 dark:bg-slate-950">
-            <div className="mx-auto max-w-5xl">
-
-                {/* Header */}
-                <div className="mb-8 flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
-                    <div>
-                        <h1 className="text-2xl font-bold text-slate-900 dark:text-white">
-                            Add Product
-                        </h1>
-
-                        <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-                            Create a new product for your website.
-                        </p>
-                    </div>
-
-                    <Link
-                        href="/admin/products"
-                        className="inline-flex items-center justify-center rounded-lg border border-slate-200 bg-white px-5 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:bg-slate-800"
-                    >
-                        ← Back to Products
-                    </Link>
-                </div>
-
-                {/* Error */}
-                {error && (
-                    <div className="mb-6 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600 dark:border-red-900/50 dark:bg-red-950/30 dark:text-red-400">
-                        {error}
-                    </div>
-                )}
-
-                <form
-                    onSubmit={handleSubmit}
-                    className="space-y-6"
-                >
-
-                    {/* ================= BASIC INFORMATION ================= */}
-                    <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-
-                        <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
-                            Basic Information
-                        </h2>
-
-                        <div className="mt-6 grid gap-5 sm:grid-cols-2">
-
-                            {/* Title */}
-                            <div>
-                                <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
-                                    Product Title *
-                                </label>
-
-                                <input
-                                    type="text"
-                                    value={form.title}
-                                    onChange={(e) =>
-                                        handleTitleChange(
-                                            e.target.value
-                                        )
-                                    }
-                                    placeholder="CRM360"
-                                    className="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
-                                    required
-                                />
-                            </div>
-
-                            {/* Slug */}
-                            <div>
-                                <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
-                                    Slug *
-                                </label>
-
-                                <input
-                                    type="text"
-                                    value={form.slug}
-                                    onChange={(e) =>
-                                        handleChange(
-                                            "slug",
-                                            e.target.value
-                                        )
-                                    }
-                                    placeholder="crm360"
-                                    className="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
-                                    required
-                                />
-
-                                <p className="mt-1 text-xs text-slate-400">
-                                    Example: crm360
-                                </p>
-                            </div>
-
-                            {/* Banner */}
-                            <div className="sm:col-span-2">
-                                <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
-                                    Banner Image URL
-                                </label>
-
-                                <input
-                                    type="text"
-                                    value={form.bannerImage}
-                                    onChange={(e) =>
-                                        handleChange(
-                                            "bannerImage",
-                                            e.target.value
-                                        )
-                                    }
-                                    placeholder="/crm-banner.png"
-                                    className="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
-                                />
-
-                                <p className="mt-1 text-xs text-slate-400">
-                                    Example: /crm-banner.png or an external image URL.
-                                </p>
-                            </div>
-
-                            {/* Short Description */}
-                            <div className="sm:col-span-2">
-                                <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
-                                    Short Description
-                                </label>
-
-                                <textarea
-                                    value={form.shortDescription}
-                                    onChange={(e) =>
-                                        handleChange(
-                                            "shortDescription",
-                                            e.target.value
-                                        )
-                                    }
-                                    rows={3}
-                                    placeholder="Short description of the product..."
-                                    className="w-full resize-y rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
-                                />
-                            </div>
-
-                            {/* Description */}
-                            <div className="sm:col-span-2">
-                                <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
-                                    Full Description
-                                </label>
-
-                                <textarea
-                                    value={form.description}
-                                    onChange={(e) =>
-                                        handleChange(
-                                            "description",
-                                            e.target.value
-                                        )
-                                    }
-                                    rows={8}
-                                    placeholder="Write the complete product description..."
-                                    className="w-full resize-y rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
-                                />
-                            </div>
-                        </div>
-                    </section>
-
-                    {/* ================= CARD CONTENT ================= */}
-                    <section className="rounded-2xl border border-blue-200 bg-blue-50/40 p-6 shadow-sm dark:border-blue-900/40 dark:bg-blue-950/10">
-
-                        <div>
-                            <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
-                                Card Content
-                            </h2>
-
-                            <p className="mt-1 text-xs text-slate-500 dark:text-slate-400">
-                                Optional content used on the product card.
-                                You only need to enter the content. HTML is
-                                not required.
-                            </p>
-                        </div>
-
-                        <div className="mt-6 grid gap-5 sm:grid-cols-2">
-
-                            {/* Card Logo */}
-                            <div className="sm:col-span-2">
-                                <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
-                                    Card Logo URL
-                                </label>
-
-                                <input
-                                    type="text"
-                                    value={form.cardLogo}
-                                    onChange={(e) =>
-                                        handleChange(
-                                            "cardLogo",
-                                            e.target.value
-                                        )
-                                    }
-                                    placeholder="/images/crm360-logo.png"
-                                    className="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
-                                />
-
-                                <p className="mt-1 text-xs text-slate-400">
-                                    Optional. Example:
-                                    /images/crm360-logo.png
-                                </p>
-                            </div>
-
-                            {/* Card Badge */}
-                            <div>
-                                <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
-                                    Card Badge
-                                </label>
-
-                                <input
-                                    type="text"
-                                    value={form.cardBadge}
-                                    onChange={(e) =>
-                                        handleChange(
-                                            "cardBadge",
-                                            e.target.value
-                                        )
-                                    }
-                                    placeholder="BUSINESS MANAGEMENT"
-                                    className="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
-                                />
-
-                                <p className="mt-1 text-xs text-slate-400">
-                                    Optional small text displayed on the card.
-                                </p>
-                            </div>
-
-                            {/* Card Heading */}
-                            <div>
-                                <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
-                                    Card Heading
-                                </label>
-
-                                <input
-                                    type="text"
-                                    value={form.cardHeading}
-                                    onChange={(e) =>
-                                        handleChange(
-                                            "cardHeading",
-                                            e.target.value
-                                        )
-                                    }
-                                    placeholder="CRM360"
-                                    className="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
-                                />
-
-                                <p className="mt-1 text-xs text-slate-400">
-                                    If empty, Product Title will be used.
-                                </p>
-                            </div>
-
-                            {/* Card Description */}
-                            <div className="sm:col-span-2">
-                                <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
-                                    Card Description
-                                </label>
-
-                                <textarea
-                                    value={form.cardDescription}
-                                    onChange={(e) =>
-                                        handleChange(
-                                            "cardDescription",
-                                            e.target.value
-                                        )
-                                    }
-                                    rows={4}
-                                    placeholder="Complete customer relationship management solution for modern businesses."
-                                    className="w-full resize-y rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
-                                />
-
-                                <p className="mt-1 text-xs text-slate-400">
-                                    If empty, Short Description will be used.
-                                </p>
-                            </div>
-                        </div>
-                    </section>
-
-                    {/* ================= FEATURES & BENEFITS ================= */}
-                    <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-
-                        <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
-                            Features & Benefits
-                        </h2>
-
-                        <p className="mt-1 text-xs text-slate-400">
-                            These fields are stored as JSON. Use the examples below.
-                        </p>
-
-                        <div className="mt-6 grid gap-5 sm:grid-cols-2">
-
-                            {/* Features */}
-                            <div>
-                                <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
-                                    Features
-                                </label>
-
-                                <textarea
-                                    value={form.features}
-                                    onChange={(e) =>
-                                        handleChange(
-                                            "features",
-                                            e.target.value
-                                        )
-                                    }
-                                    rows={8}
-                                    placeholder={`[
-  "Lead Management",
-  "Sales Force Automation",
-  "Reporting",
-  "Inventory Management"
-]`}
-                                    className="w-full resize-y rounded-lg border border-slate-300 bg-white px-4 py-3 font-mono text-xs outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
-                                />
-                            </div>
-
-                            {/* Benefits */}
-                            <div>
-                                <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
-                                    Benefits
-                                </label>
-
-                                <textarea
-                                    value={form.benefits}
-                                    onChange={(e) =>
-                                        handleChange(
-                                            "benefits",
-                                            e.target.value
-                                        )
-                                    }
-                                    rows={8}
-                                    placeholder={`[
-  "Easy to use",
-  "Save time",
-  "Better productivity"
-]`}
-                                    className="w-full resize-y rounded-lg border border-slate-300 bg-white px-4 py-3 font-mono text-xs outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
-                                />
-                            </div>
-                        </div>
-                    </section>
-
-                    {/* ================= SECTIONS ================= */}
-                    <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-
-                        <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
-                            Content Sections
-                        </h2>
-
-                        <p className="mt-1 text-xs text-slate-400">
-                            Add custom sections as a JSON array.
-                        </p>
-
-                        <div className="mt-5">
-                            <textarea
-                                value={form.sections}
-                                onChange={(e) =>
-                                    handleChange(
-                                        "sections",
-                                        e.target.value
-                                    )
-                                }
-                                rows={12}
-                                placeholder={`[
-  {
-    "title": "Contact Management",
-    "description": "Manage all customer contacts from one place."
-  },
-  {
-    "title": "Reporting",
-    "description": "Generate detailed business reports."
+  const router = useRouter();
+
+  const [form, setForm] = useState<ProductForm>({
+    title: "",
+    slug: "",
+
+    bannerImage: "",
+    logoImage: "",
+
+    shortDescription: "",
+    description: "",
+
+    cardTagline: "",
+    cardSecondaryText: "",
+
+    flipEyebrow: "",
+    flipTitle: "",
+    flipDescription: "",
+
+    features: "",
+    benefits: "",
+    sections: "",
+    faqs: "",
+
+    brochureUrl: "",
+
+    isActive: true,
+    order: "0",
+  });
+
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState("");
+
+  function handleChange(
+    field: keyof ProductForm,
+    value: string | boolean
+  ) {
+    setForm((previous) => ({
+      ...previous,
+      [field]: value,
+    }));
   }
-]`}
-                                className="w-full resize-y rounded-lg border border-slate-300 bg-white px-4 py-3 font-mono text-xs outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
-                            />
-                        </div>
-                    </section>
 
-                    {/* ================= FAQ ================= */}
-                    <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-
-                        <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
-                            FAQs
-                        </h2>
-
-                        <p className="mt-1 text-xs text-slate-400">
-                            Add FAQ questions and answers as JSON.
-                        </p>
-
-                        <div className="mt-5">
-                            <textarea
-                                value={form.faqs}
-                                onChange={(e) =>
-                                    handleChange(
-                                        "faqs",
-                                        e.target.value
-                                    )
-                                }
-                                rows={12}
-                                placeholder={`[
-  {
-    "question": "What is CRM360?",
-    "answer": "CRM360 is a web-based customer relationship management system."
-  },
-  {
-    "question": "Does it support reporting?",
-    "answer": "Yes, CRM360 provides reporting features."
+  function generateSlug(value: string) {
+    return value
+      .toLowerCase()
+      .trim()
+      .replace(/[^a-z0-9\s-]/g, "")
+      .replace(/\s+/g, "-")
+      .replace(/-+/g, "-");
   }
-]`}
-                                className="w-full resize-y rounded-lg border border-slate-300 bg-white px-4 py-3 font-mono text-xs outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
-                            />
-                        </div>
-                    </section>
 
-                    {/* ================= SETTINGS ================= */}
-                    <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+  function handleTitleChange(value: string) {
+    setForm((previous) => ({
+      ...previous,
+      title: value,
+      slug: generateSlug(value),
+    }));
+  }
 
-                        <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
-                            Product Settings
-                        </h2>
+  function parseJsonField(
+    value: string,
+    fieldName: string
+  ) {
+    if (!value.trim()) {
+      return null;
+    }
 
-                        <div className="mt-6 grid gap-5 sm:grid-cols-2">
+    try {
+      return JSON.parse(value);
+    } catch {
+      throw new Error(
+        `${fieldName} must contain valid JSON.`
+      );
+    }
+  }
 
-                            {/* Brochure */}
-                            <div className="sm:col-span-2">
-                                <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
-                                    Brochure URL
-                                </label>
+  async function handleSubmit(
+    event: FormEvent<HTMLFormElement>
+  ) {
+    event.preventDefault();
 
-                                <input
-                                    type="text"
-                                    value={form.brochureUrl}
-                                    onChange={(e) =>
-                                        handleChange(
-                                            "brochureUrl",
-                                            e.target.value
-                                        )
-                                    }
-                                    placeholder="/brochures/crm360.pdf"
-                                    className="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
-                                />
-                            </div>
+    setError("");
 
-                            {/* Order */}
-                            <div>
-                                <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
-                                    Display Order
-                                </label>
+    if (!form.title.trim()) {
+      setError("Product title is required.");
+      return;
+    }
 
-                                <input
-                                    type="number"
-                                    value={form.order}
-                                    onChange={(e) =>
-                                        handleChange(
-                                            "order",
-                                            e.target.value
-                                        )
-                                    }
-                                    min="0"
-                                    className="w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
-                                />
-                            </div>
+    if (!form.slug.trim()) {
+      setError("Product slug is required.");
+      return;
+    }
 
-                            {/* Active */}
-                            <div className="flex items-center">
-                                <label className="flex cursor-pointer items-center gap-3">
-                                    <input
-                                        type="checkbox"
-                                        checked={form.isActive}
-                                        onChange={(e) =>
-                                            handleChange(
-                                                "isActive",
-                                                e.target.checked
-                                            )
-                                        }
-                                        className="h-4 w-4 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
-                                    />
+    try {
+      setLoading(true);
 
-                                    <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
-                                        Product is active
-                                    </span>
-                                </label>
-                            </div>
-                        </div>
-                    </section>
+      const payload = {
+        title: form.title.trim(),
 
-                    {/* ================= ACTIONS ================= */}
-                    <div className="flex flex-col-reverse justify-end gap-3 sm:flex-row">
+        slug: form.slug.trim(),
 
-                        <Link
-                            href="/admin/products"
-                            className="inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white px-6 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:bg-slate-800"
-                        >
-                            Cancel
-                        </Link>
+        /* ============================
+           MEDIA
+        ============================ */
 
-                        <button
-                            type="submit"
-                            disabled={loading}
-                            className="inline-flex items-center justify-center rounded-lg bg-blue-600 px-6 py-3 text-sm font-semibold text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
-                        >
-                            {loading
-                                ? "Creating Product..."
-                                : "Create Product"}
-                        </button>
-                    </div>
-                </form>
-            </div>
+        bannerImage:
+          form.bannerImage.trim() || null,
+
+        logoImage:
+          form.logoImage.trim() || null,
+
+        /* ============================
+           BASIC CONTENT
+        ============================ */
+
+        shortDescription:
+          form.shortDescription.trim() || null,
+
+        description:
+          form.description.trim() || null,
+
+        /* ============================
+           FRONT CARD
+        ============================ */
+
+        cardTagline:
+          form.cardTagline.trim() || null,
+
+        cardSecondaryText:
+          form.cardSecondaryText.trim() || null,
+
+        /* ============================
+           FLIP CARD
+        ============================ */
+
+        flipEyebrow:
+          form.flipEyebrow.trim() || null,
+
+        flipTitle:
+          form.flipTitle.trim() || null,
+
+        flipDescription:
+          form.flipDescription.trim() || null,
+
+        /* ============================
+           DETAIL PAGE
+        ============================ */
+
+        features: parseJsonField(
+          form.features,
+          "Features"
+        ),
+
+        benefits: parseJsonField(
+          form.benefits,
+          "Benefits"
+        ),
+
+        sections: parseJsonField(
+          form.sections,
+          "Sections"
+        ),
+
+        faqs: parseJsonField(
+          form.faqs,
+          "FAQs"
+        ),
+
+        brochureUrl:
+          form.brochureUrl.trim() || null,
+
+        isActive: form.isActive,
+
+        order: Number(form.order) || 0,
+      };
+
+      const response = await fetch(
+        "/api/admin/products",
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type": "application/json",
+          },
+
+          body: JSON.stringify(payload),
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(
+          data.error ||
+            "Failed to create product"
+        );
+      }
+
+      router.push("/admin/products");
+      router.refresh();
+    } catch (err) {
+      console.error(
+        "Create product error:",
+        err
+      );
+
+      setError(
+        err instanceof Error
+          ? err.message
+          : "Failed to create product"
+      );
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  const inputClass =
+    "w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:border-slate-700 dark:bg-slate-950 dark:text-white";
+
+  const textareaClass =
+    "w-full resize-y rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:border-slate-700 dark:bg-slate-950 dark:text-white";
+
+  const jsonTextareaClass =
+    "w-full resize-y rounded-lg border border-slate-300 bg-slate-950 px-4 py-3 font-mono text-xs text-white outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:border-slate-700";
+
+  return (
+    <div className="min-h-screen bg-slate-50 p-6 dark:bg-slate-950">
+      <div className="mx-auto max-w-5xl">
+        {/* HEADER */}
+
+        <div className="mb-8 flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
+          <div>
+            <p className="text-sm font-medium text-blue-600">
+              Admin / Products
+            </p>
+
+            <h1 className="mt-2 text-2xl font-bold text-slate-900 dark:text-white">
+              Add Product
+            </h1>
+
+            <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+              Add product card content and complete
+              product detail information.
+            </p>
+          </div>
+
+          <Link
+            href="/admin/products"
+            className="inline-flex items-center justify-center rounded-lg border border-slate-200 bg-white px-5 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300"
+          >
+            ← Back to Products
+          </Link>
         </div>
-    );
+
+        {/* ERROR */}
+
+        {error && (
+          <div className="mb-6 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600 dark:border-red-900/50 dark:bg-red-950/30 dark:text-red-400">
+            {error}
+          </div>
+        )}
+
+        <form
+          onSubmit={handleSubmit}
+          className="space-y-6"
+        >
+          {/* ===============================================
+              BASIC INFORMATION
+          =============================================== */}
+
+          <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+            <div>
+              <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
+                Basic Information
+              </h2>
+
+              <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+                Main information used across the
+                product website.
+              </p>
+            </div>
+
+            <div className="mt-6 grid gap-5 sm:grid-cols-2">
+              {/* TITLE */}
+
+              <div>
+                <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                  Product Title *
+                </label>
+
+                <input
+                  type="text"
+                  required
+                  value={form.title}
+                  onChange={(event) =>
+                    handleTitleChange(
+                      event.target.value
+                    )
+                  }
+                  placeholder="Global HR"
+                  className={inputClass}
+                />
+              </div>
+
+              {/* SLUG */}
+
+              <div>
+                <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                  Slug *
+                </label>
+
+                <input
+                  type="text"
+                  required
+                  value={form.slug}
+                  onChange={(event) =>
+                    handleChange(
+                      "slug",
+                      event.target.value
+                    )
+                  }
+                  placeholder="global-hr"
+                  className={inputClass}
+                />
+
+                <p className="mt-1 text-xs text-slate-400">
+                  Product URL:
+                  /products/{form.slug || "product-slug"}
+                </p>
+              </div>
+
+              {/* SHORT DESCRIPTION */}
+
+              <div className="sm:col-span-2">
+                <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                  Short Description
+                </label>
+
+                <textarea
+                  value={form.shortDescription}
+                  onChange={(event) =>
+                    handleChange(
+                      "shortDescription",
+                      event.target.value
+                    )
+                  }
+                  rows={3}
+                  placeholder="Complete HR Solution"
+                  className={textareaClass}
+                />
+              </div>
+
+              {/* DESCRIPTION */}
+
+              <div className="sm:col-span-2">
+                <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                  Full Description
+                </label>
+
+                <textarea
+                  value={form.description}
+                  onChange={(event) =>
+                    handleChange(
+                      "description",
+                      event.target.value
+                    )
+                  }
+                  rows={7}
+                  placeholder="Complete product description..."
+                  className={textareaClass}
+                />
+              </div>
+            </div>
+          </section>
+
+          {/* ===============================================
+              PRODUCT MEDIA
+          =============================================== */}
+
+          <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+            <div>
+              <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
+                Product Media
+              </h2>
+
+              <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+                Banner and logo used on product
+                cards and pages.
+              </p>
+            </div>
+
+            <div className="mt-6 grid gap-6 md:grid-cols-2">
+              {/* BANNER */}
+
+              <div>
+                <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                  Banner Image URL
+                </label>
+
+                <input
+                  type="text"
+                  value={form.bannerImage}
+                  onChange={(event) =>
+                    handleChange(
+                      "bannerImage",
+                      event.target.value
+                    )
+                  }
+                  placeholder="/global-hr-banner.png"
+                  className={inputClass}
+                />
+
+                {form.bannerImage && (
+                  <div className="mt-4 h-44 overflow-hidden rounded-xl border border-slate-200 bg-slate-50 dark:border-slate-700 dark:bg-slate-950">
+                    <img
+                      src={form.bannerImage}
+                      alt="Banner preview"
+                      className="h-full w-full object-contain p-3"
+                    />
+                  </div>
+                )}
+              </div>
+
+              {/* LOGO */}
+
+              <div>
+                <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                  Logo Image URL
+                </label>
+
+                <input
+                  type="text"
+                  value={form.logoImage}
+                  onChange={(event) =>
+                    handleChange(
+                      "logoImage",
+                      event.target.value
+                    )
+                  }
+                  placeholder="/global-hr-logo.png"
+                  className={inputClass}
+                />
+
+                <p className="mt-1 text-xs text-slate-400">
+                  Later this field can receive the
+                  selected Media Library URL.
+                </p>
+
+                {form.logoImage && (
+                  <div className="mt-4 flex h-44 items-center justify-center overflow-hidden rounded-xl border border-slate-200 bg-slate-50 dark:border-slate-700 dark:bg-slate-950">
+                    <img
+                      src={form.logoImage}
+                      alt="Logo preview"
+                      className="h-32 w-32 object-contain"
+                    />
+                  </div>
+                )}
+              </div>
+            </div>
+          </section>
+
+          {/* ===============================================
+              FRONT CARD
+          =============================================== */}
+
+          <section className="rounded-2xl border border-blue-200 bg-blue-50/40 p-6 shadow-sm dark:border-blue-900/40 dark:bg-blue-950/10">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-600 dark:text-blue-400">
+                Product Listing
+              </p>
+
+              <h2 className="mt-2 text-lg font-semibold text-slate-900 dark:text-white">
+                Front Card Content
+              </h2>
+
+              <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+                This content appears before the
+                product card flips.
+              </p>
+            </div>
+
+            <div className="mt-6 space-y-5">
+              {/* TAGLINE */}
+
+              <div>
+                <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                  Card Tagline
+                </label>
+
+                <textarea
+                  value={form.cardTagline}
+                  onChange={(event) =>
+                    handleChange(
+                      "cardTagline",
+                      event.target.value
+                    )
+                  }
+                  rows={2}
+                  placeholder="Make HR Process Quick, Easy and Simple."
+                  className={textareaClass}
+                />
+              </div>
+
+              {/* SECONDARY TEXT */}
+
+              <div>
+                <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                  Card Secondary Text
+                </label>
+
+                <textarea
+                  value={form.cardSecondaryText}
+                  onChange={(event) =>
+                    handleChange(
+                      "cardSecondaryText",
+                      event.target.value
+                    )
+                  }
+                  rows={2}
+                  placeholder="HR software for companies where people matter."
+                  className={textareaClass}
+                />
+              </div>
+            </div>
+          </section>
+
+          {/* ===============================================
+              FLIP CARD
+          =============================================== */}
+
+          <section className="rounded-2xl border border-indigo-200 bg-indigo-50/40 p-6 shadow-sm dark:border-indigo-900/40 dark:bg-indigo-950/10">
+            <div>
+              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-indigo-600 dark:text-indigo-400">
+                Hover Content
+              </p>
+
+              <h2 className="mt-2 text-lg font-semibold text-slate-900 dark:text-white">
+                Flip Card Content
+              </h2>
+
+              <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+                This content appears when the card
+                flips on desktop.
+              </p>
+            </div>
+
+            <div className="mt-6 space-y-5">
+              {/* EYEBROW */}
+
+              <div>
+                <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                  Flip Eyebrow
+                </label>
+
+                <input
+                  type="text"
+                  value={form.flipEyebrow}
+                  onChange={(event) =>
+                    handleChange(
+                      "flipEyebrow",
+                      event.target.value
+                    )
+                  }
+                  placeholder="TAKE A TOUR OF GLOBAL HR!"
+                  className={inputClass}
+                />
+              </div>
+
+              {/* TITLE */}
+
+              <div>
+                <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                  Flip Title
+                </label>
+
+                <input
+                  type="text"
+                  value={form.flipTitle}
+                  onChange={(event) =>
+                    handleChange(
+                      "flipTitle",
+                      event.target.value
+                    )
+                  }
+                  placeholder="POWERFUL BUT SIMPLE."
+                  className={inputClass}
+                />
+              </div>
+
+              {/* DESCRIPTION */}
+
+              <div>
+                <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                  Flip Description
+                </label>
+
+                <textarea
+                  value={form.flipDescription}
+                  onChange={(event) =>
+                    handleChange(
+                      "flipDescription",
+                      event.target.value
+                    )
+                  }
+                  rows={5}
+                  placeholder="Description displayed on the back side of the product card..."
+                  className={textareaClass}
+                />
+              </div>
+            </div>
+          </section>
+
+          {/* ===============================================
+              DETAIL PAGE CONTENT
+          =============================================== */}
+
+          <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+            <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
+              Product Detail Page Content
+            </h2>
+
+            <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+              This information appears after the user
+              clicks Explore Product / Read More.
+            </p>
+
+            <p className="mt-2 text-xs text-amber-600 dark:text-amber-400">
+              Features, Benefits, Sections and FAQs
+              must contain valid JSON.
+            </p>
+
+            <div className="mt-6 grid gap-5 md:grid-cols-2">
+              {/* FEATURES */}
+
+              <div>
+                <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                  Features
+                </label>
+
+                <textarea
+                  value={form.features}
+                  onChange={(event) =>
+                    handleChange(
+                      "features",
+                      event.target.value
+                    )
+                  }
+                  rows={9}
+                  placeholder={`[
+  "Employee Management",
+  "Attendance Management",
+  "Payroll Management"
+]`}
+                  className={jsonTextareaClass}
+                />
+              </div>
+
+              {/* BENEFITS */}
+
+              <div>
+                <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                  Benefits
+                </label>
+
+                <textarea
+                  value={form.benefits}
+                  onChange={(event) =>
+                    handleChange(
+                      "benefits",
+                      event.target.value
+                    )
+                  }
+                  rows={9}
+                  placeholder={`[
+  "Save HR processing time",
+  "Improve workforce visibility",
+  "Simplify administration"
+]`}
+                  className={jsonTextareaClass}
+                />
+              </div>
+
+              {/* SECTIONS */}
+
+              <div>
+                <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                  Sections
+                </label>
+
+                <textarea
+                  value={form.sections}
+                  onChange={(event) =>
+                    handleChange(
+                      "sections",
+                      event.target.value
+                    )
+                  }
+                  rows={12}
+                  placeholder={`[
+  {
+    "title": "Dashboard",
+    "description": "Complete HR dashboard."
+  }
+]`}
+                  className={jsonTextareaClass}
+                />
+              </div>
+
+              {/* FAQS */}
+
+              <div>
+                <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                  FAQs
+                </label>
+
+                <textarea
+                  value={form.faqs}
+                  onChange={(event) =>
+                    handleChange(
+                      "faqs",
+                      event.target.value
+                    )
+                  }
+                  rows={12}
+                  placeholder={`[
+  {
+    "question": "What is Global HR?",
+    "answer": "Global HR is a complete HR management system."
+  }
+]`}
+                  className={jsonTextareaClass}
+                />
+              </div>
+            </div>
+          </section>
+
+          {/* ===============================================
+              SETTINGS
+          =============================================== */}
+
+          <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+            <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
+              Settings
+            </h2>
+
+            <div className="mt-6 grid gap-5 md:grid-cols-2">
+              {/* BROCHURE */}
+
+              <div className="md:col-span-2">
+                <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                  Brochure URL
+                </label>
+
+                <input
+                  type="text"
+                  value={form.brochureUrl}
+                  onChange={(event) =>
+                    handleChange(
+                      "brochureUrl",
+                      event.target.value
+                    )
+                  }
+                  placeholder="/brochures/global-hr.pdf"
+                  className={inputClass}
+                />
+              </div>
+
+              {/* ORDER */}
+
+              <div>
+                <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                  Display Order
+                </label>
+
+                <input
+                  type="number"
+                  min="0"
+                  value={form.order}
+                  onChange={(event) =>
+                    handleChange(
+                      "order",
+                      event.target.value
+                    )
+                  }
+                  className={inputClass}
+                />
+              </div>
+
+              {/* ACTIVE */}
+
+              <div className="flex items-center">
+                <label className="flex cursor-pointer items-center gap-3">
+                  <input
+                    type="checkbox"
+                    checked={form.isActive}
+                    onChange={(event) =>
+                      handleChange(
+                        "isActive",
+                        event.target.checked
+                      )
+                    }
+                    className="h-5 w-5 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
+                  />
+
+                  <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                    Product is active
+                  </span>
+                </label>
+              </div>
+            </div>
+          </section>
+
+          {/* BUTTONS */}
+
+          <div className="flex flex-col-reverse justify-end gap-3 sm:flex-row">
+            <Link
+              href="/admin/products"
+              className="inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white px-6 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300"
+            >
+              Cancel
+            </Link>
+
+            <button
+              type="submit"
+              disabled={loading}
+              className="inline-flex items-center justify-center rounded-lg bg-blue-600 px-6 py-3 text-sm font-semibold text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
+            >
+              {loading
+                ? "Creating..."
+                : "Create Product"}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
 }
