@@ -56,56 +56,81 @@ model CandidateSubmission {
 }
 
 model Service {
-  id          String   @id @default(cuid())
+  id String @id @default(cuid())
+
+  // Basic information
   tag         String?
   title       String
-  description String   @db.Text
-  image       String
-  href        String
-  order       Int      @default(0)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+  slug        String  @unique
+  description String  @db.Text
 
+  // Images / navigation
+  image       String
+  bannerImage String?
+  href        String
+
+  // Detail page
+  gradient   String?
+  intro      Json?
+  challenges Json?
+  middle     Json?
+  benefits   Json?
+  closing    String? @db.Text
+  coverage   Json?
+  qa         Json?
+  sections   Json?
+
+  // Display
+  isActive Boolean @default(true)
+  order    Int     @default(0)
+
+  // Dates
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([slug])
+  @@index([isActive])
+  @@index([order])
   @@map("services")
 }
 
 model Product {
-  id               String            @id @default(cuid())
-  title            String
-  slug             String            @unique
+  id    String @id @default(cuid())
+  title String
+  slug  String @unique
 
   // Main product media
-  bannerImage      String?
-  logoImage        String?
+  bannerImage String?
+  logoImage   String?
 
   // Main content
-  shortDescription String?           @db.Text
-  description      String?           @db.Text
+  shortDescription String? @db.Text
+  description      String? @db.Text
 
   // Front card content
   cardTagline       String?
   cardSecondaryText String?
 
   // Flip / back card content
-  flipEyebrow       String?
-  flipTitle         String?
-  flipDescription   String?          @db.Text
+  flipEyebrow     String?
+  flipTitle       String?
+  flipDescription String? @db.Text
 
   // Product detail page content
-  features         Json?
-  benefits         Json?
-  sections         Json?
-  faqs             Json?
+  features Json?
+  benefits Json?
+  sections Json?
+  faqs     Json?
 
-  brochureUrl      String?
+  brochureUrl String?
 
   // Display
-  isActive         Boolean           @default(true)
-  order            Int               @default(0)
+  isActive Boolean @default(true)
+  order    Int     @default(0)
 
   // Dates
-  createdAt        DateTime          @default(now())
-  updatedAt        DateTime          @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   // Relations
   brochureRequests BrochureRequest[]
@@ -124,7 +149,8 @@ model BrochureRequest {
   status    String   @default("pending")
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
-  product   Product? @relation(fields: [productId], references: [id])
+
+  product Product? @relation(fields: [productId], references: [id])
 
   @@index([email])
   @@index([productId])
@@ -244,49 +270,51 @@ model CaseStudy {
   @@index([order])
   @@map("case_studies")
 }
+
 model ProductSolution {
-  id              String   @id @default(cuid())
+  id String @id @default(cuid())
 
   // Basic
-  name            String
-  slug            String   @unique
-  projectTag      String?
-  cardBackTitle   String?
-  excerpt         String?  @db.Text
+  name          String
+  slug          String  @unique
+  projectTag    String?
+  cardBackTitle String?
+  excerpt       String? @db.Text
 
-  // Old content - abhi retain karo
-  content         String?  @db.LongText
+  // Old content
+  content String? @db.LongText
 
-  // New dynamic page content
+  // Dynamic page content
   contentSections Json?
   benefitsTitle   String?
   benefits        Json?
   highlightCards  Json?
 
   // Display
-  order           Int      @default(0)
-  isActive        Boolean  @default(true)
+  order    Int     @default(0)
+  isActive Boolean @default(true)
 
   // Images
-  logoImage       String?
-  bannerImage     String?
-  sidebarImage    String?
+  logoImage    String?
+  bannerImage  String?
+  sidebarImage String?
 
   // SEO
   metaTitle       String?
-  metaDescription String?  @db.Text
+  metaDescription String? @db.Text
   keywords        String?
   canonicalUrl    String?
   openGraphImage  String?
 
-  createdAt       DateTime @default(now())
-  updatedAt       DateTime @updatedAt
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
 
   @@index([slug])
   @@index([isActive])
   @@index([order])
   @@map("product_solutions")
 }
+
 model NewsletterSubscriber {
   id             String    @id @default(cuid())
   email          String    @unique
