@@ -23,7 +23,15 @@ import {
   StaggerItem,
 } from "./stagger-container";
 
-function FacebookIcon({ size = 16 }: { size?: number }) {
+/* =========================================================
+   SOCIAL ICONS
+========================================================= */
+
+function FacebookIcon({
+  size = 16,
+}: {
+  size?: number;
+}) {
   return (
     <svg
       width={size}
@@ -37,7 +45,11 @@ function FacebookIcon({ size = 16 }: { size?: number }) {
   );
 }
 
-function LinkedinIcon({ size = 16 }: { size?: number }) {
+function LinkedinIcon({
+  size = 16,
+}: {
+  size?: number;
+}) {
   return (
     <svg
       width={size}
@@ -51,7 +63,11 @@ function LinkedinIcon({ size = 16 }: { size?: number }) {
   );
 }
 
-function TwitterIcon({ size = 16 }: { size?: number }) {
+function TwitterIcon({
+  size = 16,
+}: {
+  size?: number;
+}) {
   return (
     <svg
       width={size}
@@ -65,7 +81,11 @@ function TwitterIcon({ size = 16 }: { size?: number }) {
   );
 }
 
-function InstagramIcon({ size = 16 }: { size?: number }) {
+function InstagramIcon({
+  size = 16,
+}: {
+  size?: number;
+}) {
   return (
     <svg
       width={size}
@@ -76,8 +96,20 @@ function InstagramIcon({ size = 16 }: { size?: number }) {
       strokeWidth="1.8"
       aria-hidden="true"
     >
-      <rect x="3" y="3" width="18" height="18" rx="5" />
-      <circle cx="12" cy="12" r="4" />
+      <rect
+        x="3"
+        y="3"
+        width="18"
+        height="18"
+        rx="5"
+      />
+
+      <circle
+        cx="12"
+        cy="12"
+        r="4"
+      />
+
       <circle
         cx="17.3"
         cy="6.7"
@@ -88,6 +120,10 @@ function InstagramIcon({ size = 16 }: { size?: number }) {
     </svg>
   );
 }
+
+/* =========================================================
+   FOOTER COLUMN CONFIG
+========================================================= */
 
 const columnIcons = {
   services: Briefcase,
@@ -103,6 +139,10 @@ const columnTitles = {
   popular: "Popular Links",
 };
 
+/* =========================================================
+   FOOTER COLUMN
+========================================================= */
+
 function FooterColumn({
   columnKey,
   links,
@@ -113,12 +153,16 @@ function FooterColumn({
     href: string;
   }[];
 }) {
-  const Icon = columnIcons[columnKey];
+  const Icon =
+    columnIcons[columnKey];
 
   return (
     <div>
       <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-blue-100 bg-blue-50 text-blue-600 dark:border-blue-500/10 dark:bg-blue-500/10 dark:text-blue-400">
-        <Icon size={18} strokeWidth={1.7} />
+        <Icon
+          size={18}
+          strokeWidth={1.7}
+        />
       </div>
 
       <h4 className="mt-4 text-sm font-semibold text-slate-950 dark:text-white">
@@ -134,7 +178,9 @@ function FooterColumn({
               href={link.href}
               className="group flex items-center justify-between gap-3 text-sm text-slate-500 transition-colors hover:text-blue-600 dark:text-slate-400 dark:hover:text-white"
             >
-              <span>{link.label}</span>
+              <span>
+                {link.label}
+              </span>
 
               <ChevronRight
                 size={13}
@@ -148,17 +194,198 @@ function FooterColumn({
   );
 }
 
+/* =========================================================
+   FOOTER
+========================================================= */
+
 export function Footer() {
-  const [email, setEmail] = useState("");
+  /* =======================================================
+     NEWSLETTER STATE
+  ======================================================= */
+
+  const [email, setEmail] =
+    useState("");
+
+  const [
+    newsletterLoading,
+    setNewsletterLoading,
+  ] = useState(false);
+
+  const [
+    newsletterMessage,
+    setNewsletterMessage,
+  ] = useState("");
+
+  const [
+    newsletterError,
+    setNewsletterError,
+  ] = useState("");
+
+  /* =======================================================
+     NEWSLETTER SUBMIT
+  ======================================================= */
+
+  const handleNewsletterSubmit =
+    async (
+      event: React.FormEvent<HTMLFormElement>
+    ) => {
+      event.preventDefault();
+
+      const cleanEmail =
+        email.trim();
+
+      setNewsletterMessage("");
+      setNewsletterError("");
+
+      /* ===============================================
+         EMPTY EMAIL
+      =============================================== */
+
+      if (!cleanEmail) {
+        setNewsletterError(
+          "Please enter your email address."
+        );
+
+        return;
+      }
+
+      /* ===============================================
+         BASIC EMAIL VALIDATION
+      =============================================== */
+
+      const emailRegex =
+        /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+      if (
+        !emailRegex.test(
+          cleanEmail
+        )
+      ) {
+        setNewsletterError(
+          "Please enter a valid email address."
+        );
+
+        return;
+      }
+
+      try {
+        setNewsletterLoading(
+          true
+        );
+
+        /* =============================================
+           API REQUEST
+        ============================================= */
+
+        const response =
+          await fetch(
+            "/api/newsletter",
+            {
+              method: "POST",
+
+              headers: {
+                "Content-Type":
+                  "application/json",
+              },
+
+              body: JSON.stringify({
+                email:
+                  cleanEmail,
+              }),
+            }
+          );
+
+        /* =============================================
+           READ RESPONSE
+        ============================================= */
+
+        const text =
+          await response.text();
+
+        let data: {
+          success?: boolean;
+          message?: string;
+          error?: string;
+        } = {};
+
+        if (text) {
+          try {
+            data =
+              JSON.parse(text);
+          } catch {
+            console.error(
+              "Invalid newsletter API response:",
+              text
+            );
+          }
+        }
+
+        /* =============================================
+           API ERROR
+        ============================================= */
+
+        if (!response.ok) {
+          throw new Error(
+            data.error ||
+              "Subscription failed. Please try again."
+          );
+        }
+
+        /* =============================================
+           SUCCESS
+        ============================================= */
+
+        setNewsletterMessage(
+          data.message ||
+            "Thank you for subscribing!"
+        );
+
+        setEmail("");
+      } catch (error) {
+        console.error(
+          "Newsletter subscribe error:",
+          error
+        );
+
+        setNewsletterError(
+          error instanceof Error
+            ? error.message
+            : "Something went wrong. Please try again."
+        );
+      } finally {
+        setNewsletterLoading(
+          false
+        );
+      }
+    };
+
+  /* =======================================================
+     UI
+  ======================================================= */
 
   return (
     <footer className="relative overflow-hidden border-t border-slate-200 bg-white text-slate-500 dark:border-white/[0.05] dark:bg-[#050914] dark:text-slate-400">
+      {/* Background glow */}
+
       <div className="pointer-events-none absolute left-1/2 top-0 h-72 w-[800px] -translate-x-1/2 rounded-full bg-blue-500/[0.06] blur-[120px] dark:bg-blue-500/[0.08]" />
 
       <div className="relative mx-auto max-w-7xl px-6 sm:px-8 lg:px-10">
+        {/* =================================================
+            MAIN FOOTER
+        ================================================= */}
+
         <div className="grid gap-14 py-16 lg:grid-cols-[270px_minmax(0,1fr)] lg:py-20">
+          {/* ===============================================
+              COMPANY + NEWSLETTER
+          =============================================== */}
+
           <AnimateIn direction="left">
-            <Link href="/" className="flex items-center gap-3">
+            {/* Logo */}
+
+            <Link
+              href="/"
+              className="flex items-center gap-3"
+            >
               <Image
                 src="/logo-icon-1.png"
                 alt="Geecon Technology"
@@ -178,10 +405,19 @@ export function Footer() {
               </div>
             </Link>
 
+            {/* Description */}
+
             <p className="mt-5 text-sm leading-7">
-              Delivering innovative technology solutions that help businesses
-              grow, transform and succeed in the digital world.
+              Delivering innovative
+              technology solutions that
+              help businesses grow,
+              transform and succeed in
+              the digital world.
             </p>
+
+            {/* =============================================
+                NEWSLETTER
+            ============================================= */}
 
             <div className="mt-8">
               <h4 className="text-sm font-semibold text-slate-950 dark:text-white">
@@ -189,64 +425,165 @@ export function Footer() {
               </h4>
 
               <p className="mt-2 text-sm leading-6">
-                Subscribe to our newsletter for the latest updates and insights.
+                Subscribe to our
+                newsletter for the latest
+                updates and insights.
               </p>
 
+              {/* Newsletter form */}
+
               <form
-                onSubmit={(e) => e.preventDefault()}
-                className="mt-4 flex items-center gap-2 rounded-xl border border-slate-200 bg-slate-50 p-1.5 transition-colors focus-within:border-blue-400 dark:border-white/[0.08] dark:bg-white/[0.04]"
+                onSubmit={
+                  handleNewsletterSubmit
+                }
+                className={`mt-4 flex items-center gap-2 rounded-xl border bg-slate-50 p-1.5 transition-all dark:bg-white/[0.04] ${
+                  newsletterError
+                    ? "border-red-400 focus-within:border-red-500 dark:border-red-500/50"
+                    : newsletterMessage
+                      ? "border-emerald-400 focus-within:border-emerald-500 dark:border-emerald-500/40"
+                      : "border-slate-200 focus-within:border-blue-400 dark:border-white/[0.08]"
+                }`}
               >
                 <input
                   type="email"
                   value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  onChange={(
+                    event
+                  ) => {
+                    setEmail(
+                      event.target
+                        .value
+                    );
+
+                    if (
+                      newsletterError
+                    ) {
+                      setNewsletterError(
+                        ""
+                      );
+                    }
+
+                    if (
+                      newsletterMessage
+                    ) {
+                      setNewsletterMessage(
+                        ""
+                      );
+                    }
+                  }}
                   placeholder="Enter your email"
-                  className="min-w-0 flex-1 bg-transparent px-3 py-2 text-sm text-slate-900 outline-none placeholder:text-slate-400 dark:text-white dark:placeholder:text-slate-600"
+                  disabled={
+                    newsletterLoading
+                  }
+                  autoComplete="email"
+                  aria-label="Email address"
+                  className="min-w-0 flex-1 bg-transparent px-3 py-2 text-sm text-slate-900 outline-none placeholder:text-slate-400 disabled:cursor-not-allowed disabled:opacity-60 dark:text-white dark:placeholder:text-slate-600"
                 />
 
                 <button
                   type="submit"
-                  aria-label="Subscribe"
-                  className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-blue-600 to-cyan-500 text-white shadow-lg shadow-blue-500/20 transition-transform hover:scale-105"
+                  disabled={
+                    newsletterLoading
+                  }
+                  aria-label={
+                    newsletterLoading
+                      ? "Subscribing"
+                      : "Subscribe"
+                  }
+                  className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-blue-600 to-cyan-500 text-white shadow-lg shadow-blue-500/20 transition-all hover:scale-105 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:scale-100"
                 >
-                  <Send size={15} />
+                  {newsletterLoading ? (
+                    <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/40 border-t-white" />
+                  ) : (
+                    <Send
+                      size={15}
+                    />
+                  )}
                 </button>
               </form>
+
+              {/* SUCCESS MESSAGE */}
+
+              {newsletterMessage && (
+                <div
+                  role="status"
+                  className="mt-2 flex items-start gap-1.5 text-xs font-medium text-emerald-600 dark:text-emerald-400"
+                >
+                  <span className="mt-[2px]">
+                    ✓
+                  </span>
+
+                  <span>
+                    {
+                      newsletterMessage
+                    }
+                  </span>
+                </div>
+              )}
+
+              {/* ERROR MESSAGE */}
+
+              {newsletterError && (
+                <p
+                  role="alert"
+                  className="mt-2 text-xs font-medium text-red-500 dark:text-red-400"
+                >
+                  {newsletterError}
+                </p>
+              )}
             </div>
           </AnimateIn>
+
+          {/* ===============================================
+              FOOTER COLUMNS
+          =============================================== */}
 
           <StaggerContainer className="grid gap-10 sm:grid-cols-2 xl:grid-cols-4">
             <StaggerItem>
               <FooterColumn
                 columnKey="services"
-                links={footerLinks.services}
+                links={
+                  footerLinks.services
+                }
               />
             </StaggerItem>
 
             <StaggerItem>
               <FooterColumn
                 columnKey="products"
-                links={footerLinks.products}
+                links={
+                  footerLinks.products
+                }
               />
             </StaggerItem>
 
             <StaggerItem>
               <FooterColumn
                 columnKey="about"
-                links={footerLinks.about}
+                links={
+                  footerLinks.about
+                }
               />
             </StaggerItem>
 
             <StaggerItem>
               <FooterColumn
                 columnKey="popular"
-                links={footerLinks.popular}
+                links={
+                  footerLinks.popular
+                }
               />
             </StaggerItem>
           </StaggerContainer>
         </div>
 
+        {/* =================================================
+            CONTACT / TRUST / SOCIAL
+        ================================================= */}
+
         <div className="grid gap-6 border-t border-slate-200 py-8 md:grid-cols-3 md:items-center dark:border-white/[0.08]">
+          {/* Phone */}
+
           <div className="flex items-center gap-3">
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-500/10 dark:text-blue-400">
               <Phone size={17} />
@@ -263,9 +600,13 @@ export function Footer() {
             </div>
           </div>
 
+          {/* Trust */}
+
           <div className="flex items-center gap-3 md:justify-center">
             <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-500/10 dark:text-blue-400">
-              <ShieldCheck size={17} />
+              <ShieldCheck
+                size={17}
+              />
             </div>
 
             <div>
@@ -274,10 +615,13 @@ export function Footer() {
               </p>
 
               <p className="mt-0.5 text-sm font-semibold text-slate-950 dark:text-white">
-                Secure. Reliable. Professional.
+                Secure. Reliable.
+                Professional.
               </p>
             </div>
           </div>
+
+          {/* Social */}
 
           <div className="md:text-right">
             <p className="text-xs text-blue-600 dark:text-blue-400">
@@ -287,37 +631,81 @@ export function Footer() {
             <div className="mt-2 flex gap-2 md:justify-end">
               {[
                 {
-                  label: "Facebook",
-                  icon: <FacebookIcon size={14} />,
+                  label:
+                    "Facebook",
+                  icon: (
+                    <FacebookIcon
+                      size={
+                        14
+                      }
+                    />
+                  ),
                 },
                 {
-                  label: "Twitter",
-                  icon: <TwitterIcon size={14} />,
+                  label:
+                    "Twitter",
+                  icon: (
+                    <TwitterIcon
+                      size={
+                        14
+                      }
+                    />
+                  ),
                 },
                 {
-                  label: "LinkedIn",
-                  icon: <LinkedinIcon size={14} />,
+                  label:
+                    "LinkedIn",
+                  icon: (
+                    <LinkedinIcon
+                      size={
+                        14
+                      }
+                    />
+                  ),
                 },
                 {
-                  label: "Instagram",
-                  icon: <InstagramIcon size={14} />,
+                  label:
+                    "Instagram",
+                  icon: (
+                    <InstagramIcon
+                      size={
+                        14
+                      }
+                    />
+                  ),
                 },
-              ].map((item) => (
-                <a
-                  key={item.label}
-                  href="#"
-                  aria-label={item.label}
-                  className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 text-slate-600 transition-all hover:-translate-y-0.5 hover:border-blue-500 hover:bg-blue-500 hover:text-white dark:border-white/[0.08] dark:text-slate-300"
-                >
-                  {item.icon}
-                </a>
-              ))}
+              ].map(
+                (item) => (
+                  <a
+                    key={
+                      item.label
+                    }
+                    href="#"
+                    aria-label={
+                      item.label
+                    }
+                    className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 text-slate-600 transition-all hover:-translate-y-0.5 hover:border-blue-500 hover:bg-blue-500 hover:text-white dark:border-white/[0.08] dark:text-slate-300"
+                  >
+                    {
+                      item.icon
+                    }
+                  </a>
+                )
+              )}
             </div>
           </div>
         </div>
 
+        {/* =================================================
+            BOTTOM BAR
+        ================================================= */}
+
         <div className="flex flex-col items-center justify-between gap-3 border-t border-slate-200 py-5 text-xs text-slate-400 sm:flex-row dark:border-white/[0.08] dark:text-slate-600">
-          <p>© 2026 Geecon Technology. All Rights Reserved.</p>
+          <p>
+            © 2026 Geecon
+            Technology. All Rights
+            Reserved.
+          </p>
 
           <div className="flex flex-wrap items-center justify-center gap-3">
             <Link

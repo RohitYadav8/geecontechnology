@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+
 import {
   LayoutDashboard,
   Briefcase,
@@ -11,6 +12,7 @@ import {
   FileText,
   Boxes,
   Mail,
+  Send,
   Newspaper,
   UserCheck,
   UserSearch,
@@ -53,6 +55,14 @@ const navItems = [
     href: "/admin/contact-form",
     icon: Mail,
   },
+
+  // Newsletter
+  {
+    label: "Newsletter",
+    href: "/admin/newsletter",
+    icon: Send,
+  },
+
   {
     label: "Blog Posts",
     href: "/admin/blog-posts",
@@ -121,21 +131,31 @@ export function AdminSidebar() {
     }
   }, [pathname]);
 
-  const isItemActive = (href: string, hasChildren = false) => {
+  const isItemActive = (
+    href: string,
+    hasChildren = false
+  ) => {
     if (!pathname) {
       return false;
     }
 
     if (hasChildren) {
-      return pathname === href || pathname.startsWith(`${href}/`);
+      return (
+        pathname === href ||
+        pathname.startsWith(`${href}/`)
+      );
     }
 
-    return pathname === href || pathname.startsWith(`${href}/`);
+    return (
+      pathname === href ||
+      pathname.startsWith(`${href}/`)
+    );
   };
 
   return (
     <aside className="fixed left-0 top-0 z-40 flex h-screen w-64 shrink-0 flex-col overflow-hidden border-r border-slate-200 bg-white dark:border-slate-800 dark:bg-[#0a0e1a]">
       {/* Logo */}
+
       <div className="shrink-0 border-b border-slate-200 px-4 py-4 dark:border-slate-800">
         <Link
           href="/admin/dashboard"
@@ -163,6 +183,7 @@ export function AdminSidebar() {
       </div>
 
       {/* Navigation */}
+
       <nav className="flex-1 overflow-y-auto px-3 py-5">
         <div className="flex flex-col gap-1">
           {navItems.map((item) => {
@@ -176,7 +197,11 @@ export function AdminSidebar() {
                 <div key={item.label}>
                   <button
                     type="button"
-                    onClick={() => setBlogOpen((value) => !value)}
+                    onClick={() =>
+                      setBlogOpen(
+                        (value) => !value
+                      )
+                    }
                     className={`flex w-full items-center justify-between rounded-lg px-3 py-2.5 text-sm font-medium transition-all ${
                       isActive
                         ? "bg-violet-600 text-white shadow-sm"
@@ -185,37 +210,51 @@ export function AdminSidebar() {
                   >
                     <span className="flex items-center gap-3">
                       <item.icon size={17} />
-                      <span>{item.label}</span>
+
+                      <span>
+                        {item.label}
+                      </span>
                     </span>
 
                     <ChevronDown
                       size={14}
                       className={`transition-transform duration-200 ${
-                        blogOpen ? "rotate-180" : ""
+                        blogOpen
+                          ? "rotate-180"
+                          : ""
                       }`}
                     />
                   </button>
 
                   {blogOpen && (
                     <div className="ml-7 mt-1 flex flex-col gap-1 border-l border-slate-200 pl-2 dark:border-slate-700">
-                      {item.children.map((child) => {
-                        const childActive =
-                          pathname === child.href;
+                      {item.children.map(
+                        (child) => {
+                          const childActive =
+                            pathname ===
+                            child.href;
 
-                        return (
-                          <Link
-                            key={child.href}
-                            href={child.href}
-                            className={`rounded-md px-3 py-2 text-sm transition-all ${
-                              childActive
-                                ? "bg-violet-50 font-medium text-violet-600 dark:bg-violet-500/10 dark:text-violet-400"
-                                : "text-slate-500 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-500 dark:hover:bg-white/5 dark:hover:text-white"
-                            }`}
-                          >
-                            {child.label}
-                          </Link>
-                        );
-                      })}
+                          return (
+                            <Link
+                              key={
+                                child.href
+                              }
+                              href={
+                                child.href
+                              }
+                              className={`rounded-md px-3 py-2 text-sm transition-all ${
+                                childActive
+                                  ? "bg-violet-50 font-medium text-violet-600 dark:bg-violet-500/10 dark:text-violet-400"
+                                  : "text-slate-500 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-500 dark:hover:bg-white/5 dark:hover:text-white"
+                              }`}
+                            >
+                              {
+                                child.label
+                              }
+                            </Link>
+                          );
+                        }
+                      )}
                     </div>
                   )}
                 </div>
@@ -233,7 +272,10 @@ export function AdminSidebar() {
                 }`}
               >
                 <item.icon size={17} />
-                <span>{item.label}</span>
+
+                <span>
+                  {item.label}
+                </span>
               </Link>
             );
           })}
@@ -241,6 +283,7 @@ export function AdminSidebar() {
       </nav>
 
       {/* Footer */}
+
       <div className="shrink-0 border-t border-slate-200 px-4 py-3 dark:border-slate-800">
         <p className="text-center text-[10px] text-slate-400 dark:text-slate-600">
           Geecon Technology
