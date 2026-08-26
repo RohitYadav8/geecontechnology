@@ -1,4 +1,5 @@
 import { cookies } from "next/headers";
+
 import {
   redirect,
   notFound,
@@ -16,6 +17,61 @@ type EditServicePageProps = {
     id: string;
   }>;
 };
+
+// ============================================================
+// JSON HELPERS
+// ============================================================
+
+function getStringArray(value: unknown): string[] {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  return value.filter(
+    (item): item is string =>
+      typeof item === "string"
+  );
+}
+
+function getSections(
+  value: unknown
+): {
+  title: string;
+  body: string;
+}[] {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  return value
+    .filter(
+      (item) =>
+        typeof item === "object" &&
+        item !== null
+    )
+    .map((item) => {
+      const section = item as Record<
+        string,
+        unknown
+      >;
+
+      return {
+        title:
+          typeof section.title === "string"
+            ? section.title
+            : "",
+
+        body:
+          typeof section.body === "string"
+            ? section.body
+            : "",
+      };
+    });
+}
+
+// ============================================================
+// EDIT SERVICE PAGE
+// ============================================================
 
 export default async function EditServicePage({
   params,
@@ -81,7 +137,8 @@ export default async function EditServicePage({
 
             <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
               Update service information,
-              visibility and display order.
+              content, visibility and display
+              order.
             </p>
           </div>
 
@@ -107,8 +164,52 @@ export default async function EditServicePage({
                 image:
                   service.image,
 
+                bannerImage:
+                  service.bannerImage ?? "",
+
                 href:
                   service.href,
+
+                gradient:
+                  service.gradient ?? "",
+
+                intro:
+                  getStringArray(
+                    service.intro
+                  ),
+
+                challenges:
+                  getStringArray(
+                    service.challenges
+                  ),
+
+                middle:
+                  getStringArray(
+                    service.middle
+                  ),
+
+                benefits:
+                  getStringArray(
+                    service.benefits
+                  ),
+
+                closing:
+                  service.closing ?? "",
+
+                coverage:
+                  getStringArray(
+                    service.coverage
+                  ),
+
+                qa:
+                  getStringArray(
+                    service.qa
+                  ),
+
+                sections:
+                  getSections(
+                    service.sections
+                  ),
 
                 order:
                   service.order,

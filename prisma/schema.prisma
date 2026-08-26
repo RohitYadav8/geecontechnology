@@ -327,3 +327,45 @@ model NewsletterSubscriber {
   @@index([isActive])
   @@index([createdAt])
 }
+model BlogPost {
+  id          String   @id @default(cuid())
+
+  // Basic
+  title       String
+  slug        String   @unique
+  excerpt     String?  @db.Text
+  content     String   @db.LongText
+
+  // Media
+  featuredImage String?
+
+  // Blog information
+  category    String?
+  author      String?
+  tags        Json?
+
+  // Publishing
+  isPublished Boolean  @default(false)
+  isFeatured  Boolean  @default(false)
+  publishedAt DateTime?
+
+  // SEO
+  metaTitle       String?
+  metaDescription String? @db.Text
+  keywords        String?
+  openGraphImage  String?
+
+  // Display
+  order       Int      @default(0)
+
+  // Dates
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@index([slug])
+  @@index([isPublished])
+  @@index([isFeatured])
+  @@index([publishedAt])
+  @@index([order])
+  @@map("blog_posts")
+}
