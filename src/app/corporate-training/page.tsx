@@ -17,7 +17,7 @@ import {
 // Images
 // ---------------------------------------------------------
 
-const BANNER_SRC = "/corp-train.png";
+const BANNER_SRC = "/Training.png";
 
 // ---------------------------------------------------------
 // Training
