@@ -20,7 +20,7 @@ import {
 
 const BANNER_SRC = "/mobile-solution-2.png";
 const PHONE_ICON_SRC =
-  "/mobile-Solution-Service.png";
+  "/mobile-solution-service.png";
 
 // ---------------------------------------------------------
 // Benefits
