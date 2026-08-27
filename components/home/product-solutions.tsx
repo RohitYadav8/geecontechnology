@@ -46,7 +46,12 @@ export function ProductSolutions() {
   const [loading, setLoading] =
     useState(true);
 
-  const [error, setError] = useState("");
+  const [error, setError] =
+    useState("");
+
+  // =========================================================
+  // FETCH PRODUCT SOLUTIONS
+  // =========================================================
 
   useEffect(() => {
     async function fetchProductSolutions() {
@@ -61,7 +66,8 @@ export function ProductSolutions() {
           }
         );
 
-        const data = await response.json();
+        const data =
+          await response.json();
 
         if (!response.ok) {
           throw new Error(
@@ -71,7 +77,9 @@ export function ProductSolutions() {
         }
 
         setSolutions(
-          Array.isArray(data) ? data : []
+          Array.isArray(data)
+            ? data
+            : []
         );
       } catch (error) {
         console.error(
@@ -92,6 +100,10 @@ export function ProductSolutions() {
     fetchProductSolutions();
   }, []);
 
+  // =========================================================
+  // RESET ACTIVE INDEX
+  // =========================================================
+
   useEffect(() => {
     if (
       solutions.length &&
@@ -100,6 +112,10 @@ export function ProductSolutions() {
       setActiveIndex(0);
     }
   }, [solutions, activeIndex]);
+
+  // =========================================================
+  // LOADING
+  // =========================================================
 
   if (loading) {
     return (
@@ -116,6 +132,10 @@ export function ProductSolutions() {
       </section>
     );
   }
+
+  // =========================================================
+  // ERROR
+  // =========================================================
 
   if (error) {
     return (
@@ -153,6 +173,10 @@ export function ProductSolutions() {
       <BackgroundEffects />
 
       <div className="relative mx-auto max-w-7xl px-6 sm:px-8 lg:px-10">
+        {/* ===================================================
+            SECTION HEADER
+        =================================================== */}
+
         <div className="mb-12 grid gap-7 lg:grid-cols-[1fr_0.8fr] lg:items-end">
           <div>
             <div
@@ -198,6 +222,10 @@ export function ProductSolutions() {
           </div>
         </div>
 
+        {/* ===================================================
+            MAIN CARD
+        =================================================== */}
+
         <MouseGlow>
           <div
             className="
@@ -214,7 +242,10 @@ export function ProductSolutions() {
               lg:grid-cols-[340px_minmax(0,1fr)]
             "
           >
-            {/* Navigation */}
+            {/* =================================================
+                LEFT NAVIGATION
+            ================================================= */}
+
             <div
               className="
                 border-b
@@ -235,7 +266,10 @@ export function ProductSolutions() {
 
               <div className="space-y-1.5">
                 {solutions.map(
-                  (solution, index) => {
+                  (
+                    solution,
+                    index
+                  ) => {
                     const isActive =
                       index === activeIndex;
 
@@ -247,7 +281,9 @@ export function ProductSolutions() {
                           setActiveIndex(index)
                         }
                         whileHover={{
-                          x: isActive ? 0 : 3,
+                          x: isActive
+                            ? 0
+                            : 3,
                         }}
                         whileTap={{
                           scale: 0.99,
@@ -369,7 +405,10 @@ export function ProductSolutions() {
               </div>
             </div>
 
-            {/* Content */}
+            {/* =================================================
+                RIGHT CONTENT
+            ================================================= */}
+
             <div className="min-w-0 p-5 sm:p-7">
               <AnimatePresence mode="wait">
                 <motion.div
@@ -392,11 +431,46 @@ export function ProductSolutions() {
                   transition={{
                     duration: 0.4,
                   }}
-                  className="grid gap-8 lg:grid-cols-[1.15fr_.85fr] lg:items-center"
+                  className="
+                    grid
+                    gap-8
+                    xl:grid-cols-[1.15fr_.85fr]
+                    xl:items-center
+                  "
                 >
-                  <div className="group relative overflow-hidden rounded-[24px] border border-slate-200 bg-slate-100 dark:border-white/[0.07] dark:bg-slate-950">
-                    <div className="relative aspect-[16/10] overflow-hidden">
-                      {activeSolution.bannerImage ? (
+                  {/* =========================================
+                      FULL IMAGE - NO CROP
+                  ========================================= */}
+
+                  <div
+                    className="
+                      relative
+                      overflow-hidden
+                      rounded-[24px]
+                      border
+                      border-slate-200
+                      bg-white
+                      shadow-sm
+                      dark:border-white/[0.08]
+                      dark:bg-white
+                    "
+                  >
+                    {activeSolution.bannerImage ? (
+                      <div
+                        className="
+                          flex
+                          min-h-[300px]
+                          w-full
+                          items-center
+                          justify-center
+                          bg-white
+                          p-4
+                          sm:min-h-[340px]
+                          sm:p-5
+                          lg:min-h-[380px]
+                          lg:p-6
+                        "
+                      >
                         <Image
                           src={
                             activeSolution.bannerImage
@@ -404,29 +478,59 @@ export function ProductSolutions() {
                           alt={
                             activeSolution.name
                           }
-                          fill
-                          sizes="(max-width: 1024px) 100vw, 48vw"
-                          className="object-cover transition-transform duration-700 group-hover:scale-[1.04]"
+                          width={1200}
+                          height={800}
+                          sizes="(max-width: 1280px) 100vw, 52vw"
+                          className="
+                            h-auto
+                            max-h-[340px]
+                            w-auto
+                            max-w-full
+                            object-contain
+                            object-center
+                          "
                         />
-                      ) : (
-                        <div className="absolute inset-0 flex items-center justify-center bg-slate-100 dark:bg-slate-900">
-                          <p className="text-sm text-slate-400">
-                            No banner image
-                          </p>
-                        </div>
-                      )}
+                      </div>
+                    ) : (
+                      <div className="flex min-h-[320px] items-center justify-center bg-slate-50">
+                        <p className="text-sm text-slate-400">
+                          No banner image
+                        </p>
+                      </div>
+                    )}
 
-                      <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#06101f]/55 via-transparent to-transparent" />
+                    {/* Project tag */}
 
-                      {activeSolution.projectTag && (
-                        <div className="absolute left-4 top-4 rounded-full border border-white/20 bg-black/25 px-3 py-1.5 text-[11px] font-medium text-white backdrop-blur-xl">
-                          {
-                            activeSolution.projectTag
-                          }
-                        </div>
-                      )}
-                    </div>
+                    {activeSolution.projectTag && (
+                      <div
+                        className="
+                          absolute
+                          left-4
+                          top-4
+                          z-20
+                          rounded-full
+                          border
+                          border-slate-200
+                          bg-white/95
+                          px-3.5
+                          py-1.5
+                          text-[11px]
+                          font-semibold
+                          text-slate-700
+                          shadow-md
+                          backdrop-blur-xl
+                        "
+                      >
+                        {
+                          activeSolution.projectTag
+                        }
+                      </div>
+                    )}
                   </div>
+
+                  {/* =========================================
+                      TEXT CONTENT
+                  ========================================= */}
 
                   <div className="px-1 py-2 lg:px-3">
                     {activeSolution.logoImage && (
@@ -448,7 +552,9 @@ export function ProductSolutions() {
                     </p>
 
                     <h3 className="mt-3 text-2xl font-semibold tracking-[-0.03em] text-slate-950 sm:text-3xl dark:text-white">
-                      {activeSolution.name}
+                      {
+                        activeSolution.name
+                      }
                     </h3>
 
                     {activeSolution.excerpt && (
@@ -493,6 +599,8 @@ export function ProductSolutions() {
                         className="transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5"
                       />
                     </Link>
+
+                    {/* Progress */}
 
                     <div className="mt-8 flex items-center gap-3">
                       <span className="font-mono text-[11px] text-slate-400">

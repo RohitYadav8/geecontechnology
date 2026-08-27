@@ -8,6 +8,19 @@ type RouteContext = {
   }>;
 };
 
+function cleanOptionalString(value: unknown) {
+  if (typeof value !== "string") {
+    return null;
+  }
+
+  const cleaned = value.trim();
+  return cleaned || null;
+}
+
+// ============================================================
+// GET SINGLE PRODUCT SOLUTION
+// ============================================================
+
 export async function GET(
   request: NextRequest,
   context: RouteContext
@@ -24,12 +37,11 @@ export async function GET(
   try {
     const { id } = await context.params;
 
-    const solution =
-      await prisma.productSolution.findUnique({
-        where: {
-          id,
-        },
-      });
+    const solution = await prisma.productSolution.findUnique({
+      where: {
+        id,
+      },
+    });
 
     if (!solution) {
       return NextResponse.json(
@@ -40,10 +52,7 @@ export async function GET(
 
     return NextResponse.json(solution);
   } catch (error) {
-    console.error(
-      "GET product solution error:",
-      error
-    );
+    console.error("GET product solution error:", error);
 
     return NextResponse.json(
       { error: "Failed to fetch product solution" },
@@ -51,6 +60,10 @@ export async function GET(
     );
   }
 }
+
+// ============================================================
+// UPDATE PRODUCT SOLUTION
+// ============================================================
 
 export async function PUT(
   request: NextRequest,
@@ -69,6 +82,10 @@ export async function PUT(
     const { id } = await context.params;
     const body = await request.json();
 
+    // --------------------------------------------------------
+    // Check existing record
+    // --------------------------------------------------------
+
     const existingSolution =
       await prisma.productSolution.findUnique({
         where: {
@@ -83,6 +100,10 @@ export async function PUT(
       );
     }
 
+    // --------------------------------------------------------
+    // Get values
+    // --------------------------------------------------------
+
     const {
       name,
       slug,
@@ -90,10 +111,19 @@ export async function PUT(
       cardBackTitle,
       excerpt,
       content,
+
+      contentSections,
+      benefitsTitle,
+      benefits,
+      highlightCards,
+
       order,
       isActive,
+
       logoImage,
       bannerImage,
+      sidebarImage,
+
       metaTitle,
       metaDescription,
       keywords,
@@ -101,25 +131,50 @@ export async function PUT(
       openGraphImage,
     } = body;
 
-    if (!name?.trim()) {
+    // --------------------------------------------------------
+    // Required validation
+    // --------------------------------------------------------
+
+    const cleanName =
+      typeof name === "string" ? name.trim() : "";
+
+    if (!cleanName) {
       return NextResponse.json(
         { error: "Name is required" },
         { status: 400 }
       );
     }
 
-    if (!slug?.trim()) {
+    if (
+      typeof slug !== "string" ||
+      !slug.trim()
+    ) {
       return NextResponse.json(
         { error: "Slug is required" },
         { status: 400 }
       );
     }
 
+    // --------------------------------------------------------
+    // Normalize slug
+    // --------------------------------------------------------
+
     const normalizedSlug = slug
       .trim()
       .toLowerCase()
       .replace(/[^a-z0-9]+/g, "-")
       .replace(/^-+|-+$/g, "");
+
+    if (!normalizedSlug) {
+      return NextResponse.json(
+        { error: "Please enter a valid slug" },
+        { status: 400 }
+      );
+    }
+
+    // --------------------------------------------------------
+    // Duplicate slug
+    // --------------------------------------------------------
 
     const duplicateSlug =
       await prisma.productSolution.findFirst({
@@ -141,59 +196,120 @@ export async function PUT(
       );
     }
 
+    // --------------------------------------------------------
+    // Order
+    // --------------------------------------------------------
+
+    const parsedOrder =
+      typeof order === "number"
+        ? order
+        : Number(order);
+
+    const cleanOrder = Number.isFinite(parsedOrder)
+      ? Math.trunc(parsedOrder)
+      : 0;
+
+    // --------------------------------------------------------
+    // Update
+    // --------------------------------------------------------
+
     const updatedSolution =
       await prisma.productSolution.update({
         where: {
           id,
         },
+
         data: {
-          name: name.trim(),
+          // Basic
+          name: cleanName,
           slug: normalizedSlug,
-
-          projectTag: projectTag?.trim() || null,
+          projectTag:
+            cleanOptionalString(projectTag),
           cardBackTitle:
-            cardBackTitle?.trim() || null,
+            cleanOptionalString(cardBackTitle),
+          excerpt:
+            cleanOptionalString(excerpt),
 
-          excerpt: excerpt?.trim() || null,
-          content: content || null,
+          // Old content
+          content:
+            cleanOptionalString(content),
 
-          order:
-            typeof order === "number"
-              ? order
-              : Number(order) || 0,
+          // Dynamic page content
+          contentSections:
+            Array.isArray(contentSections)
+              ? contentSections
+              : [],
+
+          benefitsTitle:
+            cleanOptionalString(benefitsTitle),
+
+          benefits:
+            Array.isArray(benefits)
+              ? benefits
+              : [],
+
+          highlightCards:
+            Array.isArray(highlightCards)
+              ? highlightCards
+              : [],
+
+          // Display
+          order: cleanOrder,
 
           isActive:
             typeof isActive === "boolean"
               ? isActive
-              : true,
+              : existingSolution.isActive,
 
-          logoImage: logoImage?.trim() || null,
-          bannerImage: bannerImage?.trim() || null,
+          // Images
+          logoImage:
+            cleanOptionalString(logoImage),
 
-          metaTitle: metaTitle?.trim() || null,
+          bannerImage:
+            cleanOptionalString(bannerImage),
+
+          sidebarImage:
+            cleanOptionalString(sidebarImage),
+
+          // SEO
+          metaTitle:
+            cleanOptionalString(metaTitle),
+
           metaDescription:
-            metaDescription?.trim() || null,
-          keywords: keywords?.trim() || null,
+            cleanOptionalString(metaDescription),
+
+          keywords:
+            cleanOptionalString(keywords),
+
           canonicalUrl:
-            canonicalUrl?.trim() || null,
+            cleanOptionalString(canonicalUrl),
+
           openGraphImage:
-            openGraphImage?.trim() || null,
+            cleanOptionalString(openGraphImage),
         },
       });
 
-    return NextResponse.json(updatedSolution);
+    return NextResponse.json({
+      success: true,
+      solution: updatedSolution,
+    });
   } catch (error) {
-    console.error(
-      "PUT product solution error:",
-      error
-    );
+    console.error("PUT product solution error:", error);
 
     return NextResponse.json(
-      { error: "Failed to update product solution" },
-      { status: 500 }
+      {
+        error: "Failed to update product solution",
+      },
+      {
+        status: 500,
+      }
     );
   }
 }
+
+// ============================================================
+// DELETE PRODUCT SOLUTION
+// ============================================================
 
 export async function DELETE(
   request: NextRequest,
@@ -242,8 +358,12 @@ export async function DELETE(
     );
 
     return NextResponse.json(
-      { error: "Failed to delete product solution" },
-      { status: 500 }
+      {
+        error: "Failed to delete product solution",
+      },
+      {
+        status: 500,
+      }
     );
   }
 }

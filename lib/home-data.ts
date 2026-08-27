@@ -251,8 +251,8 @@ export const footerLinks = {
 
   popular: [
     {
-      label: "Blogs",
-      href: "/blogs",
+      label: "Blog",
+      href: "/blog",
     },
     {
       label: "Candidate Screening",
@@ -271,4 +271,4 @@ export const footerLinks = {
       href: "/careers",
     },
   ],
-};
+};   
