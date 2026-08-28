@@ -642,7 +642,7 @@ export default function MobileSolutionPage() {
                   </div>
                 </MouseGlow>
 
-                {/* Card 04 */}
+                
 
                 <MouseGlow className="rounded-2xl">
                   <div
