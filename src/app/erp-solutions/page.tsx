@@ -6,7 +6,6 @@ import { Footer } from "../../../components/footer";
 import { AnimateIn } from "../../../components/animate-in";
 import { AnimatedHeading } from "../../../components/animated-heading";
 import { FloatingBlob } from "../../../components/floating-blob";
-
 import { MouseGlow } from "../../../components/mouse-glow";
 import { TiltCard } from "../../../components/tilt-card";
 
@@ -56,7 +55,9 @@ export default function ErpSolutionsPage() {
       ===================================================== */}
 
       <main className="relative flex-1 overflow-hidden">
-        {/* Background Grid */}
+        {/* =================================================
+            BACKGROUND GRID
+        ================================================= */}
 
         <div
           className="
@@ -70,7 +71,9 @@ export default function ErpSolutionsPage() {
           "
         />
 
-        {/* Background Glow */}
+        {/* =================================================
+            BACKGROUND GLOW
+        ================================================= */}
 
         <div
           className="
@@ -81,7 +84,9 @@ export default function ErpSolutionsPage() {
           "
         />
 
-        {/* Floating Effects */}
+        {/* =================================================
+            FLOATING EFFECTS
+        ================================================= */}
 
         <FloatingBlob
           className="-right-24 top-20 h-80 w-80"
@@ -101,7 +106,9 @@ export default function ErpSolutionsPage() {
 
         <section className="relative px-5 pb-10 pt-12 sm:px-7 sm:pt-16 lg:px-10">
           <div className="mx-auto max-w-7xl">
-            {/* Heading */}
+            {/* =================================================
+                HEADING
+            ================================================= */}
 
             <AnimateIn delay={0.05}>
               <div className="mb-7">
@@ -129,36 +136,46 @@ export default function ErpSolutionsPage() {
             </AnimateIn>
 
             {/* =================================================
-                FULL WIDTH ERP BANNER
+                ERP BANNER
             ================================================= */}
 
             <AnimateIn delay={0.1}>
-              <MouseGlow className="rounded-[28px]">
+              <MouseGlow className="rounded-[24px]">
                 <div
                   className="
                     relative
                     overflow-hidden
-                    rounded-[28px]
+                    rounded-[24px]
                     border
                     border-slate-200/80
                     bg-white
-                    shadow-[0_30px_80px_-40px_rgba(15,23,42,.45)]
+                    shadow-[0_24px_70px_-35px_rgba(15,23,42,.38)]
                     dark:border-white/[0.08]
                     dark:bg-slate-900
                   "
                 >
-                  <div className="relative aspect-[16/8] w-full sm:aspect-[16/7] lg:aspect-[16/6]">
+                  <div
+                    className="
+                      relative
+                      h-[180px]
+                      w-full
+                      sm:h-[220px]
+                      md:h-[250px]
+                      lg:h-[285px]
+                      xl:h-[300px]
+                    "
+                  >
                     <Image
                       src={ERP_WORDMARK_SRC}
                       alt="ERP"
                       fill
                       priority
-                      sizes="100vw"
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 95vw, 1280px"
                       className="object-cover object-center"
                     />
                   </div>
 
-                  <div className="pointer-events-none absolute inset-0 rounded-[28px] ring-1 ring-inset ring-white/10" />
+                  <div className="pointer-events-none absolute inset-0 rounded-[24px] ring-1 ring-inset ring-white/10" />
                 </div>
               </MouseGlow>
             </AnimateIn>
@@ -194,10 +211,14 @@ export default function ErpSolutionsPage() {
                       sm:p-8
                     "
                   >
+                    {/* Accent Line */}
+
                     <div className="pointer-events-none absolute left-0 top-0 h-full w-[3px] bg-gradient-to-b from-blue-600 via-cyan-400 to-emerald-400" />
 
                     <StaggerContainer className="space-y-7 text-sm leading-7 text-slate-600 dark:text-slate-400 sm:text-[15px]">
-                      {/* Intro */}
+                      {/* =================================================
+                          INTRO
+                      ================================================= */}
 
                       <StaggerItem>
                         <p>
@@ -216,7 +237,9 @@ export default function ErpSolutionsPage() {
                         </p>
                       </StaggerItem>
 
-                      {/* Benefits Heading */}
+                      {/* =================================================
+                          BENEFITS HEADING
+                      ================================================= */}
 
                       <StaggerItem>
                         <p className="text-base font-semibold leading-7 text-emerald-600 dark:text-emerald-400">
@@ -226,76 +249,73 @@ export default function ErpSolutionsPage() {
                         </p>
                       </StaggerItem>
 
-                      {/* Benefits */}
+                      {/* =================================================
+                          BENEFITS
+                      ================================================= */}
 
                       <StaggerItem>
                         <ul className="space-y-3">
-                          {benefits.map(
-                            (item, index) => (
-                              <li
-                                key={item}
+                          {benefits.map((item, index) => (
+                            <li
+                              key={item}
+                              className="
+                                group
+                                flex
+                                gap-4
+                                rounded-2xl
+                                border
+                                border-slate-200/70
+                                bg-slate-50/70
+                                p-4
+                                transition-all
+                                duration-300
+                                hover:-translate-y-0.5
+                                hover:border-blue-200
+                                hover:bg-white
+                                hover:shadow-md
+                                dark:border-white/[0.06]
+                                dark:bg-white/[0.025]
+                                dark:hover:border-blue-500/20
+                                dark:hover:bg-white/[0.045]
+                              "
+                            >
+                              <span
                                 className="
-                                  group
+                                  mt-0.5
                                   flex
-                                  gap-4
-                                  rounded-2xl
-                                  border
-                                  border-slate-200/70
-                                  bg-slate-50/70
-                                  p-4
+                                  h-8
+                                  w-8
+                                  shrink-0
+                                  items-center
+                                  justify-center
+                                  rounded-xl
+                                  bg-blue-500/10
+                                  font-mono
+                                  text-[10px]
+                                  font-semibold
+                                  text-blue-600
                                   transition-all
                                   duration-300
-                                  hover:-translate-y-0.5
-                                  hover:border-blue-200
-                                  hover:bg-white
-                                  hover:shadow-md
-                                  dark:border-white/[0.06]
-                                  dark:bg-white/[0.025]
-                                  dark:hover:border-blue-500/20
-                                  dark:hover:bg-white/[0.045]
+                                  group-hover:bg-blue-600
+                                  group-hover:text-white
+                                  dark:text-blue-400
+                                  dark:group-hover:text-white
                                 "
                               >
-                                <span
-                                  className="
-                                    mt-0.5
-                                    flex
-                                    h-8
-                                    w-8
-                                    shrink-0
-                                    items-center
-                                    justify-center
-                                    rounded-xl
-                                    bg-blue-500/10
-                                    font-mono
-                                    text-[10px]
-                                    font-semibold
-                                    text-blue-600
-                                    transition-all
-                                    duration-300
-                                    group-hover:bg-blue-600
-                                    group-hover:text-white
-                                    dark:text-blue-400
-                                    dark:group-hover:text-white
-                                  "
-                                >
-                                  {String(
-                                    index + 1
-                                  ).padStart(
-                                    2,
-                                    "0"
-                                  )}
-                                </span>
+                                {String(index + 1).padStart(2, "0")}
+                              </span>
 
-                                <span className="flex-1">
-                                  {item}
-                                </span>
-                              </li>
-                            )
-                          )}
+                              <span className="flex-1">
+                                {item}
+                              </span>
+                            </li>
+                          ))}
                         </ul>
                       </StaggerItem>
 
-                      {/* Paragraph */}
+                      {/* =================================================
+                          PARAGRAPH
+                      ================================================= */}
 
                       <StaggerItem>
                         <p>
@@ -311,7 +331,9 @@ export default function ErpSolutionsPage() {
                         </p>
                       </StaggerItem>
 
-                      {/* Paragraph */}
+                      {/* =================================================
+                          PARAGRAPH
+                      ================================================= */}
 
                       <StaggerItem>
                         <p>
@@ -323,7 +345,9 @@ export default function ErpSolutionsPage() {
                         </p>
                       </StaggerItem>
 
-                      {/* Paragraph */}
+                      {/* =================================================
+                          PARAGRAPH
+                      ================================================= */}
 
                       <StaggerItem>
                         <p>
@@ -340,7 +364,7 @@ export default function ErpSolutionsPage() {
               </AnimateIn>
 
               {/* =================================================
-                  ERP HUB DIAGRAM
+                  RIGHT SIDE ERP HUB DIAGRAM
               ================================================= */}
 
               <AnimateIn
@@ -364,6 +388,8 @@ export default function ErpSolutionsPage() {
                         dark:bg-slate-900
                       "
                     >
+                      {/* Glow */}
+
                       <div
                         className="
                           pointer-events-none
@@ -401,7 +427,9 @@ export default function ErpSolutionsPage() {
 
             <AnimateIn delay={0.3}>
               <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                {/* Finance */}
+                {/* =================================================
+                    FINANCE
+                ================================================= */}
 
                 <TiltCard>
                   <div
@@ -445,7 +473,9 @@ export default function ErpSolutionsPage() {
                   </div>
                 </TiltCard>
 
-                {/* Supply Chain */}
+                {/* =================================================
+                    SUPPLY CHAIN
+                ================================================= */}
 
                 <TiltCard>
                   <div
@@ -489,7 +519,9 @@ export default function ErpSolutionsPage() {
                   </div>
                 </TiltCard>
 
-                {/* CRM */}
+                {/* =================================================
+                    CRM
+                ================================================= */}
 
                 <TiltCard>
                   <div
@@ -533,7 +565,9 @@ export default function ErpSolutionsPage() {
                   </div>
                 </TiltCard>
 
-                {/* Human Resources */}
+                {/* =================================================
+                    HUMAN RESOURCES
+                ================================================= */}
 
                 <TiltCard>
                   <div

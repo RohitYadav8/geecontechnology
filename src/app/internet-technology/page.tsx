@@ -132,45 +132,58 @@ export default function InternetTechnologyPage() {
             </AnimateIn>
 
             {/* =================================================
-                FULL INTERNET TECHNOLOGY BANNER
+                INTERNET TECHNOLOGY BANNER
             ================================================= */}
 
             <AnimateIn delay={0.1}>
-              <MouseGlow className="rounded-[28px]">
+              <MouseGlow className="rounded-[24px]">
                 <div
                   className="
                     relative
                     overflow-hidden
-                    rounded-[28px]
+                    rounded-[24px]
                     border
                     border-slate-200/80
                     bg-white
-                    shadow-[0_30px_90px_-45px_rgba(15,23,42,.45)]
+                    shadow-[0_24px_70px_-35px_rgba(15,23,42,.38)]
                     dark:border-white/[0.08]
                     dark:bg-slate-900
                   "
                 >
-                  <Image
-                    src={BANNER_SRC}
-                    alt="Internet Technology"
-                    width={1536}
-                    height={1024}
-                    priority
-                    sizes="100vw"
+                  {/* =============================================
+                      FULL WIDTH / COMPACT BANNER
+                  ============================================= */}
+
+                  <div
                     className="
-                      block
-                      h-auto
+                      relative
+                      h-[180px]
                       w-full
-                      object-contain
+                      sm:h-[220px]
+                      md:h-[250px]
+                      lg:h-[285px]
+                      xl:h-[300px]
                     "
-                  />
+                  >
+                    <Image
+                      src={BANNER_SRC}
+                      alt="Internet Technology"
+                      fill
+                      priority
+                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 95vw, 1280px"
+                      className="
+                        object-cover
+                        object-center
+                      "
+                    />
+                  </div>
 
                   <div
                     className="
                       pointer-events-none
                       absolute
                       inset-0
-                      rounded-[28px]
+                      rounded-[24px]
                       ring-1
                       ring-inset
                       ring-white/10

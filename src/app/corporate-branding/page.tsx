@@ -109,11 +109,11 @@ export default function CorporateBrandingPage() {
                   group
                   relative
                   overflow-hidden
-                  rounded-[28px]
+                  rounded-[24px]
                   border
                   border-slate-200/80
                   bg-white
-                  shadow-[0_30px_90px_-45px_rgba(15,23,42,.45)]
+                  shadow-[0_24px_70px_-35px_rgba(15,23,42,.38)]
                   dark:border-white/[0.08]
                   dark:bg-slate-900
                 "
@@ -121,11 +121,13 @@ export default function CorporateBrandingPage() {
                 <div
                   className="
                     relative
-                    aspect-[16/8]
+                    h-[180px]
                     w-full
                     overflow-hidden
-                    sm:aspect-[16/7]
-                    lg:aspect-[16/6]
+                    sm:h-[220px]
+                    md:h-[250px]
+                    lg:h-[285px]
+                    xl:h-[300px]
                   "
                 >
                   <Image
@@ -133,7 +135,7 @@ export default function CorporateBrandingPage() {
                     alt="Corporate Branding"
                     fill
                     priority
-                    sizes="100vw"
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 95vw, 1280px"
                     className="
                       object-cover
                       object-center
@@ -149,7 +151,7 @@ export default function CorporateBrandingPage() {
                     pointer-events-none
                     absolute
                     inset-0
-                    rounded-[28px]
+                    rounded-[24px]
                     ring-1
                     ring-inset
                     ring-white/10

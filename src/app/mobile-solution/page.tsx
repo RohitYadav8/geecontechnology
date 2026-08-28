@@ -18,9 +18,8 @@ import {
 // Images
 // ---------------------------------------------------------
 
-const BANNER_SRC = "/mobile-solution-2.png";
-const PHONE_ICON_SRC =
-  "/mobile-solution-service.png";
+const BANNER_SRC = "/mobile-solution-3.png";
+const PHONE_ICON_SRC = "/mobile-solution-service.png";
 
 // ---------------------------------------------------------
 // Benefits
@@ -144,38 +143,36 @@ export default function MobileSolutionPage() {
             </AnimateIn>
 
             {/* =================================================
-                FULL MOBILE BANNER
+                MOBILE BANNER
             ================================================= */}
 
             <AnimateIn delay={0.1}>
-              <MouseGlow className="rounded-[28px]">
+              <MouseGlow className="rounded-[24px]">
                 <div
                   className="
                     relative
+                    w-full
                     overflow-hidden
-                    rounded-[28px]
+                    rounded-[24px]
                     border
                     border-slate-200/80
                     bg-white
-                    shadow-[0_30px_90px_-45px_rgba(15,23,42,.45)]
+                    shadow-[0_24px_70px_-35px_rgba(15,23,42,.38)]
                     dark:border-white/[0.08]
                     dark:bg-slate-900
                   "
                 >
-                  {/* Full image - no crop */}
-
                   <Image
                     src={BANNER_SRC}
                     alt="Mobile Solution"
-                    width={1536}
-                    height={1024}
+                    width={1024}
+                    height={768}
                     priority
-                    sizes="100vw"
+                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 95vw, 1280px"
                     className="
                       block
                       h-auto
                       w-full
-                      object-contain
                     "
                   />
 
@@ -184,7 +181,7 @@ export default function MobileSolutionPage() {
                       pointer-events-none
                       absolute
                       inset-0
-                      rounded-[28px]
+                      rounded-[24px]
                       ring-1
                       ring-inset
                       ring-white/10
@@ -277,74 +274,55 @@ export default function MobileSolutionPage() {
                         sm:text-[15px]
                       "
                     >
-                      {/* -----------------------------------------
-                          INTRODUCTION
-                      ----------------------------------------- */}
+                      {/* INTRODUCTION */}
 
                       <StaggerItem>
                         <p>
-                          Mobile solutions have become central
-                          to the way enterprises conduct their
-                          business, enabling customers and
-                          employees to be always-on and even
-                          powering the next wave of connected
-                          services — the Internet of Things.
+                          Mobile solutions have become central to the way
+                          enterprises conduct their business, enabling customers
+                          and employees to be always-on and even powering the
+                          next wave of connected services — the Internet of
+                          Things.
                         </p>
                       </StaggerItem>
 
-                      {/* -----------------------------------------
-                          BUSINESS ADVANTAGE HEADING
-                      ----------------------------------------- */}
+                      {/* BUSINESS ADVANTAGE HEADING */}
 
                       <StaggerItem>
                         <p className="text-base font-semibold text-slate-900 dark:text-white">
-                          From Mobile Opportunity to Business
-                          Advantage
+                          From Mobile Opportunity to Business Advantage
                         </p>
                       </StaggerItem>
 
-                      {/* -----------------------------------------
-                          BUSINESS ADVANTAGE
-                      ----------------------------------------- */}
+                      {/* BUSINESS ADVANTAGE */}
 
                       <StaggerItem>
                         <p>
-                          We help enterprises harness mobile
-                          opportunities with customers, from
-                          marketing campaigns to sales
-                          transactions and customer service. A
-                          coherent &ldquo;B2C&rdquo; mobile
-                          strategy and execution creates
-                          opportunities to build brand
-                          awareness, enhance services, develop
-                          a fuller understanding of customer
-                          needs and reach new customers.
+                          We help enterprises harness mobile opportunities with
+                          customers, from marketing campaigns to sales
+                          transactions and customer service. A coherent
+                          &ldquo;B2C&rdquo; mobile strategy and execution
+                          creates opportunities to build brand awareness,
+                          enhance services, develop a fuller understanding of
+                          customer needs and reach new customers.
                         </p>
                       </StaggerItem>
 
-                      {/* -----------------------------------------
-                          EMPLOYEE MOBILITY
-                      ----------------------------------------- */}
+                      {/* EMPLOYEE MOBILITY */}
 
                       <StaggerItem>
                         <p>
-                          Employees today want mobile solutions
-                          that enable them to be always
-                          connected to any device in any
-                          location. Enterprise mobility results
-                          in accelerated processes, more
-                          flexible working practices, greater
-                          employee productivity and a workforce
-                          proud of its tools. We help clients
-                          with their &ldquo;B2E&rdquo;
-                          strategies to unleash and manage their
-                          employees&apos; potential.
+                          Employees today want mobile solutions that enable them
+                          to be always connected to any device in any location.
+                          Enterprise mobility results in accelerated processes,
+                          more flexible working practices, greater employee
+                          productivity and a workforce proud of its tools. We
+                          help clients with their &ldquo;B2E&rdquo; strategies
+                          to unleash and manage their employees&apos; potential.
                         </p>
                       </StaggerItem>
 
-                      {/* -----------------------------------------
-                          BENEFITS HEADING
-                      ----------------------------------------- */}
+                      {/* BENEFITS HEADING */}
 
                       <StaggerItem>
                         <p className="text-base font-semibold text-slate-900 dark:text-white">
@@ -352,136 +330,108 @@ export default function MobileSolutionPage() {
                         </p>
                       </StaggerItem>
 
-                      {/* -----------------------------------------
-                          BENEFITS LIST
-                      ----------------------------------------- */}
+                      {/* BENEFITS LIST */}
 
                       <StaggerItem>
                         <ul className="space-y-3">
-                          {benefits.map(
-                            (item, index) => (
-                              <li
-                                key={item}
+                          {benefits.map((item, index) => (
+                            <li
+                              key={item}
+                              className="
+                                group
+                                flex
+                                gap-4
+                                rounded-2xl
+                                border
+                                border-slate-200/70
+                                bg-slate-50/70
+                                p-4
+                                transition-all
+                                duration-300
+                                hover:-translate-y-0.5
+                                hover:border-blue-200
+                                hover:bg-white
+                                hover:shadow-md
+                                dark:border-white/[0.06]
+                                dark:bg-white/[0.025]
+                                dark:hover:border-blue-500/20
+                                dark:hover:bg-white/[0.045]
+                              "
+                            >
+                              <span
                                 className="
-                                  group
+                                  mt-0.5
                                   flex
-                                  gap-4
-                                  rounded-2xl
-                                  border
-                                  border-slate-200/70
-                                  bg-slate-50/70
-                                  p-4
+                                  h-8
+                                  w-8
+                                  shrink-0
+                                  items-center
+                                  justify-center
+                                  rounded-xl
+                                  bg-blue-500/10
+                                  font-mono
+                                  text-[10px]
+                                  font-semibold
+                                  text-blue-600
                                   transition-all
                                   duration-300
-                                  hover:-translate-y-0.5
-                                  hover:border-blue-200
-                                  hover:bg-white
-                                  hover:shadow-md
-                                  dark:border-white/[0.06]
-                                  dark:bg-white/[0.025]
-                                  dark:hover:border-blue-500/20
-                                  dark:hover:bg-white/[0.045]
+                                  group-hover:bg-blue-600
+                                  group-hover:text-white
+                                  dark:text-blue-400
+                                  dark:group-hover:text-white
                                 "
                               >
-                                <span
-                                  className="
-                                    mt-0.5
-                                    flex
-                                    h-8
-                                    w-8
-                                    shrink-0
-                                    items-center
-                                    justify-center
-                                    rounded-xl
-                                    bg-blue-500/10
-                                    font-mono
-                                    text-[10px]
-                                    font-semibold
-                                    text-blue-600
-                                    transition-all
-                                    duration-300
-                                    group-hover:bg-blue-600
-                                    group-hover:text-white
-                                    dark:text-blue-400
-                                    dark:group-hover:text-white
-                                  "
-                                >
-                                  {String(
-                                    index + 1
-                                  ).padStart(
-                                    2,
-                                    "0"
-                                  )}
-                                </span>
+                                {String(index + 1).padStart(2, "0")}
+                              </span>
 
-                                <span className="flex-1">
-                                  {item}
-                                </span>
-                              </li>
-                            )
-                          )}
+                              <span className="flex-1">{item}</span>
+                            </li>
+                          ))}
                         </ul>
                       </StaggerItem>
 
-                      {/* -----------------------------------------
-                          MOBILE DEVELOPMENT
-                      ----------------------------------------- */}
+                      {/* MOBILE DEVELOPMENT */}
 
                       <StaggerItem>
                         <p>
-                          Geecon offers design and development
-                          services for mobile apps. Based on
-                          your requirements we produce apps
-                          which can be standalone or integrate
-                          with other data sources using secure
-                          management systems. Our mobile
-                          application development allows for
-                          apps to be output for native iOS and
-                          Android platforms.
+                          Geecon offers design and development services for
+                          mobile apps. Based on your requirements we produce
+                          apps which can be standalone or integrate with other
+                          data sources using secure management systems. Our
+                          mobile application development allows for apps to be
+                          output for native iOS and Android platforms.
                         </p>
                       </StaggerItem>
 
-                      {/* -----------------------------------------
-                          APP EXPERIENCE
-                      ----------------------------------------- */}
+                      {/* APP EXPERIENCE */}
 
                       <StaggerItem>
                         <p>
-                          At Geecon all mobile apps are
-                          developed to deliver content and
-                          functionality to users through an
-                          intuitive and optimised interface.
-                          Our team of experts will work with
-                          you to ensure the latest smartphone
-                          features are integrated with your
-                          mobile app.
+                          At Geecon all mobile apps are developed to deliver
+                          content and functionality to users through an intuitive
+                          and optimised interface. Our team of experts will work
+                          with you to ensure the latest smartphone features are
+                          integrated with your mobile app.
                         </p>
                       </StaggerItem>
 
-                      {/* -----------------------------------------
-                          TEAM
-                      ----------------------------------------- */}
+                      {/* TEAM */}
 
                       <StaggerItem>
                         <p>
-                          Partner with a group of thinkers,
-                          makers, code ninjas and problem
-                          solvers that believe in building
-                          software products that have real
-                          purpose.
+                          Partner with a group of thinkers, makers, code ninjas
+                          and problem solvers that believe in building software
+                          products that have real purpose.
                         </p>
                       </StaggerItem>
 
-                      {/* -----------------------------------------
-                          FINAL CONTENT
-                      ----------------------------------------- */}
+                      {/* FINAL CONTENT */}
 
                       <StaggerItem>
                         <p>
-                          We build custom software products
-                          that drive revenue and provide
-                          seamless customer experiences for
-                          your business.
+                          We build custom software products that drive revenue
+                          and provide seamless customer experiences for your
+                          business.
                         </p>
                       </StaggerItem>
                     </StaggerContainer>
@@ -599,8 +549,8 @@ export default function MobileSolutionPage() {
                     </h3>
 
                     <p className="mt-2 text-xs leading-6 text-slate-500 dark:text-slate-400">
-                      Accelerate your mobile product
-                      development and time-to-market.
+                      Accelerate your mobile product development and
+                      time-to-market.
                     </p>
                   </div>
                 </MouseGlow>
@@ -643,8 +593,8 @@ export default function MobileSolutionPage() {
                     </h3>
 
                     <p className="mt-2 text-xs leading-6 text-slate-500 dark:text-slate-400">
-                      Build modular and flexible mobile
-                      applications for your business.
+                      Build modular and flexible mobile applications for your
+                      business.
                     </p>
                   </div>
                 </MouseGlow>
@@ -687,8 +637,7 @@ export default function MobileSolutionPage() {
                     </h3>
 
                     <p className="mt-2 text-xs leading-6 text-slate-500 dark:text-slate-400">
-                      Optimised applications for modern iOS
-                      and Android devices.
+                      Optimised applications for modern iOS and Android devices.
                     </p>
                   </div>
                 </MouseGlow>
@@ -731,8 +680,8 @@ export default function MobileSolutionPage() {
                     </h3>
 
                     <p className="mt-2 text-xs leading-6 text-slate-500 dark:text-slate-400">
-                      Deliver seamless and intuitive
-                      experiences to your customers.
+                      Deliver seamless and intuitive experiences to your
+                      customers.
                     </p>
                   </div>
                 </MouseGlow>
