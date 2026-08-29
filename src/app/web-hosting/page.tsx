@@ -4,10 +4,8 @@ import { Navbar } from "../../../components/navbar";
 import { Footer } from "../../../components/footer";
 
 import { AnimateIn } from "../../../components/animate-in";
-import { AnimatedHeading } from "../../../components/animated-heading";
 import { FloatingBlob } from "../../../components/floating-blob";
 import { MouseGlow } from "../../../components/mouse-glow";
-import { TiltCard } from "../../../components/tilt-card";
 
 import {
   StaggerContainer,
@@ -40,7 +38,7 @@ export default function WebHostingServicesPage() {
 
       <main className="relative flex-1 overflow-hidden">
         {/* =================================================
-            BACKGROUND GRID
+            BACKGROUND
         ================================================= */}
 
         <div
@@ -48,23 +46,8 @@ export default function WebHostingServicesPage() {
             pointer-events-none
             absolute
             inset-0
-            bg-[linear-gradient(to_right,#e5e7eb_1px,transparent_1px),linear-gradient(to_bottom,#e5e7eb_1px,transparent_1px)]
-            bg-[size:52px_52px]
-            opacity-[0.12]
-            dark:opacity-[0.035]
-          "
-        />
-
-        {/* =================================================
-            BACKGROUND GLOW
-        ================================================= */}
-
-        <div
-          className="
-            pointer-events-none
-            absolute
-            inset-0
-            bg-[radial-gradient(circle_at_12%_10%,rgba(59,130,246,.12),transparent_32%),radial-gradient(circle_at_88%_38%,rgba(14,165,233,.08),transparent_32%)]
+            bg-[radial-gradient(circle_at_15%_28%,rgba(124,58,237,0.06),transparent_28%),radial-gradient(circle_at_85%_55%,rgba(59,130,246,0.07),transparent_30%)]
+            dark:bg-[radial-gradient(circle_at_15%_28%,rgba(124,58,237,0.08),transparent_28%),radial-gradient(circle_at_85%_55%,rgba(59,130,246,0.08),transparent_30%)]
           "
         />
 
@@ -73,111 +56,172 @@ export default function WebHostingServicesPage() {
         ================================================= */}
 
         <FloatingBlob
-          className="-right-24 top-16 h-80 w-80"
-          color="bg-blue-400/10"
-          duration={16}
-        />
-
-        <FloatingBlob
-          className="-left-24 top-[720px] h-72 w-72"
-          color="bg-cyan-300/10"
-          duration={20}
-        />
-
-        <FloatingBlob
-          className="right-1/4 top-[1050px] h-52 w-52"
-          color="bg-indigo-400/5"
+          className="-right-28 top-[500px] h-80 w-80"
+          color="bg-purple-400/10"
           duration={18}
         />
 
+        <FloatingBlob
+          className="-left-28 top-[900px] h-72 w-72"
+          color="bg-blue-400/10"
+          duration={20}
+        />
+
         {/* =====================================================
-            HERO SECTION
+            HERO BANNER
         ===================================================== */}
 
-        <section className="relative px-5 pb-10 pt-12 sm:px-7 sm:pt-16 lg:px-10">
-          <div className="mx-auto max-w-7xl">
-            {/* =================================================
-                PAGE HEADING
-            ================================================= */}
+        <section className="relative">
+          <AnimateIn delay={0.05}>
+            <div
+              className="
+                relative
+                h-[150px]
+                w-full
+                overflow-hidden
+                bg-slate-100
+                sm:h-[180px]
+                md:h-[210px]
+                lg:h-[240px]
+                dark:bg-slate-900
+              "
+            >
+              {/* Soft background fill */}
 
-            <AnimateIn delay={0.05}>
-              <div className="mb-7">
-                <AnimatedHeading
-                  text="Web Hosting Services"
-                  as="h1"
+              <Image
+                src={BANNER_SRC}
+                alt=""
+                fill
+                priority
+                sizes="100vw"
+                aria-hidden="true"
+                className="
+                  scale-110
+                  object-cover
+                  object-center
+                  opacity-25
+                  blur-xl
+                "
+              />
+
+              {/* Main banner */}
+
+              <Image
+                src={BANNER_SRC}
+                alt="Web Hosting Services"
+                fill
+                priority
+                sizes="100vw"
+                className="
+                  relative
+                  z-[1]
+                  object-contain
+                  object-center
+                "
+              />
+
+              {/* Bottom fade */}
+
+              <div
+                className="
+                  pointer-events-none
+                  absolute
+                  inset-x-0
+                  bottom-0
+                  z-[2]
+                  h-16
+                  bg-gradient-to-t
+                  from-white
+                  via-white/30
+                  to-transparent
+                  dark:from-[#080e1a]
+                  dark:via-[#080e1a]/25
+                "
+              />
+            </div>
+          </AnimateIn>
+
+          {/* =================================================
+              TITLE AREA
+          ================================================= */}
+
+          <div className="relative z-10 mx-auto max-w-7xl px-5 sm:px-7 lg:px-10">
+            <AnimateIn delay={0.1}>
+              <div className="-mt-7 flex items-center gap-4 sm:-mt-10 sm:gap-5">
+                {/* ICON */}
+
+                <div
                   className="
-                    text-3xl
-                    font-semibold
+                    flex
+                    h-[76px]
+                    w-[76px]
+                    shrink-0
+                    items-center
+                    justify-center
+                    rounded-[24px]
+                    border
+                    border-purple-200/70
+                    bg-white/95
+                    p-3
+                    shadow-[0_16px_40px_-18px_rgba(124,58,237,0.45)]
+                    backdrop-blur-xl
+                    dark:border-purple-500/20
+                    dark:bg-slate-900/95
+                    sm:h-[88px]
+                    sm:w-[88px]
+                  "
+                >
+                  <div className="relative h-full w-full">
+                    <Image
+                      src={SIDEBAR_SRC}
+                      alt="Web hosting servers"
+                      fill
+                      sizes="88px"
+                      className="object-contain"
+                    />
+                  </div>
+                </div>
+
+                {/* HEADING */}
+
+                <h1
+                  className="
+                    text-2xl
+                    font-bold
                     tracking-[-0.04em]
                     text-slate-950
                     dark:text-white
-                    sm:text-4xl
-                    lg:text-5xl
+                    sm:text-3xl
+                    lg:text-[38px]
                   "
-                />
-
-                <span
-                  className="
-                    mt-4
-                    block
-                    h-[3px]
-                    w-12
-                    rounded-full
-                    bg-gradient-to-r
-                    from-blue-600
-                    to-cyan-400
-                  "
-                />
+                >
+                  Web Hosting Services
+                </h1>
               </div>
             </AnimateIn>
 
             {/* =================================================
-                FULL HOSTING BANNER
+                INTRO
             ================================================= */}
 
-            <AnimateIn delay={0.1}>
-              <MouseGlow className="rounded-[28px]">
-                <div
-                  className="
-                    relative
-                    overflow-hidden
-                    rounded-[28px]
-                    border
-                    border-slate-200/80
-                    bg-white
-                    shadow-[0_30px_90px_-45px_rgba(15,23,42,.45)]
-                    dark:border-white/[0.08]
-                    dark:bg-slate-900
-                  "
-                >
-                  <Image
-                    src={BANNER_SRC}
-                    alt="Web Hosting Services"
-                    width={1536}
-                    height={1024}
-                    priority
-                    sizes="100vw"
-                    className="
-                      block
-                      h-auto
-                      w-full
-                      object-contain
-                    "
-                  />
-
-                  <div
-                    className="
-                      pointer-events-none
-                      absolute
-                      inset-0
-                      rounded-[28px]
-                      ring-1
-                      ring-inset
-                      ring-white/10
-                    "
-                  />
-                </div>
-              </MouseGlow>
+            <AnimateIn delay={0.15}>
+              <p
+                className="
+                  mt-8
+                  max-w-4xl
+                  text-sm
+                  leading-7
+                  text-slate-600
+                  dark:text-slate-400
+                  sm:text-[15px]
+                "
+              >
+                We provide dedicated servers and VPS hosting services that can
+                be matched to fit your needs. Whether you are an individual
+                looking for a basic shared hosting package or your small
+                business needs a scalable dedicated web hosting solution, we are
+                willing and able to meet your web hosting needs.
+              </p>
             </AnimateIn>
           </div>
         </section>
@@ -186,15 +230,16 @@ export default function WebHostingServicesPage() {
             MAIN CONTENT
         ===================================================== */}
 
-        <section className="relative px-5 py-12 sm:px-7 sm:py-16 lg:px-10">
+        <section className="relative px-5 pb-14 pt-10 sm:px-7 sm:pb-16 sm:pt-12 lg:px-10">
           <div className="mx-auto max-w-7xl">
             <div
               className="
                 grid
                 items-start
-                gap-8
+                gap-6
                 lg:grid-cols-[minmax(0,1fr)_320px]
-                xl:gap-12
+                xl:grid-cols-[minmax(0,1fr)_340px]
+                xl:gap-8
               "
             >
               {/* =================================================
@@ -202,104 +247,109 @@ export default function WebHostingServicesPage() {
               ================================================= */}
 
               <AnimateIn delay={0.15}>
-                <MouseGlow className="h-full rounded-[26px]">
+                <MouseGlow className="rounded-[30px]">
                   <div
                     className="
                       relative
                       overflow-hidden
-                      rounded-[26px]
+                      rounded-[30px]
                       border
-                      border-slate-200/80
-                      bg-white/85
-                      p-6
-                      shadow-sm
+                      border-blue-100
+                      bg-[#f8fbff]/95
+                      px-6
+                      py-7
+                      shadow-[0_20px_70px_-45px_rgba(37,99,235,0.35)]
                       backdrop-blur-xl
                       dark:border-white/[0.07]
                       dark:bg-white/[0.035]
-                      sm:p-8
-                      lg:p-9
+                      sm:px-8
+                      sm:py-8
+                      lg:px-9
                     "
                   >
-                    {/* Accent line */}
-
-                    <div
-                      className="
-                        absolute
-                        bottom-0
-                        left-0
-                        top-0
-                        w-[3px]
-                        bg-gradient-to-b
-                        from-blue-600
-                        via-cyan-400
-                        to-indigo-500
-                      "
-                    />
-
-                    {/* Soft glow */}
+                    {/* Decorative glow */}
 
                     <div
                       className="
                         pointer-events-none
                         absolute
-                        -left-24
+                        -right-24
                         -top-24
                         h-64
                         w-64
                         rounded-full
-                        bg-blue-500/[0.05]
+                        bg-purple-500/[0.045]
                         blur-3xl
+                        dark:bg-purple-500/[0.07]
+                      "
+                    />
+
+                    <div
+                      className="
+                        pointer-events-none
+                        absolute
+                        -bottom-28
+                        left-1/4
+                        h-72
+                        w-72
+                        rounded-full
+                        bg-blue-500/[0.045]
+                        blur-3xl
+                        dark:bg-blue-500/[0.06]
                       "
                     />
 
                     <StaggerContainer
                       className="
                         relative
-                        space-y-7
-                        text-sm
-                        leading-8
+                        space-y-6
+                        text-[13px]
+                        leading-7
                         text-slate-600
                         dark:text-slate-400
-                        sm:text-[15px]
+                        sm:text-sm
                       "
                     >
-                      {/* Intro */}
-
-                      <StaggerItem>
-                        <p>
-                          We provide dedicated servers and VPS
-                          hosting services that can be matched
-                          to fit your needs. Whether you are an
-                          individual looking for a basic shared
-                          hosting package or your small business
-                          needs a scalable dedicated web hosting
-                          solution, we are willing and able to
-                          meet your web hosting needs.
-                        </p>
-                      </StaggerItem>
-
                       {/* VPS Heading */}
 
                       <StaggerItem>
-                        <p className="text-base font-semibold text-slate-900 dark:text-white">
-                          VPS Hosting:
-                        </p>
+                        <div className="flex items-start gap-3">
+                          <span
+                            className="
+                              mt-0.5
+                              flex
+                              h-8
+                              w-8
+                              shrink-0
+                              items-center
+                              justify-center
+                              rounded-xl
+                              bg-purple-100
+                              text-purple-600
+                              dark:bg-purple-500/10
+                              dark:text-purple-400
+                            "
+                          >
+                            <span className="h-2 w-2 rounded-full bg-current" />
+                          </span>
+
+                          <p className="pt-1 text-[15px] font-semibold text-slate-900 dark:text-white">
+                            VPS Hosting:
+                          </p>
+                        </div>
                       </StaggerItem>
 
                       {/* VPS Content */}
 
                       <StaggerItem>
                         <p>
-                          Our VPS hosting as a cost-efficient
-                          solution comes right in the middle of
-                          dedicated and webspace hosting product
-                          ranges and provides you with the
-                          advantages of both of these types. We
-                          use a virtualization solution based on
-                          KVM and hardware that corresponds to
-                          the latest state of the art.
-                          Furthermore you are provided with
-                          guaranteed RAM and disk space.
+                          Our VPS hosting as a cost-efficient solution comes
+                          right in the middle of dedicated and webspace hosting
+                          product ranges and provides you with the advantages of
+                          both of these types. We use a virtualization solution
+                          based on KVM and hardware that corresponds to the
+                          latest state of the art. Furthermore you are provided
+                          with guaranteed RAM and disk space.
                         </p>
                       </StaggerItem>
 
@@ -307,73 +357,81 @@ export default function WebHostingServicesPage() {
 
                       <StaggerItem>
                         <p>
-                          Customize your virtual private server
-                          to suit your needs and select the
-                          operating system (Linux or Windows
-                          Server 2012 and Windows Server 2008)
-                          of your choice. To manage and
-                          administer your virtual machine, you
-                          can optionally choose between
-                          Parallels Plesk, cPanel/WHM and
-                          Webmin. Decide now and rely on
-                          high-quality, powerful VPS hosting
-                          solutions.
+                          Customize your virtual private server to suit your
+                          needs and select the operating system (Linux or Windows
+                          Server 2012 and Windows Server 2008) of your choice. To
+                          manage and administer your virtual machine, you can
+                          optionally choose between Parallels Plesk, cPanel/WHM
+                          and Webmin. Decide now and rely on high-quality,
+                          powerful VPS hosting solutions.
                         </p>
                       </StaggerItem>
 
-                      {/* Dedicated Server Heading */}
+                      {/* Dedicated Heading */}
 
                       <StaggerItem>
-                        <p className="text-base font-semibold text-slate-900 dark:text-white">
-                          Dedicated Server:
-                        </p>
+                        <div className="flex items-start gap-3">
+                          <span
+                            className="
+                              mt-0.5
+                              flex
+                              h-8
+                              w-8
+                              shrink-0
+                              items-center
+                              justify-center
+                              rounded-xl
+                              bg-blue-100
+                              text-blue-600
+                              dark:bg-blue-500/10
+                              dark:text-blue-400
+                            "
+                          >
+                            <span className="h-2 w-2 rounded-full bg-current" />
+                          </span>
+
+                          <p className="pt-1 text-[15px] font-semibold text-slate-900 dark:text-white">
+                            Dedicated Server:
+                          </p>
+                        </div>
                       </StaggerItem>
 
-                      {/* Dedicated Server Content */}
-
-                      <StaggerItem>
-                        <p>
-                          Our entire fleet of dedicated servers
-                          is 100% managed, so you do not have to
-                          worry about running your servers or
-                          fixing any problems. What we mean by
-                          Dedicated Servers, is that we will
-                          take care of the setup of your
-                          dedicated web hosting account,
-                          troubleshooting with your dedicated
-                          server, and everything in between.
-                        </p>
-                      </StaggerItem>
-
-                      {/* Cloud Document Hosting */}
-
-                      <StaggerItem>
-                        <p>
-                          Data and document hosting services in
-                          the cloud from microMEDIA include
-                          designing and implementing
-                          cost-effective Web-based Document
-                          Management systems. We use these
-                          systems to create an Archive at our
-                          web hosting sites that leverage the
-                          latest web based document management
-                          technologies.
-                        </p>
-                      </StaggerItem>
-
-                      {/* Document Management */}
+                      {/* Dedicated Content */}
 
                       <StaggerItem>
                         <p>
-                          Each application is customized to meet
-                          a client&apos;s specific needs for an
-                          online web document hosting
-                          application. Web-based document
-                          management users can institute a
-                          search and retrieval process using
-                          previously established indices and
-                          document identification
-                          classifications.
+                          Our entire fleet of dedicated servers is 100% managed,
+                          so you do not have to worry about running your servers
+                          or fixing any problems. What we mean by Dedicated
+                          Servers, is that we will take care of the setup of your
+                          dedicated web hosting account, troubleshooting with
+                          your dedicated server, and everything in between.
+                        </p>
+                      </StaggerItem>
+
+                      {/* Cloud document hosting */}
+
+                      <StaggerItem>
+                        <p>
+                          Data and document hosting services in the cloud from
+                          microMEDIA include designing and implementing
+                          cost-effective Web-based Document Management systems.
+                          We use these systems to create an Archive at our web
+                          hosting sites that leverage the latest web based
+                          document management technologies.
+                        </p>
+                      </StaggerItem>
+
+                      {/* Document management */}
+
+                      <StaggerItem>
+                        <p>
+                          Each application is customized to meet a client&apos;s
+                          specific needs for an online web document hosting
+                          application. Web-based document management users can
+                          institute a search and retrieval process using
+                          previously established indices and document
+                          identification classifications.
                         </p>
                       </StaggerItem>
 
@@ -381,9 +439,8 @@ export default function WebHostingServicesPage() {
 
                       <StaggerItem>
                         <p>
-                          microMEDIA delivers all the requisite
-                          management, infrastructure and
-                          support. We offer numerous document
+                          microMEDIA delivers all the requisite management,
+                          infrastructure and support. We offer numerous document
                           repository alternatives.
                         </p>
                       </StaggerItem>
@@ -393,68 +450,114 @@ export default function WebHostingServicesPage() {
               </AnimateIn>
 
               {/* =================================================
-                  RIGHT SIDEBAR IMAGE
+                  RIGHT IMAGE
               ================================================= */}
 
               <AnimateIn
                 delay={0.2}
                 direction="left"
-                className="
-                  lg:sticky
-                  lg:top-24
-                  lg:self-start
-                "
+                className="lg:sticky lg:top-24 lg:self-start"
               >
-                <TiltCard>
-                  <MouseGlow className="rounded-[26px]">
+                <MouseGlow className="rounded-[30px]">
+                  <div
+                    className="
+                      relative
+                      overflow-hidden
+                      rounded-[30px]
+                      bg-gradient-to-br
+                      from-[#7c3aed]
+                      via-[#6d28d9]
+                      to-[#4c1d95]
+                      p-6
+                      shadow-[0_28px_70px_-35px_rgba(109,40,217,0.7)]
+                    "
+                  >
+                    {/* Top glow */}
+
+                    <div
+                      className="
+                        pointer-events-none
+                        absolute
+                        -right-16
+                        -top-16
+                        h-52
+                        w-52
+                        rounded-full
+                        bg-white/15
+                        blur-3xl
+                      "
+                    />
+
+                    {/* Bottom glow */}
+
+                    <div
+                      className="
+                        pointer-events-none
+                        absolute
+                        -bottom-24
+                        -left-20
+                        h-56
+                        w-56
+                        rounded-full
+                        bg-blue-400/15
+                        blur-3xl
+                      "
+                    />
+
+                    {/* Small icon */}
+
+                    <div className="relative mb-5 flex justify-center">
+                      <div
+                        className="
+                          flex
+                          h-12
+                          w-12
+                          items-center
+                          justify-center
+                          rounded-full
+                          bg-white/15
+                          p-2
+                          backdrop-blur
+                        "
+                      >
+                        <div className="relative h-full w-full">
+                          <Image
+                            src={SIDEBAR_SRC}
+                            alt="Web hosting servers"
+                            fill
+                            sizes="48px"
+                            className="object-contain"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Main image */}
+
                     <div
                       className="
                         relative
+                        mx-auto
+                        aspect-square
+                        w-full
                         overflow-hidden
-                        rounded-[26px]
+                        rounded-[24px]
                         border
-                        border-slate-200/80
+                        border-white/15
                         bg-white
-                        p-5
-                        shadow-[0_20px_60px_-35px_rgba(15,23,42,.5)]
-                        dark:border-white/[0.07]
-                        dark:bg-slate-900
+                        shadow-inner
                       "
                     >
-                      {/* Decorative glow */}
-
-                      <div
-                        className="
-                          pointer-events-none
-                          absolute
-                          left-1/2
-                          top-1/2
-                          h-56
-                          w-56
-                          -translate-x-1/2
-                          -translate-y-1/2
-                          rounded-full
-                          bg-blue-500/10
-                          blur-3xl
-                        "
+                      <Image
+                        src={SIDEBAR_SRC}
+                        alt="Web hosting servers"
+                        fill
+                        sizes="340px"
+                        className="object-contain p-5"
                       />
-
-                      <div className="relative aspect-square w-full">
-                        <Image
-                          src={SIDEBAR_SRC}
-                          alt="Web hosting servers"
-                          fill
-                          sizes="320px"
-                          className="
-                            relative
-                            z-[1]
-                            object-contain
-                          "
-                        />
-                      </div>
                     </div>
-                  </MouseGlow>
-                </TiltCard>
+                  </div>
+                </MouseGlow>
               </AnimateIn>
             </div>
 
@@ -463,50 +566,47 @@ export default function WebHostingServicesPage() {
             ================================================= */}
 
             <AnimateIn delay={0.3}>
-              <div className="mt-10 grid gap-4 sm:grid-cols-3">
+              <div className="mt-8 grid gap-4 sm:grid-cols-3">
                 {/* VPS */}
 
-                <MouseGlow className="rounded-2xl">
+                <MouseGlow className="rounded-[22px]">
                   <div
                     className="
                       group
                       relative
                       h-full
                       overflow-hidden
-                      rounded-2xl
+                      rounded-[22px]
                       border
                       border-slate-200/80
-                      bg-white/85
-                      p-6
-                      shadow-sm
-                      backdrop-blur-xl
+                      bg-white
+                      p-5
+                      shadow-[0_15px_40px_-30px_rgba(15,23,42,0.4)]
                       transition-all
                       duration-300
                       hover:-translate-y-1
-                      hover:border-blue-200
-                      hover:shadow-xl
-                      hover:shadow-blue-500/5
+                      hover:border-purple-200
+                      hover:shadow-lg
                       dark:border-white/[0.07]
                       dark:bg-white/[0.035]
-                      dark:hover:border-blue-500/20
+                      dark:hover:border-purple-500/20
                     "
                   >
-                    <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-blue-600 to-cyan-400 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-
                     <div
                       className="
                         mb-5
                         flex
-                        h-11
-                        w-11
+                        h-10
+                        w-10
                         items-center
                         justify-center
                         rounded-xl
-                        bg-blue-500/10
+                        bg-purple-50
                         text-xs
                         font-semibold
-                        text-blue-600
-                        dark:text-blue-400
+                        text-purple-600
+                        dark:bg-purple-500/10
+                        dark:text-purple-400
                       "
                     >
                       VPS
@@ -517,55 +617,52 @@ export default function WebHostingServicesPage() {
                     </h3>
 
                     <p className="mt-2 text-sm leading-6 text-slate-500 dark:text-slate-400">
-                      Flexible and scalable virtual private
-                      server solutions for growing businesses.
+                      Flexible and scalable virtual private server solutions for
+                      growing businesses.
                     </p>
                   </div>
                 </MouseGlow>
 
                 {/* Dedicated */}
 
-                <MouseGlow className="rounded-2xl">
+                <MouseGlow className="rounded-[22px]">
                   <div
                     className="
                       group
                       relative
                       h-full
                       overflow-hidden
-                      rounded-2xl
+                      rounded-[22px]
                       border
                       border-slate-200/80
-                      bg-white/85
-                      p-6
-                      shadow-sm
-                      backdrop-blur-xl
+                      bg-white
+                      p-5
+                      shadow-[0_15px_40px_-30px_rgba(15,23,42,0.4)]
                       transition-all
                       duration-300
                       hover:-translate-y-1
-                      hover:border-cyan-200
-                      hover:shadow-xl
-                      hover:shadow-cyan-500/5
+                      hover:border-blue-200
+                      hover:shadow-lg
                       dark:border-white/[0.07]
                       dark:bg-white/[0.035]
-                      dark:hover:border-cyan-500/20
+                      dark:hover:border-blue-500/20
                     "
                   >
-                    <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-cyan-500 to-blue-500 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-
                     <div
                       className="
                         mb-5
                         flex
-                        h-11
-                        w-11
+                        h-10
+                        w-10
                         items-center
                         justify-center
                         rounded-xl
-                        bg-cyan-500/10
+                        bg-blue-50
                         text-xs
                         font-semibold
-                        text-cyan-600
-                        dark:text-cyan-400
+                        text-blue-600
+                        dark:bg-blue-500/10
+                        dark:text-blue-400
                       "
                     >
                       DS
@@ -576,55 +673,52 @@ export default function WebHostingServicesPage() {
                     </h3>
 
                     <p className="mt-2 text-sm leading-6 text-slate-500 dark:text-slate-400">
-                      Fully managed dedicated hosting with
-                      reliable infrastructure and support.
+                      Fully managed dedicated hosting with reliable
+                      infrastructure and support.
                     </p>
                   </div>
                 </MouseGlow>
 
                 {/* Document */}
 
-                <MouseGlow className="rounded-2xl">
+                <MouseGlow className="rounded-[22px]">
                   <div
                     className="
                       group
                       relative
                       h-full
                       overflow-hidden
-                      rounded-2xl
+                      rounded-[22px]
                       border
                       border-slate-200/80
-                      bg-white/85
-                      p-6
-                      shadow-sm
-                      backdrop-blur-xl
+                      bg-white
+                      p-5
+                      shadow-[0_15px_40px_-30px_rgba(15,23,42,0.4)]
                       transition-all
                       duration-300
                       hover:-translate-y-1
-                      hover:border-indigo-200
-                      hover:shadow-xl
-                      hover:shadow-indigo-500/5
+                      hover:border-cyan-200
+                      hover:shadow-lg
                       dark:border-white/[0.07]
                       dark:bg-white/[0.035]
-                      dark:hover:border-indigo-500/20
+                      dark:hover:border-cyan-500/20
                     "
                   >
-                    <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-indigo-500 to-blue-500 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-
                     <div
                       className="
                         mb-5
                         flex
-                        h-11
-                        w-11
+                        h-10
+                        w-10
                         items-center
                         justify-center
                         rounded-xl
-                        bg-indigo-500/10
+                        bg-cyan-50
                         text-xs
                         font-semibold
-                        text-indigo-600
-                        dark:text-indigo-400
+                        text-cyan-600
+                        dark:bg-cyan-500/10
+                        dark:text-cyan-400
                       "
                     >
                       DM
@@ -635,8 +729,8 @@ export default function WebHostingServicesPage() {
                     </h3>
 
                     <p className="mt-2 text-sm leading-6 text-slate-500 dark:text-slate-400">
-                      Secure web-based document hosting and
-                      management solutions.
+                      Secure web-based document hosting and management
+                      solutions.
                     </p>
                   </div>
                 </MouseGlow>

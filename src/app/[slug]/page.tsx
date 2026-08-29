@@ -1,13 +1,12 @@
 import { notFound } from "next/navigation";
 import Image from "next/image";
 import Link from "next/link";
-import { ArrowRight, CheckCircle2 } from "lucide-react";
-
-import { services } from "../../../lib/home-data";
 import {
-  serviceDetails,
-  fallbackDetail,
-} from "../../../lib/service-details";
+  ArrowRight,
+  CheckCircle2,
+} from "lucide-react";
+
+import { prisma } from "../../../lib/prisma";
 
 import { products } from "../../../lib/products-data";
 import {
@@ -19,6 +18,8 @@ import { Navbar } from "../../../components/navbar";
 import { Footer } from "../../../components/footer";
 import { AnimateIn } from "../../../components/animate-in";
 import { AnimatedHeading } from "../../../components/animated-heading";
+import { FloatingBlob } from "../../../components/floating-blob";
+import { MouseGlow } from "../../../components/mouse-glow";
 import {
   StaggerContainer,
   StaggerItem,
@@ -29,7 +30,11 @@ import { BrochureForm } from "../../../components/brochure-form";
 /*                              SOCIAL ICONS                                  */
 /* -------------------------------------------------------------------------- */
 
-function FacebookIcon({ size = 15 }: { size?: number }) {
+function FacebookIcon({
+  size = 15,
+}: {
+  size?: number;
+}) {
   return (
     <svg
       width={size}
@@ -43,7 +48,11 @@ function FacebookIcon({ size = 15 }: { size?: number }) {
   );
 }
 
-function LinkedinIcon({ size = 15 }: { size?: number }) {
+function LinkedinIcon({
+  size = 15,
+}: {
+  size?: number;
+}) {
   return (
     <svg
       width={size}
@@ -57,7 +66,11 @@ function LinkedinIcon({ size = 15 }: { size?: number }) {
   );
 }
 
-function TwitterIcon({ size = 15 }: { size?: number }) {
+function TwitterIcon({
+  size = 15,
+}: {
+  size?: number;
+}) {
   return (
     <svg
       width={size}
@@ -72,27 +85,92 @@ function TwitterIcon({ size = 15 }: { size?: number }) {
 }
 
 /* -------------------------------------------------------------------------- */
+/*                              JSON HELPERS                                  */
+/* -------------------------------------------------------------------------- */
+
+function getStringArray(
+  value: unknown
+): string[] {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  return value.filter(
+    (item): item is string =>
+      typeof item === "string"
+  );
+}
+
+function getSections(
+  value: unknown
+): {
+  title: string;
+  body: string;
+}[] {
+  if (!Array.isArray(value)) {
+    return [];
+  }
+
+  return value
+    .filter(
+      (item) =>
+        typeof item === "object" &&
+        item !== null
+    )
+    .map((item) => {
+      const section =
+        item as Record<string, unknown>;
+
+      return {
+        title:
+          typeof section.title === "string"
+            ? section.title
+            : "",
+
+        body:
+          typeof section.body === "string"
+            ? section.body
+            : "",
+      };
+    })
+    .filter(
+      (section) =>
+        section.title.trim() ||
+        section.body.trim()
+    );
+}
+
+/* -------------------------------------------------------------------------- */
 /*                         STATIC ROUTE PARAMETERS                            */
 /* -------------------------------------------------------------------------- */
 
-export function generateStaticParams() {
-  const serviceParams = services.map((service) => ({
-    slug: service.href.replace(/^\/+/, ""),
-  }));
+export async function generateStaticParams() {
+  const dbServices =
+    await prisma.service.findMany({
+      where: {
+        isActive: true,
+      },
 
-  const standaloneServiceParams = [
-    {
-      slug: "website-development",
-    },
-  ];
+      select: {
+        slug: true,
+      },
+    });
 
-  const productParams = products.map((product) => ({
-    slug: product.href.replace(/^\/+/, ""),
-  }));
+  const serviceParams =
+    dbServices.map((service) => ({
+      slug: service.slug,
+    }));
+
+  const productParams =
+    products.map((product) => ({
+      slug: product.href.replace(
+        /^\/+/,
+        ""
+      ),
+    }));
 
   return [
     ...serviceParams,
-    ...standaloneServiceParams,
     ...productParams,
   ];
 }
@@ -104,65 +182,86 @@ export function generateStaticParams() {
 export default async function SlugPage({
   params,
 }: {
-  params: Promise<{ slug: string }>;
+  params: Promise<{
+    slug: string;
+  }>;
 }) {
   const { slug } = await params;
 
-  /* ------------------------------------------------------------------------
-     NORMAL HOME SERVICES
-  ------------------------------------------------------------------------ */
+  /* ------------------------------------------------------------------------ */
+  /*                         DATABASE SERVICE                                 */
+  /* ------------------------------------------------------------------------ */
 
-  const service = services.find(
-    (item) => item.href === `/${slug}`
-  );
+  const service =
+    await prisma.service.findFirst({
+      where: {
+        slug,
+        isActive: true,
+      },
+    });
 
-  /* ------------------------------------------------------------------------
-     STANDALONE SERVICES
-
-     Website Development should work from Navbar / direct URL,
-     but should NOT be added to the home page services array.
-  ------------------------------------------------------------------------ */
-
-  const standaloneService =
-    slug === "website-development"
-      ? {
-          id: "website-development",
-          title: "Website Development",
-          description: "",
-          href: "/website-development",
-        }
-      : null;
-
-  const matchedService =
-    service ?? standaloneService;
-
-  /* ------------------------------------------------------------------------
-     PRODUCTS
-  ------------------------------------------------------------------------ */
+  /* ------------------------------------------------------------------------ */
+  /*                              PRODUCTS                                    */
+  /* ------------------------------------------------------------------------ */
 
   const product = products.find(
-    (item) => item.href === `/${slug}`
+    (item) =>
+      item.href === `/${slug}`
   );
 
   /* ======================================================================== */
   /*                              SERVICE PAGE                                */
   /* ======================================================================== */
 
-  if (matchedService) {
-    const detail =
-      serviceDetails[matchedService.id] ??
-      fallbackDetail(
-        matchedService.title,
-        matchedService.description
-      );
+  if (service) {
+    const detail = {
+      title: service.title,
+
+      gradient:
+        service.gradient ||
+        "from-blue-600 to-cyan-400",
+
+      bannerImage:
+        service.bannerImage ||
+        undefined,
+
+      intro: getStringArray(
+        service.intro
+      ),
+
+      challenges: getStringArray(
+        service.challenges
+      ),
+
+      middle: getStringArray(
+        service.middle
+      ),
+
+      benefits: getStringArray(
+        service.benefits
+      ),
+
+      closing:
+        service.closing || "",
+
+      coverage: getStringArray(
+        service.coverage
+      ),
+
+      qa: getStringArray(
+        service.qa
+      ),
+
+      sections: getSections(
+        service.sections
+      ),
+    };
 
     return (
-      <div className="flex min-h-screen flex-col bg-white dark:bg-slate-950">
+      <div className="flex min-h-screen flex-col overflow-hidden bg-white dark:bg-slate-950">
         <Navbar />
 
         <main className="relative flex-1 overflow-hidden">
-          {/* Background grid */}
-
           <div
             className="
               pointer-events-none
@@ -170,381 +269,309 @@ export default async function SlugPage({
               inset-0
               bg-[linear-gradient(to_right,#e5e7eb_1px,transparent_1px),linear-gradient(to_bottom,#e5e7eb_1px,transparent_1px)]
               bg-[size:48px_48px]
-              opacity-20
-              dark:opacity-10
+              opacity-[0.16]
+              dark:opacity-[0.07]
             "
           />
-
-          {/* Background glow */}
 
           <div
             className="
               pointer-events-none
               absolute
               inset-0
-              bg-[radial-gradient(circle_at_top,rgba(59,130,246,.12),transparent_60%)]
+              bg-[radial-gradient(circle_at_top,rgba(59,130,246,.14),transparent_58%)]
             "
           />
 
-          <section className="relative mx-auto max-w-7xl px-6 pb-20 pt-16 sm:pt-20">
-            {/* ---------------------------------------------------------------- */}
-            {/* Heading                                                          */}
-            {/* ---------------------------------------------------------------- */}
+          <FloatingBlob
+            className="-right-20 top-14 h-72 w-72"
+            color="bg-blue-400/10"
+            duration={16}
+          />
 
-            <AnimatedHeading
-              text={detail.title}
-              as="h1"
-              className="
-                text-2xl
-                font-semibold
-                text-blue-600
-                dark:text-blue-400
-                sm:text-3xl
-              "
-            />
+          <FloatingBlob
+            className="-left-20 top-[620px] h-72 w-72"
+            color="bg-cyan-300/10"
+            duration={20}
+          />
 
-            {/* ---------------------------------------------------------------- */}
-            {/* Banner - fixed same size for every service                      */}
-            {/* ---------------------------------------------------------------- */}
-
-            <AnimateIn delay={0.15}>
-              {detail.bannerImage ? (
-                <div
-                  className="
-                    relative
-                    mt-8
-                    h-[240px]
-                    w-full
-                    overflow-hidden
-                    rounded-2xl
-                    border
-                    border-slate-200/70
-                    bg-slate-50
-                    shadow-sm
-                    dark:border-slate-800
-                    dark:bg-slate-900
-                    sm:h-[320px]
-                    lg:h-[380px]
-                  "
-                >
-                  <Image
-                    src={detail.bannerImage}
-                    alt={detail.title}
-                    fill
-                    priority
-                    sizes="
-                      (max-width: 640px) 100vw,
-                      (max-width: 1024px) 90vw,
-                      1200px
-                    "
-                    className="object-contain p-4 sm:p-5 lg:p-6"
-                  />
-                </div>
-              ) : (
+          <section className="relative mx-auto max-w-7xl px-4 pb-24 pt-8 sm:px-6 sm:pt-10 lg:px-8">
+            {/* Premium hero */}
+            <AnimateIn delay={0.05}>
+              <MouseGlow className="rounded-[28px]">
                 <div
                   className={`
                     relative
-                    mt-8
-                    flex
-                    h-[240px]
-                    w-full
-                    items-center
-                    justify-end
                     overflow-hidden
-                    rounded-2xl
-                    bg-gradient-to-r
+                    rounded-[28px]
+                    bg-gradient-to-br
                     ${detail.gradient}
-                    px-8
-                    shadow-lg
-                    sm:h-[320px]
-                    sm:px-10
-                    lg:h-[380px]
+                    p-[2px]
+                    shadow-[0_24px_80px_-32px_rgba(15,23,42,0.28)]
                   `}
                 >
-                  {/* Decorative circles */}
-
-                  <div className="pointer-events-none absolute inset-0 opacity-20">
-                    {[...Array(4)].map((_, index) => (
-                      <div
-                        key={index}
-                        className="
-                          absolute
-                          rounded-full
-                          border-[16px]
-                          border-white/40
-                        "
-                        style={{
-                          width: `${140 - index * 24}px`,
-                          height: `${140 - index * 24}px`,
-                          left: `${10 + index * 12}%`,
-                          top: `${20 + (index % 2) * 15}%`,
-                        }}
-                      />
-                    ))}
-                  </div>
-
-                  {/* Icon */}
-
                   <div
                     className="
                       relative
-                      flex
-                      h-24
-                      w-24
-                      items-center
-                      justify-center
-                      rounded-2xl
-                      border
-                      border-white/20
-                      bg-white/15
-                      shadow-xl
-                      backdrop-blur-md
-                      sm:h-28
-                      sm:w-28
+                      min-h-[300px]
+                      overflow-hidden
+                      rounded-[26px]
+                      bg-white
+                      dark:bg-slate-950
+                      sm:min-h-[360px]
+                      lg:min-h-[420px]
                     "
                   >
-                    <CheckCircle2
-                      size={48}
-                      strokeWidth={1.5}
-                      className="text-white"
-                    />
+                    {detail.bannerImage ? (
+                      <Image
+                        src={detail.bannerImage}
+                        alt={detail.title}
+                        fill
+                        priority
+                        sizes="(max-width: 768px) 100vw, 1280px"
+                        className="object-cover object-center"
+                      />
+                    ) : (
+                      <div
+                        className={`absolute inset-0 bg-gradient-to-br ${detail.gradient}`}
+                      />
+                    )}
+
+                    <div className="absolute inset-0 bg-gradient-to-t from-white via-white/20 to-transparent dark:from-slate-950 dark:via-slate-950/15" />
+                    <div className="absolute inset-0 bg-gradient-to-r from-white/40 via-transparent to-transparent dark:from-slate-950/30" />
+
+                    <div className="absolute inset-x-0 bottom-0 p-5 sm:p-8 lg:p-10">
+                      <div className="flex items-end gap-4 sm:gap-5">
+                        <div
+                          className={`
+                            flex
+                            h-16
+                            w-16
+                            shrink-0
+                            items-center
+                            justify-center
+                            rounded-2xl
+                            bg-gradient-to-br
+                            ${detail.gradient}
+                            text-white
+                            shadow-lg
+                            sm:h-20
+                            sm:w-20
+                          `}
+                        >
+                          <CheckCircle2 size={30} strokeWidth={1.7} />
+                        </div>
+
+                        <div className="min-w-0 pb-1">
+                          <AnimatedHeading
+                            text={detail.title}
+                            as="h1"
+                            className="text-2xl font-semibold tracking-tight text-slate-950 dark:text-white sm:text-4xl lg:text-5xl"
+                          />
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
-              )}
+              </MouseGlow>
             </AnimateIn>
 
-            {/* ---------------------------------------------------------------- */}
-            {/* Main Content                                                     */}
-            {/* ---------------------------------------------------------------- */}
+            {/* Content + brochure */}
+            <div className="mt-10 grid gap-8 lg:grid-cols-[minmax(0,1fr)_340px] lg:gap-10">
+              <div className="space-y-6">
+                {(detail.intro.length > 0 ||
+                  detail.middle.length > 0 ||
+                  detail.closing) && (
+                  <AnimateIn delay={0.1}>
+                    <MouseGlow className="rounded-3xl">
+                      <div className="rounded-3xl border border-slate-200/80 bg-white/80 p-5 shadow-[0_20px_60px_-38px_rgba(15,23,42,0.28)] backdrop-blur-xl dark:border-slate-800 dark:bg-slate-900/70 sm:p-7">
+                        <div className="mb-5 flex items-center gap-3">
+                          <div
+                            className={`h-9 w-1.5 rounded-full bg-gradient-to-b ${detail.gradient}`}
+                          />
+                          <h2 className="text-base font-semibold text-slate-950 dark:text-white">
+                            Overview
+                          </h2>
+                        </div>
 
-            <div className="mt-10 grid gap-10 lg:grid-cols-[minmax(0,1fr)_320px]">
-              {/* ============================================================ */}
-              {/* Left Content                                                   */}
-              {/* ============================================================ */}
+                        <StaggerContainer className="space-y-4 text-sm leading-7 text-slate-600 dark:text-slate-400">
+                          {detail.intro.map((paragraph, index) => (
+                            <StaggerItem key={`intro-${index}`}>
+                              <p>{paragraph}</p>
+                            </StaggerItem>
+                          ))}
 
-              <AnimateIn delay={0.25}>
-                <div
-                  className="
-                    space-y-4
-                    text-sm
-                    leading-7
-                    text-slate-600
-                    dark:text-slate-400
-                  "
-                >
-                  {/* Intro */}
+                          {detail.middle.map((paragraph, index) => (
+                            <StaggerItem key={`middle-${index}`}>
+                              <p>{paragraph}</p>
+                            </StaggerItem>
+                          ))}
 
-                  {detail.intro.map((paragraph, index) => (
-                    <p key={`intro-${index}`}>
-                      {paragraph}
-                    </p>
-                  ))}
+                          {detail.closing && (
+                            <StaggerItem>
+                              <p>{detail.closing}</p>
+                            </StaggerItem>
+                          )}
+                        </StaggerContainer>
+                      </div>
+                    </MouseGlow>
+                  </AnimateIn>
+                )}
 
-                  {/* Challenges */}
+                {detail.challenges.length > 0 && (
+                  <AnimateIn delay={0.14}>
+                    <MouseGlow className="rounded-3xl">
+                      <div className="rounded-3xl border border-slate-200/80 bg-white/80 p-5 shadow-[0_20px_60px_-38px_rgba(15,23,42,0.28)] backdrop-blur-xl dark:border-slate-800 dark:bg-slate-900/70 sm:p-7">
+                        <div className="mb-5 flex items-center gap-3">
+                          <div
+                            className={`h-9 w-1.5 rounded-full bg-gradient-to-b ${detail.gradient}`}
+                          />
+                          <h2 className="text-base font-semibold text-slate-950 dark:text-white">
+                            Challenges
+                          </h2>
+                        </div>
 
-                  {detail.challenges.length > 0 && (
-                    <StaggerContainer className="space-y-2 pt-1">
-                      {detail.challenges.map((point, index) => (
-                        <StaggerItem key={`challenge-${index}`}>
-                          <p className="flex items-start gap-3">
-                            <span
-                              className="
-                                mt-2
-                                h-1.5
-                                w-1.5
-                                shrink-0
-                                rounded-full
-                                bg-[#1a2b4a]
-                                dark:bg-blue-400
-                              "
-                            />
-
-                            <span>{point}</span>
-                          </p>
-                        </StaggerItem>
-                      ))}
-                    </StaggerContainer>
-                  )}
-
-                  {/* Middle Content */}
-
-                  {detail.middle.map((paragraph, index) => (
-                    <p
-                      key={`middle-${index}`}
-                      className="pt-1"
-                    >
-                      {paragraph}
-                    </p>
-                  ))}
-
-                  {/* Benefits */}
-
-                  {detail.benefits.length > 0 && (
-                    <StaggerContainer className="space-y-2 pt-1">
-                      {detail.benefits.map((point, index) => (
-                        <StaggerItem key={`benefit-${index}`}>
-                          <p className="flex items-start gap-3">
-                            <span
-                              className="
-                                mt-2
-                                h-1.5
-                                w-1.5
-                                shrink-0
-                                rounded-full
-                                bg-[#1a2b4a]
-                                dark:bg-blue-400
-                              "
-                            />
-
-                            <span>{point}</span>
-                          </p>
-                        </StaggerItem>
-                      ))}
-                    </StaggerContainer>
-                  )}
-
-                  {/* Closing */}
-
-                  {detail.closing && (
-                    <p className="pt-1">
-                      {detail.closing}
-                    </p>
-                  )}
-
-                  {/* ======================================================== */}
-                  {/* Coverage                                                  */}
-                  {/* ======================================================== */}
-
-                  {detail.coverage.length > 0 && (
-                    <div className="pt-5">
-                      <h2
-                        className="
-                          text-base
-                          font-semibold
-                          text-slate-900
-                          dark:text-white
-                        "
-                      >
-                        Our service coverage areas include:
-                      </h2>
-
-                      <StaggerContainer
-                        className="
-                          mt-4
-                          grid
-                          gap-3
-                          sm:grid-cols-2
-                        "
-                      >
-                        {detail.coverage.map((item, index) => (
-                          <StaggerItem
-                            key={`coverage-${index}`}
-                          >
-                            <div
-                              className="
-                                flex
-                                items-start
-                                gap-2
-                                rounded-lg
-                                border
-                                border-slate-200/70
-                                bg-slate-50/70
-                                px-3
-                                py-2
-                                dark:border-slate-800
-                                dark:bg-slate-900/60
-                              "
-                            >
-                              <CheckCircle2
-                                size={15}
-                                className="
-                                  mt-0.5
-                                  shrink-0
-                                  text-[#1a2b4a]
-                                  dark:text-blue-400
-                                "
-                              />
-
-                              <span className="text-sm">
-                                {item}
-                              </span>
-                            </div>
-                          </StaggerItem>
-                        ))}
-                      </StaggerContainer>
-                    </div>
-                  )}
-
-                  {/* ======================================================== */}
-                  {/* Q&A                                                       */}
-                  {/* ======================================================== */}
-
-                  {detail.qa.length > 0 && (
-                    <div className="space-y-4 pt-5">
-                      {detail.qa.map((paragraph, index) => (
-                        <p key={`qa-${index}`}>
-                          {paragraph}
-                        </p>
-                      ))}
-                    </div>
-                  )}
-
-                  {/* ======================================================== */}
-                  {/* Custom Sections                                           */}
-                  {/* ======================================================== */}
-
-                  {detail.sections &&
-                    detail.sections.length > 0 && (
-                      <StaggerContainer className="space-y-6 pt-5">
-                        {detail.sections.map(
-                          (section, index) => (
-                            <StaggerItem
-                              key={`section-${index}`}
-                            >
-                              <div
-                                className="
-                                  rounded-2xl
-                                  border
-                                  border-slate-200/70
-                                  bg-white/60
-                                  p-5
-                                  dark:border-slate-800
-                                  dark:bg-slate-900/50
-                                "
-                              >
-                                <h3
-                                  className="
-                                    text-base
-                                    font-semibold
-                                    text-slate-900
-                                    dark:text-white
-                                  "
+                        <StaggerContainer className="space-y-3">
+                          {detail.challenges.map((point, index) => (
+                            <StaggerItem key={`challenge-${index}`}>
+                              <div className="group flex gap-3 rounded-2xl border border-slate-200/70 bg-slate-50/70 px-4 py-3 text-sm leading-6 text-slate-600 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md dark:border-slate-800 dark:bg-slate-950/40 dark:text-slate-400">
+                                <span
+                                  className={`mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-gradient-to-br ${detail.gradient} text-[10px] font-semibold text-white`}
                                 >
-                                  {section.title}
-                                </h3>
-
-                                <p className="mt-2 leading-7">
-                                  {section.body}
-                                </p>
+                                  {index + 1}
+                                </span>
+                                <span>{point}</span>
                               </div>
                             </StaggerItem>
-                          )
+                          ))}
+                        </StaggerContainer>
+                      </div>
+                    </MouseGlow>
+                  </AnimateIn>
+                )}
+
+                {detail.benefits.length > 0 && (
+                  <AnimateIn delay={0.18}>
+                    <MouseGlow className="rounded-3xl">
+                      <div className="rounded-3xl border border-slate-200/80 bg-white/80 p-5 shadow-[0_20px_60px_-38px_rgba(15,23,42,0.28)] backdrop-blur-xl dark:border-slate-800 dark:bg-slate-900/70 sm:p-7">
+                        <div className="mb-5 flex items-center gap-3">
+                          <div
+                            className={`h-9 w-1.5 rounded-full bg-gradient-to-b ${detail.gradient}`}
+                          />
+                          <h2 className="text-base font-semibold text-slate-950 dark:text-white">
+                            Benefits
+                          </h2>
+                        </div>
+
+                        <StaggerContainer className="grid gap-3 sm:grid-cols-2">
+                          {detail.benefits.map((point, index) => (
+                            <StaggerItem key={`benefit-${index}`}>
+                              <div className="flex h-full items-start gap-3 rounded-2xl border border-slate-200/70 bg-slate-50/70 px-4 py-3 text-sm leading-6 text-slate-600 dark:border-slate-800 dark:bg-slate-950/40 dark:text-slate-400">
+                                <CheckCircle2
+                                  size={17}
+                                  className="mt-1 shrink-0 text-blue-600 dark:text-blue-400"
+                                />
+                                <span>{point}</span>
+                              </div>
+                            </StaggerItem>
+                          ))}
+                        </StaggerContainer>
+                      </div>
+                    </MouseGlow>
+                  </AnimateIn>
+                )}
+
+                {detail.coverage.length > 0 && (
+                  <AnimateIn delay={0.22}>
+                    <MouseGlow className="rounded-3xl">
+                      <div className="rounded-3xl border border-slate-200/80 bg-white/80 p-5 shadow-[0_20px_60px_-38px_rgba(15,23,42,0.28)] backdrop-blur-xl dark:border-slate-800 dark:bg-slate-900/70 sm:p-7">
+                        <div className="mb-5 flex items-center gap-3">
+                          <div
+                            className={`h-9 w-1.5 rounded-full bg-gradient-to-b ${detail.gradient}`}
+                          />
+                          <h2 className="text-base font-semibold text-slate-950 dark:text-white">
+                            Our service coverage areas include:
+                          </h2>
+                        </div>
+
+                        <StaggerContainer className="grid gap-3 sm:grid-cols-2">
+                          {detail.coverage.map((item, index) => (
+                            <StaggerItem key={`coverage-${index}`}>
+                              <div className="flex h-full items-start gap-3 rounded-2xl border border-slate-200/70 bg-slate-50/70 px-4 py-3 text-sm leading-6 text-slate-600 dark:border-slate-800 dark:bg-slate-950/40 dark:text-slate-400">
+                                <CheckCircle2
+                                  size={17}
+                                  className="mt-1 shrink-0 text-blue-600 dark:text-blue-400"
+                                />
+                                <span>{item}</span>
+                              </div>
+                            </StaggerItem>
+                          ))}
+                        </StaggerContainer>
+                      </div>
+                    </MouseGlow>
+                  </AnimateIn>
+                )}
+
+                {detail.sections.map((section, index) => (
+                  <AnimateIn key={`section-${index}`} delay={0.24}>
+                    <MouseGlow className="rounded-3xl">
+                      <div className="rounded-3xl border border-slate-200/80 bg-white/80 p-5 shadow-[0_20px_60px_-38px_rgba(15,23,42,0.28)] backdrop-blur-xl dark:border-slate-800 dark:bg-slate-900/70 sm:p-7">
+                        {section.title && (
+                          <div className="mb-4 flex items-center gap-3">
+                            <div
+                              className={`h-9 w-1.5 rounded-full bg-gradient-to-b ${detail.gradient}`}
+                            />
+                            <h2 className="text-base font-semibold text-slate-950 dark:text-white">
+                              {section.title}
+                            </h2>
+                          </div>
                         )}
-                      </StaggerContainer>
-                    )}
-                </div>
-              </AnimateIn>
 
-              {/* ============================================================ */}
-              {/* Sidebar                                                        */}
-              {/* ============================================================ */}
+                        {section.body && (
+                          <p className="text-sm leading-7 text-slate-600 dark:text-slate-400">
+                            {section.body}
+                          </p>
+                        )}
+                      </div>
+                    </MouseGlow>
+                  </AnimateIn>
+                ))}
 
+                {detail.qa.length > 0 && (
+                  <AnimateIn delay={0.28}>
+                    <MouseGlow className="rounded-3xl">
+                      <div className="rounded-3xl border border-slate-200/80 bg-white/80 p-5 shadow-[0_20px_60px_-38px_rgba(15,23,42,0.28)] backdrop-blur-xl dark:border-slate-800 dark:bg-slate-900/70 sm:p-7">
+                        <div className="mb-5 flex items-center gap-3">
+                          <div
+                            className={`h-9 w-1.5 rounded-full bg-gradient-to-b ${detail.gradient}`}
+                          />
+                          <h2 className="text-base font-semibold text-slate-950 dark:text-white">
+                            Frequently asked questions
+                          </h2>
+                        </div>
+
+                        <StaggerContainer className="space-y-3">
+                          {detail.qa.map((paragraph, index) => (
+                            <StaggerItem key={`qa-${index}`}>
+                              <div className="rounded-2xl border border-slate-200/70 bg-slate-50/70 px-4 py-3 text-sm leading-6 text-slate-600 dark:border-slate-800 dark:bg-slate-950/40 dark:text-slate-400">
+                                {paragraph}
+                              </div>
+                            </StaggerItem>
+                          ))}
+                        </StaggerContainer>
+                      </div>
+                    </MouseGlow>
+                  </AnimateIn>
+                )}
+              </div>
+
+              {/* Dynamic brochure */}
               <AnimateIn
-                delay={0.3}
+                delay={0.2}
                 direction="left"
                 className="lg:sticky lg:top-24 lg:self-start"
               >
-                <BrochureForm />
+                <BrochureForm gradient={detail.gradient} />
               </AnimateIn>
             </div>
           </section>
@@ -605,9 +632,9 @@ export default async function SlugPage({
                 dark:shadow-black/40
               "
             >
-              {/* ============================================================ */}
-              {/* Product Header                                                 */}
-              {/* ============================================================ */}
+              {/* ========================================================== */}
+              {/* Product Header                                             */}
+              {/* ========================================================== */}
 
               <div
                 className="
@@ -639,9 +666,9 @@ export default async function SlugPage({
                 </p>
               </div>
 
-              {/* ============================================================ */}
-              {/* Product Content                                                */}
-              {/* ============================================================ */}
+              {/* ========================================================== */}
+              {/* Product Content                                            */}
+              {/* ========================================================== */}
 
               <div className="px-8 py-9 text-center">
                 <h1
@@ -768,9 +795,9 @@ export default async function SlugPage({
                 </div>
               </div>
 
-              {/* ============================================================ */}
-              {/* Back Button                                                    */}
-              {/* ============================================================ */}
+              {/* ========================================================== */}
+              {/* Back Button                                                */}
+              {/* ========================================================== */}
 
               <Link
                 href="/products"
@@ -793,7 +820,9 @@ export default async function SlugPage({
                   dark:hover:bg-blue-500
                 "
               >
-                <span>Back to Products</span>
+                <span>
+                  Back to Products
+                </span>
 
                 <ArrowRight
                   size={15}

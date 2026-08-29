@@ -4,10 +4,8 @@ import { Navbar } from "../../../components/navbar";
 import { Footer } from "../../../components/footer";
 
 import { AnimateIn } from "../../../components/animate-in";
-import { AnimatedHeading } from "../../../components/animated-heading";
 import { FloatingBlob } from "../../../components/floating-blob";
 import { MouseGlow } from "../../../components/mouse-glow";
-import { TiltCard } from "../../../components/tilt-card";
 
 import {
   StaggerContainer,
@@ -51,7 +49,7 @@ export default function MobileSolutionPage() {
 
       <main className="relative flex-1 overflow-hidden">
         {/* =================================================
-            BACKGROUND GRID
+            BACKGROUND
         ================================================= */}
 
         <div
@@ -59,136 +57,145 @@ export default function MobileSolutionPage() {
             pointer-events-none
             absolute
             inset-0
-            bg-[linear-gradient(to_right,#e5e7eb_1px,transparent_1px),linear-gradient(to_bottom,#e5e7eb_1px,transparent_1px)]
-            bg-[size:52px_52px]
-            opacity-[0.12]
-            dark:opacity-[0.035]
+            bg-[radial-gradient(circle_at_15%_28%,rgba(124,58,237,0.06),transparent_28%),radial-gradient(circle_at_85%_55%,rgba(59,130,246,0.07),transparent_30%)]
+            dark:bg-[radial-gradient(circle_at_15%_28%,rgba(124,58,237,0.08),transparent_28%),radial-gradient(circle_at_85%_55%,rgba(59,130,246,0.08),transparent_30%)]
           "
         />
 
-        {/* =================================================
-            BACKGROUND GLOW
-        ================================================= */}
-
-        <div
-          className="
-            pointer-events-none
-            absolute
-            inset-0
-            bg-[radial-gradient(circle_at_12%_10%,rgba(59,130,246,.12),transparent_32%),radial-gradient(circle_at_88%_38%,rgba(14,165,233,.08),transparent_32%)]
-          "
-        />
-
-        {/* =================================================
-            FLOATING BLOBS
-        ================================================= */}
-
         <FloatingBlob
-          className="-right-24 top-16 h-80 w-80"
-          color="bg-blue-400/10"
-          duration={16}
-        />
-
-        <FloatingBlob
-          className="-left-24 top-[720px] h-72 w-72"
-          color="bg-cyan-300/10"
-          duration={20}
-        />
-
-        <FloatingBlob
-          className="right-1/4 top-[1050px] h-52 w-52"
-          color="bg-purple-400/5"
+          className="-right-28 top-[500px] h-80 w-80"
+          color="bg-purple-400/10"
           duration={18}
         />
 
+        <FloatingBlob
+          className="-left-28 top-[900px] h-72 w-72"
+          color="bg-blue-400/10"
+          duration={20}
+        />
+
         {/* =====================================================
-            HERO SECTION
+            HERO BANNER
         ===================================================== */}
 
-        <section className="relative px-5 pb-10 pt-12 sm:px-7 sm:pt-16 lg:px-10">
-          <div className="mx-auto max-w-7xl">
-            {/* =================================================
-                HEADING
-            ================================================= */}
+        <section className="relative">
+         <AnimateIn delay={0.05}>
+  <div
+    className="
+      relative
+      h-[140px]
+      w-full
+      overflow-hidden
+      sm:h-[170px]
+      md:h-[200px]
+      lg:h-[220px]
+    "
+  >
+    <Image
+      src={BANNER_SRC}
+      alt="Mobile Solution"
+      fill
+      priority
+      sizes="100vw"
+      className="object-cover object-center"
+    />
 
-            <AnimateIn delay={0.05}>
-              <div className="mb-7">
-                <AnimatedHeading
-                  text="Mobile Solution"
-                  as="h1"
+    {/* Soft fade at bottom */}
+    <div
+      className="
+        pointer-events-none
+        absolute
+        inset-x-0
+        bottom-0
+        h-16
+        bg-gradient-to-t
+        from-white
+        via-white/40
+        to-transparent
+        dark:from-[#080e1a]
+        dark:via-[#080e1a]/35
+      "
+    />
+  </div>
+</AnimateIn>
+          {/* =================================================
+              TITLE AREA
+          ================================================= */}
+
+          <div className="relative z-10 mx-auto max-w-7xl px-5 sm:px-7 lg:px-10">
+            <AnimateIn delay={0.1}>
+              <div className="-mt-7 flex items-center gap-4 sm:-mt-10 sm:gap-5">
+                {/* ICON */}
+
+                <div
                   className="
-                    text-3xl
-                    font-semibold
+                    flex
+                    h-[76px]
+                    w-[76px]
+                    shrink-0
+                    items-center
+                    justify-center
+                    rounded-[24px]
+                    border
+                    border-purple-200/70
+                    bg-white/95
+                    p-3
+                    shadow-[0_16px_40px_-18px_rgba(124,58,237,0.45)]
+                    backdrop-blur-xl
+                    dark:border-purple-500/20
+                    dark:bg-slate-900/95
+                    sm:h-[88px]
+                    sm:w-[88px]
+                  "
+                >
+                  <div className="relative h-full w-full">
+                    <Image
+                      src={PHONE_ICON_SRC}
+                      alt="Mobile applications"
+                      fill
+                      sizes="88px"
+                      className="object-contain"
+                    />
+                  </div>
+                </div>
+
+                {/* HEADING */}
+
+                <h1
+                  className="
+                    text-2xl
+                    font-bold
                     tracking-[-0.04em]
                     text-slate-950
                     dark:text-white
-                    sm:text-4xl
-                    lg:text-5xl
+                    sm:text-3xl
+                    lg:text-[38px]
                   "
-                />
-
-                <span
-                  className="
-                    mt-4
-                    block
-                    h-[3px]
-                    w-12
-                    rounded-full
-                    bg-gradient-to-r
-                    from-blue-600
-                    to-cyan-400
-                  "
-                />
+                >
+                  Mobile Solution
+                </h1>
               </div>
             </AnimateIn>
 
-            {/* =================================================
-                MOBILE BANNER
-            ================================================= */}
+            {/* INTRO */}
 
-            <AnimateIn delay={0.1}>
-              <MouseGlow className="rounded-[24px]">
-                <div
-                  className="
-                    relative
-                    w-full
-                    overflow-hidden
-                    rounded-[24px]
-                    border
-                    border-slate-200/80
-                    bg-white
-                    shadow-[0_24px_70px_-35px_rgba(15,23,42,.38)]
-                    dark:border-white/[0.08]
-                    dark:bg-slate-900
-                  "
-                >
-                  <Image
-                    src={BANNER_SRC}
-                    alt="Mobile Solution"
-                    width={1024}
-                    height={768}
-                    priority
-                    sizes="(max-width: 640px) 100vw, (max-width: 1024px) 95vw, 1280px"
-                    className="
-                      block
-                      h-auto
-                      w-full
-                    "
-                  />
-
-                  <div
-                    className="
-                      pointer-events-none
-                      absolute
-                      inset-0
-                      rounded-[24px]
-                      ring-1
-                      ring-inset
-                      ring-white/10
-                    "
-                  />
-                </div>
-              </MouseGlow>
+            <AnimateIn delay={0.15}>
+              <p
+                className="
+                  mt-8
+                  max-w-3xl
+                  text-sm
+                  leading-7
+                  text-slate-600
+                  dark:text-slate-400
+                  sm:text-[15px]
+                "
+              >
+                Mobile solutions have become central to the way enterprises
+                conduct their business, enabling customers and employees to be
+                always-on and even powering the next wave of connected services
+                — the Internet of Things.
+              </p>
             </AnimateIn>
           </div>
         </section>
@@ -197,101 +204,111 @@ export default function MobileSolutionPage() {
             MAIN CONTENT
         ===================================================== */}
 
-        <section className="relative px-5 py-12 sm:px-7 sm:py-16 lg:px-10">
+        <section className="relative px-5 pb-14 pt-10 sm:px-7 sm:pb-16 sm:pt-12 lg:px-10">
           <div className="mx-auto max-w-7xl">
             <div
               className="
                 grid
                 items-start
-                gap-8
+                gap-6
                 lg:grid-cols-[minmax(0,1fr)_320px]
-                xl:gap-12
+                xl:grid-cols-[minmax(0,1fr)_340px]
+                xl:gap-8
               "
             >
               {/* =================================================
-                  LEFT CONTENT
+                  LEFT CONTENT CARD
               ================================================= */}
 
               <AnimateIn delay={0.15}>
-                <MouseGlow className="h-full rounded-[26px]">
+                <MouseGlow className="rounded-[30px]">
                   <div
                     className="
                       relative
                       overflow-hidden
-                      rounded-[26px]
+                      rounded-[30px]
                       border
-                      border-slate-200/80
-                      bg-white/85
-                      p-6
-                      shadow-sm
+                      border-blue-100
+                      bg-[#f8fbff]/95
+                      px-6
+                      py-7
+                      shadow-[0_20px_70px_-45px_rgba(37,99,235,0.35)]
                       backdrop-blur-xl
                       dark:border-white/[0.07]
                       dark:bg-white/[0.035]
-                      sm:p-8
-                      lg:p-9
+                      sm:px-8
+                      sm:py-8
+                      lg:px-9
                     "
                   >
-                    {/* Left accent */}
-
-                    <div
-                      className="
-                        absolute
-                        bottom-0
-                        left-0
-                        top-0
-                        w-[3px]
-                        bg-gradient-to-b
-                        from-blue-600
-                        via-cyan-400
-                        to-indigo-500
-                      "
-                    />
-
-                    {/* Soft decoration */}
+                    {/* Decorative background */}
 
                     <div
                       className="
                         pointer-events-none
                         absolute
-                        -left-24
+                        -right-24
                         -top-24
                         h-64
                         w-64
                         rounded-full
-                        bg-blue-500/[0.05]
+                        bg-purple-500/[0.045]
                         blur-3xl
+                        dark:bg-purple-500/[0.07]
+                      "
+                    />
+
+                    <div
+                      className="
+                        pointer-events-none
+                        absolute
+                        -bottom-28
+                        left-1/4
+                        h-72
+                        w-72
+                        rounded-full
+                        bg-blue-500/[0.045]
+                        blur-3xl
+                        dark:bg-blue-500/[0.06]
                       "
                     />
 
                     <StaggerContainer
                       className="
                         relative
-                        space-y-7
-                        text-sm
-                        leading-8
+                        space-y-6
+                        text-[13px]
+                        leading-7
                         text-slate-600
                         dark:text-slate-400
-                        sm:text-[15px]
+                        sm:text-sm
                       "
                     >
-                      {/* INTRODUCTION */}
-
-                      <StaggerItem>
-                        <p>
-                          Mobile solutions have become central to the way
-                          enterprises conduct their business, enabling customers
-                          and employees to be always-on and even powering the
-                          next wave of connected services — the Internet of
-                          Things.
-                        </p>
-                      </StaggerItem>
-
                       {/* BUSINESS ADVANTAGE HEADING */}
 
                       <StaggerItem>
-                        <p className="text-base font-semibold text-slate-900 dark:text-white">
-                          From Mobile Opportunity to Business Advantage
-                        </p>
+                        <div className="flex items-center gap-3">
+                          <span
+                            className="
+                              flex
+                              h-8
+                              w-8
+                              items-center
+                              justify-center
+                              rounded-xl
+                              bg-purple-100
+                              text-purple-600
+                              dark:bg-purple-500/10
+                              dark:text-purple-400
+                            "
+                          >
+                            <span className="h-2 w-2 rounded-full bg-current" />
+                          </span>
+
+                          <p className="text-[15px] font-semibold text-slate-900 dark:text-white">
+                            From Mobile Opportunity to Business Advantage
+                          </p>
+                        </div>
                       </StaggerItem>
 
                       {/* BUSINESS ADVANTAGE */}
@@ -301,10 +318,10 @@ export default function MobileSolutionPage() {
                           We help enterprises harness mobile opportunities with
                           customers, from marketing campaigns to sales
                           transactions and customer service. A coherent
-                          &ldquo;B2C&rdquo; mobile strategy and execution
-                          creates opportunities to build brand awareness,
-                          enhance services, develop a fuller understanding of
-                          customer needs and reach new customers.
+                          &ldquo;B2C&rdquo; mobile strategy and execution creates
+                          opportunities to build brand awareness, enhance
+                          services, develop a fuller understanding of customer
+                          needs and reach new customers.
                         </p>
                       </StaggerItem>
 
@@ -317,77 +334,71 @@ export default function MobileSolutionPage() {
                           Enterprise mobility results in accelerated processes,
                           more flexible working practices, greater employee
                           productivity and a workforce proud of its tools. We
-                          help clients with their &ldquo;B2E&rdquo; strategies
-                          to unleash and manage their employees&apos; potential.
+                          help clients with their &ldquo;B2E&rdquo; strategies to
+                          unleash and manage their employees&apos; potential.
                         </p>
                       </StaggerItem>
 
-                      {/* BENEFITS HEADING */}
+                      {/* BENEFITS */}
 
                       <StaggerItem>
-                        <p className="text-base font-semibold text-slate-900 dark:text-white">
-                          Your Benefits
-                        </p>
-                      </StaggerItem>
+                        <div className="pt-1">
+                          <p className="mb-4 text-[15px] font-semibold text-slate-900 dark:text-white">
+                            Your Benefits
+                          </p>
 
-                      {/* BENEFITS LIST */}
-
-                      <StaggerItem>
-                        <ul className="space-y-3">
-                          {benefits.map((item, index) => (
-                            <li
-                              key={item}
-                              className="
-                                group
-                                flex
-                                gap-4
-                                rounded-2xl
-                                border
-                                border-slate-200/70
-                                bg-slate-50/70
-                                p-4
-                                transition-all
-                                duration-300
-                                hover:-translate-y-0.5
-                                hover:border-blue-200
-                                hover:bg-white
-                                hover:shadow-md
-                                dark:border-white/[0.06]
-                                dark:bg-white/[0.025]
-                                dark:hover:border-blue-500/20
-                                dark:hover:bg-white/[0.045]
-                              "
-                            >
-                              <span
+                          <ul className="space-y-3">
+                            {benefits.map((item, index) => (
+                              <li
+                                key={item}
                                 className="
-                                  mt-0.5
+                                  group
                                   flex
-                                  h-8
-                                  w-8
-                                  shrink-0
-                                  items-center
-                                  justify-center
-                                  rounded-xl
-                                  bg-blue-500/10
-                                  font-mono
-                                  text-[10px]
-                                  font-semibold
-                                  text-blue-600
+                                  items-start
+                                  gap-3
+                                  rounded-2xl
+                                  border
+                                  border-slate-200/70
+                                  bg-white/80
+                                  px-4
+                                  py-3.5
                                   transition-all
                                   duration-300
-                                  group-hover:bg-blue-600
-                                  group-hover:text-white
-                                  dark:text-blue-400
-                                  dark:group-hover:text-white
+                                  hover:-translate-y-0.5
+                                  hover:border-purple-200
+                                  hover:shadow-md
+                                  dark:border-white/[0.06]
+                                  dark:bg-white/[0.025]
+                                  dark:hover:border-purple-500/20
                                 "
                               >
-                                {String(index + 1).padStart(2, "0")}
-                              </span>
+                                <span
+                                  className="
+                                    mt-0.5
+                                    flex
+                                    h-7
+                                    w-7
+                                    shrink-0
+                                    items-center
+                                    justify-center
+                                    rounded-lg
+                                    bg-gradient-to-br
+                                    from-purple-500/10
+                                    to-blue-500/10
+                                    text-[10px]
+                                    font-semibold
+                                    text-purple-600
+                                    dark:text-purple-400
+                                  "
+                                >
+                                  {String(index + 1).padStart(2, "0")}
+                                </span>
 
-                              <span className="flex-1">{item}</span>
-                            </li>
-                          ))}
-                        </ul>
+                                <span className="flex-1">{item}</span>
+                              </li>
+                            ))}
+                          </ul>
+                        </div>
                       </StaggerItem>
 
                       {/* MOBILE DEVELOPMENT */}
@@ -395,11 +406,11 @@ export default function MobileSolutionPage() {
                       <StaggerItem>
                         <p>
                           Geecon offers design and development services for
-                          mobile apps. Based on your requirements we produce
-                          apps which can be standalone or integrate with other
-                          data sources using secure management systems. Our
-                          mobile application development allows for apps to be
-                          output for native iOS and Android platforms.
+                          mobile apps. Based on your requirements we produce apps
+                          which can be standalone or integrate with other data
+                          sources using secure management systems. Our mobile
+                          application development allows for apps to be output
+                          for native iOS and Android platforms.
                         </p>
                       </StaggerItem>
 
@@ -425,7 +436,7 @@ export default function MobileSolutionPage() {
                         </p>
                       </StaggerItem>
 
-                      {/* FINAL CONTENT */}
+                      {/* FINAL */}
 
                       <StaggerItem>
                         <p>
@@ -440,68 +451,112 @@ export default function MobileSolutionPage() {
               </AnimateIn>
 
               {/* =================================================
-                  RIGHT IMAGE
+                  RIGHT MOBILE IMAGE CARD
               ================================================= */}
 
               <AnimateIn
                 delay={0.2}
                 direction="left"
-                className="
-                  lg:sticky
-                  lg:top-24
-                  lg:self-start
-                "
+                className="lg:sticky lg:top-24 lg:self-start"
               >
-                <TiltCard>
-                  <MouseGlow className="rounded-[26px]">
+                <MouseGlow className="rounded-[30px]">
+                  <div
+                    className="
+                      relative
+                      overflow-hidden
+                      rounded-[30px]
+                      bg-gradient-to-br
+                      from-[#7c3aed]
+                      via-[#6d28d9]
+                      to-[#4c1d95]
+                      p-6
+                      shadow-[0_28px_70px_-35px_rgba(109,40,217,0.7)]
+                    "
+                  >
+                    {/* Glow */}
+
+                    <div
+                      className="
+                        pointer-events-none
+                        absolute
+                        -right-16
+                        -top-16
+                        h-52
+                        w-52
+                        rounded-full
+                        bg-white/15
+                        blur-3xl
+                      "
+                    />
+
+                    <div
+                      className="
+                        pointer-events-none
+                        absolute
+                        -bottom-24
+                        -left-20
+                        h-56
+                        w-56
+                        rounded-full
+                        bg-blue-400/15
+                        blur-3xl
+                      "
+                    />
+
+                    {/* Small icon circle */}
+
+                    <div className="relative mb-5 flex justify-center">
+                      <div
+                        className="
+                          flex
+                          h-12
+                          w-12
+                          items-center
+                          justify-center
+                          rounded-full
+                          bg-white/15
+                          backdrop-blur
+                        "
+                      >
+                        <div className="relative h-7 w-7">
+                          <Image
+                            src={PHONE_ICON_SRC}
+                            alt="Mobile applications"
+                            fill
+                            sizes="28px"
+                            className="object-contain"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Main phone image */}
+
                     <div
                       className="
                         relative
+                        mx-auto
+                        aspect-square
+                        w-full
                         overflow-hidden
-                        rounded-[26px]
+                        rounded-[24px]
                         border
-                        border-slate-200/80
+                        border-white/15
                         bg-white
                         p-5
-                        shadow-[0_20px_60px_-35px_rgba(15,23,42,.5)]
-                        dark:border-white/[0.07]
-                        dark:bg-slate-900
+                        shadow-inner
                       "
                     >
-                      {/* Decorative glow */}
-
-                      <div
-                        className="
-                          pointer-events-none
-                          absolute
-                          left-1/2
-                          top-1/2
-                          h-56
-                          w-56
-                          -translate-x-1/2
-                          -translate-y-1/2
-                          rounded-full
-                          bg-blue-500/10
-                          blur-3xl
-                        "
+                      <Image
+                        src={PHONE_ICON_SRC}
+                        alt="Mobile applications"
+                        fill
+                        sizes="340px"
+                        className="object-contain p-5"
                       />
-
-                      <div className="relative aspect-square w-full">
-                        <Image
-                          src={PHONE_ICON_SRC}
-                          alt="Mobile applications"
-                          fill
-                          sizes="320px"
-                          className="
-                            relative
-                            z-[1]
-                            object-contain
-                          "
-                        />
-                      </div>
                     </div>
-                  </MouseGlow>
-                </TiltCard>
+                  </div>
+                </MouseGlow>
               </AnimateIn>
             </div>
 
@@ -510,37 +565,49 @@ export default function MobileSolutionPage() {
             ================================================= */}
 
             <AnimateIn delay={0.3}>
-              <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-                {/* Card 01 */}
+              <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+                {/* CARD 01 */}
 
-                <MouseGlow className="rounded-2xl">
+                <MouseGlow className="rounded-[22px]">
                   <div
                     className="
                       group
                       relative
                       h-full
                       overflow-hidden
-                      rounded-2xl
+                      rounded-[22px]
                       border
                       border-slate-200/80
-                      bg-white/85
+                      bg-white
                       p-5
-                      shadow-sm
-                      backdrop-blur-xl
+                      shadow-[0_15px_40px_-30px_rgba(15,23,42,0.4)]
                       transition-all
                       duration-300
                       hover:-translate-y-1
-                      hover:border-blue-200
-                      hover:shadow-xl
-                      hover:shadow-blue-500/5
+                      hover:border-purple-200
+                      hover:shadow-lg
                       dark:border-white/[0.07]
                       dark:bg-white/[0.035]
-                      dark:hover:border-blue-500/20
+                      dark:hover:border-purple-500/20
                     "
                   >
-                    <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-blue-600 to-cyan-400 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-
-                    <div className="mb-5 flex h-10 w-10 items-center justify-center rounded-xl bg-blue-500/10 font-mono text-xs font-semibold text-blue-600 dark:text-blue-400">
+                    <div
+                      className="
+                        mb-5
+                        flex
+                        h-10
+                        w-10
+                        items-center
+                        justify-center
+                        rounded-xl
+                        bg-purple-50
+                        text-xs
+                        font-semibold
+                        text-purple-600
+                        dark:bg-purple-500/10
+                        dark:text-purple-400
+                      "
+                    >
                       01
                     </div>
 
@@ -555,36 +622,48 @@ export default function MobileSolutionPage() {
                   </div>
                 </MouseGlow>
 
-                {/* Card 02 */}
+                {/* CARD 02 */}
 
-                <MouseGlow className="rounded-2xl">
+                <MouseGlow className="rounded-[22px]">
                   <div
                     className="
                       group
                       relative
                       h-full
                       overflow-hidden
-                      rounded-2xl
+                      rounded-[22px]
                       border
                       border-slate-200/80
-                      bg-white/85
+                      bg-white
                       p-5
-                      shadow-sm
-                      backdrop-blur-xl
+                      shadow-[0_15px_40px_-30px_rgba(15,23,42,0.4)]
                       transition-all
                       duration-300
                       hover:-translate-y-1
-                      hover:border-purple-200
-                      hover:shadow-xl
-                      hover:shadow-purple-500/5
+                      hover:border-blue-200
+                      hover:shadow-lg
                       dark:border-white/[0.07]
                       dark:bg-white/[0.035]
-                      dark:hover:border-purple-500/20
+                      dark:hover:border-blue-500/20
                     "
                   >
-                    <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-purple-500 to-blue-500 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-
-                    <div className="mb-5 flex h-10 w-10 items-center justify-center rounded-xl bg-purple-500/10 font-mono text-xs font-semibold text-purple-600 dark:text-purple-400">
+                    <div
+                      className="
+                        mb-5
+                        flex
+                        h-10
+                        w-10
+                        items-center
+                        justify-center
+                        rounded-xl
+                        bg-blue-50
+                        text-xs
+                        font-semibold
+                        text-blue-600
+                        dark:bg-blue-500/10
+                        dark:text-blue-400
+                      "
+                    >
                       02
                     </div>
 
@@ -599,36 +678,48 @@ export default function MobileSolutionPage() {
                   </div>
                 </MouseGlow>
 
-                {/* Card 03 */}
+                {/* CARD 03 */}
 
-                <MouseGlow className="rounded-2xl">
+                <MouseGlow className="rounded-[22px]">
                   <div
                     className="
                       group
                       relative
                       h-full
                       overflow-hidden
-                      rounded-2xl
+                      rounded-[22px]
                       border
                       border-slate-200/80
-                      bg-white/85
+                      bg-white
                       p-5
-                      shadow-sm
-                      backdrop-blur-xl
+                      shadow-[0_15px_40px_-30px_rgba(15,23,42,0.4)]
                       transition-all
                       duration-300
                       hover:-translate-y-1
                       hover:border-cyan-200
-                      hover:shadow-xl
-                      hover:shadow-cyan-500/5
+                      hover:shadow-lg
                       dark:border-white/[0.07]
                       dark:bg-white/[0.035]
                       dark:hover:border-cyan-500/20
                     "
                   >
-                    <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-cyan-500 to-blue-500 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-
-                    <div className="mb-5 flex h-10 w-10 items-center justify-center rounded-xl bg-cyan-500/10 font-mono text-xs font-semibold text-cyan-600 dark:text-cyan-400">
+                    <div
+                      className="
+                        mb-5
+                        flex
+                        h-10
+                        w-10
+                        items-center
+                        justify-center
+                        rounded-xl
+                        bg-cyan-50
+                        text-xs
+                        font-semibold
+                        text-cyan-600
+                        dark:bg-cyan-500/10
+                        dark:text-cyan-400
+                      "
+                    >
                       03
                     </div>
 
@@ -642,36 +733,48 @@ export default function MobileSolutionPage() {
                   </div>
                 </MouseGlow>
 
-                
+                {/* CARD 04 */}
 
-                <MouseGlow className="rounded-2xl">
+                <MouseGlow className="rounded-[22px]">
                   <div
                     className="
                       group
                       relative
                       h-full
                       overflow-hidden
-                      rounded-2xl
+                      rounded-[22px]
                       border
                       border-slate-200/80
-                      bg-white/85
+                      bg-white
                       p-5
-                      shadow-sm
-                      backdrop-blur-xl
+                      shadow-[0_15px_40px_-30px_rgba(15,23,42,0.4)]
                       transition-all
                       duration-300
                       hover:-translate-y-1
                       hover:border-indigo-200
-                      hover:shadow-xl
-                      hover:shadow-indigo-500/5
+                      hover:shadow-lg
                       dark:border-white/[0.07]
                       dark:bg-white/[0.035]
                       dark:hover:border-indigo-500/20
                     "
                   >
-                    <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-indigo-500 to-blue-500 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-
-                    <div className="mb-5 flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-500/10 font-mono text-xs font-semibold text-indigo-600 dark:text-indigo-400">
+                    <div
+                      className="
+                        mb-5
+                        flex
+                        h-10
+                        w-10
+                        items-center
+                        justify-center
+                        rounded-xl
+                        bg-indigo-50
+                        text-xs
+                        font-semibold
+                        text-indigo-600
+                        dark:bg-indigo-500/10
+                        dark:text-indigo-400
+                      "
+                    >
                       04
                     </div>
 

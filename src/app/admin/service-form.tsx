@@ -74,6 +74,14 @@ export function ServiceForm({
   const [error, setError] = useState("");
   const [saving, setSaving] = useState(false);
 
+  // =========================================================
+  // BULK IMPORT STATES
+  // =========================================================
+
+  const [bulkJson, setBulkJson] = useState("");
+  const [importMessage, setImportMessage] =
+    useState("");
+
   const isEditing = Boolean(initialValues?.id);
 
   // =========================================================
@@ -128,7 +136,9 @@ export function ServiceForm({
 
     setForm((prev) => ({
       ...prev,
+
       title: value,
+
       slug:
         !isEditing || !prev.slug
           ? generateSlug(value)
@@ -162,9 +172,12 @@ export function ServiceForm({
         | "coverage"
         | "qa"
     ) =>
-    (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    (
+      e: React.ChangeEvent<HTMLTextAreaElement>
+    ) => {
       setForm((prev) => ({
         ...prev,
+
         [field]: textToArray(e.target.value),
       }));
     };
@@ -176,6 +189,7 @@ export function ServiceForm({
   const addSection = () => {
     setForm((prev) => ({
       ...prev,
+
       sections: [
         ...prev.sections,
         {
@@ -193,13 +207,15 @@ export function ServiceForm({
   ) => {
     setForm((prev) => ({
       ...prev,
-      sections: prev.sections.map((section, i) =>
-        i === index
-          ? {
-              ...section,
-              [field]: value,
-            }
-          : section
+
+      sections: prev.sections.map(
+        (section, i) =>
+          i === index
+            ? {
+                ...section,
+                [field]: value,
+              }
+            : section
       ),
     }));
   };
@@ -207,10 +223,224 @@ export function ServiceForm({
   const removeSection = (index: number) => {
     setForm((prev) => ({
       ...prev,
+
       sections: prev.sections.filter(
         (_, i) => i !== index
       ),
     }));
+  };
+
+  // =========================================================
+  // BULK JSON IMPORT
+  // =========================================================
+
+  const handleBulkImport = () => {
+    setError("");
+    setImportMessage("");
+
+    if (!bulkJson.trim()) {
+      setError(
+        "Please paste service JSON first."
+      );
+      return;
+    }
+
+    try {
+      const parsed: unknown =
+        JSON.parse(bulkJson);
+
+      if (
+        typeof parsed !== "object" ||
+        parsed === null ||
+        Array.isArray(parsed)
+      ) {
+        throw new Error(
+          "JSON must contain one service object."
+        );
+      }
+
+      const data = parsed as Record<
+        string,
+        unknown
+      >;
+
+      // -----------------------------------------
+      // STRING HELPER
+      // -----------------------------------------
+
+      const getString = (
+        key: string,
+        fallback = ""
+      ) => {
+        const value = data[key];
+
+        return typeof value === "string"
+          ? value
+          : fallback;
+      };
+
+      // -----------------------------------------
+      // STRING ARRAY HELPER
+      // -----------------------------------------
+
+      const getArray = (key: string) => {
+        const value = data[key];
+
+        if (!Array.isArray(value)) {
+          return [];
+        }
+
+        return value.filter(
+          (item): item is string =>
+            typeof item === "string"
+        );
+      };
+
+      // -----------------------------------------
+      // SECTIONS
+      // -----------------------------------------
+
+      const importedSections =
+        Array.isArray(data.sections)
+          ? data.sections
+              .filter(
+                (item) =>
+                  typeof item === "object" &&
+                  item !== null
+              )
+              .map((item) => {
+                const section =
+                  item as Record<
+                    string,
+                    unknown
+                  >;
+
+                return {
+                  title:
+                    typeof section.title ===
+                    "string"
+                      ? section.title
+                      : "",
+
+                  body:
+                    typeof section.body ===
+                    "string"
+                      ? section.body
+                      : "",
+                };
+              })
+              .filter(
+                (section) =>
+                  section.title.trim() ||
+                  section.body.trim()
+              )
+          : [];
+
+      const importedTitle =
+        getString("title");
+
+      const importedSlug = generateSlug(
+        getString(
+          "slug",
+          importedTitle
+        )
+      );
+
+      let importedHref =
+        getString("href");
+
+      if (
+        !importedHref &&
+        importedSlug
+      ) {
+        importedHref = `/${importedSlug}`;
+      }
+
+      // -----------------------------------------
+      // FILL COMPLETE FORM
+      // -----------------------------------------
+
+      setForm((previous) => ({
+        ...previous,
+
+        tag:
+          getString("tag"),
+
+        title:
+          importedTitle,
+
+        slug:
+          importedSlug,
+
+        description:
+          getString("description"),
+
+        image:
+          getString("image"),
+
+        bannerImage:
+          getString("bannerImage"),
+
+        href:
+          importedHref,
+
+        gradient:
+          getString("gradient"),
+
+        intro:
+          getArray("intro"),
+
+        challenges:
+          getArray("challenges"),
+
+        middle:
+          getArray("middle"),
+
+        benefits:
+          getArray("benefits"),
+
+        closing:
+          getString("closing"),
+
+        coverage:
+          getArray("coverage"),
+
+        qa:
+          getArray("qa"),
+
+        sections:
+          importedSections,
+
+        order:
+          typeof data.order === "number" &&
+          Number.isFinite(data.order)
+            ? Math.trunc(data.order)
+            : 0,
+
+        isActive:
+          typeof data.isActive ===
+          "boolean"
+            ? data.isActive
+            : true,
+      }));
+
+      setImportMessage(
+        isEditing
+          ? "Service JSON imported successfully. Review the fields and click Save Changes."
+          : "Service JSON imported successfully. Review the fields and click Create Service."
+      );
+    } catch (error) {
+      console.error(
+        "Bulk JSON import error:",
+        error
+      );
+
+      setError(
+        error instanceof Error
+          ? `Invalid JSON: ${error.message}`
+          : "Invalid service JSON."
+      );
+    }
   };
 
   // =========================================================
@@ -226,12 +456,20 @@ export function ServiceForm({
     setSaving(true);
 
     try {
+      // -----------------------------------------
+      // VALIDATION
+      // -----------------------------------------
+
       if (!form.title.trim()) {
-        throw new Error("Title is required.");
+        throw new Error(
+          "Title is required."
+        );
       }
 
       if (!form.slug.trim()) {
-        throw new Error("Slug is required.");
+        throw new Error(
+          "Slug is required."
+        );
       }
 
       if (!form.description.trim()) {
@@ -247,8 +485,14 @@ export function ServiceForm({
       }
 
       if (!form.href.trim()) {
-        throw new Error("Href is required.");
+        throw new Error(
+          "Href is required."
+        );
       }
+
+      // -----------------------------------------
+      // API URL
+      // -----------------------------------------
 
       const url = isEditing
         ? `/api/admin/services/${initialValues!.id}`
@@ -258,25 +502,55 @@ export function ServiceForm({
         ? "PUT"
         : "POST";
 
+      // -----------------------------------------
+      // CLEAN SECTIONS
+      // -----------------------------------------
+
+      const cleanSections =
+        form.sections
+          .map((section) => ({
+            title:
+              section.title.trim(),
+
+            body:
+              section.body.trim(),
+          }))
+          .filter(
+            (section) =>
+              section.title ||
+              section.body
+          );
+
+      // -----------------------------------------
+      // PAYLOAD
+      // -----------------------------------------
+
       const payload = {
-        tag: form.tag.trim() || null,
+        tag:
+          form.tag.trim() || null,
 
-        title: form.title.trim(),
+        title:
+          form.title.trim(),
 
-        slug: generateSlug(form.slug),
+        slug:
+          generateSlug(form.slug),
 
         description:
           form.description.trim(),
 
-        image: form.image.trim(),
+        image:
+          form.image.trim(),
 
         bannerImage:
-          form.bannerImage.trim() || null,
+          form.bannerImage.trim() ||
+          null,
 
-        href: form.href.trim(),
+        href:
+          form.href.trim(),
 
         gradient:
-          form.gradient.trim() || null,
+          form.gradient.trim() ||
+          null,
 
         intro:
           form.intro.length > 0
@@ -299,7 +573,8 @@ export function ServiceForm({
             : null,
 
         closing:
-          form.closing.trim() || null,
+          form.closing.trim() ||
+          null,
 
         coverage:
           form.coverage.length > 0
@@ -312,18 +587,20 @@ export function ServiceForm({
             : null,
 
         sections:
-          form.sections.length > 0
-            ? form.sections.filter(
-                (section) =>
-                  section.title.trim() ||
-                  section.body.trim()
-              )
+          cleanSections.length > 0
+            ? cleanSections
             : null,
 
-        order: Number(form.order) || 0,
+        order:
+          Number(form.order) || 0,
 
-        isActive: form.isActive,
+        isActive:
+          form.isActive,
       };
+
+      // -----------------------------------------
+      // REQUEST
+      // -----------------------------------------
 
       const res = await fetch(url, {
         method,
@@ -333,19 +610,29 @@ export function ServiceForm({
             "application/json",
         },
 
-        body: JSON.stringify(payload),
+        credentials: "same-origin",
+
+        body: JSON.stringify(
+          payload
+        ),
       });
 
-      const data = await res.json();
+      const data =
+        await res
+          .json()
+          .catch(() => null);
 
       if (!res.ok) {
         throw new Error(
-          data.error ||
-            "Something went wrong."
+          data?.error ||
+            `Something went wrong. Status: ${res.status}`
         );
       }
 
-      router.push("/admin/services");
+      router.push(
+        "/admin/services"
+      );
+
       router.refresh();
     } catch (error) {
       console.error(
@@ -368,7 +655,7 @@ export function ServiceForm({
   // =========================================================
 
   const inputClass =
-    "w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-900 focus:border-violet-500 focus:outline-none dark:border-slate-700 dark:bg-slate-900 dark:text-white";
+    "w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-900 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/10 dark:border-slate-700 dark:bg-slate-900 dark:text-white";
 
   const labelClass =
     "mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300";
@@ -386,6 +673,128 @@ export function ServiceForm({
       className="max-w-4xl space-y-8"
     >
       {/* ========================================
+          BULK JSON IMPORT
+      ======================================== */}
+
+      <div className="overflow-hidden rounded-2xl border border-violet-200 bg-white dark:border-violet-900/60 dark:bg-slate-900">
+        {/* Header */}
+
+        <div className="border-b border-violet-100 bg-gradient-to-r from-violet-50 via-purple-50 to-indigo-50 px-6 py-5 dark:border-violet-900/40 dark:from-violet-950/40 dark:via-purple-950/30 dark:to-indigo-950/30">
+          <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-center">
+            <div>
+              <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
+                Bulk Service Import
+              </h2>
+
+              <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+                Paste complete service JSON
+                and automatically fill every
+                service field.
+              </p>
+            </div>
+
+            <div className="w-fit rounded-full border border-violet-200 bg-white px-3 py-1 text-xs font-semibold text-violet-600 shadow-sm dark:border-violet-800 dark:bg-violet-950/60 dark:text-violet-300">
+              Quick Import
+            </div>
+          </div>
+        </div>
+
+        {/* Content */}
+
+        <div className="p-6">
+          <label
+            className={labelClass}
+          >
+            Service JSON
+          </label>
+
+          <textarea
+            rows={14}
+            value={bulkJson}
+            onChange={(e) => {
+              setBulkJson(
+                e.target.value
+              );
+
+              setImportMessage(
+                ""
+              );
+
+              if (error) {
+                setError("");
+              }
+            }}
+            spellCheck={false}
+            placeholder={`{
+  "tag": "",
+  "title": "Website Development",
+  "slug": "website-development",
+  "description": "Service description...",
+  "image": "/web-devlopment.png",
+  "bannerImage": "/web-devlopment.png",
+  "href": "/website-development",
+  "gradient": "from-blue-700 to-cyan-300",
+  "intro": [],
+  "challenges": [],
+  "middle": [],
+  "benefits": [],
+  "closing": "",
+  "coverage": [],
+  "qa": [],
+  "sections": [],
+  "order": 0,
+  "isActive": true
+}`}
+            className={`${inputClass} min-h-[300px] resize-y font-mono text-xs leading-6`}
+          />
+
+          <p
+            className={helpClass}
+          >
+            JSON only fills the form.
+            Nothing is saved to the
+            database until you click{" "}
+            {isEditing
+              ? "Save Changes"
+              : "Create Service"}
+            .
+          </p>
+
+          <div className="mt-5 flex flex-wrap items-center gap-3">
+            <button
+              type="button"
+              onClick={
+                handleBulkImport
+              }
+              className="rounded-lg bg-violet-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2 dark:focus:ring-offset-slate-900"
+            >
+              Import & Fill All Fields
+            </button>
+
+            {bulkJson && (
+              <button
+                type="button"
+                onClick={() => {
+                  setBulkJson("");
+                  setImportMessage("");
+                  setError("");
+                }}
+                className="rounded-lg border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-600 transition hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:bg-slate-800"
+              >
+                Clear JSON
+              </button>
+            )}
+          </div>
+
+          {importMessage && (
+            <div className="mt-5 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-700 dark:border-emerald-900 dark:bg-emerald-950/30 dark:text-emerald-400">
+              {importMessage}
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* ========================================
           BASIC INFORMATION
       ======================================== */}
 
@@ -395,27 +804,38 @@ export function ServiceForm({
         </h2>
 
         <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-          Main information used on the services
-          listing and detail page.
+          Main information used on the
+          services listing and detail
+          page.
         </p>
 
         <div className="mt-6 space-y-5">
+          {/* Tag */}
+
           <div>
-            <label className={labelClass}>
+            <label
+              className={labelClass}
+            >
               Tag
             </label>
 
             <input
               type="text"
               value={form.tag}
-              onChange={handleChange("tag")}
+              onChange={handleChange(
+                "tag"
+              )}
               placeholder="e.g. Cloud Services"
               className={inputClass}
             />
           </div>
 
+          {/* Title */}
+
           <div>
-            <label className={labelClass}>
+            <label
+              className={labelClass}
+            >
               Title *
             </label>
 
@@ -423,14 +843,20 @@ export function ServiceForm({
               type="text"
               required
               value={form.title}
-              onChange={handleTitleChange}
+              onChange={
+                handleTitleChange
+              }
               placeholder="Cloud Services"
               className={inputClass}
             />
           </div>
 
+          {/* Slug */}
+
           <div>
-            <label className={labelClass}>
+            <label
+              className={labelClass}
+            >
               Slug *
             </label>
 
@@ -441,6 +867,7 @@ export function ServiceForm({
               onChange={(e) =>
                 setForm((prev) => ({
                   ...prev,
+
                   slug: generateSlug(
                     e.target.value
                   ),
@@ -450,23 +877,33 @@ export function ServiceForm({
               className={`${inputClass} font-mono`}
             />
 
-            <p className={helpClass}>
-              Example: cloud-services
+            <p
+              className={helpClass}
+            >
+              Example:
+              cloud-services
             </p>
           </div>
 
+          {/* Description */}
+
           <div>
-            <label className={labelClass}>
+            <label
+              className={labelClass}
+            >
               Description *
             </label>
 
             <textarea
               required
               rows={5}
-              value={form.description}
+              value={
+                form.description
+              }
               onChange={handleChange(
                 "description"
               )}
+              placeholder="Short service description..."
               className={`${inputClass} resize-y`}
             />
           </div>
@@ -482,9 +919,18 @@ export function ServiceForm({
           Media & URL
         </h2>
 
+        <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+          Images and public URL used by
+          the service.
+        </p>
+
         <div className="mt-6 space-y-5">
+          {/* Service Image */}
+
           <div>
-            <label className={labelClass}>
+            <label
+              className={labelClass}
+            >
               Service Card Image *
             </label>
 
@@ -492,25 +938,35 @@ export function ServiceForm({
               type="text"
               required
               value={form.image}
-              onChange={handleChange("image")}
+              onChange={handleChange(
+                "image"
+              )}
               placeholder="/service-grid.png"
               className={inputClass}
             />
 
-            <p className={helpClass}>
-              Image displayed on the services
-              listing page.
+            <p
+              className={helpClass}
+            >
+              Image displayed on the
+              services listing page.
             </p>
           </div>
 
+          {/* Banner */}
+
           <div>
-            <label className={labelClass}>
+            <label
+              className={labelClass}
+            >
               Banner Image
             </label>
 
             <input
               type="text"
-              value={form.bannerImage}
+              value={
+                form.bannerImage
+              }
               onChange={handleChange(
                 "bannerImage"
               )}
@@ -518,14 +974,20 @@ export function ServiceForm({
               className={inputClass}
             />
 
-            <p className={helpClass}>
-              Image displayed on the service
-              detail page.
+            <p
+              className={helpClass}
+            >
+              Image displayed on the
+              service detail page.
             </p>
           </div>
 
+          {/* Href */}
+
           <div>
-            <label className={labelClass}>
+            <label
+              className={labelClass}
+            >
               Link (href) *
             </label>
 
@@ -533,20 +995,35 @@ export function ServiceForm({
               type="text"
               required
               value={form.href}
-              onChange={handleChange("href")}
+              onChange={handleChange(
+                "href"
+              )}
               placeholder="/cloud-services"
               className={inputClass}
             />
+
+            <p
+              className={helpClass}
+            >
+              Example:
+              /website-development
+            </p>
           </div>
 
+          {/* Gradient */}
+
           <div>
-            <label className={labelClass}>
+            <label
+              className={labelClass}
+            >
               Gradient
             </label>
 
             <input
               type="text"
-              value={form.gradient}
+              value={
+                form.gradient
+              }
               onChange={handleChange(
                 "gradient"
               )}
@@ -554,9 +1031,12 @@ export function ServiceForm({
               className={inputClass}
             />
 
-            <p className={helpClass}>
-              Optional Tailwind gradient classes
-              used by the service page.
+            <p
+              className={helpClass}
+            >
+              Optional Tailwind
+              gradient classes used by
+              the service page.
             </p>
           </div>
         </div>
@@ -572,19 +1052,25 @@ export function ServiceForm({
         </h2>
 
         <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-          Enter one item per line for list
-          content.
+          Enter one item per line for
+          list content.
         </p>
 
         <div className="mt-6 space-y-6">
+          {/* Introduction */}
+
           <div>
-            <label className={labelClass}>
+            <label
+              className={labelClass}
+            >
               Introduction
             </label>
 
             <textarea
               rows={6}
-              value={arrayToText(form.intro)}
+              value={arrayToText(
+                form.intro
+              )}
               onChange={handleArrayChange(
                 "intro"
               )}
@@ -592,13 +1078,19 @@ export function ServiceForm({
               className={`${inputClass} resize-y`}
             />
 
-            <p className={helpClass}>
+            <p
+              className={helpClass}
+            >
               One paragraph per line.
             </p>
           </div>
 
+          {/* Challenges */}
+
           <div>
-            <label className={labelClass}>
+            <label
+              className={labelClass}
+            >
               Challenges
             </label>
 
@@ -614,29 +1106,47 @@ export function ServiceForm({
               className={`${inputClass} resize-y`}
             />
 
-            <p className={helpClass}>
+            <p
+              className={helpClass}
+            >
               One challenge per line.
             </p>
           </div>
 
+          {/* Middle */}
+
           <div>
-            <label className={labelClass}>
+            <label
+              className={labelClass}
+            >
               Middle Content
             </label>
 
             <textarea
               rows={6}
-              value={arrayToText(form.middle)}
+              value={arrayToText(
+                form.middle
+              )}
               onChange={handleArrayChange(
                 "middle"
               )}
               placeholder={`First paragraph\nSecond paragraph`}
               className={`${inputClass} resize-y`}
             />
+
+            <p
+              className={helpClass}
+            >
+              One paragraph per line.
+            </p>
           </div>
 
+          {/* Benefits */}
+
           <div>
-            <label className={labelClass}>
+            <label
+              className={labelClass}
+            >
               Benefits
             </label>
 
@@ -652,13 +1162,19 @@ export function ServiceForm({
               className={`${inputClass} resize-y`}
             />
 
-            <p className={helpClass}>
+            <p
+              className={helpClass}
+            >
               One benefit per line.
             </p>
           </div>
 
+          {/* Closing */}
+
           <div>
-            <label className={labelClass}>
+            <label
+              className={labelClass}
+            >
               Closing Content
             </label>
 
@@ -673,8 +1189,12 @@ export function ServiceForm({
             />
           </div>
 
+          {/* Coverage */}
+
           <div>
-            <label className={labelClass}>
+            <label
+              className={labelClass}
+            >
               Coverage
             </label>
 
@@ -690,19 +1210,28 @@ export function ServiceForm({
               className={`${inputClass} resize-y`}
             />
 
-            <p className={helpClass}>
-              One coverage item per line.
+            <p
+              className={helpClass}
+            >
+              One coverage item per
+              line.
             </p>
           </div>
 
+          {/* QA */}
+
           <div>
-            <label className={labelClass}>
+            <label
+              className={labelClass}
+            >
               Q&A / Additional Points
             </label>
 
             <textarea
               rows={6}
-              value={arrayToText(form.qa)}
+              value={arrayToText(
+                form.qa
+              )}
               onChange={handleArrayChange(
                 "qa"
               )}
@@ -710,7 +1239,9 @@ export function ServiceForm({
               className={`${inputClass} resize-y`}
             />
 
-            <p className={helpClass}>
+            <p
+              className={helpClass}
+            >
               One item per line.
             </p>
           </div>
@@ -729,8 +1260,8 @@ export function ServiceForm({
             </h2>
 
             <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-              Add title and body sections when
-              required.
+              Add title and body
+              sections when required.
             </p>
           </div>
 
@@ -743,27 +1274,35 @@ export function ServiceForm({
           </button>
         </div>
 
-        {form.sections.length === 0 ? (
+        {form.sections.length ===
+        0 ? (
           <div className="mt-6 rounded-xl border border-dashed border-slate-300 p-8 text-center text-sm text-slate-400 dark:border-slate-700">
-            No custom sections added.
+            No custom sections
+            added.
           </div>
         ) : (
           <div className="mt-6 space-y-5">
             {form.sections.map(
-              (section, index) => (
+              (
+                section,
+                index
+              ) => (
                 <div
                   key={index}
                   className="rounded-xl border border-slate-200 p-5 dark:border-slate-700"
                 >
                   <div className="flex items-center justify-between">
                     <p className="text-sm font-semibold text-slate-700 dark:text-slate-300">
-                      Section {index + 1}
+                      Section{" "}
+                      {index + 1}
                     </p>
 
                     <button
                       type="button"
                       onClick={() =>
-                        removeSection(index)
+                        removeSection(
+                          index
+                        )
                       }
                       className="text-sm font-medium text-red-500 hover:text-red-600"
                     >
@@ -774,26 +1313,34 @@ export function ServiceForm({
                   <div className="mt-4 space-y-4">
                     <input
                       type="text"
-                      value={section.title}
+                      value={
+                        section.title
+                      }
                       onChange={(e) =>
                         updateSection(
                           index,
                           "title",
-                          e.target.value
+                          e.target
+                            .value
                         )
                       }
                       placeholder="Section title"
-                      className={inputClass}
+                      className={
+                        inputClass
+                      }
                     />
 
                     <textarea
                       rows={5}
-                      value={section.body}
+                      value={
+                        section.body
+                      }
                       onChange={(e) =>
                         updateSection(
                           index,
                           "body",
-                          e.target.value
+                          e.target
+                            .value
                         )
                       }
                       placeholder="Section content"
@@ -816,8 +1363,12 @@ export function ServiceForm({
           Display Settings
         </h2>
 
+        {/* Order */}
+
         <div className="mt-6">
-          <label className={labelClass}>
+          <label
+            className={labelClass}
+          >
             Display Order
           </label>
 
@@ -828,14 +1379,18 @@ export function ServiceForm({
             onChange={(e) =>
               setForm((prev) => ({
                 ...prev,
+
                 order:
-                  Number(e.target.value) ||
-                  0,
+                  Number(
+                    e.target.value
+                  ) || 0,
               }))
             }
             className={`${inputClass} max-w-40`}
           />
         </div>
+
+        {/* Active */}
 
         <div className="mt-6 rounded-xl border border-slate-200 p-4 dark:border-slate-700">
           <div className="flex items-center justify-between gap-4">
@@ -845,8 +1400,9 @@ export function ServiceForm({
               </p>
 
               <p className="mt-1 text-xs text-slate-400">
-                Inactive services can be hidden
-                from the public website.
+                Inactive services can
+                be hidden from the
+                public website.
               </p>
             </div>
 
@@ -855,11 +1411,14 @@ export function ServiceForm({
               onClick={() =>
                 setForm((prev) => ({
                   ...prev,
+
                   isActive:
                     !prev.isActive,
                 }))
               }
-              aria-pressed={form.isActive}
+              aria-pressed={
+                form.isActive
+              }
               className={`relative h-7 w-12 rounded-full transition-colors ${
                 form.isActive
                   ? "bg-violet-600"
@@ -878,7 +1437,9 @@ export function ServiceForm({
         </div>
       </div>
 
-      {/* ERROR */}
+      {/* ========================================
+          ERROR
+      ======================================== */}
 
       {error && (
         <p className="rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600 dark:border-red-900 dark:bg-red-950 dark:text-red-400">
@@ -886,9 +1447,11 @@ export function ServiceForm({
         </p>
       )}
 
-      {/* SUBMIT */}
+      {/* ========================================
+          SUBMIT
+      ======================================== */}
 
-      <div className="flex items-center gap-3">
+      <div className="flex flex-wrap items-center gap-3">
         <RippleButton
           type="submit"
           disabled={saving}
@@ -904,10 +1467,12 @@ export function ServiceForm({
         <button
           type="button"
           onClick={() =>
-            router.push("/admin/services")
+            router.push(
+              "/admin/services"
+            )
           }
           disabled={saving}
-          className="rounded-lg border border-slate-200 px-6 py-2.5 text-sm font-medium text-slate-600 transition hover:bg-slate-50 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
+          className="rounded-lg border border-slate-200 px-6 py-2.5 text-sm font-medium text-slate-600 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-60 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
         >
           Cancel
         </button>

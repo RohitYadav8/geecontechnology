@@ -4,10 +4,8 @@ import { Navbar } from "../../../components/navbar";
 import { Footer } from "../../../components/footer";
 
 import { AnimateIn } from "../../../components/animate-in";
-import { AnimatedHeading } from "../../../components/animated-heading";
 import { FloatingBlob } from "../../../components/floating-blob";
 import { MouseGlow } from "../../../components/mouse-glow";
-import { TiltCard } from "../../../components/tilt-card";
 
 import {
   StaggerContainer,
@@ -43,7 +41,7 @@ const benefits = [
 
 export default function ErpSolutionsPage() {
   return (
-    <div className="flex min-h-screen flex-col overflow-hidden bg-white dark:bg-slate-950">
+    <div className="flex min-h-screen flex-col overflow-hidden bg-white dark:bg-[#080e1a]">
       {/* =====================================================
           NAVBAR
       ===================================================== */}
@@ -56,7 +54,7 @@ export default function ErpSolutionsPage() {
 
       <main className="relative flex-1 overflow-hidden">
         {/* =================================================
-            BACKGROUND GRID
+            BACKGROUND
         ================================================= */}
 
         <div
@@ -64,120 +62,201 @@ export default function ErpSolutionsPage() {
             pointer-events-none
             absolute
             inset-0
-            bg-[linear-gradient(to_right,#e5e7eb_1px,transparent_1px),linear-gradient(to_bottom,#e5e7eb_1px,transparent_1px)]
-            bg-[size:52px_52px]
-            opacity-[0.12]
-            dark:opacity-[0.035]
+            bg-[radial-gradient(circle_at_15%_28%,rgba(124,58,237,0.06),transparent_28%),radial-gradient(circle_at_85%_55%,rgba(59,130,246,0.07),transparent_30%)]
+            dark:bg-[radial-gradient(circle_at_15%_28%,rgba(124,58,237,0.08),transparent_28%),radial-gradient(circle_at_85%_55%,rgba(59,130,246,0.08),transparent_30%)]
           "
         />
 
         {/* =================================================
-            BACKGROUND GLOW
-        ================================================= */}
-
-        <div
-          className="
-            pointer-events-none
-            absolute
-            inset-0
-            bg-[radial-gradient(circle_at_15%_10%,rgba(59,130,246,.12),transparent_35%),radial-gradient(circle_at_85%_25%,rgba(16,185,129,.07),transparent_30%)]
-          "
-        />
-
-        {/* =================================================
-            FLOATING EFFECTS
+            FLOATING BLOBS
         ================================================= */}
 
         <FloatingBlob
-          className="-right-24 top-20 h-80 w-80"
+          className="-right-28 top-[500px] h-80 w-80"
+          color="bg-purple-400/10"
+          duration={18}
+        />
+
+        <FloatingBlob
+          className="-left-28 top-[900px] h-72 w-72"
           color="bg-blue-400/10"
-          duration={16}
-        />
-
-        <FloatingBlob
-          className="-left-24 top-[700px] h-72 w-72"
-          color="bg-cyan-300/10"
           duration={20}
         />
 
         {/* =====================================================
-            HERO
+            HERO BANNER
         ===================================================== */}
 
-        <section className="relative px-5 pb-10 pt-12 sm:px-7 sm:pt-16 lg:px-10">
-          <div className="mx-auto max-w-7xl">
-            {/* =================================================
-                HEADING
-            ================================================= */}
+        <section className="relative">
+          <AnimateIn delay={0.05}>
+            <div
+              className="
+                relative
+                h-[150px]
+                w-full
+                overflow-hidden
+                bg-slate-100
+                sm:h-[180px]
+                md:h-[210px]
+                lg:h-[240px]
+                dark:bg-slate-900
+              "
+            >
+              {/* Blurred background fill */}
 
-            <AnimateIn delay={0.05}>
-              <div className="mb-7">
-                <p className="text-[11px] font-semibold uppercase tracking-[0.24em] text-blue-600 dark:text-blue-400">
-                  ERP Solutions
-                </p>
+              <Image
+                src={ERP_WORDMARK_SRC}
+                alt=""
+                fill
+                priority
+                sizes="100vw"
+                aria-hidden="true"
+                className="
+                  scale-110
+                  object-cover
+                  object-center
+                  opacity-35
+                  blur-xl
+                "
+              />
 
-                <div className="mt-3 h-[3px] w-12 rounded-full bg-gradient-to-r from-blue-600 to-cyan-400" />
+              {/* Main ERP banner */}
 
-                <AnimatedHeading
-                  text="ERP Solutions"
-                  as="h1"
+              <Image
+                src={ERP_WORDMARK_SRC}
+                alt="ERP"
+                fill
+                priority
+                sizes="100vw"
+                className="
+                  relative
+                  z-[1]
+                  object-contain
+                  object-center
+                "
+              />
+
+              {/* Bottom fade */}
+
+              <div
+                className="
+                  pointer-events-none
+                  absolute
+                  inset-x-0
+                  bottom-0
+                  z-[2]
+                  h-16
+                  bg-gradient-to-t
+                  from-white
+                  via-white/30
+                  to-transparent
+                  dark:from-[#080e1a]
+                  dark:via-[#080e1a]/25
+                "
+              />
+            </div>
+          </AnimateIn>
+
+          {/* =================================================
+              TITLE
+          ================================================= */}
+
+          <div className="relative z-10 mx-auto max-w-7xl px-5 sm:px-7 lg:px-10">
+            <AnimateIn delay={0.1}>
+              <div className="-mt-7 flex items-center gap-4 sm:-mt-10 sm:gap-5">
+                {/* ERP ICON */}
+
+                <div
                   className="
-                    mt-5
-                    text-3xl
-                    font-semibold
-                    tracking-[-0.04em]
-                    text-slate-950
-                    dark:text-white
-                    sm:text-4xl
-                    lg:text-5xl
+                    flex
+                    h-[76px]
+                    w-[76px]
+                    shrink-0
+                    items-center
+                    justify-center
+                    rounded-[24px]
+                    border
+                    border-purple-200/70
+                    bg-white/95
+                    p-3
+                    shadow-[0_16px_40px_-18px_rgba(124,58,237,0.45)]
+                    backdrop-blur-xl
+                    dark:border-purple-500/20
+                    dark:bg-slate-900/95
+                    sm:h-[88px]
+                    sm:w-[88px]
                   "
-                />
+                >
+                  <div className="relative h-full w-full">
+                    <Image
+                      src={ERP_HUB_DIAGRAM_SRC}
+                      alt="ERP"
+                      fill
+                      sizes="88px"
+                      className="object-contain"
+                    />
+                  </div>
+                </div>
+
+                {/* HEADING */}
+
+                <div>
+                  <p
+                    className="
+                      mb-1
+                      text-[10px]
+                      font-semibold
+                      uppercase
+                      tracking-[0.22em]
+                      text-purple-600
+                      dark:text-purple-400
+                      sm:text-[11px]
+                    "
+                  >
+                    ERP Solutions
+                  </p>
+
+                  <h1
+                    className="
+                      text-2xl
+                      font-bold
+                      tracking-[-0.04em]
+                      text-slate-950
+                      dark:text-white
+                      sm:text-3xl
+                      lg:text-[38px]
+                    "
+                  >
+                    ERP Solutions
+                  </h1>
+                </div>
               </div>
             </AnimateIn>
 
             {/* =================================================
-                ERP BANNER
+                INTRO
             ================================================= */}
 
-            <AnimateIn delay={0.1}>
-              <MouseGlow className="rounded-[24px]">
-                <div
-                  className="
-                    relative
-                    overflow-hidden
-                    rounded-[24px]
-                    border
-                    border-slate-200/80
-                    bg-white
-                    shadow-[0_24px_70px_-35px_rgba(15,23,42,.38)]
-                    dark:border-white/[0.08]
-                    dark:bg-slate-900
-                  "
-                >
-                  <div
-                    className="
-                      relative
-                      h-[180px]
-                      w-full
-                      sm:h-[220px]
-                      md:h-[250px]
-                      lg:h-[285px]
-                      xl:h-[300px]
-                    "
-                  >
-                    <Image
-                      src={ERP_WORDMARK_SRC}
-                      alt="ERP"
-                      fill
-                      priority
-                      sizes="(max-width: 640px) 100vw, (max-width: 1024px) 95vw, 1280px"
-                      className="object-cover object-center"
-                    />
-                  </div>
-
-                  <div className="pointer-events-none absolute inset-0 rounded-[24px] ring-1 ring-inset ring-white/10" />
-                </div>
-              </MouseGlow>
+            <AnimateIn delay={0.15}>
+              <p
+                className="
+                  mt-8
+                  max-w-4xl
+                  text-sm
+                  leading-7
+                  text-slate-600
+                  dark:text-slate-400
+                  sm:text-[15px]
+                "
+              >
+                Our enterprise resource planning (ERP) software gives your
+                people the tools they need to connect and manage your entire
+                business, from financial and supply chain management and from
+                manufacturing to operations, with the insight you need to make
+                smart decisions. Start with what you need now and easily adapt
+                as your needs change, in the cloud or on your servers — the
+                choice is yours.
+              </p>
             </AnimateIn>
           </div>
         </section>
@@ -186,67 +265,136 @@ export default function ErpSolutionsPage() {
             MAIN CONTENT
         ===================================================== */}
 
-        <section className="relative px-5 py-14 sm:px-7 sm:py-16 lg:px-10">
+        <section
+          className="
+            relative
+            px-5
+            pb-14
+            pt-10
+            sm:px-7
+            sm:pb-16
+            sm:pt-12
+            lg:px-10
+          "
+        >
           <div className="mx-auto max-w-7xl">
-            <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_320px] xl:gap-12">
+            <div
+              className="
+                grid
+                items-start
+                gap-6
+                lg:grid-cols-[minmax(0,1fr)_320px]
+                xl:grid-cols-[minmax(0,1fr)_340px]
+                xl:gap-8
+              "
+            >
               {/* =================================================
                   LEFT CONTENT
               ================================================= */}
 
-              <AnimateIn>
-                <MouseGlow className="h-full rounded-[26px]">
+              <AnimateIn delay={0.15}>
+                <MouseGlow className="rounded-[30px]">
                   <div
                     className="
                       relative
                       overflow-hidden
-                      rounded-[26px]
+                      rounded-[30px]
                       border
-                      border-slate-200/80
-                      bg-white/85
-                      p-6
-                      shadow-sm
+                      border-blue-100
+                      bg-[#f8fbff]/95
+                      px-6
+                      py-7
+                      shadow-[0_20px_70px_-45px_rgba(37,99,235,0.35)]
                       backdrop-blur-xl
                       dark:border-white/[0.07]
                       dark:bg-white/[0.035]
-                      sm:p-8
+                      sm:px-8
+                      sm:py-8
+                      lg:px-9
                     "
                   >
-                    {/* Accent Line */}
+                    {/* Decoration */}
 
-                    <div className="pointer-events-none absolute left-0 top-0 h-full w-[3px] bg-gradient-to-b from-blue-600 via-cyan-400 to-emerald-400" />
+                    <div
+                      className="
+                        pointer-events-none
+                        absolute
+                        -right-24
+                        -top-24
+                        h-64
+                        w-64
+                        rounded-full
+                        bg-purple-500/[0.045]
+                        blur-3xl
+                        dark:bg-purple-500/[0.07]
+                      "
+                    />
 
-                    <StaggerContainer className="space-y-7 text-sm leading-7 text-slate-600 dark:text-slate-400 sm:text-[15px]">
-                      {/* =================================================
-                          INTRO
-                      ================================================= */}
+                    <div
+                      className="
+                        pointer-events-none
+                        absolute
+                        -bottom-28
+                        left-1/4
+                        h-72
+                        w-72
+                        rounded-full
+                        bg-blue-500/[0.045]
+                        blur-3xl
+                        dark:bg-blue-500/[0.06]
+                      "
+                    />
 
-                      <StaggerItem>
-                        <p>
-                          Our enterprise resource planning
-                          (ERP) software gives your people the
-                          tools they need to connect and
-                          manage your entire business, from
-                          financial and supply chain
-                          management and from manufacturing
-                          to operations, with the insight you
-                          need to make smart decisions. Start
-                          with what you need now and easily
-                          adapt as your needs change, in the
-                          cloud or on your servers — the
-                          choice is yours.
-                        </p>
-                      </StaggerItem>
-
+                    <StaggerContainer
+                      className="
+                        relative
+                        space-y-6
+                        text-[13px]
+                        leading-7
+                        text-slate-600
+                        dark:text-slate-400
+                        sm:text-sm
+                      "
+                    >
                       {/* =================================================
                           BENEFITS HEADING
                       ================================================= */}
 
                       <StaggerItem>
-                        <p className="text-base font-semibold leading-7 text-emerald-600 dark:text-emerald-400">
-                          Our ERP systems can drive huge
-                          improvements in the effectiveness
-                          of any organisation by:
-                        </p>
+                        <div className="flex items-start gap-3">
+                          <span
+                            className="
+                              mt-0.5
+                              flex
+                              h-8
+                              w-8
+                              shrink-0
+                              items-center
+                              justify-center
+                              rounded-xl
+                              bg-purple-100
+                              text-purple-600
+                              dark:bg-purple-500/10
+                              dark:text-purple-400
+                            "
+                          >
+                            <span className="h-2 w-2 rounded-full bg-current" />
+                          </span>
+
+                          <p
+                            className="
+                              pt-1
+                              text-[15px]
+                              font-semibold
+                              leading-6
+                              text-slate-900
+                              dark:text-white
+                            "
+                          >
+                            Our ERP systems can drive huge improvements in the
+                            effectiveness of any organisation by:
+                          </p>
+                        </div>
                       </StaggerItem>
 
                       {/* =================================================
@@ -261,45 +409,41 @@ export default function ErpSolutionsPage() {
                               className="
                                 group
                                 flex
-                                gap-4
+                                items-start
+                                gap-3
                                 rounded-2xl
                                 border
                                 border-slate-200/70
-                                bg-slate-50/70
-                                p-4
+                                bg-white/80
+                                px-4
+                                py-3.5
                                 transition-all
                                 duration-300
                                 hover:-translate-y-0.5
-                                hover:border-blue-200
-                                hover:bg-white
+                                hover:border-purple-200
                                 hover:shadow-md
                                 dark:border-white/[0.06]
                                 dark:bg-white/[0.025]
-                                dark:hover:border-blue-500/20
-                                dark:hover:bg-white/[0.045]
+                                dark:hover:border-purple-500/20
                               "
                             >
                               <span
                                 className="
                                   mt-0.5
                                   flex
-                                  h-8
-                                  w-8
+                                  h-7
+                                  w-7
                                   shrink-0
                                   items-center
                                   justify-center
-                                  rounded-xl
-                                  bg-blue-500/10
-                                  font-mono
+                                  rounded-lg
+                                  bg-gradient-to-br
+                                  from-purple-500/10
+                                  to-blue-500/10
                                   text-[10px]
                                   font-semibold
-                                  text-blue-600
-                                  transition-all
-                                  duration-300
-                                  group-hover:bg-blue-600
-                                  group-hover:text-white
-                                  dark:text-blue-400
-                                  dark:group-hover:text-white
+                                  text-purple-600
+                                  dark:text-purple-400
                                 "
                               >
                                 {String(index + 1).padStart(2, "0")}
@@ -319,15 +463,12 @@ export default function ErpSolutionsPage() {
 
                       <StaggerItem>
                         <p>
-                          At Geecon, we strive to deliver a
-                          consistently excellent standard of
-                          service and we take pride in
-                          everything we do. This has enabled
-                          us to retain and grow our client
-                          base year on year and a significant
-                          proportion of our growth can be
-                          attributed to happy clients
-                          recommending us to their colleagues.
+                          At Geecon, we strive to deliver a consistently
+                          excellent standard of service and we take pride in
+                          everything we do. This has enabled us to retain and
+                          grow our client base year on year and a significant
+                          proportion of our growth can be attributed to happy
+                          clients recommending us to their colleagues.
                         </p>
                       </StaggerItem>
 
@@ -337,11 +478,10 @@ export default function ErpSolutionsPage() {
 
                       <StaggerItem>
                         <p>
-                          We believe that consistency and
-                          continuity is a key aspect of the
-                          service we provide to our clients.
-                          We have an exceptionally low staff
-                          turnover rate — we enjoy what we do.
+                          We believe that consistency and continuity is a key
+                          aspect of the service we provide to our clients. We
+                          have an exceptionally low staff turnover rate — we
+                          enjoy what we do.
                         </p>
                       </StaggerItem>
 
@@ -351,11 +491,9 @@ export default function ErpSolutionsPage() {
 
                       <StaggerItem>
                         <p>
-                          We&apos;re a close-knit team that
-                          offers a friendly, collaborative and
-                          ultimately helpful approach. We like
-                          innovative ideas and getting things
-                          done.
+                          We&apos;re a close-knit team that offers a friendly,
+                          collaborative and ultimately helpful approach. We
+                          like innovative ideas and getting things done.
                         </p>
                       </StaggerItem>
                     </StaggerContainer>
@@ -364,7 +502,7 @@ export default function ErpSolutionsPage() {
               </AnimateIn>
 
               {/* =================================================
-                  RIGHT SIDE ERP HUB DIAGRAM
+                  RIGHT ERP IMAGE
               ================================================= */}
 
               <AnimateIn
@@ -372,52 +510,104 @@ export default function ErpSolutionsPage() {
                 direction="left"
                 className="lg:sticky lg:top-24 lg:self-start"
               >
-                <TiltCard>
-                  <MouseGlow className="rounded-[26px]">
+                <MouseGlow className="rounded-[30px]">
+                  <div
+                    className="
+                      relative
+                      overflow-hidden
+                      rounded-[30px]
+                      bg-gradient-to-br
+                      from-[#7c3aed]
+                      via-[#6d28d9]
+                      to-[#4c1d95]
+                      p-6
+                      shadow-[0_28px_70px_-35px_rgba(109,40,217,0.7)]
+                    "
+                  >
+                    {/* Glow */}
+
+                    <div
+                      className="
+                        pointer-events-none
+                        absolute
+                        -right-16
+                        -top-16
+                        h-52
+                        w-52
+                        rounded-full
+                        bg-white/15
+                        blur-3xl
+                      "
+                    />
+
+                    <div
+                      className="
+                        pointer-events-none
+                        absolute
+                        -bottom-24
+                        -left-20
+                        h-56
+                        w-56
+                        rounded-full
+                        bg-blue-400/15
+                        blur-3xl
+                      "
+                    />
+
+                    {/* Small ERP icon */}
+
+                    <div className="relative mb-5 flex justify-center">
+                      <div
+                        className="
+                          flex
+                          h-12
+                          w-12
+                          items-center
+                          justify-center
+                          rounded-full
+                          bg-white/15
+                          backdrop-blur
+                        "
+                      >
+                        <div className="relative h-8 w-8">
+                          <Image
+                            src={ERP_HUB_DIAGRAM_SRC}
+                            alt="ERP"
+                            fill
+                            sizes="32px"
+                            className="object-contain"
+                          />
+                        </div>
+                      </div>
+                    </div>
+
+                    {/* Main ERP image */}
+
                     <div
                       className="
                         relative
+                        mx-auto
+                        aspect-square
+                        w-full
                         overflow-hidden
-                        rounded-[26px]
+                        rounded-[24px]
                         border
-                        border-slate-200/80
+                        border-white/15
                         bg-white
                         p-5
-                        shadow-[0_20px_60px_-35px_rgba(15,23,42,.5)]
-                        dark:border-white/[0.07]
-                        dark:bg-slate-900
+                        shadow-inner
                       "
                     >
-                      {/* Glow */}
-
-                      <div
-                        className="
-                          pointer-events-none
-                          absolute
-                          left-1/2
-                          top-1/2
-                          h-52
-                          w-52
-                          -translate-x-1/2
-                          -translate-y-1/2
-                          rounded-full
-                          bg-blue-500/10
-                          blur-3xl
-                        "
+                      <Image
+                        src={ERP_HUB_DIAGRAM_SRC}
+                        alt="ERP hub connecting Manufacturing, Supply Chain, Project Management, CRM, Finance, and HR"
+                        fill
+                        sizes="340px"
+                        className="object-contain p-5"
                       />
-
-                      <div className="relative aspect-square w-full">
-                        <Image
-                          src={ERP_HUB_DIAGRAM_SRC}
-                          alt="ERP hub connecting Manufacturing, Supply Chain, Project Management, CRM, Finance, and HR"
-                          fill
-                          sizes="320px"
-                          className="relative z-[1] object-contain"
-                        />
-                      </div>
                     </div>
-                  </MouseGlow>
-                </TiltCard>
+                  </div>
+                </MouseGlow>
               </AnimateIn>
             </div>
 
@@ -426,39 +616,51 @@ export default function ErpSolutionsPage() {
             ================================================= */}
 
             <AnimateIn delay={0.3}>
-              <div className="mt-10 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
                 {/* =================================================
                     FINANCE
                 ================================================= */}
 
-                <TiltCard>
+                <MouseGlow className="rounded-[22px]">
                   <div
                     className="
                       group
                       relative
                       h-full
                       overflow-hidden
-                      rounded-2xl
+                      rounded-[22px]
                       border
                       border-slate-200/80
-                      bg-white/85
+                      bg-white
                       p-5
-                      shadow-sm
-                      backdrop-blur-xl
+                      shadow-[0_15px_40px_-30px_rgba(15,23,42,0.4)]
                       transition-all
                       duration-300
                       hover:-translate-y-1
-                      hover:border-blue-200
-                      hover:shadow-xl
-                      hover:shadow-blue-500/5
+                      hover:border-purple-200
+                      hover:shadow-lg
                       dark:border-white/[0.07]
                       dark:bg-white/[0.035]
-                      dark:hover:border-blue-500/20
+                      dark:hover:border-purple-500/20
                     "
                   >
-                    <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-blue-600 to-cyan-400 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-
-                    <div className="mb-5 flex h-10 w-10 items-center justify-center rounded-xl bg-blue-500/10 font-mono text-xs font-semibold text-blue-600 dark:text-blue-400">
+                    <div
+                      className="
+                        mb-5
+                        flex
+                        h-10
+                        w-10
+                        items-center
+                        justify-center
+                        rounded-xl
+                        bg-purple-50
+                        text-xs
+                        font-semibold
+                        text-purple-600
+                        dark:bg-purple-500/10
+                        dark:text-purple-400
+                      "
+                    >
                       01
                     </div>
 
@@ -467,44 +669,56 @@ export default function ErpSolutionsPage() {
                     </h3>
 
                     <p className="mt-2 text-xs leading-6 text-slate-500 dark:text-slate-400">
-                      Manage financial data and make
-                      informed business decisions.
+                      Manage financial data and make informed business
+                      decisions.
                     </p>
                   </div>
-                </TiltCard>
+                </MouseGlow>
 
                 {/* =================================================
                     SUPPLY CHAIN
                 ================================================= */}
 
-                <TiltCard>
+                <MouseGlow className="rounded-[22px]">
                   <div
                     className="
                       group
                       relative
                       h-full
                       overflow-hidden
-                      rounded-2xl
+                      rounded-[22px]
                       border
                       border-slate-200/80
-                      bg-white/85
+                      bg-white
                       p-5
-                      shadow-sm
-                      backdrop-blur-xl
+                      shadow-[0_15px_40px_-30px_rgba(15,23,42,0.4)]
                       transition-all
                       duration-300
                       hover:-translate-y-1
-                      hover:border-cyan-200
-                      hover:shadow-xl
-                      hover:shadow-cyan-500/5
+                      hover:border-blue-200
+                      hover:shadow-lg
                       dark:border-white/[0.07]
                       dark:bg-white/[0.035]
-                      dark:hover:border-cyan-500/20
+                      dark:hover:border-blue-500/20
                     "
                   >
-                    <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-cyan-500 to-blue-500 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-
-                    <div className="mb-5 flex h-10 w-10 items-center justify-center rounded-xl bg-cyan-500/10 font-mono text-xs font-semibold text-cyan-600 dark:text-cyan-400">
+                    <div
+                      className="
+                        mb-5
+                        flex
+                        h-10
+                        w-10
+                        items-center
+                        justify-center
+                        rounded-xl
+                        bg-blue-50
+                        text-xs
+                        font-semibold
+                        text-blue-600
+                        dark:bg-blue-500/10
+                        dark:text-blue-400
+                      "
+                    >
                       02
                     </div>
 
@@ -513,44 +727,56 @@ export default function ErpSolutionsPage() {
                     </h3>
 
                     <p className="mt-2 text-xs leading-6 text-slate-500 dark:text-slate-400">
-                      Connect supply chain operations and
-                      improve overall efficiency.
+                      Connect supply chain operations and improve overall
+                      efficiency.
                     </p>
                   </div>
-                </TiltCard>
+                </MouseGlow>
 
                 {/* =================================================
                     CRM
                 ================================================= */}
 
-                <TiltCard>
+                <MouseGlow className="rounded-[22px]">
                   <div
                     className="
                       group
                       relative
                       h-full
                       overflow-hidden
-                      rounded-2xl
+                      rounded-[22px]
                       border
                       border-slate-200/80
-                      bg-white/85
+                      bg-white
                       p-5
-                      shadow-sm
-                      backdrop-blur-xl
+                      shadow-[0_15px_40px_-30px_rgba(15,23,42,0.4)]
                       transition-all
                       duration-300
                       hover:-translate-y-1
-                      hover:border-indigo-200
-                      hover:shadow-xl
-                      hover:shadow-indigo-500/5
+                      hover:border-cyan-200
+                      hover:shadow-lg
                       dark:border-white/[0.07]
                       dark:bg-white/[0.035]
-                      dark:hover:border-indigo-500/20
+                      dark:hover:border-cyan-500/20
                     "
                   >
-                    <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-indigo-500 to-blue-500 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-
-                    <div className="mb-5 flex h-10 w-10 items-center justify-center rounded-xl bg-indigo-500/10 font-mono text-xs font-semibold text-indigo-600 dark:text-indigo-400">
+                    <div
+                      className="
+                        mb-5
+                        flex
+                        h-10
+                        w-10
+                        items-center
+                        justify-center
+                        rounded-xl
+                        bg-cyan-50
+                        text-xs
+                        font-semibold
+                        text-cyan-600
+                        dark:bg-cyan-500/10
+                        dark:text-cyan-400
+                      "
+                    >
                       03
                     </div>
 
@@ -559,44 +785,55 @@ export default function ErpSolutionsPage() {
                     </h3>
 
                     <p className="mt-2 text-xs leading-6 text-slate-500 dark:text-slate-400">
-                      Build stronger customer relationships
-                      with connected data.
+                      Build stronger customer relationships with connected data.
                     </p>
                   </div>
-                </TiltCard>
+                </MouseGlow>
 
                 {/* =================================================
                     HUMAN RESOURCES
                 ================================================= */}
 
-                <TiltCard>
+                <MouseGlow className="rounded-[22px]">
                   <div
                     className="
                       group
                       relative
                       h-full
                       overflow-hidden
-                      rounded-2xl
+                      rounded-[22px]
                       border
                       border-slate-200/80
-                      bg-white/85
+                      bg-white
                       p-5
-                      shadow-sm
-                      backdrop-blur-xl
+                      shadow-[0_15px_40px_-30px_rgba(15,23,42,0.4)]
                       transition-all
                       duration-300
                       hover:-translate-y-1
-                      hover:border-emerald-200
-                      hover:shadow-xl
-                      hover:shadow-emerald-500/5
+                      hover:border-indigo-200
+                      hover:shadow-lg
                       dark:border-white/[0.07]
                       dark:bg-white/[0.035]
-                      dark:hover:border-emerald-500/20
+                      dark:hover:border-indigo-500/20
                     "
                   >
-                    <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-emerald-500 to-cyan-500 opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
-
-                    <div className="mb-5 flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-500/10 font-mono text-xs font-semibold text-emerald-600 dark:text-emerald-400">
+                    <div
+                      className="
+                        mb-5
+                        flex
+                        h-10
+                        w-10
+                        items-center
+                        justify-center
+                        rounded-xl
+                        bg-indigo-50
+                        text-xs
+                        font-semibold
+                        text-indigo-600
+                        dark:bg-indigo-500/10
+                        dark:text-indigo-400
+                      "
+                    >
                       04
                     </div>
 
@@ -605,11 +842,11 @@ export default function ErpSolutionsPage() {
                     </h3>
 
                     <p className="mt-2 text-xs leading-6 text-slate-500 dark:text-slate-400">
-                      Manage people, processes and resources
-                      through one connected platform.
+                      Manage people, processes and resources through one
+                      connected platform.
                     </p>
                   </div>
-                </TiltCard>
+                </MouseGlow>
               </div>
             </AnimateIn>
           </div>
