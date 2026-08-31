@@ -95,21 +95,41 @@ export const services = [
 ];
 
 export const clients = [
-  { id: "emiada", name: "EMIADA", logo: "/emiadda.png" },
-  { id: "cubot", name: "Cubot", logo: "/cubot.png" },
-  { id: "toc-events", name: "TOC Events", logo: "/toc.png" },
+  {
+    id: "emiada",
+    name: "EMIADA",
+    logo: "/emiadda.png",
+  },
+  {
+    id: "cubot",
+    name: "Cubot",
+    logo: "/cubot.png",
+  },
+  {
+    id: "toc-events",
+    name: "TOC Events",
+    logo: "/toc.png",
+  },
   {
     id: "green-valley",
     name: "Green Valley Infinity",
     logo: "/gv.png",
   },
-  { id: "wsd", name: "WSD", logo: "/wsd.png" },
+  {
+    id: "wsd",
+    name: "WSD",
+    logo: "/wsd.png",
+  },
   {
     id: "sacotina-dalip",
     name: "Sacotina & Dalip",
     logo: "/sacorinadalip.png",
   },
-  { id: "cisco", name: "Cisco", logo: "/cisco-logo.png" },
+  {
+    id: "cisco",
+    name: "Cisco",
+    logo: "/cisco-logo.png",
+  },
   {
     id: "poundsoft",
     name: "Poundsoft",
@@ -139,7 +159,7 @@ export const footerLinks = {
     },
     {
       label: "Current Openings",
-      href: "/careers",
+      href: "/careers/openings",
     },
     {
       label: "Customised Software Development",
@@ -182,7 +202,7 @@ export const footerLinks = {
     },
     {
       label: "Current Openings",
-      href: "/careers",
+      href: "/careers/openings",
     },
     {
       label: "ERP Solutions",
@@ -229,7 +249,7 @@ export const footerLinks = {
     },
     {
       label: "Current Openings",
-      href: "/careers",
+      href: "/careers/openings",
     },
     {
       label: "History",
@@ -268,7 +288,7 @@ export const footerLinks = {
     },
     {
       label: "Current Openings",
-      href: "/careers",
+      href: "/careers/openings",
     },
   ],
-};   
+};

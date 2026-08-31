@@ -1,22 +1,17 @@
 "use client";
 
-import {
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { useRef, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
-import {
-  motion,
-  useScroll,
-  useTransform,
-} from "motion/react";
+import { motion, useScroll, useTransform } from "motion/react";
 import {
   Upload,
   Send,
   CheckCircle,
   ArrowRight,
+  Users,
+  Sparkles,
+  BriefcaseBusiness,
 } from "lucide-react";
 
 import { Navbar } from "../../../components/navbar";
@@ -46,37 +41,14 @@ const careerStats = [
   },
 ];
 
-type JobOpening = {
-  id: string;
-  title: string;
-  department?: string | null;
-  location?: string | null;
-  type?: string | null;
-  description: string;
-  isActive?: boolean;
-  order?: number;
-};
-
 const MAX_FILE_SIZE = 5 * 1024 * 1024;
 
-const ALLOWED_EXTENSIONS = [
-  "pdf",
-  "doc",
-  "docx",
-];
+const ALLOWED_EXTENSIONS = ["pdf", "doc", "docx"];
 
 function validateResume(file: File) {
-  const extension =
-    file.name
-      .split(".")
-      .pop()
-      ?.toLowerCase() || "";
+  const extension = file.name.split(".").pop()?.toLowerCase() || "";
 
-  if (
-    !ALLOWED_EXTENSIONS.includes(
-      extension
-    )
-  ) {
+  if (!ALLOWED_EXTENSIONS.includes(extension)) {
     return "Only PDF, DOC and DOCX files are allowed.";
   }
 
@@ -95,58 +67,19 @@ export default function CareersPage() {
     phone: "",
   });
 
-  /* =========================================================
-     RESUME STATE
-  ========================================================= */
+  const [resumeFile, setResumeFile] = useState<File | null>(null);
+  const [fileName, setFileName] = useState("");
+  const [isDragging, setIsDragging] = useState(false);
+  const [showToast, setShowToast] = useState(false);
+  const [submitError, setSubmitError] = useState("");
+  const [submitting, setSubmitting] = useState(false);
 
-  const [resumeFile, setResumeFile] =
-    useState<File | null>(null);
-
-  const [fileName, setFileName] =
-    useState("");
-
-  const [isDragging, setIsDragging] =
-    useState(false);
-
-  const [showToast, setShowToast] =
-    useState(false);
-
-  const [submitError, setSubmitError] =
-    useState("");
-
-  const [submitting, setSubmitting] =
-    useState(false);
-
-  const fileInputRef =
-    useRef<HTMLInputElement | null>(
-      null
-    );
-
-  /* =========================================================
-     JOB OPENINGS
-  ========================================================= */
-
-  const [openings, setOpenings] =
-    useState<JobOpening[]>([]);
-
-  const [
-    loadingOpenings,
-    setLoadingOpenings,
-  ] = useState(true);
-
-  /* =========================================================
-     PARALLAX IMAGE
-  ========================================================= */
-
-  const imageRef =
-    useRef<HTMLDivElement | null>(null);
+  const fileInputRef = useRef<HTMLInputElement | null>(null);
+  const imageRef = useRef<HTMLDivElement | null>(null);
 
   const { scrollYProgress } = useScroll({
     target: imageRef,
-    offset: [
-      "start end",
-      "end start",
-    ],
+    offset: ["start end", "end start"],
   });
 
   const parallaxY = useTransform(
@@ -155,97 +88,27 @@ export default function CareersPage() {
     ["-8%", "8%"]
   );
 
-  /* =========================================================
-     FETCH JOB OPENINGS
-  ========================================================= */
-
-  useEffect(() => {
-    const fetchOpenings = async () => {
-      try {
-        setLoadingOpenings(true);
-
-        const response = await fetch(
-          "/api/careers/openings",
-          {
-            method: "GET",
-            cache: "no-store",
-          }
-        );
-
-        if (!response.ok) {
-          throw new Error(
-            "Failed to fetch job openings"
-          );
-        }
-
-        const data =
-          await response.json();
-
-        if (Array.isArray(data)) {
-          setOpenings(data);
-        } else if (
-          Array.isArray(data.openings)
-        ) {
-          setOpenings(
-            data.openings
-          );
-        } else {
-          setOpenings([]);
-        }
-      } catch (error) {
-        console.error(
-          "Failed to fetch openings:",
-          error
-        );
-
-        setOpenings([]);
-      } finally {
-        setLoadingOpenings(false);
-      }
-    };
-
-    fetchOpenings();
-  }, []);
-
-  /* =========================================================
-     FORM CHANGE
-  ========================================================= */
-
   const handleChange =
     (field: keyof typeof form) =>
-    (
-      e: React.ChangeEvent<HTMLInputElement>
-    ) => {
-      setForm((prev) => ({
-        ...prev,
-        [field]: e.target.value,
-      }));
-    };
+      (e: React.ChangeEvent<HTMLInputElement>) => {
+        setForm((prev) => ({
+          ...prev,
+          [field]: e.target.value,
+        }));
+      };
 
-  /* =========================================================
-     SET RESUME
-  ========================================================= */
-
-  const setSelectedResume = (
-    file: File
-  ) => {
+  const setSelectedResume = (file: File) => {
     setSubmitError("");
 
-    const validationError =
-      validateResume(file);
+    const validationError = validateResume(file);
 
     if (validationError) {
       setResumeFile(null);
       setFileName("");
-      setSubmitError(
-        validationError
-      );
+      setSubmitError(validationError);
 
-      if (
-        fileInputRef.current
-      ) {
-        fileInputRef.current.value =
-          "";
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
       }
 
       return;
@@ -255,24 +118,15 @@ export default function CareersPage() {
     setFileName(file.name);
   };
 
-  /* =========================================================
-     FILE INPUT
-  ========================================================= */
-
   const handleFile = (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
-    const file =
-      e.target.files?.[0];
+    const file = e.target.files?.[0];
 
     if (!file) return;
 
     setSelectedResume(file);
   };
-
-  /* =========================================================
-     DRAG & DROP
-  ========================================================= */
 
   const handleDrop = (
     e: React.DragEvent<HTMLLabelElement>
@@ -281,17 +135,12 @@ export default function CareersPage() {
 
     setIsDragging(false);
 
-    const file =
-      e.dataTransfer.files?.[0];
+    const file = e.dataTransfer.files?.[0];
 
     if (!file) return;
 
     setSelectedResume(file);
   };
-
-  /* =========================================================
-     SUBMIT APPLICATION
-  ========================================================= */
 
   const handleSubmit = async (
     e: React.FormEvent<HTMLFormElement>
@@ -301,70 +150,38 @@ export default function CareersPage() {
     setSubmitError("");
 
     if (!resumeFile) {
-      setSubmitError(
-        "Please upload your resume."
-      );
-
+      setSubmitError("Please upload your resume.");
       return;
     }
 
-    const validationError =
-      validateResume(resumeFile);
+    const validationError = validateResume(resumeFile);
 
     if (validationError) {
-      setSubmitError(
-        validationError
-      );
-
+      setSubmitError(validationError);
       return;
     }
 
     try {
       setSubmitting(true);
 
-      const formData =
-        new FormData();
+      const formData = new FormData();
 
-      formData.append(
-        "firstName",
-        form.firstName.trim()
-      );
+      formData.append("firstName", form.firstName.trim());
+      formData.append("lastName", form.lastName.trim());
+      formData.append("email", form.email.trim());
+      formData.append("phone", form.phone.trim());
+      formData.append("resume", resumeFile);
 
-      formData.append(
-        "lastName",
-        form.lastName.trim()
-      );
+      const response = await fetch("/api/careers/apply", {
+        method: "POST",
+        body: formData,
+      });
 
-      formData.append(
-        "email",
-        form.email.trim()
-      );
-
-      formData.append(
-        "phone",
-        form.phone.trim()
-      );
-
-      formData.append(
-        "resume",
-        resumeFile
-      );
-
-      const response = await fetch(
-        "/api/careers/apply",
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
-
-      const data =
-        await response.json();
+      const data = await response.json();
 
       if (!response.ok) {
         throw new Error(
-          data?.error ||
-            "Failed to submit application."
+          data?.error || "Failed to submit application."
         );
       }
 
@@ -378,11 +195,8 @@ export default function CareersPage() {
       setResumeFile(null);
       setFileName("");
 
-      if (
-        fileInputRef.current
-      ) {
-        fileInputRef.current.value =
-          "";
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
       }
 
       setShowToast(true);
@@ -391,10 +205,7 @@ export default function CareersPage() {
         setShowToast(false);
       }, 4000);
     } catch (error) {
-      console.error(
-        "Career application error:",
-        error
-      );
+      console.error("Career application error:", error);
 
       setSubmitError(
         error instanceof Error
@@ -406,35 +217,15 @@ export default function CareersPage() {
     }
   };
 
-  /* =========================================================
-     SCROLL TO APPLICATION
-  ========================================================= */
-
-  const scrollToApplication = () => {
-    document
-      .getElementById(
-        "application-form"
-      )
-      ?.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
-  };
-
   return (
     <div className="relative min-h-screen bg-white dark:bg-slate-950">
       <Navbar />
 
       <main className="relative flex-1 overflow-hidden">
-        {/* BACKGROUND GRID */}
+        {/* Background */}
+        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,#e5e7eb_1px,transparent_1px),linear-gradient(to_bottom,#e5e7eb_1px,transparent_1px)] bg-[size:48px_48px] opacity-[0.16] dark:opacity-[0.06]" />
 
-        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,#e5e7eb_1px,transparent_1px),linear-gradient(to_bottom,#e5e7eb_1px,transparent_1px)] bg-[size:48px_48px] opacity-20 dark:opacity-10" />
-
-        {/* RADIAL GLOW */}
-
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(59,130,246,.15),transparent_60%)]" />
-
-        {/* FLOATING BLOBS */}
+        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_0%,rgba(59,130,246,.12),transparent_34%),radial-gradient(circle_at_90%_30%,rgba(6,182,212,.09),transparent_28%)]" />
 
         <FloatingBlob
           className="-right-20 top-10 h-72 w-72"
@@ -443,198 +234,160 @@ export default function CareersPage() {
         />
 
         <FloatingBlob
-          className="-left-16 top-96 h-64 w-64"
+          className="-left-16 top-[520px] h-64 w-64"
           color="bg-cyan-300/10"
           duration={20}
         />
 
-        <section className="relative mx-auto max-w-7xl px-6 pb-16 pt-16 sm:pt-20">
-          {/* =====================================================
-              PAGE HEADING
-          ===================================================== */}
+        {/* =========================================================
+            CAREER INTRO
+        ========================================================= */}
 
-          <AnimatedHeading
-            text="Career With Us"
-            as="h1"
-            className="text-2xl font-semibold text-blue-600 dark:text-blue-400 sm:text-3xl"
-          />
-
-          {/* =====================================================
-              INTRO + RIGHT IMAGE
-          ===================================================== */}
-
-          <div className="mt-8 grid items-start gap-10 lg:grid-cols-[minmax(0,1fr)_380px] xl:grid-cols-[minmax(0,1fr)_420px]">
-            {/* LEFT CONTENT */}
-
-            <AnimateIn delay={0.15}>
-              <div className="space-y-4 text-sm leading-7 text-slate-600 dark:text-slate-400">
-                <p>
-                  Come on, join US. And we
-                  will help You to explore
-                  your values and valuate
-                  your skills.
-                </p>
-
-                <p>
-                  <span className="font-semibold text-slate-900 dark:text-white">
-                    Geecon
-                  </span>{" "}
-                  Group has many years
-                  experience of providing
-                  software solutions and
-                  affordable services for
-                  small, mid and large
-                  companies &amp;
-                  corporations. We also
-                  provide services in
-                  different industries like
-                  Resourcing, Corporate
-                  Training and Design. We
-                  have the history of
-                  working hard to ensure
-                  the customer confidence
-                  in us and have mission to
-                  continue the same with
-                  the dedication to serve
-                  our customers.
-                </p>
-
-                <p>
-                  The first appeal: you are
-                  the star. All we want to
-                  know is: Are you capable
-                  enough to
-                  &lsquo;outcast&rsquo;
-                  the dreams in you?
-                </p>
-
-                <p>
-                  At Geecon Technology, we
-                  believe in
-                  &lsquo;optimism&rsquo;.
-                  After lots of efforts we
-                  decided to throw out the
-                  &lsquo;creative persona
-                  test&rsquo; among you.
-                </p>
-
-                <p>
-                  Once you realise you have
-                  the &lsquo;stardom&rsquo;
-                  in you, unleash it. The
-                  world is yours, and your
-                  career is ready to go
-                  heights.
-                </p>
-
-                <p>
-                  Explore yourselves with
-                  us. Valuate your skills.
-                  Take the test, take the
-                  challenge. This is our
-                  work &lsquo;pledge&rsquo;.
-                </p>
-
-                <p>
-                  If you think you have
-                  your own rules, you are
-                  most welcome to share
-                  them with us.
-                </p>
-
-                <p>
-                  We want fresh or
-                  experienced candidates
-                  for our described
-                  services.
-                </p>
+        <section className="relative mx-auto max-w-7xl px-6 pb-20 pt-16 sm:pt-20 lg:pb-24">
+          <AnimateIn>
+            <div className="mb-10 max-w-3xl">
+              <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-blue-100 bg-blue-50 px-3.5 py-1.5 text-xs font-semibold uppercase tracking-[0.16em] text-blue-600 dark:border-blue-500/20 dark:bg-blue-500/10 dark:text-blue-400">
+                <Sparkles size={14} />
+                Careers
               </div>
 
-              {/* STATISTICS */}
+              <AnimatedHeading
+                text="Career With Us"
+                as="h1"
+                className="text-3xl font-semibold tracking-tight text-slate-950 dark:text-white sm:text-4xl lg:text-5xl"
+              />
+            </div>
+          </AnimateIn>
 
-              <motion.div
-                initial={{
-                  opacity: 0,
-                  y: 30,
-                }}
-                whileInView={{
-                  opacity: 1,
-                  y: 0,
-                }}
-                viewport={{
-                  once: true,
-                  margin: "-60px",
-                }}
-                transition={{
-                  duration: 0.6,
-                }}
-                className="mt-10 grid grid-cols-3 gap-4 border-t border-slate-100 pt-8 dark:border-slate-800 sm:gap-6"
-              >
-                {careerStats.map(
-                  (stat) => (
+          <div className="grid items-start gap-12 lg:grid-cols-[minmax(0,1fr)_400px] xl:grid-cols-[minmax(0,1fr)_440px]">
+            {/* LEFT */}
+            <AnimateIn delay={0.15}>
+              <div className="max-w-3xl">
+                <p className="text-xl font-medium leading-8 text-slate-900 dark:text-white sm:text-2xl sm:leading-9">
+                  Come on, join US. And we will help You to explore
+                  your values and valuate your skills.
+                </p>
+
+                <div className="mt-7 space-y-5 text-[15px] leading-7 text-slate-600 dark:text-slate-400">
+                  <p>
+                    <span className="font-semibold text-slate-900 dark:text-white">
+                      Geecon
+                    </span>{" "}
+                    Group has many years experience of providing
+                    software solutions and affordable services for
+                    small, mid and large companies &amp; corporations.
+                    We also provide services in different industries
+                    like Resourcing, Corporate Training and Design. We
+                    have the history of working hard to ensure the
+                    customer confidence in us and have mission to
+                    continue the same with the dedication to serve our
+                    customers.
+                  </p>
+
+                  <p>
+                    The first appeal: you are the star. All we want to
+                    know is: Are you capable enough to
+                    &lsquo;outcast&rsquo; the dreams in you?
+                  </p>
+
+                  <p>
+                    At Geecon Technology, we believe in
+                    &lsquo;optimism&rsquo;. After lots of efforts we
+                    decided to throw out the &lsquo;creative persona
+                    test&rsquo; among you.
+                  </p>
+
+                  <p>
+                    Once you realise you have the &lsquo;stardom&rsquo;
+                    in you, unleash it. The world is yours, and your
+                    career is ready to go heights.
+                  </p>
+
+                  <p>
+                    Explore yourselves with us. Valuate your skills.
+                    Take the test, take the challenge. This is our work
+                    &lsquo;pledge&rsquo;.
+                  </p>
+
+                  <p>
+                    If you think you have your own rules, you are most
+                    welcome to share them with us.
+                  </p>
+
+                  <p>
+                    We want fresh or experienced candidates for our
+                    described services.
+                  </p>
+                </div>
+
+                {/* STATS */}
+                <motion.div
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{
+                    once: true,
+                    margin: "-60px",
+                  }}
+                  transition={{ duration: 0.6 }}
+                  className="mt-10 grid grid-cols-3 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900"
+                >
+                  {careerStats.map((stat, index) => (
                     <div
-                      key={
-                        stat.label
-                      }
+                      key={stat.label}
+                      className={`px-3 py-6 sm:px-6 ${index !== careerStats.length - 1
+                          ? "border-r border-slate-200 dark:border-slate-800"
+                          : ""
+                        }`}
                     >
-                      <div className="text-2xl font-bold text-[#1a2b4a] dark:text-blue-400 sm:text-3xl">
+                      <div className="text-2xl font-bold tracking-tight text-[#1a2b4a] dark:text-blue-400 sm:text-3xl">
                         <StatCounter
-                          value={
-                            stat.value
-                          }
-                          suffix={
-                            stat.suffix
-                          }
+                          value={stat.value}
+                          suffix={stat.suffix}
                         />
                       </div>
 
-                      <div className="mt-1 text-[10px] uppercase tracking-wide text-slate-400 dark:text-slate-500 sm:text-xs">
+                      <div className="mt-1.5 text-[9px] font-medium uppercase tracking-[0.12em] text-slate-400 sm:text-[11px]">
                         {stat.label}
                       </div>
                     </div>
-                  )
-                )}
-              </motion.div>
+                  ))}
+                </motion.div>
 
-              {/* BUTTONS */}
+                {/* ACTIONS */}
+                <div className="mt-8 flex flex-wrap gap-4">
+                  <Link
+                    href="/careers/openings"
+                    className="group inline-flex items-center gap-2 rounded-xl bg-[#1a2b4a] px-6 py-3.5 text-sm font-semibold text-white shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#111f38] hover:shadow-lg dark:bg-blue-600 dark:hover:bg-blue-500"
+                  >
+                    <BriefcaseBusiness size={17} />
+                    View Openings
 
-              <div className="mt-8 flex flex-wrap gap-4">
-                <Link
-                  href="#current-openings"
-                  className="group inline-flex items-center gap-2 rounded-xl bg-blue-600 px-6 py-3.5 text-sm font-semibold text-white transition-all duration-300 hover:bg-blue-500 hover:shadow-lg hover:shadow-blue-600/20"
-                >
-                  View Openings
+                    <ArrowRight
+                      size={16}
+                      className="transition-transform duration-300 group-hover:translate-x-1"
+                    />
+                  </Link>
 
-                  <ArrowRight
-                    size={17}
-                    className="transition-transform duration-300 group-hover:translate-x-1"
-                  />
-                </Link>
-
-                <Link
-                  href="/contact"
-                  className="inline-flex items-center gap-2 rounded-xl border border-slate-300 px-6 py-3.5 text-sm font-semibold text-slate-700 transition-all hover:border-blue-400 hover:bg-blue-50 hover:text-blue-600 dark:border-slate-700 dark:text-slate-300 dark:hover:border-blue-400 dark:hover:bg-blue-500/10 dark:hover:text-blue-400"
-                >
-                  Get In Touch
-                </Link>
+                  <Link
+                    href="/careers/openings"
+                    className="group inline-flex items-center gap-2 rounded-xl bg-[#1a2b4a] px-6 py-3.5 text-sm font-semibold text-white"
+                  >
+                    View Openings
+                    <ArrowRight size={16} />
+                  </Link>
+                </div>
               </div>
             </AnimateIn>
 
-            {/* RIGHT IMAGE */}
-
-            <AnimateIn
-              delay={0.25}
-              direction="right"
-            >
+            {/* IMAGE */}
+            <AnimateIn delay={0.25} direction="right">
               <div
                 ref={imageRef}
-                className="relative overflow-hidden rounded-2xl border border-slate-200 bg-slate-100 shadow-xl dark:border-slate-800 dark:bg-slate-900"
+                className="relative overflow-hidden rounded-[28px] border border-slate-200 bg-slate-100 p-2 shadow-[0_20px_60px_-25px_rgba(15,23,42,.25)] dark:border-slate-800 dark:bg-slate-900"
               >
-                <div className="relative h-[420px] w-full overflow-hidden sm:h-[500px] lg:h-[560px]">
+                <div className="relative h-[440px] w-full overflow-hidden rounded-[22px] sm:h-[520px] lg:h-[610px]">
                   <motion.div
-                    style={{
-                      y: parallaxY,
-                    }}
+                    style={{ y: parallaxY }}
                     className="absolute -inset-y-8 inset-x-0"
                   >
                     <Image
@@ -642,418 +395,233 @@ export default function CareersPage() {
                       alt="Careers at Geecon Technology"
                       fill
                       priority
-                      sizes="(max-width: 1024px) 100vw, 420px"
+                      sizes="(max-width: 1024px) 100vw, 440px"
                       className="object-cover object-center"
                     />
                   </motion.div>
 
-                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-black/10 via-transparent to-transparent" />
+                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-slate-950/30 via-transparent to-transparent" />
 
-                  <div className="pointer-events-none absolute inset-3 rounded-xl border border-white/30" />
+                  <div className="absolute bottom-5 left-5 right-5 rounded-2xl border border-white/20 bg-white/85 p-4 shadow-lg backdrop-blur-xl dark:bg-slate-950/75">
+                    <div className="flex items-center gap-3">
+                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#1a2b4a] text-white dark:bg-blue-600">
+                        <Users size={18} />
+                      </div>
+
+                      <div>
+                        <p className="text-sm font-semibold text-slate-900 dark:text-white">
+                          Build your career with us
+                        </p>
+
+                        <p className="mt-0.5 text-xs text-slate-500 dark:text-slate-400">
+                          Explore your values and skills.
+                        </p>
+                      </div>
+                    </div>
+                  </div>
                 </div>
               </div>
             </AnimateIn>
           </div>
+        </section>
 
-          {/* =====================================================
-              SUBMIT YOUR DETAILS
-          ===================================================== */}
+        {/* =========================================================
+            APPLICATION FORM
+        ========================================================= */}
 
-          <AnimateIn
-            delay={0.35}
-            className="mt-16 max-w-xl"
-          >
-            <h2 className="text-xl font-semibold text-blue-600 dark:text-blue-400">
-              Submit Your Details
-            </h2>
-
-            <div className="mt-6 rounded-2xl bg-gradient-to-br from-blue-400/30 via-cyan-300/20 to-blue-600/30 p-[1px]">
-              <MouseGlow className="rounded-2xl">
-                <div className="rounded-2xl border border-slate-200/60 bg-white/70 p-6 backdrop-blur-xl dark:border-slate-800/60 dark:bg-slate-900/70">
-                  <form
-                    id="application-form"
-                    onSubmit={
-                      handleSubmit
-                    }
-                    className="space-y-4"
-                  >
-                    {/* FIRST NAME */}
-
-                    <div>
-                      <label
-                        htmlFor="firstName"
-                        className="mb-1 block text-sm text-slate-600 dark:text-slate-400"
-                      >
-                        First name
-                      </label>
-
-                      <input
-                        id="firstName"
-                        type="text"
-                        value={
-                          form.firstName
-                        }
-                        onChange={handleChange(
-                          "firstName"
-                        )}
-                        required
-                        className="w-full rounded-md border border-slate-200 bg-white/80 px-3 py-2.5 text-sm text-slate-900 outline-none transition focus:border-[#1a2b4a] focus:ring-2 focus:ring-blue-500/10 dark:border-slate-700 dark:bg-slate-900/80 dark:text-white"
-                      />
-                    </div>
-
-                    {/* LAST NAME */}
-
-                    <div>
-                      <label
-                        htmlFor="lastName"
-                        className="mb-1 block text-sm text-slate-600 dark:text-slate-400"
-                      >
-                        Last name
-                      </label>
-
-                      <input
-                        id="lastName"
-                        type="text"
-                        value={
-                          form.lastName
-                        }
-                        onChange={handleChange(
-                          "lastName"
-                        )}
-                        required
-                        className="w-full rounded-md border border-slate-200 bg-white/80 px-3 py-2.5 text-sm text-slate-900 outline-none transition focus:border-[#1a2b4a] focus:ring-2 focus:ring-blue-500/10 dark:border-slate-700 dark:bg-slate-900/80 dark:text-white"
-                      />
-                    </div>
-
-                    {/* EMAIL */}
-
-                    <div>
-                      <label
-                        htmlFor="email"
-                        className="mb-1 block text-sm text-slate-600 dark:text-slate-400"
-                      >
-                        Your email
-                      </label>
-
-                      <input
-                        id="email"
-                        type="email"
-                        value={
-                          form.email
-                        }
-                        onChange={handleChange(
-                          "email"
-                        )}
-                        required
-                        className="w-full rounded-md border border-slate-200 bg-white/80 px-3 py-2.5 text-sm text-slate-900 outline-none transition focus:border-[#1a2b4a] focus:ring-2 focus:ring-blue-500/10 dark:border-slate-700 dark:bg-slate-900/80 dark:text-white"
-                      />
-                    </div>
-
-                    {/* PHONE */}
-
-                    <div>
-                      <label
-                        htmlFor="phone"
-                        className="mb-1 block text-sm text-slate-600 dark:text-slate-400"
-                      >
-                        Phone
-                      </label>
-
-                      <input
-                        id="phone"
-                        type="tel"
-                        value={
-                          form.phone
-                        }
-                        onChange={handleChange(
-                          "phone"
-                        )}
-                        required
-                        className="w-full rounded-md border border-slate-200 bg-white/80 px-3 py-2.5 text-sm text-slate-900 outline-none transition focus:border-[#1a2b4a] focus:ring-2 focus:ring-blue-500/10 dark:border-slate-700 dark:bg-slate-900/80 dark:text-white"
-                      />
-                    </div>
-
-                    {/* RESUME */}
-
-                    <div>
-                      <label
-                        htmlFor="resume"
-                        className="mb-1 block text-sm text-slate-600 dark:text-slate-400"
-                      >
-                        Upload Resume
-                      </label>
-
-                      <motion.label
-                        htmlFor="resume"
-                        onDragOver={(
-                          e
-                        ) => {
-                          e.preventDefault();
-
-                          setIsDragging(
-                            true
-                          );
-                        }}
-                        onDragLeave={() => {
-                          setIsDragging(
-                            false
-                          );
-                        }}
-                        onDrop={
-                          handleDrop
-                        }
-                        whileHover={{
-                          scale: 1.01,
-                        }}
-                        animate={{
-                          scale:
-                            isDragging
-                              ? 1.02
-                              : 1,
-                        }}
-                        className={`flex w-full cursor-pointer flex-col items-center justify-center gap-2 rounded-xl border-2 border-dashed px-4 py-8 text-center text-sm font-medium transition-all ${
-                          isDragging
-                            ? "border-blue-400 bg-blue-50/60 text-[#1a2b4a] dark:bg-blue-500/10 dark:text-blue-400"
-                            : "border-slate-300 text-slate-600 hover:border-[#1a2b4a] hover:bg-slate-50 dark:border-slate-700 dark:text-slate-300 dark:hover:border-blue-400 dark:hover:bg-slate-800/50 dark:hover:text-blue-400"
-                        }`}
-                      >
-                        <motion.div
-                          animate={{
-                            y: isDragging
-                              ? -4
-                              : 0,
-
-                            scale:
-                              isDragging
-                                ? 1.1
-                                : 1,
-                          }}
-                        >
-                          <Upload
-                            size={
-                              20
-                            }
-                          />
-                        </motion.div>
-
-                        <span>
-                          {fileName ||
-                            "Drag & drop your resume, or click to browse"}
-                        </span>
-
-                        <span className="text-[11px] font-normal text-slate-400">
-                          PDF, DOC or
-                          DOCX · Maximum
-                          5 MB
-                        </span>
-
-                        <input
-                          ref={
-                            fileInputRef
-                          }
-                          id="resume"
-                          type="file"
-                          accept=".pdf,.doc,.docx"
-                          onChange={
-                            handleFile
-                          }
-                          className="hidden"
-                        />
-                      </motion.label>
-                    </div>
-
-                    {/* ERROR */}
-
-                    {submitError && (
-                      <div className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-xs font-medium text-red-600 dark:border-red-500/20 dark:bg-red-500/10 dark:text-red-300">
-                        {
-                          submitError
-                        }
-                      </div>
-                    )}
-
-                    {/* SUBMIT */}
-
-                    <RippleButton
-                      type="submit"
-                      disabled={
-                        submitting
-                      }
-                      className="rounded-full bg-[#1a2b4a] px-8 py-3 text-sm font-semibold text-white shadow-md transition-all hover:bg-[#0d1830] hover:shadow-lg disabled:cursor-not-allowed disabled:opacity-60 dark:bg-blue-600 dark:hover:bg-blue-500"
-                    >
-                      <Send
-                        size={15}
-                      />
-
-                      {submitting
-                        ? "Submitting..."
-                        : "Submit"}
-                    </RippleButton>
-                  </form>
+        <section
+          id="application-form"
+          className="relative border-t border-slate-100 bg-slate-50/70 py-20 dark:border-slate-800 dark:bg-slate-900/20"
+        >
+          <div className="mx-auto grid max-w-7xl gap-12 px-6 lg:grid-cols-[minmax(0,0.75fr)_minmax(500px,1fr)] lg:items-start">
+            {/* FORM INTRO */}
+            <AnimateIn>
+              <div className="max-w-lg lg:sticky lg:top-28">
+                <div className="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-blue-50 px-3 py-1.5 text-xs font-semibold uppercase tracking-[0.15em] text-blue-600 dark:border-blue-500/20 dark:bg-blue-500/10 dark:text-blue-400">
+                  <Send size={13} />
+                  Application
                 </div>
-              </MouseGlow>
-            </div>
-          </AnimateIn>
 
-          {/* =====================================================
-              CURRENT OPENINGS
-          ===================================================== */}
-
-          <motion.div
-            id="current-openings"
-            initial={{
-              opacity: 0,
-              y: 30,
-            }}
-            whileInView={{
-              opacity: 1,
-              y: 0,
-            }}
-            viewport={{
-              once: true,
-              margin: "-80px",
-            }}
-            transition={{
-              duration: 0.6,
-            }}
-            className="mt-20 border-t border-slate-100 pt-12 dark:border-slate-800"
-          >
-            <h2 className="text-xl font-semibold text-slate-900 dark:text-white">
-              Current Openings
-            </h2>
-
-            <p className="mt-3 text-sm leading-6 text-slate-500 dark:text-slate-400">
-              Explore our current career
-              opportunities and find a
-              role that matches your
-              skills and experience.
-            </p>
-
-            {/* LOADING */}
-
-            {loadingOpenings && (
-              <div className="mt-8 rounded-2xl border border-slate-200 bg-white p-6 dark:border-slate-800 dark:bg-slate-900">
-                <p className="text-sm text-slate-500 dark:text-slate-400">
-                  Loading current
-                  openings...
-                </p>
+                <h2 className="mt-5 text-3xl font-semibold tracking-tight text-slate-950 dark:text-white sm:text-4xl">
+                  Submit Your Details
+                </h2>
               </div>
-            )}
+            </AnimateIn>
 
-            {/* NO OPENINGS */}
+            {/* FORM */}
+            <AnimateIn delay={0.15}>
+              <div className="rounded-[28px] bg-gradient-to-br from-blue-500/30 via-cyan-300/20 to-blue-700/30 p-[1px] shadow-[0_20px_60px_-30px_rgba(37,99,235,.35)]">
+                <MouseGlow className="rounded-[28px]">
+                  <div className="rounded-[27px] border border-white/70 bg-white/90 p-6 backdrop-blur-xl dark:border-slate-800 dark:bg-slate-900/90 sm:p-8">
+                    <form
+                      onSubmit={handleSubmit}
+                      className="space-y-5"
+                    >
+                      <div className="grid gap-5 sm:grid-cols-2">
+                        <div>
+                          <label
+                            htmlFor="firstName"
+                            className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300"
+                          >
+                            First name
+                          </label>
 
-            {!loadingOpenings &&
-              openings.length ===
-                0 && (
-                <div className="mt-8 rounded-2xl border border-slate-200 bg-white p-6 dark:border-slate-800 dark:bg-slate-900">
-                  <p className="text-sm leading-6 text-slate-500 dark:text-slate-400">
-                    No current openings
-                    listed right now.
-                    Please check back
-                    soon, or submit your
-                    details above and
-                    we&apos;ll reach out
-                    when a suitable role
-                    opens up.
-                  </p>
-                </div>
-              )}
-
-            {/* OPENINGS */}
-
-            {!loadingOpenings &&
-              openings.length >
-                0 && (
-                <div className="mt-8 grid gap-6 md:grid-cols-2">
-                  {openings.map(
-                    (opening) => (
-                      <motion.div
-                        key={
-                          opening.id
-                        }
-                        initial={{
-                          opacity: 0,
-                          y: 20,
-                        }}
-                        whileInView={{
-                          opacity: 1,
-                          y: 0,
-                        }}
-                        viewport={{
-                          once: true,
-                        }}
-                        transition={{
-                          duration: 0.4,
-                        }}
-                        className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:shadow-lg dark:border-slate-800 dark:bg-slate-900"
-                      >
-                        <h3 className="text-lg font-semibold text-slate-900 dark:text-white">
-                          {
-                            opening.title
-                          }
-                        </h3>
-
-                        <div className="mt-3 flex flex-wrap gap-2">
-                          {opening.department && (
-                            <span className="rounded-full bg-blue-50 px-3 py-1 text-xs font-medium text-blue-700 dark:bg-blue-500/10 dark:text-blue-400">
-                              {
-                                opening.department
-                              }
-                            </span>
-                          )}
-
-                          {opening.location && (
-                            <span className="rounded-full bg-slate-100 px-3 py-1 text-xs font-medium text-slate-600 dark:bg-slate-800 dark:text-slate-300">
-                              {
-                                opening.location
-                              }
-                            </span>
-                          )}
-
-                          {opening.type && (
-                            <span className="rounded-full bg-cyan-50 px-3 py-1 text-xs font-medium text-cyan-700 dark:bg-cyan-500/10 dark:text-cyan-400">
-                              {
-                                opening.type
-                              }
-                            </span>
-                          )}
+                          <input
+                            id="firstName"
+                            type="text"
+                            value={form.firstName}
+                            onChange={handleChange("firstName")}
+                            required
+                            className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+                          />
                         </div>
 
-                        <p className="mt-4 whitespace-pre-line text-sm leading-7 text-slate-600 dark:text-slate-400">
-                          {
-                            opening.description
-                          }
-                        </p>
+                        <div>
+                          <label
+                            htmlFor="lastName"
+                            className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300"
+                          >
+                            Last name
+                          </label>
 
-                        <button
-                          type="button"
-                          onClick={
-                            scrollToApplication
-                          }
-                          className="group mt-6 inline-flex items-center gap-2 rounded-full bg-[#1a2b4a] px-6 py-3 text-sm font-semibold text-white transition-all hover:bg-[#0d1830] hover:shadow-lg dark:bg-blue-600 dark:hover:bg-blue-500"
-                        >
-                          Apply Now
-
-                          <ArrowRight
-                            size={
-                              15
-                            }
-                            className="transition-transform duration-300 group-hover:translate-x-1"
+                          <input
+                            id="lastName"
+                            type="text"
+                            value={form.lastName}
+                            onChange={handleChange("lastName")}
+                            required
+                            className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
                           />
-                        </button>
-                      </motion.div>
-                    )
-                  )}
-                </div>
-              )}
-          </motion.div>
+                        </div>
+                      </div>
+
+                      <div className="grid gap-5 sm:grid-cols-2">
+                        <div>
+                          <label
+                            htmlFor="email"
+                            className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300"
+                          >
+                            Your email
+                          </label>
+
+                          <input
+                            id="email"
+                            type="email"
+                            value={form.email}
+                            onChange={handleChange("email")}
+                            required
+                            className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+                          />
+                        </div>
+
+                        <div>
+                          <label
+                            htmlFor="phone"
+                            className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300"
+                          >
+                            Phone
+                          </label>
+
+                          <input
+                            id="phone"
+                            type="tel"
+                            value={form.phone}
+                            onChange={handleChange("phone")}
+                            required
+                            className="w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+                          />
+                        </div>
+                      </div>
+
+                      {/* RESUME */}
+                      <div>
+                        <label
+                          htmlFor="resume"
+                          className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300"
+                        >
+                          Upload Resume
+                        </label>
+
+                        <motion.label
+                          htmlFor="resume"
+                          onDragOver={(e) => {
+                            e.preventDefault();
+                            setIsDragging(true);
+                          }}
+                          onDragLeave={() => {
+                            setIsDragging(false);
+                          }}
+                          onDrop={handleDrop}
+                          whileHover={{ scale: 1.005 }}
+                          animate={{
+                            scale: isDragging ? 1.01 : 1,
+                          }}
+                          className={`flex w-full cursor-pointer flex-col items-center justify-center rounded-2xl border-2 border-dashed px-5 py-10 text-center transition-all ${isDragging
+                              ? "border-blue-500 bg-blue-50 text-blue-600 dark:bg-blue-500/10 dark:text-blue-400"
+                              : "border-slate-300 bg-slate-50/60 text-slate-600 hover:border-blue-400 hover:bg-blue-50/60 dark:border-slate-700 dark:bg-slate-950/50 dark:text-slate-300 dark:hover:border-blue-500 dark:hover:bg-blue-500/5"
+                            }`}
+                        >
+                          <motion.div
+                            animate={{
+                              y: isDragging ? -4 : 0,
+                              scale: isDragging ? 1.1 : 1,
+                            }}
+                            className="flex h-12 w-12 items-center justify-center rounded-2xl bg-white text-[#1a2b4a] shadow-sm dark:bg-slate-900 dark:text-blue-400"
+                          >
+                            <Upload size={21} />
+                          </motion.div>
+
+                          <span className="mt-3 text-sm font-semibold">
+                            {fileName ||
+                              "Drag & drop your resume, or click to browse"}
+                          </span>
+
+                          <span className="mt-1 text-xs font-normal text-slate-400">
+                            PDF, DOC or DOCX · Maximum 5 MB
+                          </span>
+
+                          <input
+                            ref={fileInputRef}
+                            id="resume"
+                            type="file"
+                            accept=".pdf,.doc,.docx"
+                            onChange={handleFile}
+                            className="hidden"
+                          />
+                        </motion.label>
+                      </div>
+
+                      {submitError && (
+                        <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-600 dark:border-red-500/20 dark:bg-red-500/10 dark:text-red-300">
+                          {submitError}
+                        </div>
+                      )}
+
+                      <div className="pt-1">
+                        <RippleButton
+                          type="submit"
+                          disabled={submitting}
+                          className="rounded-xl bg-[#1a2b4a] px-7 py-3.5 text-sm font-semibold text-white shadow-md transition-all hover:bg-[#111f38] hover:shadow-lg disabled:cursor-not-allowed disabled:opacity-60 dark:bg-blue-600 dark:hover:bg-blue-500"
+                        >
+                          <Send size={15} />
+
+                          {submitting
+                            ? "Submitting..."
+                            : "Submit"}
+                        </RippleButton>
+                      </div>
+                    </form>
+                  </div>
+                </MouseGlow>
+              </div>
+            </AnimateIn>
+          </div>
         </section>
       </main>
 
       <Footer />
 
       {/* SUCCESS TOAST */}
-
       {showToast && (
         <motion.div
           initial={{
@@ -1069,14 +637,11 @@ export default function CareersPage() {
           transition={{
             duration: 0.3,
           }}
-          className="fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-lg bg-[#1a2b4a] px-5 py-3 text-sm font-medium text-white shadow-2xl dark:bg-blue-600"
+          className="fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-xl bg-[#1a2b4a] px-5 py-3 text-sm font-medium text-white shadow-2xl dark:bg-blue-600"
         >
-          <CheckCircle
-            size={16}
-          />
+          <CheckCircle size={16} />
 
-          Application submitted
-          successfully!
+          Application submitted successfully!
         </motion.div>
       )}
     </div>

@@ -844,9 +844,7 @@ export default async function ProductPage({
                 </AnimateIn>
               )}
 
-              {/* ===============================================
-                  FAQ
-              =============================================== */}
+              
 
               {faqs.length > 0 && (
                 <AnimateIn>
@@ -902,9 +900,7 @@ export default async function ProductPage({
               )}
             </div>
 
-            {/* =================================================
-                RIGHT BROCHURE
-            ================================================= */}
+            
 
             <AnimateIn
               delay={0.15}
