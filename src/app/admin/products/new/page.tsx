@@ -31,6 +31,11 @@ type ProductForm = {
 
   brochureUrl: string;
 
+  // Brochure gradient
+  brochureGradientFrom: string;
+  brochureGradientVia: string;
+  brochureGradientTo: string;
+
   isActive: boolean;
   order: string;
 };
@@ -61,6 +66,12 @@ export default function NewProductPage() {
     faqs: "",
 
     brochureUrl: "",
+
+    // Fallback values for new products.
+    // Once the product is saved, these values are stored in the database.
+    brochureGradientFrom: "#1a2b4a",
+    brochureGradientVia: "#254b7a",
+    brochureGradientTo: "#2563a8",
 
     isActive: true,
     order: "0",
@@ -237,6 +248,21 @@ export default function NewProductPage() {
             ? getString(data.brochureUrl)
             : previous.brochureUrl,
 
+        brochureGradientFrom:
+          data.brochureGradientFrom !== undefined
+            ? getString(data.brochureGradientFrom)
+            : previous.brochureGradientFrom,
+
+        brochureGradientVia:
+          data.brochureGradientVia !== undefined
+            ? getString(data.brochureGradientVia)
+            : previous.brochureGradientVia,
+
+        brochureGradientTo:
+          data.brochureGradientTo !== undefined
+            ? getString(data.brochureGradientTo)
+            : previous.brochureGradientTo,
+
         order:
           data.order !== undefined &&
           data.order !== null &&
@@ -389,6 +415,15 @@ export default function NewProductPage() {
 
         brochureUrl:
           form.brochureUrl.trim() || null,
+
+        brochureGradientFrom:
+          form.brochureGradientFrom.trim() || null,
+
+        brochureGradientVia:
+          form.brochureGradientVia.trim() || null,
+
+        brochureGradientTo:
+          form.brochureGradientTo.trim() || null,
 
         isActive: form.isActive,
 
@@ -553,6 +588,9 @@ export default function NewProductPage() {
   "sections": [],
   "faqs": [],
   "brochureUrl": "",
+  "brochureGradientFrom": "#1a2b4a",
+  "brochureGradientVia": "#254b7a",
+  "brochureGradientTo": "#2563a8",
   "order": 1,
   "isActive": true
 }`}
@@ -1093,6 +1131,161 @@ export default function NewProductPage() {
                   placeholder="/brochures/global-hr.pdf"
                   className={inputClass}
                 />
+              </div>
+
+              {/* BROCHURE GRADIENT */}
+
+              <div className="md:col-span-2">
+                <div className="rounded-2xl border border-violet-200 bg-violet-50/40 p-5 dark:border-violet-900/40 dark:bg-violet-950/10">
+                  <div>
+                    <p className="text-xs font-semibold uppercase tracking-[0.18em] text-violet-600 dark:text-violet-400">
+                      Brochure Appearance
+                    </p>
+
+                    <h3 className="mt-2 text-base font-semibold text-slate-900 dark:text-white">
+                      Brochure Gradient
+                    </h3>
+
+                    <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+                      Choose the three colors used on this product&apos;s brochure request card.
+                    </p>
+                  </div>
+
+                  <div className="mt-5 grid gap-4 sm:grid-cols-3">
+                    <div>
+                      <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                        Start Color
+                      </label>
+
+                      <div className="flex gap-2">
+                        <input
+                          type="color"
+                          value={form.brochureGradientFrom}
+                          onChange={(event) =>
+                            handleChange(
+                              "brochureGradientFrom",
+                              event.target.value
+                            )
+                          }
+                          className="h-12 w-14 shrink-0 cursor-pointer rounded-lg border border-slate-300 bg-white p-1 dark:border-slate-700 dark:bg-slate-950"
+                        />
+
+                        <input
+                          type="text"
+                          value={form.brochureGradientFrom}
+                          onChange={(event) =>
+                            handleChange(
+                              "brochureGradientFrom",
+                              event.target.value
+                            )
+                          }
+                          placeholder="#1a2b4a"
+                          className={inputClass}
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                        Middle Color
+                      </label>
+
+                      <div className="flex gap-2">
+                        <input
+                          type="color"
+                          value={form.brochureGradientVia}
+                          onChange={(event) =>
+                            handleChange(
+                              "brochureGradientVia",
+                              event.target.value
+                            )
+                          }
+                          className="h-12 w-14 shrink-0 cursor-pointer rounded-lg border border-slate-300 bg-white p-1 dark:border-slate-700 dark:bg-slate-950"
+                        />
+
+                        <input
+                          type="text"
+                          value={form.brochureGradientVia}
+                          onChange={(event) =>
+                            handleChange(
+                              "brochureGradientVia",
+                              event.target.value
+                            )
+                          }
+                          placeholder="#254b7a"
+                          className={inputClass}
+                        />
+                      </div>
+                    </div>
+
+                    <div>
+                      <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                        End Color
+                      </label>
+
+                      <div className="flex gap-2">
+                        <input
+                          type="color"
+                          value={form.brochureGradientTo}
+                          onChange={(event) =>
+                            handleChange(
+                              "brochureGradientTo",
+                              event.target.value
+                            )
+                          }
+                          className="h-12 w-14 shrink-0 cursor-pointer rounded-lg border border-slate-300 bg-white p-1 dark:border-slate-700 dark:bg-slate-950"
+                        />
+
+                        <input
+                          type="text"
+                          value={form.brochureGradientTo}
+                          onChange={(event) =>
+                            handleChange(
+                              "brochureGradientTo",
+                              event.target.value
+                            )
+                          }
+                          placeholder="#2563a8"
+                          className={inputClass}
+                        />
+                      </div>
+                    </div>
+                  </div>
+
+                  <div className="mt-5">
+                    <p className="mb-2 text-xs font-semibold uppercase tracking-[0.16em] text-slate-500 dark:text-slate-400">
+                      Live Preview
+                    </p>
+
+                    <div
+                      className="relative min-h-[190px] overflow-hidden rounded-2xl p-6 text-white shadow-lg"
+                      style={{
+                        background: `linear-gradient(135deg, ${form.brochureGradientFrom}, ${form.brochureGradientVia}, ${form.brochureGradientTo})`,
+                      }}
+                    >
+                      <div className="pointer-events-none absolute -right-12 -top-12 h-40 w-40 rounded-full bg-white/10 blur-2xl" />
+                      <div className="pointer-events-none absolute -bottom-14 -left-10 h-40 w-40 rounded-full bg-white/10 blur-2xl" />
+
+                      <div className="relative z-10">
+                        <span className="inline-flex rounded-full border border-white/20 bg-white/10 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.18em] text-white/85 backdrop-blur-sm">
+                          Brochure
+                        </span>
+
+                        <h4 className="mt-5 text-2xl font-bold">
+                          {form.title || "Product Brochure"}
+                        </h4>
+
+                        <p className="mt-2 max-w-xl text-sm leading-6 text-white/75">
+                          This is how the brochure request section gradient will appear on the product page.
+                        </p>
+
+                        <div className="mt-5 inline-flex rounded-xl bg-white px-4 py-2 text-sm font-semibold text-slate-900 shadow-lg">
+                          Request Brochure
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
               </div>
 
               {/* ORDER */}

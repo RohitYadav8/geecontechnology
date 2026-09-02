@@ -6,6 +6,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import {
+  Briefcase,
   ChevronDown,
   ChevronRight,
   Cloud,
@@ -14,10 +15,10 @@ import {
   Mail,
   Menu,
   Phone,
-  Search,
   Server,
   Settings,
   Share2,
+  User,
   X,
 } from "lucide-react";
 
@@ -37,59 +38,77 @@ const navLinks = [
     label: "HOME",
     href: "/",
   },
+
   {
     label: "SERVICES",
     href: "/services",
+
     children: [
       {
-        label: "Website Development",
-        href: "/website-development",
-        icon: Globe2,
-      },
-      {
-        label: "Customised Software Development",
-        href: "/customised-software-development",
-        icon: Code2,
-      },
-      {
-        label: "VPS/Dedicated Servers",
-        href: "/vps-dedicated-servers",
+        label: "Web Hosting",
+        href: "/web-hosting",
         icon: Server,
       },
+
       {
-        label: "Cloud Services",
-        href: "/cloud-services",
-        icon: Cloud,
+        label: "Software Products",
+        href: "/software-products",
+        icon: Code2,
       },
+
       {
-        label: "Social Media Marketing",
-        href: "/social-media-marketing-services",
+        label: "Mobile Solution",
+        href: "/mobile-solution",
+        icon: Settings,
+      },
+
+      {
+        label: "Internet Technology",
+        href: "/internet-technology",
+        icon: Globe2,
+      },
+
+      {
+        label: "Corporate Branding",
+        href: "/corporate-branding",
         icon: Share2,
       },
+
       {
-        label: "Search Engine Optimization",
-        href: "/search-engine-optimization",
-        icon: Search,
+        label: "ERP Solutions",
+        href: "/erp-solutions",
+        icon: Cloud,
       },
+
       {
-        label: "Software Support & Maintenance",
-        href: "/software-support-maintenance",
-        icon: Settings,
+        label: "HR Management",
+        href: "/hr-management",
+        icon: User,
+      },
+
+      {
+        label: "Corporate Training",
+        href: "/corporate-training",
+        icon: Briefcase,
       },
     ],
   },
+
   {
     label: "PRODUCTS",
     href: "/products",
   },
+
   {
     label: "CLIENTELE & ENGAGEMENT",
     href: "/clientele-engagement",
   },
+
   {
     label: "CAREERS",
     href: "/careers",
   },
+
   {
     label: "CONTACT US",
     href: "/contact",
@@ -123,9 +142,7 @@ export function Navbar() {
 
   useEffect(() => {
     const handleScroll = () => {
-      setScrolled(
-        window.scrollY > 30
-      );
+      setScrolled(window.scrollY > 30);
     };
 
     handleScroll();
@@ -167,10 +184,18 @@ export function Navbar() {
       return pathname === "/";
     }
 
-    return pathname.startsWith(
-      href
-    );
+    return pathname.startsWith(href);
   };
+
+  const servicesActive =
+    pathname === "/services" ||
+    navLinks[1].children?.some(
+      (child) =>
+        pathname === child.href ||
+        pathname.startsWith(
+          `${child.href}/`
+        )
+    );
 
   /* =======================================================
      UI
@@ -209,21 +234,21 @@ export function Navbar() {
               <div className="flex items-center gap-6">
                 <Link
                   href="/candidate-screening"
-                  className="transition-colors hover:text-[#1a2b4a] dark:hover:text-white"
+                  className="transition-colors hover:text-blue-600 dark:hover:text-white"
                 >
                   Candidate Screening
                 </Link>
 
                 <Link
                   href="/careers"
-                  className="transition-colors hover:text-[#1a2b4a] dark:hover:text-white"
+                  className="transition-colors hover:text-blue-600 dark:hover:text-white"
                 >
                   Apply Current Openings
                 </Link>
 
                 <a
                   href="mailto:info@geecontechnology.com"
-                  className="flex items-center gap-1.5 transition-colors hover:text-[#1a2b4a] dark:hover:text-white"
+                  className="flex items-center gap-1.5 transition-colors hover:text-blue-600 dark:hover:text-white"
                 >
                   <Mail size={13} />
 
@@ -232,7 +257,7 @@ export function Navbar() {
 
                 <a
                   href="tel:8655263606"
-                  className="flex items-center gap-1.5 transition-colors hover:text-[#1a2b4a] dark:hover:text-white"
+                  className="flex items-center gap-1.5 transition-colors hover:text-blue-600 dark:hover:text-white"
                 >
                   <Phone size={13} />
 
@@ -249,7 +274,7 @@ export function Navbar() {
       =================================================== */}
 
       <div
-        className={`mx-auto flex max-w-7xl items-center justify-between px-6 transition-all duration-300 ${
+        className={`mx-auto flex max-w-7xl items-center justify-between px-4 transition-all duration-300 sm:px-6 ${
           scrolled
             ? "py-3"
             : "py-4"
@@ -261,9 +286,9 @@ export function Navbar() {
 
         <Link
           href="/"
-          className="group flex items-center gap-3"
+          className="group flex min-w-0 items-center gap-3"
         >
-          <div className="relative">
+          <div className="relative shrink-0">
             <div className="absolute inset-0 scale-150 rounded-full bg-blue-500/10 opacity-0 blur-xl transition-opacity duration-300 group-hover:opacity-100" />
 
             <Image
@@ -272,18 +297,18 @@ export function Navbar() {
               width={46}
               height={42}
               priority
-              className="relative h-10 w-auto transition-transform duration-300 group-hover:scale-105"
+              className="relative h-9 w-auto transition-transform duration-300 group-hover:scale-105 sm:h-10"
             />
           </div>
 
-          <div className="leading-tight">
-            <div className="text-[22px] font-extrabold tracking-[-0.03em] text-slate-950 dark:text-white">
+          <div className="hidden leading-tight min-[430px]:block">
+            <div className="text-[20px] font-extrabold tracking-[-0.03em] text-slate-950 sm:text-[22px] dark:text-white">
               GEECON
             </div>
 
-            <div className="text-[8px] font-semibold tracking-[0.13em] text-slate-400 dark:text-slate-500">
-              SIMPLE SOLUTIONS ENGINEERED
-              FOR EXTREME
+            <div className="max-w-[170px] text-[7px] font-semibold tracking-[0.13em] text-slate-400 sm:text-[8px] dark:text-slate-500">
+              SIMPLE SOLUTIONS ENGINEERED FOR
+              EXTREME
             </div>
           </div>
         </Link>
@@ -292,300 +317,289 @@ export function Navbar() {
             DESKTOP NAVIGATION
         ================================================= */}
 
-        <nav className="hidden items-center gap-7 lg:flex">
-          {navLinks.map(
-            (link) => {
-              const active =
-                isRouteActive(
-                  link.href
-                );
+        <nav className="hidden items-center gap-5 lg:flex xl:gap-7">
+          {navLinks.map((link) => {
+            const active =
+              link.label === "SERVICES"
+                ? servicesActive
+                : isRouteActive(
+                    link.href
+                  );
 
-              /* =============================================
-                 SERVICES
-              ============================================= */
+            /* =============================================
+               SERVICES
+            ============================================= */
 
-              if (link.children) {
-                return (
-                  <div
-                    key={link.label}
-                    className="relative"
-                    onMouseEnter={() =>
-                      setServicesOpen(
-                        true
-                      )
-                    }
-                    onMouseLeave={() =>
-                      setServicesOpen(
-                        false
-                      )
-                    }
+            if (link.children) {
+              return (
+                <div
+                  key={link.label}
+                  className="relative"
+                  onMouseEnter={() =>
+                    setServicesOpen(true)
+                  }
+                  onMouseLeave={() =>
+                    setServicesOpen(false)
+                  }
+                >
+                  {/* SERVICES NAV LINK */}
+
+                  <Link
+                    href={link.href}
+                    className={`group relative flex items-center gap-1 py-2 text-[13px] font-semibold tracking-[0.02em] transition-colors ${
+                      active
+                        ? "text-blue-600 dark:text-blue-400"
+                        : "text-slate-700 hover:text-blue-600 dark:text-slate-300 dark:hover:text-white"
+                    }`}
                   >
-                    {/* SERVICES NAV LINK */}
+                    {link.label}
 
-                    <Link
-                      href={link.href}
-                      className={`group relative flex items-center gap-1 py-2 text-[13px] font-semibold tracking-[0.02em] transition-colors ${
-                        active
-                          ? "text-blue-600 dark:text-blue-400"
-                          : "text-slate-700 hover:text-blue-600 dark:text-slate-300 dark:hover:text-white"
+                    <ChevronDown
+                      size={14}
+                      className={`transition-transform duration-300 ${
+                        servicesOpen
+                          ? "rotate-180"
+                          : ""
                       }`}
-                    >
-                      {link.label}
+                    />
 
-                      <ChevronDown
-                        size={14}
-                        className={`transition-transform duration-300 ${
-                          servicesOpen
-                            ? "rotate-180"
-                            : ""
-                        }`}
-                      />
+                    <span
+                      className={`absolute -bottom-1 left-0 h-[2px] rounded-full bg-gradient-to-r from-blue-600 to-cyan-400 transition-all duration-300 ${
+                        active
+                          ? "w-full"
+                          : "w-0 group-hover:w-full"
+                      }`}
+                    />
+                  </Link>
 
-                      <span
-                        className={`absolute -bottom-1 left-0 h-[2px] rounded-full bg-gradient-to-r from-blue-600 to-cyan-400 transition-all duration-300 ${
-                          active
-                            ? "w-full"
-                            : "w-0 group-hover:w-full"
-                        }`}
-                      />
-                    </Link>
+                  {/* =======================================
+                      SERVICES DROPDOWN
+                  ======================================= */}
 
-                    {/* =======================================
-                        PREMIUM SERVICES DROPDOWN
-                    ======================================= */}
+                  <AnimatePresence>
+                    {servicesOpen && (
+                      <motion.div
+                        initial={{
+                          opacity: 0,
+                          y: 12,
+                          scale: 0.98,
+                        }}
+                        animate={{
+                          opacity: 1,
+                          y: 0,
+                          scale: 1,
+                        }}
+                        exit={{
+                          opacity: 0,
+                          y: 8,
+                          scale: 0.985,
+                        }}
+                        transition={{
+                          duration: 0.18,
+                          ease: "easeOut",
+                        }}
+                        className="absolute left-1/2 top-full w-[440px] -translate-x-1/2 pt-4"
+                      >
+                        {/* Hover Bridge */}
 
-                    <AnimatePresence>
-                      {servicesOpen && (
-                        <motion.div
-                          initial={{
-                            opacity: 0,
-                            y: 12,
-                            scale:
-                              0.98,
-                          }}
-                          animate={{
-                            opacity: 1,
-                            y: 0,
-                            scale: 1,
-                          }}
-                          exit={{
-                            opacity: 0,
-                            y: 8,
-                            scale:
-                              0.985,
-                          }}
-                          transition={{
-                            duration:
-                              0.18,
-                            ease: "easeOut",
-                          }}
-                          className="absolute left-1/2 top-full w-[430px] -translate-x-1/2 pt-4"
-                        >
-                          {/* INVISIBLE HOVER BRIDGE */}
+                        <div className="absolute left-0 right-0 top-0 h-4" />
 
-                          <div className="absolute left-0 right-0 top-0 h-4" />
+                        {/* Dropdown Panel */}
 
-                          {/* DROPDOWN PANEL */}
+                        <div className="relative overflow-hidden rounded-[22px] border border-slate-200/80 bg-white/95 p-2.5 shadow-[0_24px_70px_-24px_rgba(15,23,42,0.35)] backdrop-blur-2xl dark:border-white/[0.09] dark:bg-[#0b1220]/95 dark:shadow-[0_28px_80px_-24px_rgba(0,0,0,0.7)]">
+                          {/* Background Glow */}
 
-                          <div className="relative overflow-hidden rounded-[22px] border border-slate-200/80 bg-white/95 p-2.5 shadow-[0_24px_70px_-24px_rgba(15,23,42,0.35)] backdrop-blur-2xl dark:border-white/[0.09] dark:bg-[#0b1220]/95 dark:shadow-[0_28px_80px_-24px_rgba(0,0,0,0.7)]">
-                            {/* SUBTLE BACKGROUND */}
+                          <div className="pointer-events-none absolute -right-16 -top-16 h-40 w-40 rounded-full bg-blue-500/[0.08] blur-3xl" />
 
-                            <div className="pointer-events-none absolute -right-16 -top-16 h-40 w-40 rounded-full bg-blue-500/[0.08] blur-3xl" />
+                          <div className="pointer-events-none absolute -bottom-20 -left-16 h-40 w-40 rounded-full bg-cyan-400/[0.06] blur-3xl" />
 
-                            <div className="pointer-events-none absolute -bottom-20 -left-16 h-40 w-40 rounded-full bg-cyan-400/[0.06] blur-3xl" />
+                          {/* Dropdown Header */}
 
-                            {/* HEADER */}
+                          <div className="relative mb-2 flex items-center justify-between border-b border-slate-100 px-3 pb-3 pt-2 dark:border-white/[0.06]">
+                            <div>
+                              <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-blue-600 dark:text-blue-400">
+                                Our Services
+                              </p>
 
-                            <div className="relative mb-2 flex items-center justify-between border-b border-slate-100 px-3 pb-3 pt-2 dark:border-white/[0.06]">
-                              <div>
-                                <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-blue-600 dark:text-blue-400">
-                                  Our Services
-                                </p>
-
-                                <p className="mt-1 text-xs text-slate-400 dark:text-slate-500">
-                                  Explore our
-                                  technology
-                                  solutions
-                                </p>
-                              </div>
-
-                              <Link
-                                href="/services"
-                                className="group/all flex items-center gap-1 text-xs font-semibold text-slate-500 transition-colors hover:text-blue-600 dark:text-slate-400 dark:hover:text-blue-400"
-                              >
-                                View All
-
-                                <ChevronRight
-                                  size={
-                                    14
-                                  }
-                                  className="transition-transform duration-200 group-hover/all:translate-x-0.5"
-                                />
-                              </Link>
+                              <p className="mt-1 text-xs text-slate-400 dark:text-slate-500">
+                                Explore our technology
+                                solutions
+                              </p>
                             </div>
 
-                            {/* SERVICE LINKS */}
+                            <Link
+                              href="/services"
+                              className="group/all flex items-center gap-1 text-xs font-semibold text-slate-500 transition-colors hover:text-blue-600 dark:text-slate-400 dark:hover:text-blue-400"
+                            >
+                              View All
 
-                            <div className="relative space-y-1">
-                              {link.children.map(
-                                (
-                                  child,
-                                  index
-                                ) => {
-                                  const childActive =
-                                    pathname ===
-                                    child.href;
+                              <ChevronRight
+                                size={14}
+                                className="transition-transform duration-200 group-hover/all:translate-x-0.5"
+                              />
+                            </Link>
+                          </div>
 
-                                  const Icon =
-                                    child.icon;
+                          {/* Service Links */}
 
-                                  return (
-                                    <motion.div
-                                      key={
-                                        child.label
+                          <div className="relative grid grid-cols-1 gap-1">
+                            {link.children.map(
+                              (
+                                child,
+                                index
+                              ) => {
+                                const childActive =
+                                  pathname ===
+                                    child.href ||
+                                  pathname.startsWith(
+                                    `${child.href}/`
+                                  );
+
+                                const Icon =
+                                  child.icon;
+
+                                return (
+                                  <motion.div
+                                    key={
+                                      child.label
+                                    }
+                                    initial={{
+                                      opacity: 0,
+                                      x: -6,
+                                    }}
+                                    animate={{
+                                      opacity: 1,
+                                      x: 0,
+                                    }}
+                                    transition={{
+                                      duration: 0.2,
+                                      delay:
+                                        index *
+                                        0.025,
+                                    }}
+                                  >
+                                    <Link
+                                      href={
+                                        child.href
                                       }
-                                      initial={{
-                                        opacity: 0,
-                                        x: -6,
-                                      }}
-                                      animate={{
-                                        opacity: 1,
-                                        x: 0,
-                                      }}
-                                      transition={{
-                                        duration:
-                                          0.2,
-                                        delay:
-                                          index *
-                                          0.025,
-                                      }}
+                                      className={`group/item relative flex items-center gap-3 overflow-hidden rounded-xl px-3 py-2.5 transition-all duration-200 ${
+                                        childActive
+                                          ? "bg-blue-50 text-blue-700 dark:bg-blue-500/[0.12] dark:text-blue-300"
+                                          : "text-slate-600 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-white/[0.05]"
+                                      }`}
                                     >
-                                      <Link
-                                        href={
-                                          child.href
-                                        }
-                                        className={`group/item relative flex items-center gap-3 overflow-hidden rounded-xl px-3 py-2.5 transition-all duration-200 ${
+                                      {/* Active Line */}
+
+                                      <span
+                                        className={`absolute bottom-2 left-0 top-2 w-[3px] rounded-r-full bg-gradient-to-b from-blue-500 to-cyan-400 transition-all duration-200 ${
                                           childActive
-                                            ? "bg-blue-50 text-blue-700 dark:bg-blue-500/[0.12] dark:text-blue-300"
-                                            : "text-slate-600 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-white/[0.05]"
+                                            ? "opacity-100"
+                                            : "scale-y-50 opacity-0 group-hover/item:scale-y-100 group-hover/item:opacity-100"
+                                        }`}
+                                      />
+
+                                      {/* Icon */}
+
+                                      <span
+                                        className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border transition-all duration-200 ${
+                                          childActive
+                                            ? "border-blue-200 bg-white text-blue-600 dark:border-blue-500/20 dark:bg-blue-500/10 dark:text-blue-400"
+                                            : "border-slate-200/80 bg-white text-slate-400 group-hover/item:border-blue-200 group-hover/item:text-blue-600 dark:border-white/[0.07] dark:bg-white/[0.035] dark:text-slate-500 dark:group-hover/item:border-blue-500/20 dark:group-hover/item:text-blue-400"
                                         }`}
                                       >
-                                        {/* LEFT ACTIVE/HOVER LINE */}
-
-                                        <span
-                                          className={`absolute bottom-2 left-0 top-2 w-[3px] rounded-r-full bg-gradient-to-b from-blue-500 to-cyan-400 transition-all duration-200 ${
-                                            childActive
-                                              ? "opacity-100"
-                                              : "scale-y-50 opacity-0 group-hover/item:scale-y-100 group-hover/item:opacity-100"
-                                          }`}
-                                        />
-
-                                        {/* ICON */}
-
-                                        <span
-                                          className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border transition-all duration-200 ${
-                                            childActive
-                                              ? "border-blue-200 bg-white text-blue-600 dark:border-blue-500/20 dark:bg-blue-500/10 dark:text-blue-400"
-                                              : "border-slate-200/80 bg-white text-slate-400 group-hover/item:border-blue-200 group-hover/item:text-blue-600 dark:border-white/[0.07] dark:bg-white/[0.035] dark:text-slate-500 dark:group-hover/item:border-blue-500/20 dark:group-hover/item:text-blue-400"
-                                          }`}
-                                        >
-                                          <Icon
-                                            size={
-                                              16
-                                            }
-                                            strokeWidth={
-                                              1.8
-                                            }
-                                          />
-                                        </span>
-
-                                        {/* LABEL */}
-
-                                        <span className="min-w-0 flex-1 text-[13px] font-medium transition-colors group-hover/item:text-[#1a2b4a] dark:group-hover/item:text-white">
-                                          {
-                                            child.label
-                                          }
-                                        </span>
-
-                                        {/* ARROW */}
-
-                                        <ChevronRight
+                                        <Icon
                                           size={
-                                            15
+                                            16
                                           }
-                                          className={`shrink-0 transition-all duration-200 ${
-                                            childActive
-                                              ? "translate-x-0 text-blue-600 dark:text-blue-400"
-                                              : "-translate-x-1 text-slate-300 opacity-0 group-hover/item:translate-x-0 group-hover/item:text-blue-500 group-hover/item:opacity-100 dark:text-slate-600"
-                                          }`}
+                                          strokeWidth={
+                                            1.8
+                                          }
                                         />
-                                      </Link>
-                                    </motion.div>
-                                  );
-                                }
-                              )}
-                            </div>
+                                      </span>
 
-                            {/* BOTTOM ACCENT */}
+                                      {/* Label */}
 
-                            <div className="relative mt-2 h-[2px] overflow-hidden rounded-full bg-slate-100 dark:bg-white/[0.05]">
-                              <motion.div
-                                initial={{
-                                  x: "-100%",
-                                }}
-                                animate={{
-                                  x: "0%",
-                                }}
-                                transition={{
-                                  duration:
-                                    0.6,
-                                  ease: "easeOut",
-                                }}
-                                className="h-full w-1/3 rounded-full bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-400"
-                              />
-                            </div>
+                                      <span className="min-w-0 flex-1 text-[13px] font-medium transition-colors group-hover/item:text-[#1a2b4a] dark:group-hover/item:text-white">
+                                        {
+                                          child.label
+                                        }
+                                      </span>
+
+                                      {/* Arrow */}
+
+                                      <ChevronRight
+                                        size={15}
+                                        className={`shrink-0 transition-all duration-200 ${
+                                          childActive
+                                            ? "translate-x-0 text-blue-600 dark:text-blue-400"
+                                            : "-translate-x-1 text-slate-300 opacity-0 group-hover/item:translate-x-0 group-hover/item:text-blue-500 group-hover/item:opacity-100 dark:text-slate-600"
+                                        }`}
+                                      />
+                                    </Link>
+                                  </motion.div>
+                                );
+                              }
+                            )}
                           </div>
-                        </motion.div>
-                      )}
-                    </AnimatePresence>
-                  </div>
-                );
-              }
 
-              /* =============================================
-                 NORMAL NAV LINKS
-              ============================================= */
+                          {/* Bottom Accent */}
 
-              return (
-                <Link
-                  key={link.label}
-                  href={link.href}
-                  className={`group relative py-2 text-[13px] font-semibold tracking-[0.02em] transition-colors ${
-                    active
-                      ? "text-blue-600 dark:text-blue-400"
-                      : "text-slate-700 hover:text-blue-600 dark:text-slate-300 dark:hover:text-white"
-                  }`}
-                >
-                  {link.label}
-
-                  <span
-                    className={`absolute -bottom-1 left-0 h-[2px] rounded-full bg-gradient-to-r from-blue-600 to-cyan-400 transition-all duration-300 ${
-                      active
-                        ? "w-full"
-                        : "w-0 group-hover:w-full"
-                    }`}
-                  />
-                </Link>
+                          <div className="relative mt-2 h-[2px] overflow-hidden rounded-full bg-slate-100 dark:bg-white/[0.05]">
+                            <motion.div
+                              initial={{
+                                x: "-100%",
+                              }}
+                              animate={{
+                                x: "0%",
+                              }}
+                              transition={{
+                                duration: 0.6,
+                                ease: "easeOut",
+                              }}
+                              className="h-full w-1/3 rounded-full bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-400"
+                            />
+                          </div>
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </div>
               );
             }
-          )}
+
+            /* =============================================
+               NORMAL NAV LINKS
+            ============================================= */
+
+            return (
+              <Link
+                key={link.label}
+                href={link.href}
+                className={`group relative whitespace-nowrap py-2 text-[13px] font-semibold tracking-[0.02em] transition-colors ${
+                  active
+                    ? "text-blue-600 dark:text-blue-400"
+                    : "text-slate-700 hover:text-blue-600 dark:text-slate-300 dark:hover:text-white"
+                }`}
+              >
+                {link.label}
+
+                <span
+                  className={`absolute -bottom-1 left-0 h-[2px] rounded-full bg-gradient-to-r from-blue-600 to-cyan-400 transition-all duration-300 ${
+                    active
+                      ? "w-full"
+                      : "w-0 group-hover:w-full"
+                  }`}
+                />
+              </Link>
+            );
+          })}
         </nav>
 
         {/* =================================================
             THEME + MOBILE BUTTON
         ================================================= */}
 
-        <div className="flex items-center gap-3">
+        <div className="flex shrink-0 items-center gap-2 sm:gap-3">
           <ThemeToggle />
 
           <button
@@ -597,9 +611,7 @@ export function Navbar() {
               )
             }
             aria-label="Toggle navigation menu"
-            aria-expanded={
-              mobileOpen
-            }
+            aria-expanded={mobileOpen}
             className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-700 shadow-sm transition-all hover:border-blue-300 hover:text-blue-600 lg:hidden dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-slate-200"
           >
             {mobileOpen ? (
@@ -618,165 +630,156 @@ export function Navbar() {
       <div
         className={`overflow-hidden border-t border-slate-100 bg-white/95 backdrop-blur-2xl transition-[max-height] duration-500 lg:hidden dark:border-white/[0.05] dark:bg-[#070c18]/95 ${
           mobileOpen
-            ? "max-h-[900px]"
+            ? "max-h-[1000px]"
             : "max-h-0 border-t-0"
         }`}
       >
-        <nav className="px-5 py-4">
-          {navLinks.map(
-            (link) => {
-              const active =
-                isRouteActive(
-                  link.href
-                );
+        <nav className="px-4 py-4 sm:px-5">
+          {navLinks.map((link) => {
+            const active =
+              link.label === "SERVICES"
+                ? servicesActive
+                : isRouteActive(
+                    link.href
+                  );
 
-              /* =============================================
-                 MOBILE SERVICES
-              ============================================= */
+            /* =============================================
+               MOBILE SERVICES
+            ============================================= */
 
-              if (link.children) {
-                return (
-                  <div
-                    key={link.label}
-                    className="border-b border-slate-100 py-2 dark:border-white/[0.05]"
-                  >
-                    <div className="flex items-center justify-between">
-                      <Link
-                        href={
-                          link.href
-                        }
-                        className={`flex-1 py-2 text-sm font-semibold ${
-                          active
-                            ? "text-blue-600 dark:text-blue-400"
-                            : "text-slate-800 dark:text-slate-200"
-                        }`}
-                      >
-                        {
-                          link.label
-                        }
-                      </Link>
-
-                      <button
-                        type="button"
-                        onClick={() =>
-                          setMobileServicesOpen(
-                            (
-                              previous
-                            ) =>
-                              !previous
-                          )
-                        }
-                        aria-label="Toggle services"
-                        aria-expanded={
-                          mobileServicesOpen
-                        }
-                        className="flex h-9 w-9 items-center justify-center rounded-lg text-slate-500 transition hover:bg-slate-100 hover:text-blue-600 dark:text-slate-400 dark:hover:bg-white/[0.05] dark:hover:text-blue-400"
-                      >
-                        <ChevronDown
-                          size={17}
-                          className={`transition-transform duration-300 ${
-                            mobileServicesOpen
-                              ? "rotate-180"
-                              : ""
-                          }`}
-                        />
-                      </button>
-                    </div>
-
-                    {/* MOBILE SUBMENU */}
-
-                    <div
-                      className={`grid transition-all duration-300 ${
-                        mobileServicesOpen
-                          ? "grid-rows-[1fr] opacity-100"
-                          : "grid-rows-[0fr] opacity-0"
-                      }`}
-                    >
-                      <div className="overflow-hidden">
-                        <div className="mb-2 mt-1 space-y-1 rounded-2xl border border-slate-100 bg-slate-50/70 p-2 dark:border-white/[0.06] dark:bg-white/[0.025]">
-                          {link.children.map(
-                            (
-                              child
-                            ) => {
-                              const Icon =
-                                child.icon;
-
-                              const childActive =
-                                pathname ===
-                                child.href;
-
-                              return (
-                                <Link
-                                  key={
-                                    child.label
-                                  }
-                                  href={
-                                    child.href
-                                  }
-                                  className={`group flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-all ${
-                                    childActive
-                                      ? "bg-white text-blue-600 shadow-sm dark:bg-white/[0.06] dark:text-blue-400"
-                                      : "text-slate-600 hover:bg-white hover:text-blue-600 dark:text-slate-400 dark:hover:bg-white/[0.05] dark:hover:text-white"
-                                  }`}
-                                >
-                                  <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-400 transition group-hover:border-blue-200 group-hover:text-blue-600 dark:border-white/[0.07] dark:bg-white/[0.035] dark:text-slate-500 dark:group-hover:text-blue-400">
-                                    <Icon
-                                      size={
-                                        15
-                                      }
-                                    />
-                                  </span>
-
-                                  <span className="flex-1">
-                                    {
-                                      child.label
-                                    }
-                                  </span>
-
-                                  <ChevronRight
-                                    size={
-                                      14
-                                    }
-                                    className="text-slate-300 transition-transform group-hover:translate-x-0.5 group-hover:text-blue-500"
-                                  />
-                                </Link>
-                              );
-                            }
-                          )}
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                );
-              }
-
-              /* =============================================
-                 MOBILE NORMAL LINKS
-              ============================================= */
-
+            if (link.children) {
               return (
                 <div
                   key={link.label}
-                  className="border-b border-slate-100 py-2 last:border-none dark:border-white/[0.05]"
+                  className="border-b border-slate-100 py-2 dark:border-white/[0.05]"
                 >
-                  <Link
-                    href={
-                      link.href
-                    }
-                    className={`block py-2 text-sm font-semibold transition-colors ${
-                      active
-                        ? "text-blue-600 dark:text-blue-400"
-                        : "text-slate-800 hover:text-blue-600 dark:text-slate-200 dark:hover:text-white"
+                  <div className="flex items-center justify-between">
+                    <Link
+                      href={link.href}
+                      className={`flex-1 py-2 text-sm font-semibold ${
+                        active
+                          ? "text-blue-600 dark:text-blue-400"
+                          : "text-slate-800 dark:text-slate-200"
+                      }`}
+                    >
+                      {link.label}
+                    </Link>
+
+                    <button
+                      type="button"
+                      onClick={() =>
+                        setMobileServicesOpen(
+                          (
+                            previous
+                          ) =>
+                            !previous
+                        )
+                      }
+                      aria-label="Toggle services"
+                      aria-expanded={
+                        mobileServicesOpen
+                      }
+                      className="flex h-9 w-9 items-center justify-center rounded-lg text-slate-500 transition hover:bg-slate-100 hover:text-blue-600 dark:text-slate-400 dark:hover:bg-white/[0.05] dark:hover:text-blue-400"
+                    >
+                      <ChevronDown
+                        size={17}
+                        className={`transition-transform duration-300 ${
+                          mobileServicesOpen
+                            ? "rotate-180"
+                            : ""
+                        }`}
+                      />
+                    </button>
+                  </div>
+
+                  {/* MOBILE SUBMENU */}
+
+                  <div
+                    className={`grid transition-all duration-300 ${
+                      mobileServicesOpen
+                        ? "grid-rows-[1fr] opacity-100"
+                        : "grid-rows-[0fr] opacity-0"
                     }`}
                   >
-                    {
-                      link.label
-                    }
-                  </Link>
+                    <div className="overflow-hidden">
+                      <div className="mb-2 mt-1 space-y-1 rounded-2xl border border-slate-100 bg-slate-50/70 p-2 dark:border-white/[0.06] dark:bg-white/[0.025]">
+                        {link.children.map(
+                          (child) => {
+                            const Icon =
+                              child.icon;
+
+                            const childActive =
+                              pathname ===
+                                child.href ||
+                              pathname.startsWith(
+                                `${child.href}/`
+                              );
+
+                            return (
+                              <Link
+                                key={
+                                  child.label
+                                }
+                                href={
+                                  child.href
+                                }
+                                className={`group flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-all ${
+                                  childActive
+                                    ? "bg-white text-blue-600 shadow-sm dark:bg-white/[0.06] dark:text-blue-400"
+                                    : "text-slate-600 hover:bg-white hover:text-blue-600 dark:text-slate-400 dark:hover:bg-white/[0.05] dark:hover:text-white"
+                                }`}
+                              >
+                                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-400 transition group-hover:border-blue-200 group-hover:text-blue-600 dark:border-white/[0.07] dark:bg-white/[0.035] dark:text-slate-500 dark:group-hover:text-blue-400">
+                                  <Icon
+                                    size={
+                                      15
+                                    }
+                                  />
+                                </span>
+
+                                <span className="min-w-0 flex-1">
+                                  {
+                                    child.label
+                                  }
+                                </span>
+
+                                <ChevronRight
+                                  size={14}
+                                  className="shrink-0 text-slate-300 transition-transform group-hover:translate-x-0.5 group-hover:text-blue-500"
+                                />
+                              </Link>
+                            );
+                          }
+                        )}
+                      </div>
+                    </div>
+                  </div>
                 </div>
               );
             }
-          )}
+
+            /* =============================================
+               MOBILE NORMAL LINKS
+            ============================================= */
+
+            return (
+              <div
+                key={link.label}
+                className="border-b border-slate-100 py-2 last:border-none dark:border-white/[0.05]"
+              >
+                <Link
+                  href={link.href}
+                  className={`block py-2 text-sm font-semibold transition-colors ${
+                    active
+                      ? "text-blue-600 dark:text-blue-400"
+                      : "text-slate-800 hover:text-blue-600 dark:text-slate-200 dark:hover:text-white"
+                  }`}
+                >
+                  {link.label}
+                </Link>
+              </div>
+            );
+          })}
         </nav>
       </div>
     </header>

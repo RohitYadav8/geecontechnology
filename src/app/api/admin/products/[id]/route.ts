@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+
 import { Prisma } from "@prisma/client";
 
 import { prisma } from "../../../../../../lib/prisma";
@@ -109,6 +110,10 @@ export async function PUT(
 
       brochureUrl,
 
+      brochureGradientFrom,
+      brochureGradientVia,
+      brochureGradientTo,
+
       isActive,
       order,
     } = body;
@@ -210,6 +215,7 @@ export async function PUT(
 
         data: {
           title: title.trim(),
+
           slug: cleanSlug,
 
           /* MEDIA */
@@ -283,6 +289,25 @@ export async function PUT(
             cleanOptionalString(
               brochureUrl
             ),
+
+          /* BROCHURE GRADIENT */
+
+          brochureGradientFrom:
+            cleanOptionalString(
+              brochureGradientFrom
+            ),
+
+          brochureGradientVia:
+            cleanOptionalString(
+              brochureGradientVia
+            ),
+
+          brochureGradientTo:
+            cleanOptionalString(
+              brochureGradientTo
+            ),
+
+          /* DISPLAY */
 
           isActive:
             typeof isActive === "boolean"

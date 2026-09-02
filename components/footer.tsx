@@ -24,104 +24,6 @@ import {
 } from "./stagger-container";
 
 /* =========================================================
-   SOCIAL ICONS
-========================================================= */
-
-function FacebookIcon({
-  size = 16,
-}: {
-  size?: number;
-}) {
-  return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      fill="currentColor"
-      aria-hidden="true"
-    >
-      <path d="M22 12.06C22 6.505 17.523 2 12 2S2 6.505 2 12.06c0 5.02 3.657 9.184 8.438 9.94v-7.03H7.898v-2.91h2.54V9.845c0-2.507 1.492-3.89 3.777-3.89 1.094 0 2.238.195 2.238.195v2.46h-1.26c-1.243 0-1.63.771-1.63 1.562v1.878h2.773l-.443 2.91h-2.33V22c4.78-.756 8.437-4.92 8.437-9.94z" />
-    </svg>
-  );
-}
-
-function LinkedinIcon({
-  size = 16,
-}: {
-  size?: number;
-}) {
-  return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      fill="currentColor"
-      aria-hidden="true"
-    >
-      <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.446-2.136 2.94v5.666H9.351V9h3.414v1.561h.049c.476-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 1 1 0-4.124 2.062 2.062 0 0 1 0 4.124zM7.114 20.452H3.558V9h3.556v11.452z" />
-    </svg>
-  );
-}
-
-function TwitterIcon({
-  size = 16,
-}: {
-  size?: number;
-}) {
-  return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      fill="currentColor"
-      aria-hidden="true"
-    >
-      <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-    </svg>
-  );
-}
-
-function InstagramIcon({
-  size = 16,
-}: {
-  size?: number;
-}) {
-  return (
-    <svg
-      width={size}
-      height={size}
-      viewBox="0 0 24 24"
-      fill="none"
-      stroke="currentColor"
-      strokeWidth="1.8"
-      aria-hidden="true"
-    >
-      <rect
-        x="3"
-        y="3"
-        width="18"
-        height="18"
-        rx="5"
-      />
-
-      <circle
-        cx="12"
-        cy="12"
-        r="4"
-      />
-
-      <circle
-        cx="17.3"
-        cy="6.7"
-        r="1"
-        fill="currentColor"
-        stroke="none"
-      />
-    </svg>
-  );
-}
-
-/* =========================================================
    FOOTER COLUMN CONFIG
 ========================================================= */
 
@@ -153,38 +55,38 @@ function FooterColumn({
     href: string;
   }[];
 }) {
-  const Icon =
-    columnIcons[columnKey];
+  const Icon = columnIcons[columnKey];
 
   return (
-    <div>
-      <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-blue-100 bg-blue-50 text-blue-600 dark:border-blue-500/10 dark:bg-blue-500/10 dark:text-blue-400">
-        <Icon
-          size={18}
-          strokeWidth={1.7}
-        />
+    <div className="min-w-0">
+      <div className="flex items-center gap-3">
+        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-blue-100 bg-gradient-to-br from-blue-50 to-cyan-50 text-blue-600 shadow-sm dark:border-blue-500/15 dark:from-blue-500/10 dark:to-cyan-500/5 dark:text-blue-400">
+          <Icon size={16} strokeWidth={1.7} />
+        </div>
+
+        <div className="min-w-0">
+          <h4 className="text-sm font-semibold text-slate-950 dark:text-white">
+            {columnTitles[columnKey]}
+          </h4>
+
+          <span className="mt-2 block h-[2px] w-7 rounded-full bg-gradient-to-r from-blue-600 via-indigo-500 to-cyan-400" />
+        </div>
       </div>
 
-      <h4 className="mt-4 text-sm font-semibold text-slate-950 dark:text-white">
-        {columnTitles[columnKey]}
-      </h4>
-
-      <span className="mt-2 block h-[2px] w-8 rounded-full bg-gradient-to-r from-blue-600 to-cyan-400" />
-
-      <ul className="mt-5 space-y-3">
+      <ul className="mt-4 space-y-1">
         {links.map((link) => (
           <li key={link.label}>
             <Link
               href={link.href}
-              className="group flex items-center justify-between gap-3 text-sm text-slate-500 transition-colors hover:text-blue-600 dark:text-slate-400 dark:hover:text-white"
+              className="group flex min-w-0 items-start justify-between gap-3 rounded-lg px-2 py-1.5 text-[13px] text-slate-500 transition-all duration-200 hover:bg-blue-50/70 hover:text-blue-600 dark:text-slate-400 dark:hover:bg-white/[0.04] dark:hover:text-white"
             >
-              <span>
+              <span className="min-w-0 break-words leading-5">
                 {link.label}
               </span>
 
               <ChevronRight
-                size={13}
-                className="shrink-0 text-slate-300 transition-all group-hover:translate-x-0.5 group-hover:text-blue-500 dark:text-slate-700"
+                size={12}
+                className="mt-1 shrink-0 text-slate-300 transition-all duration-200 group-hover:translate-x-1 group-hover:text-blue-500 dark:text-slate-700 dark:group-hover:text-blue-400"
               />
             </Link>
           </li>
@@ -199,12 +101,7 @@ function FooterColumn({
 ========================================================= */
 
 export function Footer() {
-  /* =======================================================
-     NEWSLETTER STATE
-  ======================================================= */
-
-  const [email, setEmail] =
-    useState("");
+  const [email, setEmail] = useState("");
 
   const [
     newsletterLoading,
@@ -225,320 +122,273 @@ export function Footer() {
      NEWSLETTER SUBMIT
   ======================================================= */
 
-  const handleNewsletterSubmit =
-    async (
-      event: React.FormEvent<HTMLFormElement>
-    ) => {
-      event.preventDefault();
+  const handleNewsletterSubmit = async (
+    event: React.FormEvent<HTMLFormElement>
+  ) => {
+    event.preventDefault();
 
-      const cleanEmail =
-        email.trim();
+    const cleanEmail = email.trim();
 
-      setNewsletterMessage("");
-      setNewsletterError("");
+    setNewsletterMessage("");
+    setNewsletterError("");
 
-      /* ===============================================
-         EMPTY EMAIL
-      =============================================== */
+    if (!cleanEmail) {
+      setNewsletterError(
+        "Please enter your email address."
+      );
 
-      if (!cleanEmail) {
-        setNewsletterError(
-          "Please enter your email address."
-        );
+      return;
+    }
 
-        return;
-      }
+    const emailRegex =
+      /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-      /* ===============================================
-         BASIC EMAIL VALIDATION
-      =============================================== */
+    if (!emailRegex.test(cleanEmail)) {
+      setNewsletterError(
+        "Please enter a valid email address."
+      );
 
-      const emailRegex =
-        /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      return;
+    }
 
-      if (
-        !emailRegex.test(
-          cleanEmail
-        )
-      ) {
-        setNewsletterError(
-          "Please enter a valid email address."
-        );
+    try {
+      setNewsletterLoading(true);
 
-        return;
-      }
+      const response = await fetch(
+        "/api/newsletter",
+        {
+          method: "POST",
 
-      try {
-        setNewsletterLoading(
-          true
-        );
+          headers: {
+            "Content-Type":
+              "application/json",
+          },
 
-        /* =============================================
-           API REQUEST
-        ============================================= */
-
-        const response =
-          await fetch(
-            "/api/newsletter",
-            {
-              method: "POST",
-
-              headers: {
-                "Content-Type":
-                  "application/json",
-              },
-
-              body: JSON.stringify({
-                email:
-                  cleanEmail,
-              }),
-            }
-          );
-
-        /* =============================================
-           READ RESPONSE
-        ============================================= */
-
-        const text =
-          await response.text();
-
-        let data: {
-          success?: boolean;
-          message?: string;
-          error?: string;
-        } = {};
-
-        if (text) {
-          try {
-            data =
-              JSON.parse(text);
-          } catch {
-            console.error(
-              "Invalid newsletter API response:",
-              text
-            );
-          }
+          body: JSON.stringify({
+            email: cleanEmail,
+          }),
         }
+      );
 
-        /* =============================================
-           API ERROR
-        ============================================= */
+      const text = await response.text();
 
-        if (!response.ok) {
-          throw new Error(
-            data.error ||
-              "Subscription failed. Please try again."
+      let data: {
+        success?: boolean;
+        message?: string;
+        error?: string;
+      } = {};
+
+      if (text) {
+        try {
+          data = JSON.parse(text);
+        } catch {
+          console.error(
+            "Invalid newsletter API response:",
+            text
           );
         }
+      }
 
-        /* =============================================
-           SUCCESS
-        ============================================= */
-
-        setNewsletterMessage(
-          data.message ||
-            "Thank you for subscribing!"
-        );
-
-        setEmail("");
-      } catch (error) {
-        console.error(
-          "Newsletter subscribe error:",
-          error
-        );
-
-        setNewsletterError(
-          error instanceof Error
-            ? error.message
-            : "Something went wrong. Please try again."
-        );
-      } finally {
-        setNewsletterLoading(
-          false
+      if (!response.ok) {
+        throw new Error(
+          data.error ||
+            "Subscription failed. Please try again."
         );
       }
-    };
 
-  /* =======================================================
-     UI
-  ======================================================= */
+      setNewsletterMessage(
+        data.message ||
+          "Thank you for subscribing!"
+      );
+
+      setEmail("");
+    } catch (error) {
+      console.error(
+        "Newsletter subscribe error:",
+        error
+      );
+
+      setNewsletterError(
+        error instanceof Error
+          ? error.message
+          : "Something went wrong. Please try again."
+      );
+    } finally {
+      setNewsletterLoading(false);
+    }
+  };
 
   return (
-    <footer className="relative overflow-hidden border-t border-slate-200 bg-white text-slate-500 dark:border-white/[0.05] dark:bg-[#050914] dark:text-slate-400">
-      {/* Background glow */}
+    <footer className="relative overflow-hidden border-t border-slate-200/80 bg-[#f8fbff] text-slate-500 dark:border-white/[0.06] dark:bg-[#050914] dark:text-slate-400">
+      {/* ================================================= */}
+      {/* BACKGROUND */}
+      {/* ================================================= */}
 
-      <div className="pointer-events-none absolute left-1/2 top-0 h-72 w-[800px] -translate-x-1/2 rounded-full bg-blue-500/[0.06] blur-[120px] dark:bg-blue-500/[0.08]" />
+      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_12%_10%,rgba(59,130,246,0.08),transparent_25%),radial-gradient(circle_at_88%_22%,rgba(124,58,237,0.06),transparent_28%)] dark:bg-[radial-gradient(circle_at_10%_15%,rgba(37,99,235,0.12),transparent_30%),radial-gradient(circle_at_88%_20%,rgba(124,58,237,0.09),transparent_28%)]" />
 
-      <div className="relative mx-auto max-w-7xl px-6 sm:px-8 lg:px-10">
-        {/* =================================================
-            MAIN FOOTER
-        ================================================= */}
+      <div className="pointer-events-none absolute right-0 top-0 h-44 w-44 opacity-30 [background-image:radial-gradient(#3b82f6_1px,transparent_1px)] [background-size:16px_16px] dark:opacity-10" />
 
-        <div className="grid gap-14 py-16 lg:grid-cols-[270px_minmax(0,1fr)] lg:py-20">
-          {/* ===============================================
-              COMPANY + NEWSLETTER
-          =============================================== */}
+      <div className="relative mx-auto w-full max-w-[1500px] px-4 sm:px-6 lg:px-8 xl:px-10">
+        {/* ================================================= */}
+        {/* MAIN FOOTER */}
+        {/* ================================================= */}
+
+        <div className="grid gap-8 py-9 sm:py-10 lg:grid-cols-[260px_minmax(0,1fr)] lg:gap-10 lg:py-12 xl:grid-cols-[280px_minmax(0,1fr)]">
+          {/* ================================================= */}
+          {/* COMPANY + NEWSLETTER */}
+          {/* ================================================= */}
 
           <AnimateIn direction="left">
-            {/* Logo */}
+            <div className="rounded-2xl border border-slate-200/80 bg-white/75 p-5 shadow-[0_12px_35px_-28px_rgba(15,23,42,0.5)] backdrop-blur-xl lg:border-transparent lg:bg-transparent lg:p-0 lg:shadow-none dark:border-white/[0.07] dark:bg-white/[0.03] lg:dark:bg-transparent">
+              {/* Logo */}
 
-            <Link
-              href="/"
-              className="flex items-center gap-3"
-            >
-              <Image
-                src="/logo-icon-1.png"
-                alt="Geecon Technology"
-                width={45}
-                height={42}
-                className="h-10 w-auto"
-              />
-
-              <div className="leading-tight">
-                <div className="text-xl font-extrabold tracking-tight text-slate-950 dark:text-white">
-                  GEECON
-                </div>
-
-                <div className="text-[9px] font-semibold tracking-[0.2em] text-blue-600 dark:text-blue-400">
-                  TECHNOLOGY
-                </div>
-              </div>
-            </Link>
-
-            {/* Description */}
-
-            <p className="mt-5 text-sm leading-7">
-              Delivering innovative
-              technology solutions that
-              help businesses grow,
-              transform and succeed in
-              the digital world.
-            </p>
-
-            {/* =============================================
-                NEWSLETTER
-            ============================================= */}
-
-            <div className="mt-8">
-              <h4 className="text-sm font-semibold text-slate-950 dark:text-white">
-                Stay Updated
-              </h4>
-
-              <p className="mt-2 text-sm leading-6">
-                Subscribe to our
-                newsletter for the latest
-                updates and insights.
-              </p>
-
-              {/* Newsletter form */}
-
-              <form
-                onSubmit={
-                  handleNewsletterSubmit
-                }
-                className={`mt-4 flex items-center gap-2 rounded-xl border bg-slate-50 p-1.5 transition-all dark:bg-white/[0.04] ${
-                  newsletterError
-                    ? "border-red-400 focus-within:border-red-500 dark:border-red-500/50"
-                    : newsletterMessage
-                      ? "border-emerald-400 focus-within:border-emerald-500 dark:border-emerald-500/40"
-                      : "border-slate-200 focus-within:border-blue-400 dark:border-white/[0.08]"
-                }`}
+              <Link
+                href="/"
+                className="inline-flex items-center gap-3"
               >
-                <input
-                  type="email"
-                  value={email}
-                  onChange={(
-                    event
-                  ) => {
-                    setEmail(
-                      event.target
-                        .value
-                    );
-
-                    if (
-                      newsletterError
-                    ) {
-                      setNewsletterError(
-                        ""
-                      );
-                    }
-
-                    if (
-                      newsletterMessage
-                    ) {
-                      setNewsletterMessage(
-                        ""
-                      );
-                    }
-                  }}
-                  placeholder="Enter your email"
-                  disabled={
-                    newsletterLoading
-                  }
-                  autoComplete="email"
-                  aria-label="Email address"
-                  className="min-w-0 flex-1 bg-transparent px-3 py-2 text-sm text-slate-900 outline-none placeholder:text-slate-400 disabled:cursor-not-allowed disabled:opacity-60 dark:text-white dark:placeholder:text-slate-600"
+                <Image
+                  src="/logo-icon-1.png"
+                  alt="Geecon Technology"
+                  width={45}
+                  height={42}
+                  className="h-9 w-auto"
                 />
 
-                <button
-                  type="submit"
-                  disabled={
-                    newsletterLoading
-                  }
-                  aria-label={
-                    newsletterLoading
-                      ? "Subscribing"
-                      : "Subscribe"
-                  }
-                  className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-gradient-to-br from-blue-600 to-cyan-500 text-white shadow-lg shadow-blue-500/20 transition-all hover:scale-105 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:scale-100"
-                >
-                  {newsletterLoading ? (
-                    <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/40 border-t-white" />
-                  ) : (
-                    <Send
-                      size={15}
-                    />
-                  )}
-                </button>
-              </form>
+                <div className="leading-tight">
+                  <div className="text-lg font-extrabold tracking-tight text-slate-950 dark:text-white">
+                    GEECON
+                  </div>
 
-              {/* SUCCESS MESSAGE */}
-
-              {newsletterMessage && (
-                <div
-                  role="status"
-                  className="mt-2 flex items-start gap-1.5 text-xs font-medium text-emerald-600 dark:text-emerald-400"
-                >
-                  <span className="mt-[2px]">
-                    ✓
-                  </span>
-
-                  <span>
-                    {
-                      newsletterMessage
-                    }
-                  </span>
+                  <div className="text-[8px] font-semibold tracking-[0.22em] text-blue-600 dark:text-blue-400">
+                    TECHNOLOGY
+                  </div>
                 </div>
-              )}
+              </Link>
 
-              {/* ERROR MESSAGE */}
+              {/* Description */}
 
-              {newsletterError && (
-                <p
-                  role="alert"
-                  className="mt-2 text-xs font-medium text-red-500 dark:text-red-400"
-                >
-                  {newsletterError}
+              <p className="mt-4 max-w-sm text-[13px] leading-6 text-slate-500 dark:text-slate-400">
+                Delivering innovative technology
+                solutions that help businesses grow,
+                transform and succeed in the digital
+                world.
+              </p>
+
+              {/* ================================================= */}
+              {/* STAY UPDATED */}
+              {/* ================================================= */}
+
+              <div className="mt-6">
+                <h4 className="text-sm font-semibold text-slate-950 dark:text-white">
+                  Stay Updated
+                </h4>
+
+                <p className="mt-1.5 text-[13px] leading-5 text-slate-500 dark:text-slate-400">
+                  Subscribe to our newsletter for the
+                  latest updates and insights.
                 </p>
-              )}
+
+                <form
+                  onSubmit={
+                    handleNewsletterSubmit
+                  }
+                  className={`mt-3 flex w-full max-w-[250px] items-center gap-1 rounded-lg border bg-white p-1 shadow-sm transition-all dark:bg-white/[0.04] ${
+                    newsletterError
+                      ? "border-red-400 focus-within:border-red-500 dark:border-red-500/50"
+                      : newsletterMessage
+                        ? "border-emerald-400 focus-within:border-emerald-500 dark:border-emerald-500/40"
+                        : "border-slate-200 focus-within:border-blue-400 dark:border-white/[0.08]"
+                  }`}
+                >
+                  <input
+                    type="email"
+                    value={email}
+                    onChange={(event) => {
+                      setEmail(
+                        event.target.value
+                      );
+
+                      if (
+                        newsletterError
+                      ) {
+                        setNewsletterError(
+                          ""
+                        );
+                      }
+
+                      if (
+                        newsletterMessage
+                      ) {
+                        setNewsletterMessage(
+                          ""
+                        );
+                      }
+                    }}
+                    placeholder="Enter your email"
+                    disabled={
+                      newsletterLoading
+                    }
+                    autoComplete="email"
+                    aria-label="Email address"
+                    className="min-w-0 flex-1 bg-transparent px-2.5 py-1.5 text-[13px] text-slate-900 outline-none placeholder:text-slate-400 disabled:cursor-not-allowed disabled:opacity-60 dark:text-white dark:placeholder:text-slate-600"
+                  />
+
+                  <button
+                    type="submit"
+                    disabled={
+                      newsletterLoading
+                    }
+                    aria-label={
+                      newsletterLoading
+                        ? "Subscribing"
+                        : "Subscribe"
+                    }
+                    className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-gradient-to-br from-blue-600 via-blue-500 to-cyan-500 text-white shadow-md shadow-blue-500/20 transition-all duration-200 hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-60"
+                  >
+                    {newsletterLoading ? (
+                      <span className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-white/40 border-t-white" />
+                    ) : (
+                      <Send size={13} />
+                    )}
+                  </button>
+                </form>
+
+                {/* Success */}
+
+                {newsletterMessage && (
+                  <div
+                    role="status"
+                    className="mt-2 flex max-w-[250px] items-start gap-1.5 text-[11px] font-medium text-emerald-600 dark:text-emerald-400"
+                  >
+                    <span>✓</span>
+
+                    <span>
+                      {
+                        newsletterMessage
+                      }
+                    </span>
+                  </div>
+                )}
+
+                {/* Error */}
+
+                {newsletterError && (
+                  <p
+                    role="alert"
+                    className="mt-2 max-w-[250px] text-[11px] font-medium text-red-500 dark:text-red-400"
+                  >
+                    {newsletterError}
+                  </p>
+                )}
+              </div>
             </div>
           </AnimateIn>
 
-          {/* ===============================================
-              FOOTER COLUMNS
-          =============================================== */}
+          {/* ================================================= */}
+          {/* FOOTER COLUMNS */}
+          {/* ================================================= */}
 
-          <StaggerContainer className="grid gap-10 sm:grid-cols-2 xl:grid-cols-4">
+          <StaggerContainer className="grid min-w-0 grid-cols-1 gap-7 sm:grid-cols-2 sm:gap-x-8 sm:gap-y-8 xl:grid-cols-4 xl:gap-5">
             <StaggerItem>
               <FooterColumn
                 columnKey="services"
@@ -577,137 +427,60 @@ export function Footer() {
           </StaggerContainer>
         </div>
 
-        {/* =================================================
-            CONTACT / TRUST / SOCIAL
-        ================================================= */}
+        {/* ================================================= */}
+        {/* CONTACT / TRUST */}
+        {/* ================================================= */}
 
-        <div className="grid gap-6 border-t border-slate-200 py-8 md:grid-cols-3 md:items-center dark:border-white/[0.08]">
+        <div className="grid gap-3 border-t border-slate-200/80 py-5 sm:grid-cols-2 sm:items-center dark:border-white/[0.08]">
           {/* Phone */}
 
-          <div className="flex items-center gap-3">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-500/10 dark:text-blue-400">
-              <Phone size={17} />
+          <div className="flex items-center gap-3 rounded-xl border border-slate-200/70 bg-white/60 p-3 sm:border-0 sm:bg-transparent sm:p-0 dark:border-white/[0.06] dark:bg-white/[0.025] sm:dark:bg-transparent">
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-500/10 dark:text-blue-400">
+              <Phone size={16} />
             </div>
 
-            <div>
-              <p className="text-xs text-blue-600 dark:text-blue-400">
+            <div className="min-w-0">
+              <p className="text-[11px] text-blue-600 dark:text-blue-400">
                 Have Questions?
               </p>
 
-              <p className="mt-0.5 text-sm font-semibold text-slate-950 dark:text-white">
+              <p className="mt-0.5 break-words text-[13px] font-semibold text-slate-950 dark:text-white">
                 +91 98765 43210
               </p>
             </div>
           </div>
 
-          {/* Trust */}
+          {/* Trusted Partner */}
 
-          <div className="flex items-center gap-3 md:justify-center">
-            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-500/10 dark:text-blue-400">
-              <ShieldCheck
-                size={17}
-              />
+          <div className="flex items-center gap-3 rounded-xl border border-slate-200/70 bg-white/60 p-3 sm:justify-end sm:border-0 sm:bg-transparent sm:p-0 dark:border-white/[0.06] dark:bg-white/[0.025] sm:dark:bg-transparent">
+            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-500/10 dark:text-blue-400">
+              <ShieldCheck size={16} />
             </div>
 
-            <div>
-              <p className="text-xs text-blue-600 dark:text-blue-400">
+            <div className="min-w-0">
+              <p className="text-[11px] text-blue-600 dark:text-blue-400">
                 Trusted Partner
               </p>
 
-              <p className="mt-0.5 text-sm font-semibold text-slate-950 dark:text-white">
+              <p className="mt-0.5 text-[13px] font-semibold text-slate-950 dark:text-white">
                 Secure. Reliable.
                 Professional.
               </p>
             </div>
           </div>
-
-          {/* Social */}
-
-          <div className="md:text-right">
-            <p className="text-xs text-blue-600 dark:text-blue-400">
-              Follow Us
-            </p>
-
-            <div className="mt-2 flex gap-2 md:justify-end">
-              {[
-                {
-                  label:
-                    "Facebook",
-                  icon: (
-                    <FacebookIcon
-                      size={
-                        14
-                      }
-                    />
-                  ),
-                },
-                {
-                  label:
-                    "Twitter",
-                  icon: (
-                    <TwitterIcon
-                      size={
-                        14
-                      }
-                    />
-                  ),
-                },
-                {
-                  label:
-                    "LinkedIn",
-                  icon: (
-                    <LinkedinIcon
-                      size={
-                        14
-                      }
-                    />
-                  ),
-                },
-                {
-                  label:
-                    "Instagram",
-                  icon: (
-                    <InstagramIcon
-                      size={
-                        14
-                      }
-                    />
-                  ),
-                },
-              ].map(
-                (item) => (
-                  <a
-                    key={
-                      item.label
-                    }
-                    href="#"
-                    aria-label={
-                      item.label
-                    }
-                    className="flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 text-slate-600 transition-all hover:-translate-y-0.5 hover:border-blue-500 hover:bg-blue-500 hover:text-white dark:border-white/[0.08] dark:text-slate-300"
-                  >
-                    {
-                      item.icon
-                    }
-                  </a>
-                )
-              )}
-            </div>
-          </div>
         </div>
 
-        {/* =================================================
-            BOTTOM BAR
-        ================================================= */}
+        {/* ================================================= */}
+        {/* BOTTOM BAR */}
+        {/* ================================================= */}
 
-        <div className="flex flex-col items-center justify-between gap-3 border-t border-slate-200 py-5 text-xs text-slate-400 sm:flex-row dark:border-white/[0.08] dark:text-slate-600">
+        <div className="flex flex-col items-center justify-between gap-3 border-t border-slate-200/80 py-4 text-center text-[11px] text-slate-400 sm:flex-row sm:text-left dark:border-white/[0.08] dark:text-slate-600">
           <p>
-            © 2026 Geecon
-            Technology. All Rights
-            Reserved.
+            © 2026 Geecon Technology. All
+            Rights Reserved.
           </p>
 
-          <div className="flex flex-wrap items-center justify-center gap-3">
+          <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-2 sm:justify-end">
             <Link
               href="/privacy-policy"
               className="transition-colors hover:text-blue-600 dark:hover:text-white"
@@ -715,7 +488,9 @@ export function Footer() {
               Privacy Policy
             </Link>
 
-            <span>•</span>
+            <span className="text-slate-300 dark:text-slate-800">
+              •
+            </span>
 
             <Link
               href="/terms-of-service"
@@ -724,7 +499,9 @@ export function Footer() {
               Terms of Service
             </Link>
 
-            <span>•</span>
+            <span className="text-slate-300 dark:text-slate-800">
+              •
+            </span>
 
             <Link
               href="/sitemap"

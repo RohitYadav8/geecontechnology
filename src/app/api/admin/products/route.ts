@@ -1,18 +1,28 @@
-import { NextRequest, NextResponse } from "next/server";
+import {
+  NextRequest,
+  NextResponse,
+} from "next/server";
+
 import { Prisma } from "@prisma/client";
 
 import { prisma } from "../../../../../lib/prisma";
 
 function cleanOptionalString(value: unknown) {
-  return typeof value === "string" && value.trim()
+  return typeof value === "string" &&
+    value.trim()
     ? value.trim()
     : null;
 }
 
 function cleanJson(
   value: unknown
-): Prisma.InputJsonValue | Prisma.NullableJsonNullValueInput {
-  if (value === undefined || value === null) {
+):
+  | Prisma.InputJsonValue
+  | Prisma.NullableJsonNullValueInput {
+  if (
+    value === undefined ||
+    value === null
+  ) {
     return Prisma.DbNull;
   }
 
@@ -25,24 +35,29 @@ function cleanJson(
 
 export async function GET() {
   try {
-    const products = await prisma.product.findMany({
-      orderBy: [
-        {
-          order: "asc",
-        },
-        {
-          createdAt: "desc",
-        },
-      ],
-    });
+    const products =
+      await prisma.product.findMany({
+        orderBy: [
+          {
+            order: "asc",
+          },
+          {
+            createdAt: "desc",
+          },
+        ],
+      });
 
     return NextResponse.json(products);
   } catch (error) {
-    console.error("GET products error:", error);
+    console.error(
+      "GET products error:",
+      error
+    );
 
     return NextResponse.json(
       {
-        error: "Failed to fetch products",
+        error:
+          "Failed to fetch products",
       },
       {
         status: 500,
@@ -55,9 +70,12 @@ export async function GET() {
    CREATE PRODUCT
 ========================================================= */
 
-export async function POST(request: NextRequest) {
+export async function POST(
+  request: NextRequest
+) {
   try {
-    const body = await request.json();
+    const body =
+      await request.json();
 
     const {
       title,
@@ -83,6 +101,11 @@ export async function POST(request: NextRequest) {
 
       brochureUrl,
 
+      // Brochure gradient
+      brochureGradientFrom,
+      brochureGradientVia,
+      brochureGradientTo,
+
       isActive,
       order,
     } = body;
@@ -97,7 +120,8 @@ export async function POST(request: NextRequest) {
     ) {
       return NextResponse.json(
         {
-          error: "Product title is required",
+          error:
+            "Product title is required",
         },
         {
           status: 400,
@@ -111,7 +135,8 @@ export async function POST(request: NextRequest) {
     ) {
       return NextResponse.json(
         {
-          error: "Product slug is required",
+          error:
+            "Product slug is required",
         },
         {
           status: 400,
@@ -119,7 +144,8 @@ export async function POST(request: NextRequest) {
       );
     }
 
-    const cleanTitle = title.trim();
+    const cleanTitle =
+      title.trim();
 
     const cleanSlug = slug
       .trim()
@@ -156,9 +182,12 @@ export async function POST(request: NextRequest) {
       await prisma.product.create({
         data: {
           title: cleanTitle,
+
           slug: cleanSlug,
 
-          /* MEDIA */
+          /* =========================
+             MEDIA
+          ========================= */
 
           bannerImage:
             cleanOptionalString(
@@ -170,7 +199,9 @@ export async function POST(request: NextRequest) {
               logoImage
             ),
 
-          /* BASIC CONTENT */
+          /* =========================
+             BASIC CONTENT
+          ========================= */
 
           shortDescription:
             cleanOptionalString(
@@ -182,7 +213,9 @@ export async function POST(request: NextRequest) {
               description
             ),
 
-          /* FRONT CARD */
+          /* =========================
+             FRONT CARD
+          ========================= */
 
           cardTagline:
             cleanOptionalString(
@@ -194,7 +227,9 @@ export async function POST(request: NextRequest) {
               cardSecondaryText
             ),
 
-          /* FLIP CARD */
+          /* =========================
+             FLIP CARD
+          ========================= */
 
           flipEyebrow:
             cleanOptionalString(
@@ -211,7 +246,9 @@ export async function POST(request: NextRequest) {
               flipDescription
             ),
 
-          /* DETAIL PAGE JSON */
+          /* =========================
+             DETAIL PAGE JSON
+          ========================= */
 
           features:
             cleanJson(features),
@@ -225,13 +262,37 @@ export async function POST(request: NextRequest) {
           faqs:
             cleanJson(faqs),
 
+          /* =========================
+             BROCHURE
+          ========================= */
+
           brochureUrl:
             cleanOptionalString(
               brochureUrl
             ),
 
+          brochureGradientFrom:
+            cleanOptionalString(
+              brochureGradientFrom
+            ),
+
+          brochureGradientVia:
+            cleanOptionalString(
+              brochureGradientVia
+            ),
+
+          brochureGradientTo:
+            cleanOptionalString(
+              brochureGradientTo
+            ),
+
+          /* =========================
+             DISPLAY
+          ========================= */
+
           isActive:
-            typeof isActive === "boolean"
+            typeof isActive ===
+            "boolean"
               ? isActive
               : true,
 
@@ -257,7 +318,8 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json(
       {
-        error: "Failed to create product",
+        error:
+          "Failed to create product",
       },
       {
         status: 500,

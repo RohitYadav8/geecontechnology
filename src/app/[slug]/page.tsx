@@ -1,106 +1,367 @@
-import { notFound } from "next/navigation";
 import Image from "next/image";
-import { CheckCircle2 } from "lucide-react";
-
-import { prisma } from "../../../lib/prisma";
+import Link from "next/link";
+import { notFound } from "next/navigation";
+import {
+  ArrowLeft,
+  CheckCircle2,
+  ListChecks,
+} from "lucide-react";
 
 import { Navbar } from "../../../components/navbar";
 import { Footer } from "../../../components/footer";
 import { AnimateIn } from "../../../components/animate-in";
 import { AnimatedHeading } from "../../../components/animated-heading";
-import { FloatingBlob } from "../../../components/floating-blob";
-import { MouseGlow } from "../../../components/mouse-glow";
 import {
   StaggerContainer,
   StaggerItem,
 } from "../../../components/stagger-container";
 import { BrochureForm } from "../../../components/brochure-form";
 
-/* -------------------------------------------------------------------------- */
-/*                              JSON HELPERS                                  */
-/* -------------------------------------------------------------------------- */
+/* =========================================================
+   TYPES
+========================================================= */
 
-function getStringArray(value: unknown): string[] {
-  if (!Array.isArray(value)) {
-    return [];
-  }
-
-  return value.filter(
-    (item): item is string =>
-      typeof item === "string"
-  );
-}
-
-function getSections(
-  value: unknown
-): {
+type Product = {
+  id: string;
   title: string;
-  body: string;
-}[] {
-  if (!Array.isArray(value)) {
-    return [];
+  slug: string;
+
+  bannerImage: string | null;
+  logoImage: string | null;
+
+  shortDescription: string | null;
+  description: string | null;
+
+  features: unknown;
+  benefits: unknown;
+  sections: unknown;
+  faqs: unknown;
+
+  brochureUrl: string | null;
+
+  brochureGradientFrom: string | null;
+  brochureGradientVia: string | null;
+  brochureGradientTo: string | null;
+
+  isActive: boolean;
+};
+
+type TextItem = {
+  title?: string;
+  description?: string;
+};
+
+type SectionItem = {
+  title?: string;
+  description?: string;
+  features: string[];
+};
+
+type FaqItem = {
+  question?: string;
+  answer?: string;
+};
+
+/* =========================================================
+   SUBTLE CONTENT ACCENTS
+========================================================= */
+
+type ProductAccent = {
+  card: string;
+  border: string;
+  icon: string;
+  glow: string;
+};
+
+const productAccents: Record<
+  string,
+  ProductAccent
+> = {
+  "global-hr": {
+    card:
+      "bg-[#f7f8ff] dark:bg-slate-900/70",
+    border:
+      "border-[#ebe9f5] dark:border-slate-800",
+    icon:
+      "bg-[#eee9f8] text-[#684195] dark:bg-[#684195]/15 dark:text-[#bba2dc]",
+    glow: "bg-[#8060ad]/10",
+  },
+
+  facewebinar: {
+    card:
+      "bg-cyan-50/50 dark:bg-slate-900/70",
+    border:
+      "border-cyan-100 dark:border-slate-800",
+    icon:
+      "bg-cyan-100 text-cyan-700 dark:bg-cyan-500/10 dark:text-cyan-400",
+    glow: "bg-cyan-400/10",
+  },
+
+  "gift-aid-claims": {
+    card:
+      "bg-blue-50/50 dark:bg-slate-900/70",
+    border:
+      "border-blue-100 dark:border-slate-800",
+    icon:
+      "bg-blue-100 text-blue-700 dark:bg-blue-500/10 dark:text-blue-400",
+    glow: "bg-blue-400/10",
+  },
+
+  "invoice-made-simple": {
+    card:
+      "bg-indigo-50/50 dark:bg-slate-900/70",
+    border:
+      "border-indigo-100 dark:border-slate-800",
+    icon:
+      "bg-indigo-100 text-indigo-700 dark:bg-indigo-500/10 dark:text-indigo-400",
+    glow: "bg-indigo-400/10",
+  },
+
+  "crm-360": {
+    card:
+      "bg-emerald-50/50 dark:bg-slate-900/70",
+    border:
+      "border-emerald-100 dark:border-slate-800",
+    icon:
+      "bg-emerald-100 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400",
+    glow: "bg-emerald-400/10",
+  },
+
+  "bulk-sms-solution": {
+    card:
+      "bg-violet-50/50 dark:bg-slate-900/70",
+    border:
+      "border-violet-100 dark:border-slate-800",
+    icon:
+      "bg-violet-100 text-violet-700 dark:bg-violet-500/10 dark:text-violet-400",
+    glow: "bg-violet-400/10",
+  },
+
+  "my-projects": {
+    card:
+      "bg-amber-50/50 dark:bg-slate-900/70",
+    border:
+      "border-amber-100 dark:border-slate-800",
+    icon:
+      "bg-amber-100 text-amber-700 dark:bg-amber-500/10 dark:text-amber-400",
+    glow: "bg-amber-400/10",
+  },
+
+  "cms-avatar": {
+    card:
+      "bg-red-50/50 dark:bg-slate-900/70",
+    border:
+      "border-red-100 dark:border-slate-800",
+    icon:
+      "bg-red-100 text-red-700 dark:bg-red-500/10 dark:text-red-400",
+    glow: "bg-red-400/10",
+  },
+
+  "listing-based-portals": {
+    card:
+      "bg-orange-50/50 dark:bg-slate-900/70",
+    border:
+      "border-orange-100 dark:border-slate-800",
+    icon:
+      "bg-orange-100 text-orange-700 dark:bg-orange-500/10 dark:text-orange-400",
+    glow: "bg-orange-400/10",
+  },
+
+  syncmydocs: {
+    card:
+      "bg-sky-50/50 dark:bg-slate-900/70",
+    border:
+      "border-sky-100 dark:border-slate-800",
+    icon:
+      "bg-sky-100 text-sky-700 dark:bg-sky-500/10 dark:text-sky-400",
+    glow: "bg-sky-400/10",
+  },
+
+  data360: {
+    card:
+      "bg-teal-50/50 dark:bg-slate-900/70",
+    border:
+      "border-teal-100 dark:border-slate-800",
+    icon:
+      "bg-teal-100 text-teal-700 dark:bg-teal-500/10 dark:text-teal-400",
+    glow: "bg-teal-400/10",
+  },
+};
+
+const defaultAccent: ProductAccent = {
+  card:
+    "bg-[#f7f8ff] dark:bg-slate-900/70",
+
+  border:
+    "border-slate-200 dark:border-slate-800",
+
+  icon:
+    "bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300",
+
+  glow:
+    "bg-blue-400/10",
+};
+
+/* =========================================================
+   FETCH PRODUCT
+========================================================= */
+
+async function getProduct(
+  slug: string
+): Promise<Product | null> {
+  const baseUrl =
+    process.env.NEXT_PUBLIC_SITE_URL ||
+    "http://localhost:3000";
+
+  try {
+    const response = await fetch(
+      `${baseUrl}/api/products/${encodeURIComponent(
+        slug
+      )}`,
+      {
+        cache: "no-store",
+      }
+    );
+
+    if (!response.ok) {
+      return null;
+    }
+
+    return response.json();
+  } catch (error) {
+    console.error(
+      "Product detail fetch error:",
+      error
+    );
+
+    return null;
+  }
+}
+
+/* =========================================================
+   HELPERS
+========================================================= */
+
+function getTextItem(
+  value: unknown
+): TextItem {
+  if (typeof value === "string") {
+    return {
+      description: value,
+    };
   }
 
-  return value
-    .filter(
-      (item) =>
-        typeof item === "object" &&
-        item !== null
-    )
-    .map((item) => {
-      const section =
-        item as Record<string, unknown>;
+  if (
+    typeof value !== "object" ||
+    value === null
+  ) {
+    return {};
+  }
 
-      return {
-        title:
-          typeof section.title === "string"
-            ? section.title
-            : "",
+  const item =
+    value as Record<string, unknown>;
 
-        body:
-          typeof section.body === "string"
-            ? section.body
-            : typeof section.description ===
-                "string"
-              ? section.description
-              : typeof section.text === "string"
-                ? section.text
-                : "",
-      };
-    })
-    .filter(
-      (section) =>
-        section.title.trim() ||
-        section.body.trim()
-    );
+  return {
+    title:
+      typeof item.title === "string"
+        ? item.title
+        : undefined,
+
+    description:
+      typeof item.description === "string"
+        ? item.description
+        : typeof item.body === "string"
+          ? item.body
+          : typeof item.text === "string"
+            ? item.text
+            : undefined,
+  };
 }
 
-/* -------------------------------------------------------------------------- */
-/*                         STATIC ROUTE PARAMETERS                            */
-/* -------------------------------------------------------------------------- */
+function getSectionItem(
+  value: unknown
+): SectionItem {
+  if (typeof value === "string") {
+    return {
+      description: value,
+      features: [],
+    };
+  }
 
-export async function generateStaticParams() {
-  const services =
-    await prisma.service.findMany({
-      where: {
-        isActive: true,
-      },
+  if (
+    typeof value !== "object" ||
+    value === null
+  ) {
+    return {
+      features: [],
+    };
+  }
 
-      select: {
-        slug: true,
-      },
-    });
+  const item =
+    value as Record<string, unknown>;
 
-  return services.map((service) => ({
-    slug: service.slug,
-  }));
+  const nestedFeatures = Array.isArray(
+    item.features
+  )
+    ? item.features.filter(
+        (
+          feature
+        ): feature is string =>
+          typeof feature === "string" &&
+          feature.trim().length > 0
+      )
+    : [];
+
+  return {
+    title:
+      typeof item.title === "string"
+        ? item.title
+        : undefined,
+
+    description:
+      typeof item.description === "string"
+        ? item.description
+        : typeof item.body === "string"
+          ? item.body
+          : typeof item.text === "string"
+            ? item.text
+            : undefined,
+
+    features: nestedFeatures,
+  };
 }
 
-/* -------------------------------------------------------------------------- */
-/*                              PAGE COMPONENT                                */
-/* -------------------------------------------------------------------------- */
+function getFaqItem(
+  value: unknown
+): FaqItem {
+  if (
+    typeof value !== "object" ||
+    value === null
+  ) {
+    return {};
+  }
 
-export default async function SlugPage({
+  const item =
+    value as Record<string, unknown>;
+
+  return {
+    question:
+      typeof item.question === "string"
+        ? item.question
+        : undefined,
+
+    answer:
+      typeof item.answer === "string"
+        ? item.answer
+        : undefined,
+  };
+}
+
+/* =========================================================
+   PAGE
+========================================================= */
+
+export default async function ProductPage({
   params,
 }: {
   params: Promise<{
@@ -109,494 +370,499 @@ export default async function SlugPage({
 }) {
   const { slug } = await params;
 
-  /* ------------------------------------------------------------------------ */
-  /*                         DATABASE SERVICE                                 */
-  /* ------------------------------------------------------------------------ */
+  const product =
+    await getProduct(slug);
 
-  const service =
-    await prisma.service.findFirst({
-      where: {
-        slug,
-        isActive: true,
-      },
-    });
-
-  /* ------------------------------------------------------------------------ */
-  /*                              NOT FOUND                                   */
-  /* ------------------------------------------------------------------------ */
-
-  if (!service) {
+  if (
+    !product ||
+    !product.isActive
+  ) {
     notFound();
   }
 
-  /* ------------------------------------------------------------------------ */
-  /*                           SERVICE DETAIL                                 */
-  /* ------------------------------------------------------------------------ */
+  const accent =
+    productAccents[
+      product.slug
+    ] ?? defaultAccent;
 
-  const detail = {
-    title: service.title,
+  const features = Array.isArray(
+    product.features
+  )
+    ? product.features
+    : [];
 
-    gradient:
-      service.gradient ||
-      "from-blue-600 to-cyan-400",
+  const benefits = Array.isArray(
+    product.benefits
+  )
+    ? product.benefits
+    : [];
 
-    bannerImage:
-      service.bannerImage ||
-      undefined,
+  const sections = Array.isArray(
+    product.sections
+  )
+    ? product.sections
+    : [];
 
-    intro: getStringArray(
-      service.intro
-    ),
+  const faqs = Array.isArray(
+    product.faqs
+  )
+    ? product.faqs
+    : [];
 
-    challenges: getStringArray(
-      service.challenges
-    ),
-
-    middle: getStringArray(
-      service.middle
-    ),
-
-    benefits: getStringArray(
-      service.benefits
-    ),
-
-    closing:
-      service.closing || "",
-
-    coverage: getStringArray(
-      service.coverage
-    ),
-
-    qa: getStringArray(
-      service.qa
-    ),
-
-    sections: getSections(
-      service.sections
-    ),
-  };
-
-  /* ------------------------------------------------------------------------ */
-  /*                              PAGE UI                                     */
-  /* ------------------------------------------------------------------------ */
+  const productLogo =
+    product.logoImage ||
+    product.bannerImage;
 
   return (
-    <div className="flex min-h-screen flex-col overflow-hidden bg-white dark:bg-slate-950">
+    <div className="flex min-h-screen flex-col bg-white dark:bg-slate-950">
       <Navbar />
 
-      <main className="relative flex-1 overflow-hidden">
-        {/* ================================================================ */}
-        {/* BACKGROUND GRID                                                  */}
-        {/* ================================================================ */}
+      <main className="flex-1">
+        {/* =====================================================
+            BANNER
+        ====================================================== */}
 
-        <div
-          className="
-            pointer-events-none
-            absolute
-            inset-0
-            bg-[linear-gradient(to_right,#e5e7eb_1px,transparent_1px),linear-gradient(to_bottom,#e5e7eb_1px,transparent_1px)]
-            bg-[size:48px_48px]
-            opacity-[0.16]
-            dark:opacity-[0.07]
-          "
-        />
+        {product.bannerImage && (
+          <section className="relative w-full overflow-hidden bg-slate-100 dark:bg-slate-900">
+            <div className="relative h-[210px] w-full sm:h-[260px] md:h-[300px] lg:h-[330px] xl:h-[350px]">
+              <Image
+                src={product.bannerImage}
+                alt={product.title}
+                fill
+                priority
+                sizes="100vw"
+                className="object-cover object-center"
+              />
+            </div>
+          </section>
+        )}
 
-        {/* ================================================================ */}
-        {/* BACKGROUND GLOW                                                  */}
-        {/* ================================================================ */}
+        {/* =====================================================
+            PRODUCT INTRO
+        ====================================================== */}
 
-        <div
-          className="
-            pointer-events-none
-            absolute
-            inset-0
-            bg-[radial-gradient(circle_at_top,rgba(59,130,246,.14),transparent_58%)]
-          "
-        />
+        <section className="relative bg-white dark:bg-slate-950">
+          <div
+            className={`pointer-events-none absolute -left-32 top-20 h-80 w-80 rounded-full blur-[130px] ${accent.glow}`}
+          />
 
-        <FloatingBlob
-          className="-right-20 top-14 h-72 w-72"
-          color="bg-blue-400/10"
-          duration={16}
-        />
-
-        <FloatingBlob
-          className="-left-20 top-[620px] h-72 w-72"
-          color="bg-cyan-300/10"
-          duration={20}
-        />
-
-        <section className="relative mx-auto max-w-7xl px-4 pb-24 pt-8 sm:px-6 sm:pt-10 lg:px-8">
-          {/* ================================================================ */}
-          {/* SERVICE HERO                                                     */}
-          {/* ================================================================ */}
-
-          <AnimateIn delay={0.05}>
-            <MouseGlow className="rounded-[28px]">
-              <div
-                className={`
-                  relative
-                  overflow-hidden
-                  rounded-[28px]
-                  bg-gradient-to-br
-                  ${detail.gradient}
-                  p-[2px]
-                  shadow-[0_24px_80px_-32px_rgba(15,23,42,0.28)]
-                `}
+          <div className="relative mx-auto max-w-7xl px-5 pb-10 pt-8 sm:px-8 lg:px-10">
+            <AnimateIn>
+              <Link
+                href="/products"
+                className="group inline-flex items-center gap-2 text-xs font-medium text-slate-500 transition hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"
               >
-                <div
-                  className="
-                    relative
-                    min-h-[300px]
-                    overflow-hidden
-                    rounded-[26px]
-                    bg-white
-                    dark:bg-slate-950
-                    sm:min-h-[360px]
-                    lg:min-h-[420px]
-                  "
-                >
-                  {detail.bannerImage ? (
+                <ArrowLeft
+                  size={14}
+                  className="transition-transform duration-300 group-hover:-translate-x-1"
+                />
+
+                All products
+              </Link>
+            </AnimateIn>
+
+            <div className="mt-7 flex items-center gap-5">
+              {productLogo && (
+                <AnimateIn>
+                  <div className="relative h-[72px] w-[72px] shrink-0 overflow-hidden rounded-[20px] border border-slate-200 bg-white shadow-[0_10px_35px_rgba(15,23,42,0.08)] dark:border-slate-800 dark:bg-slate-900 sm:h-[82px] sm:w-[82px]">
                     <Image
-                      src={detail.bannerImage}
-                      alt={detail.title}
+                      src={productLogo}
+                      alt={`${product.title} logo`}
                       fill
-                      priority
-                      sizes="(max-width: 768px) 100vw, 1280px"
-                      className="object-cover object-center"
+                      sizes="82px"
+                      className="object-contain p-3"
                     />
-                  ) : (
-                    <div
-                      className={`absolute inset-0 bg-gradient-to-br ${detail.gradient}`}
-                    />
-                  )}
-
-                  <div className="absolute inset-0 bg-gradient-to-t from-white via-white/20 to-transparent dark:from-slate-950 dark:via-slate-950/15" />
-
-                  <div className="absolute inset-0 bg-gradient-to-r from-white/40 via-transparent to-transparent dark:from-slate-950/30" />
-
-                  <div className="absolute inset-x-0 bottom-0 p-5 sm:p-8 lg:p-10">
-                    <div className="flex items-end gap-4 sm:gap-5">
-                      <div
-                        className={`
-                          flex
-                          h-16
-                          w-16
-                          shrink-0
-                          items-center
-                          justify-center
-                          rounded-2xl
-                          bg-gradient-to-br
-                          ${detail.gradient}
-                          text-white
-                          shadow-lg
-                          sm:h-20
-                          sm:w-20
-                        `}
-                      >
-                        <CheckCircle2
-                          size={30}
-                          strokeWidth={1.7}
-                        />
-                      </div>
-
-                      <div className="min-w-0 pb-1">
-                        <AnimatedHeading
-                          text={detail.title}
-                          as="h1"
-                          className="text-2xl font-semibold tracking-tight text-slate-950 dark:text-white sm:text-4xl lg:text-5xl"
-                        />
-                      </div>
-                    </div>
                   </div>
-                </div>
-              </div>
-            </MouseGlow>
-          </AnimateIn>
+                </AnimateIn>
+              )}
 
-          {/* ================================================================ */}
-          {/* CONTENT + BROCHURE                                               */}
-          {/* ================================================================ */}
+              <AnimatedHeading
+                text={product.title}
+                as="h1"
+                delay={0.05}
+                className="text-3xl font-bold tracking-tight text-slate-950 dark:text-white sm:text-4xl lg:text-[42px]"
+              />
+            </div>
 
-          <div className="mt-10 grid gap-8 lg:grid-cols-[minmax(0,1fr)_340px] lg:gap-10">
-            {/* ============================================================= */}
-            {/* LEFT CONTENT                                                  */}
-            {/* ============================================================= */}
+            {product.shortDescription && (
+              <AnimateIn delay={0.1}>
+                <p className="mt-7 max-w-4xl text-sm leading-7 text-slate-500 dark:text-slate-400 sm:text-[15px]">
+                  {product.shortDescription}
+                </p>
+              </AnimateIn>
+            )}
+          </div>
+        </section>
 
-            <div className="space-y-6">
-              {/* =========================================================== */}
-              {/* OVERVIEW                                                    */}
-              {/* =========================================================== */}
+        {/* =====================================================
+            CONTENT + BROCHURE FORM
+        ====================================================== */}
 
-              {(detail.intro.length > 0 ||
-                detail.middle.length > 0 ||
-                detail.closing) && (
-                <AnimateIn delay={0.1}>
-                  <MouseGlow className="rounded-3xl">
-                    <div className="rounded-3xl border border-slate-200/80 bg-white/80 p-5 shadow-[0_20px_60px_-38px_rgba(15,23,42,0.28)] backdrop-blur-xl dark:border-slate-800 dark:bg-slate-900/70 sm:p-7">
-                      <div className="mb-5 flex items-center gap-3">
+        <section className="relative pb-16">
+          <div className="mx-auto grid max-w-7xl items-start gap-7 px-5 sm:px-8 lg:grid-cols-[minmax(0,1fr)_300px] lg:px-10 xl:grid-cols-[minmax(0,1fr)_320px]">
+            {/* =================================================
+                LEFT
+            ================================================= */}
+
+            <div className="min-w-0 space-y-7">
+              {/* ===============================================
+                  OVERVIEW
+              =============================================== */}
+
+              {(product.description ||
+                sections.length > 0) && (
+                <AnimateIn>
+                  <div
+                    className={`relative overflow-hidden rounded-[26px] border p-6 shadow-[0_12px_45px_rgba(15,23,42,0.035)] sm:p-8 ${accent.card} ${accent.border}`}
+                  >
+                    <div
+                      className={`pointer-events-none absolute -right-24 -top-24 h-64 w-64 rounded-full blur-[100px] ${accent.glow}`}
+                    />
+
+                    <div className="relative">
+                      <div className="flex items-center gap-3">
                         <div
-                          className={`h-9 w-1.5 rounded-full bg-gradient-to-b ${detail.gradient}`}
-                        />
+                          className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl ${accent.icon}`}
+                        >
+                          <CheckCircle2
+                            size={17}
+                          />
+                        </div>
 
-                        <h2 className="text-base font-semibold text-slate-950 dark:text-white">
+                        <h2 className="text-[16px] font-semibold text-slate-950 dark:text-white">
                           Overview
                         </h2>
                       </div>
 
-                      <StaggerContainer className="space-y-4 text-sm leading-7 text-slate-600 dark:text-slate-400">
-                        {detail.intro.map(
-                          (paragraph, index) => (
-                            <StaggerItem
-                              key={`intro-${index}`}
-                            >
-                              <p>{paragraph}</p>
-                            </StaggerItem>
-                          )
-                        )}
+                      {product.description && (
+                        <p className="mt-6 whitespace-pre-line text-sm leading-7 text-slate-600 dark:text-slate-300 sm:text-[15px]">
+                          {
+                            product.description
+                          }
+                        </p>
+                      )}
 
-                        {detail.middle.map(
-                          (paragraph, index) => (
-                            <StaggerItem
-                              key={`middle-${index}`}
-                            >
-                              <p>{paragraph}</p>
-                            </StaggerItem>
-                          )
-                        )}
+                      {sections.length >
+                        0 && (
+                        <StaggerContainer className="mt-7 space-y-7">
+                          {sections.map(
+                            (
+                              section,
+                              index
+                            ) => {
+                              const item =
+                                getSectionItem(
+                                  section
+                                );
 
-                        {detail.closing && (
-                          <StaggerItem>
-                            <p>
-                              {detail.closing}
-                            </p>
-                          </StaggerItem>
-                        )}
-                      </StaggerContainer>
-                    </div>
-                  </MouseGlow>
-                </AnimateIn>
-              )}
-
-              {/* =========================================================== */}
-              {/* CHALLENGES                                                  */}
-              {/* =========================================================== */}
-
-              {detail.challenges.length >
-                0 && (
-                <AnimateIn delay={0.14}>
-                  <MouseGlow className="rounded-3xl">
-                    <div className="rounded-3xl border border-slate-200/80 bg-white/80 p-5 shadow-[0_20px_60px_-38px_rgba(15,23,42,0.28)] backdrop-blur-xl dark:border-slate-800 dark:bg-slate-900/70 sm:p-7">
-                      <div className="mb-5 flex items-center gap-3">
-                        <div
-                          className={`h-9 w-1.5 rounded-full bg-gradient-to-b ${detail.gradient}`}
-                        />
-
-                        <h2 className="text-base font-semibold text-slate-950 dark:text-white">
-                          Challenges
-                        </h2>
-                      </div>
-
-                      <StaggerContainer className="space-y-3">
-                        {detail.challenges.map(
-                          (point, index) => (
-                            <StaggerItem
-                              key={`challenge-${index}`}
-                            >
-                              <div className="group flex gap-3 rounded-2xl border border-slate-200/70 bg-slate-50/70 px-4 py-3 text-sm leading-6 text-slate-600 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-md dark:border-slate-800 dark:bg-slate-950/40 dark:text-slate-400">
-                                <span
-                                  className={`mt-0.5 flex h-6 w-6 shrink-0 items-center justify-center rounded-full bg-gradient-to-br ${detail.gradient} text-[10px] font-semibold text-white`}
-                                >
-                                  {index + 1}
-                                </span>
-
-                                <span>
-                                  {point}
-                                </span>
-                              </div>
-                            </StaggerItem>
-                          )
-                        )}
-                      </StaggerContainer>
-                    </div>
-                  </MouseGlow>
-                </AnimateIn>
-              )}
-
-              {/* =========================================================== */}
-              {/* BENEFITS                                                    */}
-              {/* =========================================================== */}
-
-              {detail.benefits.length > 0 && (
-                <AnimateIn delay={0.18}>
-                  <MouseGlow className="rounded-3xl">
-                    <div className="rounded-3xl border border-slate-200/80 bg-white/80 p-5 shadow-[0_20px_60px_-38px_rgba(15,23,42,0.28)] backdrop-blur-xl dark:border-slate-800 dark:bg-slate-900/70 sm:p-7">
-                      <div className="mb-5 flex items-center gap-3">
-                        <div
-                          className={`h-9 w-1.5 rounded-full bg-gradient-to-b ${detail.gradient}`}
-                        />
-
-                        <h2 className="text-base font-semibold text-slate-950 dark:text-white">
-                          Benefits
-                        </h2>
-                      </div>
-
-                      <StaggerContainer className="grid gap-3 sm:grid-cols-2">
-                        {detail.benefits.map(
-                          (point, index) => (
-                            <StaggerItem
-                              key={`benefit-${index}`}
-                            >
-                              <div className="flex h-full items-start gap-3 rounded-2xl border border-slate-200/70 bg-slate-50/70 px-4 py-3 text-sm leading-6 text-slate-600 dark:border-slate-800 dark:bg-slate-950/40 dark:text-slate-400">
-                                <CheckCircle2
-                                  size={17}
-                                  className="mt-1 shrink-0 text-blue-600 dark:text-blue-400"
-                                />
-
-                                <span>
-                                  {point}
-                                </span>
-                              </div>
-                            </StaggerItem>
-                          )
-                        )}
-                      </StaggerContainer>
-                    </div>
-                  </MouseGlow>
-                </AnimateIn>
-              )}
-
-              {/* =========================================================== */}
-              {/* COVERAGE                                                     */}
-              {/* =========================================================== */}
-
-              {detail.coverage.length >
-                0 && (
-                <AnimateIn delay={0.22}>
-                  <MouseGlow className="rounded-3xl">
-                    <div className="rounded-3xl border border-slate-200/80 bg-white/80 p-5 shadow-[0_20px_60px_-38px_rgba(15,23,42,0.28)] backdrop-blur-xl dark:border-slate-800 dark:bg-slate-900/70 sm:p-7">
-                      <div className="mb-5 flex items-center gap-3">
-                        <div
-                          className={`h-9 w-1.5 rounded-full bg-gradient-to-b ${detail.gradient}`}
-                        />
-
-                        <h2 className="text-base font-semibold text-slate-950 dark:text-white">
-                          Our service coverage
-                          areas include:
-                        </h2>
-                      </div>
-
-                      <StaggerContainer className="grid gap-3 sm:grid-cols-2">
-                        {detail.coverage.map(
-                          (item, index) => (
-                            <StaggerItem
-                              key={`coverage-${index}`}
-                            >
-                              <div className="flex h-full items-start gap-3 rounded-2xl border border-slate-200/70 bg-slate-50/70 px-4 py-3 text-sm leading-6 text-slate-600 dark:border-slate-800 dark:bg-slate-950/40 dark:text-slate-400">
-                                <CheckCircle2
-                                  size={17}
-                                  className="mt-1 shrink-0 text-blue-600 dark:text-blue-400"
-                                />
-
-                                <span>
-                                  {item}
-                                </span>
-                              </div>
-                            </StaggerItem>
-                          )
-                        )}
-                      </StaggerContainer>
-                    </div>
-                  </MouseGlow>
-                </AnimateIn>
-              )}
-
-              {/* =========================================================== */}
-              {/* CUSTOM SECTIONS                                             */}
-              {/* =========================================================== */}
-
-              {detail.sections.map(
-                (section, index) => (
-                  <AnimateIn
-                    key={`section-${index}`}
-                    delay={0.24}
-                  >
-                    <MouseGlow className="rounded-3xl">
-                      <div className="rounded-3xl border border-slate-200/80 bg-white/80 p-5 shadow-[0_20px_60px_-38px_rgba(15,23,42,0.28)] backdrop-blur-xl dark:border-slate-800 dark:bg-slate-900/70 sm:p-7">
-                        {section.title && (
-                          <div className="mb-4 flex items-center gap-3">
-                            <div
-                              className={`h-9 w-1.5 rounded-full bg-gradient-to-b ${detail.gradient}`}
-                            />
-
-                            <h2 className="text-base font-semibold text-slate-950 dark:text-white">
-                              {
-                                section.title
+                              if (
+                                !item.title &&
+                                !item.description &&
+                                item.features
+                                  .length ===
+                                  0
+                              ) {
+                                return null;
                               }
-                            </h2>
-                          </div>
-                        )}
 
-                        {section.body && (
-                          <p className="whitespace-pre-line text-sm leading-7 text-slate-600 dark:text-slate-400">
-                            {section.body}
-                          </p>
-                        )}
-                      </div>
-                    </MouseGlow>
-                  </AnimateIn>
-                )
+                              return (
+                                <StaggerItem
+                                  key={
+                                    index
+                                  }
+                                >
+                                  <div>
+                                    {item.title && (
+                                      <h3 className="text-[15px] font-semibold text-slate-900 dark:text-white">
+                                        {
+                                          item.title
+                                        }
+                                      </h3>
+                                    )}
+
+                                    {item.description && (
+                                      <p
+                                        className={`whitespace-pre-line text-sm leading-7 text-slate-600 dark:text-slate-300 ${
+                                          item.title
+                                            ? "mt-2"
+                                            : ""
+                                        }`}
+                                      >
+                                        {
+                                          item.description
+                                        }
+                                      </p>
+                                    )}
+
+                                    {item.features
+                                      .length >
+                                      0 && (
+                                      <ul className="mt-3 space-y-1.5">
+                                        {item.features.map(
+                                          (
+                                            feature,
+                                            featureIndex
+                                          ) => (
+                                            <li
+                                              key={
+                                                featureIndex
+                                              }
+                                              className="flex items-start gap-2.5 text-sm leading-6 text-slate-600 dark:text-slate-300"
+                                            >
+                                              <span className="mt-[9px] h-1.5 w-1.5 shrink-0 rounded-full bg-slate-400 dark:bg-slate-500" />
+
+                                              <span>
+                                                {
+                                                  feature
+                                                }
+                                              </span>
+                                            </li>
+                                          )
+                                        )}
+                                      </ul>
+                                    )}
+                                  </div>
+                                </StaggerItem>
+                              );
+                            }
+                          )}
+                        </StaggerContainer>
+                      )}
+                    </div>
+                  </div>
+                </AnimateIn>
               )}
 
-              {/* =========================================================== */}
-              {/* FAQ                                                          */}
-              {/* =========================================================== */}
+              {/* ===============================================
+                  FEATURES
+              =============================================== */}
 
-              {detail.qa.length > 0 && (
-                <AnimateIn delay={0.28}>
-                  <MouseGlow className="rounded-3xl">
-                    <div className="rounded-3xl border border-slate-200/80 bg-white/80 p-5 shadow-[0_20px_60px_-38px_rgba(15,23,42,0.28)] backdrop-blur-xl dark:border-slate-800 dark:bg-slate-900/70 sm:p-7">
-                      <div className="mb-5 flex items-center gap-3">
+              {features.length > 0 && (
+                <AnimateIn>
+                  <div
+                    className={`relative overflow-hidden rounded-[26px] border p-6 shadow-[0_12px_45px_rgba(15,23,42,0.035)] sm:p-8 ${accent.card} ${accent.border}`}
+                  >
+                    <div
+                      className={`pointer-events-none absolute -right-24 -top-24 h-64 w-64 rounded-full blur-[100px] ${accent.glow}`}
+                    />
+
+                    <div className="relative">
+                      <div className="flex items-center gap-3">
                         <div
-                          className={`h-9 w-1.5 rounded-full bg-gradient-to-b ${detail.gradient}`}
-                        />
+                          className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl ${accent.icon}`}
+                        >
+                          <ListChecks
+                            size={17}
+                          />
+                        </div>
 
-                        <h2 className="text-base font-semibold text-slate-950 dark:text-white">
-                          Frequently asked
-                          questions
+                        <h2 className="text-[16px] font-semibold text-slate-950 dark:text-white">
+                          Key features
                         </h2>
                       </div>
 
-                      <StaggerContainer className="space-y-3">
-                        {detail.qa.map(
-                          (paragraph, index) => (
-                            <StaggerItem
-                              key={`qa-${index}`}
-                            >
-                              <div className="rounded-2xl border border-slate-200/70 bg-slate-50/70 px-4 py-3 text-sm leading-6 text-slate-600 dark:border-slate-800 dark:bg-slate-950/40 dark:text-slate-400">
-                                {paragraph}
-                              </div>
-                            </StaggerItem>
-                          )
+                      <StaggerContainer className="mt-6 space-y-5">
+                        {features.map(
+                          (
+                            feature,
+                            index
+                          ) => {
+                            const item =
+                              getTextItem(
+                                feature
+                              );
+
+                            if (
+                              !item.title &&
+                              !item.description
+                            ) {
+                              return null;
+                            }
+
+                            return (
+                              <StaggerItem
+                                key={
+                                  index
+                                }
+                              >
+                                <div className="text-sm leading-7 text-slate-600 dark:text-slate-300">
+                                  {item.title && (
+                                    <h3 className="font-semibold text-slate-900 dark:text-white">
+                                      {
+                                        item.title
+                                      }
+                                    </h3>
+                                  )}
+
+                                  {item.description && (
+                                    <p
+                                      className={
+                                        item.title
+                                          ? "mt-1"
+                                          : ""
+                                      }
+                                    >
+                                      {
+                                        item.description
+                                      }
+                                    </p>
+                                  )}
+                                </div>
+                              </StaggerItem>
+                            );
+                          }
                         )}
                       </StaggerContainer>
                     </div>
-                  </MouseGlow>
+                  </div>
+                </AnimateIn>
+              )}
+
+              {/* ===============================================
+                  BENEFITS
+              =============================================== */}
+
+              {benefits.length > 0 && (
+                <AnimateIn>
+                  <div
+                    className={`relative overflow-hidden rounded-[26px] border p-6 shadow-[0_12px_45px_rgba(15,23,42,0.035)] sm:p-8 ${accent.card} ${accent.border}`}
+                  >
+                    <div className="flex items-center gap-3">
+                      <div
+                        className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl ${accent.icon}`}
+                      >
+                        <CheckCircle2
+                          size={17}
+                        />
+                      </div>
+
+                      <h2 className="text-[16px] font-semibold text-slate-950 dark:text-white">
+                        Benefits
+                      </h2>
+                    </div>
+
+                    <StaggerContainer className="mt-6 space-y-5">
+                      {benefits.map(
+                        (
+                          benefit,
+                          index
+                        ) => {
+                          const item =
+                            getTextItem(
+                              benefit
+                            );
+
+                          if (
+                            !item.title &&
+                            !item.description
+                          ) {
+                            return null;
+                          }
+
+                          return (
+                            <StaggerItem
+                              key={index}
+                            >
+                              <div className="text-sm leading-7 text-slate-600 dark:text-slate-300">
+                                {item.title && (
+                                  <h3 className="font-semibold text-slate-900 dark:text-white">
+                                    {
+                                      item.title
+                                    }
+                                  </h3>
+                                )}
+
+                                {item.description && (
+                                  <p
+                                    className={
+                                      item.title
+                                        ? "mt-1"
+                                        : ""
+                                    }
+                                  >
+                                    {
+                                      item.description
+                                    }
+                                  </p>
+                                )}
+                              </div>
+                            </StaggerItem>
+                          );
+                        }
+                      )}
+                    </StaggerContainer>
+                  </div>
+                </AnimateIn>
+              )}
+
+              
+
+              {faqs.length > 0 && (
+                <AnimateIn>
+                  <div
+                    className={`relative overflow-hidden rounded-[26px] border p-6 shadow-[0_12px_45px_rgba(15,23,42,0.035)] sm:p-8 ${accent.card} ${accent.border}`}
+                  >
+                    <StaggerContainer className="space-y-6">
+                      {faqs.map(
+                        (
+                          faq,
+                          index
+                        ) => {
+                          const item =
+                            getFaqItem(
+                              faq
+                            );
+
+                          if (
+                            !item.question &&
+                            !item.answer
+                          ) {
+                            return null;
+                          }
+
+                          return (
+                            <StaggerItem
+                              key={index}
+                            >
+                              <div>
+                                {item.question && (
+                                  <h3 className="text-sm font-semibold text-slate-950 dark:text-white">
+                                    {
+                                      item.question
+                                    }
+                                  </h3>
+                                )}
+
+                                {item.answer && (
+                                  <p className="mt-2 whitespace-pre-line text-sm leading-7 text-slate-600 dark:text-slate-300">
+                                    {
+                                      item.answer
+                                    }
+                                  </p>
+                                )}
+                              </div>
+                            </StaggerItem>
+                          );
+                        }
+                      )}
+                    </StaggerContainer>
+                  </div>
                 </AnimateIn>
               )}
             </div>
 
-            {/* ============================================================= */}
-            {/* BROCHURE FORM                                                 */}
-            {/* ============================================================= */}
+            
 
             <AnimateIn
-              delay={0.2}
+              delay={0.15}
               direction="left"
-              className="lg:sticky lg:top-24 lg:self-start"
+              className="lg:sticky lg:top-24"
             >
               <BrochureForm
-                gradient={detail.gradient}
+                productId={product.id}
+                gradientFrom={product.brochureGradientFrom}
+                gradientVia={product.brochureGradientVia}
+                gradientTo={product.brochureGradientTo}
               />
             </AnimateIn>
           </div>
