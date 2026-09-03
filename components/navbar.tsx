@@ -6,7 +6,6 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 import {
-  Briefcase,
   ChevronDown,
   ChevronRight,
   Cloud,
@@ -18,14 +17,10 @@ import {
   Server,
   Settings,
   Share2,
-  User,
   X,
 } from "lucide-react";
 
-import {
-  AnimatePresence,
-  motion,
-} from "motion/react";
+import { AnimatePresence, motion } from "motion/react";
 
 import { ThemeToggle } from "./theme-toggle";
 
@@ -45,51 +40,45 @@ const navLinks = [
 
     children: [
       {
-        label: "Web Hosting",
-        href: "/web-hosting",
-        icon: Server,
-      },
-
-      {
-        label: "Software Products",
-        href: "/software-products",
+        label: "Website Development",
+        href: "/website-development",
         icon: Code2,
       },
 
       {
-        label: "Mobile Solution",
-        href: "/mobile-solution",
+        label: "Customised Software Development",
+        href: "/customised-software-development",
         icon: Settings,
       },
 
       {
-        label: "Internet Technology",
-        href: "/internet-technology",
-        icon: Globe2,
+        label: "VPS/Dedicated Servers",
+        href: "/vps-dedicated-servers",
+        icon: Server,
       },
 
       {
-        label: "Corporate Branding",
-        href: "/corporate-branding",
-        icon: Share2,
-      },
-
-      {
-        label: "ERP Solutions",
-        href: "/erp-solutions",
+        label: "Cloud Services",
+        href: "/cloud-services",
         icon: Cloud,
       },
 
       {
-        label: "HR Management",
-        href: "/hr-management",
-        icon: User,
+        label: "Social Media Marketing",
+        href: "/social-media-marketing",
+        icon: Share2,
       },
 
       {
-        label: "Corporate Training",
-        href: "/corporate-training",
-        icon: Briefcase,
+        label: "Search Engine Optimisation",
+        href: "/search-engine-optimisation",
+        icon: Globe2,
+      },
+
+      {
+        label: "Software Support & Maintenance",
+        href: "/software-support-maintenance",
+        icon: Settings,
       },
     ],
   },
@@ -122,19 +111,14 @@ const navLinks = [
 export function Navbar() {
   const pathname = usePathname();
 
-  const [scrolled, setScrolled] =
-    useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
-  const [mobileOpen, setMobileOpen] =
-    useState(false);
+  const [mobileOpen, setMobileOpen] = useState(false);
 
-  const [servicesOpen, setServicesOpen] =
-    useState(false);
+  const [servicesOpen, setServicesOpen] = useState(false);
 
-  const [
-    mobileServicesOpen,
-    setMobileServicesOpen,
-  ] = useState(false);
+  const [mobileServicesOpen, setMobileServicesOpen] =
+    useState(false);
 
   /* =======================================================
      SCROLL
@@ -147,19 +131,12 @@ export function Navbar() {
 
     handleScroll();
 
-    window.addEventListener(
-      "scroll",
-      handleScroll,
-      {
-        passive: true,
-      }
-    );
+    window.addEventListener("scroll", handleScroll, {
+      passive: true,
+    });
 
     return () => {
-      window.removeEventListener(
-        "scroll",
-        handleScroll
-      );
+      window.removeEventListener("scroll", handleScroll);
     };
   }, []);
 
@@ -177,9 +154,7 @@ export function Navbar() {
      ACTIVE ROUTE
   ======================================================= */
 
-  const isRouteActive = (
-    href: string
-  ) => {
+  const isRouteActive = (href: string) => {
     if (href === "/") {
       return pathname === "/";
     }
@@ -192,9 +167,7 @@ export function Navbar() {
     navLinks[1].children?.some(
       (child) =>
         pathname === child.href ||
-        pathname.startsWith(
-          `${child.href}/`
-        )
+        pathname.startsWith(`${child.href}/`)
     );
 
   /* =======================================================
@@ -275,9 +248,7 @@ export function Navbar() {
 
       <div
         className={`mx-auto flex max-w-7xl items-center justify-between px-4 transition-all duration-300 sm:px-6 ${
-          scrolled
-            ? "py-3"
-            : "py-4"
+          scrolled ? "py-3" : "py-4"
         }`}
       >
         {/* =================================================
@@ -307,8 +278,7 @@ export function Navbar() {
             </div>
 
             <div className="max-w-[170px] text-[7px] font-semibold tracking-[0.13em] text-slate-400 sm:text-[8px] dark:text-slate-500">
-              SIMPLE SOLUTIONS ENGINEERED FOR
-              EXTREME
+              SIMPLE SOLUTIONS ENGINEERED FOR EXTREME
             </div>
           </div>
         </Link>
@@ -322,9 +292,7 @@ export function Navbar() {
             const active =
               link.label === "SERVICES"
                 ? servicesActive
-                : isRouteActive(
-                    link.href
-                  );
+                : isRouteActive(link.href);
 
             /* =============================================
                SERVICES
@@ -335,12 +303,8 @@ export function Navbar() {
                 <div
                   key={link.label}
                   className="relative"
-                  onMouseEnter={() =>
-                    setServicesOpen(true)
-                  }
-                  onMouseLeave={() =>
-                    setServicesOpen(false)
-                  }
+                  onMouseEnter={() => setServicesOpen(true)}
+                  onMouseLeave={() => setServicesOpen(false)}
                 >
                   {/* SERVICES NAV LINK */}
 
@@ -357,9 +321,7 @@ export function Navbar() {
                     <ChevronDown
                       size={14}
                       className={`transition-transform duration-300 ${
-                        servicesOpen
-                          ? "rotate-180"
-                          : ""
+                        servicesOpen ? "rotate-180" : ""
                       }`}
                     />
 
@@ -400,20 +362,20 @@ export function Navbar() {
                         }}
                         className="absolute left-1/2 top-full w-[440px] -translate-x-1/2 pt-4"
                       >
-                        {/* Hover Bridge */}
+                        {/* HOVER BRIDGE */}
 
                         <div className="absolute left-0 right-0 top-0 h-4" />
 
-                        {/* Dropdown Panel */}
+                        {/* DROPDOWN PANEL */}
 
                         <div className="relative overflow-hidden rounded-[22px] border border-slate-200/80 bg-white/95 p-2.5 shadow-[0_24px_70px_-24px_rgba(15,23,42,0.35)] backdrop-blur-2xl dark:border-white/[0.09] dark:bg-[#0b1220]/95 dark:shadow-[0_28px_80px_-24px_rgba(0,0,0,0.7)]">
-                          {/* Background Glow */}
+                          {/* BACKGROUND GLOW */}
 
                           <div className="pointer-events-none absolute -right-16 -top-16 h-40 w-40 rounded-full bg-blue-500/[0.08] blur-3xl" />
 
                           <div className="pointer-events-none absolute -bottom-20 -left-16 h-40 w-40 rounded-full bg-cyan-400/[0.06] blur-3xl" />
 
-                          {/* Dropdown Header */}
+                          {/* DROPDOWN HEADER */}
 
                           <div className="relative mb-2 flex items-center justify-between border-b border-slate-100 px-3 pb-3 pt-2 dark:border-white/[0.06]">
                             <div>
@@ -422,8 +384,7 @@ export function Navbar() {
                               </p>
 
                               <p className="mt-1 text-xs text-slate-400 dark:text-slate-500">
-                                Explore our technology
-                                solutions
+                                Explore our technology solutions
                               </p>
                             </div>
 
@@ -440,29 +401,22 @@ export function Navbar() {
                             </Link>
                           </div>
 
-                          {/* Service Links */}
+                          {/* SERVICE LINKS */}
 
                           <div className="relative grid grid-cols-1 gap-1">
                             {link.children.map(
-                              (
-                                child,
-                                index
-                              ) => {
+                              (child, index) => {
                                 const childActive =
-                                  pathname ===
-                                    child.href ||
+                                  pathname === child.href ||
                                   pathname.startsWith(
                                     `${child.href}/`
                                   );
 
-                                const Icon =
-                                  child.icon;
+                                const Icon = child.icon;
 
                                 return (
                                   <motion.div
-                                    key={
-                                      child.label
-                                    }
+                                    key={child.label}
                                     initial={{
                                       opacity: 0,
                                       x: -6,
@@ -473,22 +427,18 @@ export function Navbar() {
                                     }}
                                     transition={{
                                       duration: 0.2,
-                                      delay:
-                                        index *
-                                        0.025,
+                                      delay: index * 0.025,
                                     }}
                                   >
                                     <Link
-                                      href={
-                                        child.href
-                                      }
+                                      href={child.href}
                                       className={`group/item relative flex items-center gap-3 overflow-hidden rounded-xl px-3 py-2.5 transition-all duration-200 ${
                                         childActive
                                           ? "bg-blue-50 text-blue-700 dark:bg-blue-500/[0.12] dark:text-blue-300"
                                           : "text-slate-600 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-white/[0.05]"
                                       }`}
                                     >
-                                      {/* Active Line */}
+                                      {/* ACTIVE LINE */}
 
                                       <span
                                         className={`absolute bottom-2 left-0 top-2 w-[3px] rounded-r-full bg-gradient-to-b from-blue-500 to-cyan-400 transition-all duration-200 ${
@@ -498,7 +448,7 @@ export function Navbar() {
                                         }`}
                                       />
 
-                                      {/* Icon */}
+                                      {/* ICON */}
 
                                       <span
                                         className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border transition-all duration-200 ${
@@ -508,24 +458,18 @@ export function Navbar() {
                                         }`}
                                       >
                                         <Icon
-                                          size={
-                                            16
-                                          }
-                                          strokeWidth={
-                                            1.8
-                                          }
+                                          size={16}
+                                          strokeWidth={1.8}
                                         />
                                       </span>
 
-                                      {/* Label */}
+                                      {/* LABEL */}
 
                                       <span className="min-w-0 flex-1 text-[13px] font-medium transition-colors group-hover/item:text-[#1a2b4a] dark:group-hover/item:text-white">
-                                        {
-                                          child.label
-                                        }
+                                        {child.label}
                                       </span>
 
-                                      {/* Arrow */}
+                                      {/* ARROW */}
 
                                       <ChevronRight
                                         size={15}
@@ -542,7 +486,7 @@ export function Navbar() {
                             )}
                           </div>
 
-                          {/* Bottom Accent */}
+                          {/* BOTTOM ACCENT */}
 
                           <div className="relative mt-2 h-[2px] overflow-hidden rounded-full bg-slate-100 dark:bg-white/[0.05]">
                             <motion.div
@@ -605,10 +549,7 @@ export function Navbar() {
           <button
             type="button"
             onClick={() =>
-              setMobileOpen(
-                (previous) =>
-                  !previous
-              )
+              setMobileOpen((previous) => !previous)
             }
             aria-label="Toggle navigation menu"
             aria-expanded={mobileOpen}
@@ -639,9 +580,7 @@ export function Navbar() {
             const active =
               link.label === "SERVICES"
                 ? servicesActive
-                : isRouteActive(
-                    link.href
-                  );
+                : isRouteActive(link.href);
 
             /* =============================================
                MOBILE SERVICES
@@ -669,16 +608,11 @@ export function Navbar() {
                       type="button"
                       onClick={() =>
                         setMobileServicesOpen(
-                          (
-                            previous
-                          ) =>
-                            !previous
+                          (previous) => !previous
                         )
                       }
                       aria-label="Toggle services"
-                      aria-expanded={
-                        mobileServicesOpen
-                      }
+                      aria-expanded={mobileServicesOpen}
                       className="flex h-9 w-9 items-center justify-center rounded-lg text-slate-500 transition hover:bg-slate-100 hover:text-blue-600 dark:text-slate-400 dark:hover:bg-white/[0.05] dark:hover:text-blue-400"
                     >
                       <ChevronDown
@@ -703,54 +637,40 @@ export function Navbar() {
                   >
                     <div className="overflow-hidden">
                       <div className="mb-2 mt-1 space-y-1 rounded-2xl border border-slate-100 bg-slate-50/70 p-2 dark:border-white/[0.06] dark:bg-white/[0.025]">
-                        {link.children.map(
-                          (child) => {
-                            const Icon =
-                              child.icon;
+                        {link.children.map((child) => {
+                          const Icon = child.icon;
 
-                            const childActive =
-                              pathname ===
-                                child.href ||
-                              pathname.startsWith(
-                                `${child.href}/`
-                              );
-
-                            return (
-                              <Link
-                                key={
-                                  child.label
-                                }
-                                href={
-                                  child.href
-                                }
-                                className={`group flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-all ${
-                                  childActive
-                                    ? "bg-white text-blue-600 shadow-sm dark:bg-white/[0.06] dark:text-blue-400"
-                                    : "text-slate-600 hover:bg-white hover:text-blue-600 dark:text-slate-400 dark:hover:bg-white/[0.05] dark:hover:text-white"
-                                }`}
-                              >
-                                <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-400 transition group-hover:border-blue-200 group-hover:text-blue-600 dark:border-white/[0.07] dark:bg-white/[0.035] dark:text-slate-500 dark:group-hover:text-blue-400">
-                                  <Icon
-                                    size={
-                                      15
-                                    }
-                                  />
-                                </span>
-
-                                <span className="min-w-0 flex-1">
-                                  {
-                                    child.label
-                                  }
-                                </span>
-
-                                <ChevronRight
-                                  size={14}
-                                  className="shrink-0 text-slate-300 transition-transform group-hover:translate-x-0.5 group-hover:text-blue-500"
-                                />
-                              </Link>
+                          const childActive =
+                            pathname === child.href ||
+                            pathname.startsWith(
+                              `${child.href}/`
                             );
-                          }
-                        )}
+
+                          return (
+                            <Link
+                              key={child.label}
+                              href={child.href}
+                              className={`group flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-all ${
+                                childActive
+                                  ? "bg-white text-blue-600 shadow-sm dark:bg-white/[0.06] dark:text-blue-400"
+                                  : "text-slate-600 hover:bg-white hover:text-blue-600 dark:text-slate-400 dark:hover:bg-white/[0.05] dark:hover:text-white"
+                              }`}
+                            >
+                              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-400 transition group-hover:border-blue-200 group-hover:text-blue-600 dark:border-white/[0.07] dark:bg-white/[0.035] dark:text-slate-500 dark:group-hover:text-blue-400">
+                                <Icon size={15} />
+                              </span>
+
+                              <span className="min-w-0 flex-1">
+                                {child.label}
+                              </span>
+
+                              <ChevronRight
+                                size={14}
+                                className="shrink-0 text-slate-300 transition-transform group-hover:translate-x-0.5 group-hover:text-blue-500"
+                              />
+                            </Link>
+                          );
+                        })}
                       </div>
                     </div>
                   </div>

@@ -1,11 +1,11 @@
 import Image from "next/image";
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import {
-  ArrowLeft,
   CheckCircle2,
-  ListChecks,
+  ChevronRight,
 } from "lucide-react";
+
+import { prisma } from "../../../lib/prisma";
 
 import { Navbar } from "../../../components/navbar";
 import { Footer } from "../../../components/footer";
@@ -17,220 +17,81 @@ import {
 } from "../../../components/stagger-container";
 import { BrochureForm } from "../../../components/brochure-form";
 
-/* =========================================================
-   TYPES
-========================================================= */
-
-type Product = {
-  id: string;
+type ServiceSection = {
   title: string;
-  slug: string;
-
-  bannerImage: string | null;
-  logoImage: string | null;
-
-  shortDescription: string | null;
-  description: string | null;
-
-  features: unknown;
-  benefits: unknown;
-  sections: unknown;
-  faqs: unknown;
-
-  brochureUrl: string | null;
-
-  brochureGradientFrom: string | null;
-  brochureGradientVia: string | null;
-  brochureGradientTo: string | null;
-
-  isActive: boolean;
+  body: string;
 };
 
-type TextItem = {
-  title?: string;
-  description?: string;
-};
+// ============================================================
+// HELPERS
+// ============================================================
 
-type SectionItem = {
-  title?: string;
-  description?: string;
-  features: string[];
-};
+function getStringArray(
+  value: unknown
+): string[] {
+  if (!Array.isArray(value)) {
+    return [];
+  }
 
-type FaqItem = {
-  question?: string;
-  answer?: string;
-};
+  return value.filter(
+    (item): item is string =>
+      typeof item === "string" &&
+      item.trim().length > 0
+  );
+}
 
-/* =========================================================
-   SUBTLE CONTENT ACCENTS
-========================================================= */
+function getSections(
+  value: unknown
+): ServiceSection[] {
+  if (!Array.isArray(value)) {
+    return [];
+  }
 
-type ProductAccent = {
-  card: string;
-  border: string;
-  icon: string;
-  glow: string;
-};
+  return value
+    .filter(
+      (item) =>
+        typeof item === "object" &&
+        item !== null
+    )
+    .map((item) => {
+      const section =
+        item as Record<string, unknown>;
 
-const productAccents: Record<
-  string,
-  ProductAccent
-> = {
-  "global-hr": {
-    card:
-      "bg-[#f7f8ff] dark:bg-slate-900/70",
-    border:
-      "border-[#ebe9f5] dark:border-slate-800",
-    icon:
-      "bg-[#eee9f8] text-[#684195] dark:bg-[#684195]/15 dark:text-[#bba2dc]",
-    glow: "bg-[#8060ad]/10",
-  },
+      return {
+        title:
+          typeof section.title === "string"
+            ? section.title
+            : "",
 
-  facewebinar: {
-    card:
-      "bg-cyan-50/50 dark:bg-slate-900/70",
-    border:
-      "border-cyan-100 dark:border-slate-800",
-    icon:
-      "bg-cyan-100 text-cyan-700 dark:bg-cyan-500/10 dark:text-cyan-400",
-    glow: "bg-cyan-400/10",
-  },
-
-  "gift-aid-claims": {
-    card:
-      "bg-blue-50/50 dark:bg-slate-900/70",
-    border:
-      "border-blue-100 dark:border-slate-800",
-    icon:
-      "bg-blue-100 text-blue-700 dark:bg-blue-500/10 dark:text-blue-400",
-    glow: "bg-blue-400/10",
-  },
-
-  "invoice-made-simple": {
-    card:
-      "bg-indigo-50/50 dark:bg-slate-900/70",
-    border:
-      "border-indigo-100 dark:border-slate-800",
-    icon:
-      "bg-indigo-100 text-indigo-700 dark:bg-indigo-500/10 dark:text-indigo-400",
-    glow: "bg-indigo-400/10",
-  },
-
-  "crm-360": {
-    card:
-      "bg-emerald-50/50 dark:bg-slate-900/70",
-    border:
-      "border-emerald-100 dark:border-slate-800",
-    icon:
-      "bg-emerald-100 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400",
-    glow: "bg-emerald-400/10",
-  },
-
-  "bulk-sms-solution": {
-    card:
-      "bg-violet-50/50 dark:bg-slate-900/70",
-    border:
-      "border-violet-100 dark:border-slate-800",
-    icon:
-      "bg-violet-100 text-violet-700 dark:bg-violet-500/10 dark:text-violet-400",
-    glow: "bg-violet-400/10",
-  },
-
-  "my-projects": {
-    card:
-      "bg-amber-50/50 dark:bg-slate-900/70",
-    border:
-      "border-amber-100 dark:border-slate-800",
-    icon:
-      "bg-amber-100 text-amber-700 dark:bg-amber-500/10 dark:text-amber-400",
-    glow: "bg-amber-400/10",
-  },
-
-  "cms-avatar": {
-    card:
-      "bg-red-50/50 dark:bg-slate-900/70",
-    border:
-      "border-red-100 dark:border-slate-800",
-    icon:
-      "bg-red-100 text-red-700 dark:bg-red-500/10 dark:text-red-400",
-    glow: "bg-red-400/10",
-  },
-
-  "listing-based-portals": {
-    card:
-      "bg-orange-50/50 dark:bg-slate-900/70",
-    border:
-      "border-orange-100 dark:border-slate-800",
-    icon:
-      "bg-orange-100 text-orange-700 dark:bg-orange-500/10 dark:text-orange-400",
-    glow: "bg-orange-400/10",
-  },
-
-  syncmydocs: {
-    card:
-      "bg-sky-50/50 dark:bg-slate-900/70",
-    border:
-      "border-sky-100 dark:border-slate-800",
-    icon:
-      "bg-sky-100 text-sky-700 dark:bg-sky-500/10 dark:text-sky-400",
-    glow: "bg-sky-400/10",
-  },
-
-  data360: {
-    card:
-      "bg-teal-50/50 dark:bg-slate-900/70",
-    border:
-      "border-teal-100 dark:border-slate-800",
-    icon:
-      "bg-teal-100 text-teal-700 dark:bg-teal-500/10 dark:text-teal-400",
-    glow: "bg-teal-400/10",
-  },
-};
-
-const defaultAccent: ProductAccent = {
-  card:
-    "bg-[#f7f8ff] dark:bg-slate-900/70",
-
-  border:
-    "border-slate-200 dark:border-slate-800",
-
-  icon:
-    "bg-slate-100 text-slate-700 dark:bg-slate-800 dark:text-slate-300",
-
-  glow:
-    "bg-blue-400/10",
-};
-
-/* =========================================================
-   FETCH PRODUCT
-========================================================= */
-
-async function getProduct(
-  slug: string
-): Promise<Product | null> {
-  const baseUrl =
-    process.env.NEXT_PUBLIC_SITE_URL ||
-    "http://localhost:3000";
-
-  try {
-    const response = await fetch(
-      `${baseUrl}/api/products/${encodeURIComponent(
-        slug
-      )}`,
-      {
-        cache: "no-store",
-      }
+        body:
+          typeof section.body === "string"
+            ? section.body
+            : "",
+      };
+    })
+    .filter(
+      (section) =>
+        section.title.trim().length > 0 ||
+        section.body.trim().length > 0
     );
+}
 
-    if (!response.ok) {
-      return null;
-    }
+// ============================================================
+// GET SERVICE
+// ============================================================
 
-    return response.json();
+async function getService(
+  slug: string
+) {
+  try {
+    return await prisma.service.findUnique({
+      where: {
+        slug,
+      },
+    });
   } catch (error) {
     console.error(
-      "Product detail fetch error:",
+      "Service detail fetch error:",
       error
     );
 
@@ -238,130 +99,11 @@ async function getProduct(
   }
 }
 
-/* =========================================================
-   HELPERS
-========================================================= */
+// ============================================================
+// PAGE
+// ============================================================
 
-function getTextItem(
-  value: unknown
-): TextItem {
-  if (typeof value === "string") {
-    return {
-      description: value,
-    };
-  }
-
-  if (
-    typeof value !== "object" ||
-    value === null
-  ) {
-    return {};
-  }
-
-  const item =
-    value as Record<string, unknown>;
-
-  return {
-    title:
-      typeof item.title === "string"
-        ? item.title
-        : undefined,
-
-    description:
-      typeof item.description === "string"
-        ? item.description
-        : typeof item.body === "string"
-          ? item.body
-          : typeof item.text === "string"
-            ? item.text
-            : undefined,
-  };
-}
-
-function getSectionItem(
-  value: unknown
-): SectionItem {
-  if (typeof value === "string") {
-    return {
-      description: value,
-      features: [],
-    };
-  }
-
-  if (
-    typeof value !== "object" ||
-    value === null
-  ) {
-    return {
-      features: [],
-    };
-  }
-
-  const item =
-    value as Record<string, unknown>;
-
-  const nestedFeatures = Array.isArray(
-    item.features
-  )
-    ? item.features.filter(
-        (
-          feature
-        ): feature is string =>
-          typeof feature === "string" &&
-          feature.trim().length > 0
-      )
-    : [];
-
-  return {
-    title:
-      typeof item.title === "string"
-        ? item.title
-        : undefined,
-
-    description:
-      typeof item.description === "string"
-        ? item.description
-        : typeof item.body === "string"
-          ? item.body
-          : typeof item.text === "string"
-            ? item.text
-            : undefined,
-
-    features: nestedFeatures,
-  };
-}
-
-function getFaqItem(
-  value: unknown
-): FaqItem {
-  if (
-    typeof value !== "object" ||
-    value === null
-  ) {
-    return {};
-  }
-
-  const item =
-    value as Record<string, unknown>;
-
-  return {
-    question:
-      typeof item.question === "string"
-        ? item.question
-        : undefined,
-
-    answer:
-      typeof item.answer === "string"
-        ? item.answer
-        : undefined,
-  };
-}
-
-/* =========================================================
-   PAGE
-========================================================= */
-
-export default async function ProductPage({
+export default async function ServiceDetailPage({
   params,
 }: {
   params: Promise<{
@@ -370,500 +112,517 @@ export default async function ProductPage({
 }) {
   const { slug } = await params;
 
-  const product =
-    await getProduct(slug);
+  const service =
+    await getService(slug);
 
   if (
-    !product ||
-    !product.isActive
+    !service ||
+    !service.isActive
   ) {
     notFound();
   }
 
-  const accent =
-    productAccents[
-      product.slug
-    ] ?? defaultAccent;
+  const intro =
+    getStringArray(service.intro);
 
-  const features = Array.isArray(
-    product.features
-  )
-    ? product.features
-    : [];
+  const challenges =
+    getStringArray(
+      service.challenges
+    );
 
-  const benefits = Array.isArray(
-    product.benefits
-  )
-    ? product.benefits
-    : [];
+  const middle =
+    getStringArray(service.middle);
 
-  const sections = Array.isArray(
-    product.sections
-  )
-    ? product.sections
-    : [];
+  const benefits =
+    getStringArray(
+      service.benefits
+    );
 
-  const faqs = Array.isArray(
-    product.faqs
-  )
-    ? product.faqs
-    : [];
+  const coverage =
+    getStringArray(
+      service.coverage
+    );
 
-  const productLogo =
-    product.logoImage ||
-    product.bannerImage;
+  const qa =
+    getStringArray(service.qa);
+
+  const sections =
+    getSections(
+      service.sections
+    );
+
+  const gradient =
+    service.gradient?.trim() ||
+    "from-[#1a2b4a] via-blue-600 to-cyan-500";
+
+  const brochureGradientFrom =
+    service.brochureGradientFrom?.trim() ||
+    "#1a2b4a";
+
+  const brochureGradientVia =
+    service.brochureGradientVia?.trim() ||
+    "#2563eb";
+
+  const brochureGradientTo =
+    service.brochureGradientTo?.trim() ||
+    "#06b6d4";
 
   return (
-    <div className="flex min-h-screen flex-col bg-white dark:bg-slate-950">
+    <div className="flex min-h-screen flex-col bg-white text-slate-900 transition-colors duration-300 dark:bg-[#07111f] dark:text-white">
       <Navbar />
 
       <main className="flex-1">
         {/* =====================================================
-            BANNER
+            HERO / SERVICE INTRO
         ====================================================== */}
 
-        {product.bannerImage && (
-          <section className="relative w-full overflow-hidden bg-slate-100 dark:bg-slate-900">
-            <div className="relative h-[210px] w-full sm:h-[260px] md:h-[300px] lg:h-[330px] xl:h-[350px]">
-              <Image
-                src={product.bannerImage}
-                alt={product.title}
-                fill
-                priority
-                sizes="100vw"
-                className="object-cover object-center"
-              />
-            </div>
-          </section>
-        )}
+        <section className="relative overflow-hidden border-b border-slate-100 bg-white dark:border-white/[0.06] dark:bg-[#07111f]">
+          {/* Background decoration */}
 
-        {/* =====================================================
-            PRODUCT INTRO
-        ====================================================== */}
+          <div className="pointer-events-none absolute inset-0">
+            <div className="absolute -right-32 -top-32 h-[420px] w-[420px] rounded-full bg-blue-500/[0.06] blur-[100px] dark:bg-blue-500/[0.12]" />
 
-        <section className="relative bg-white dark:bg-slate-950">
-          <div
-            className={`pointer-events-none absolute -left-32 top-20 h-80 w-80 rounded-full blur-[130px] ${accent.glow}`}
-          />
+            <div className="absolute left-[-180px] top-[180px] h-[360px] w-[360px] rounded-full bg-cyan-400/[0.04] blur-[110px] dark:bg-cyan-400/[0.08]" />
 
-          <div className="relative mx-auto max-w-7xl px-5 pb-10 pt-8 sm:px-8 lg:px-10">
-            <AnimateIn>
-              <Link
-                href="/products"
-                className="group inline-flex items-center gap-2 text-xs font-medium text-slate-500 transition hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"
-              >
-                <ArrowLeft
-                  size={14}
-                  className="transition-transform duration-300 group-hover:-translate-x-1"
-                />
+            <div
+              className="absolute inset-0 opacity-[0.018] dark:opacity-[0.035]"
+              style={{
+                backgroundImage:
+                  "radial-gradient(circle, currentColor 1px, transparent 1px)",
+                backgroundSize:
+                  "24px 24px",
+              }}
+            />
+          </div>
 
-                All products
-              </Link>
-            </AnimateIn>
+          <div className="relative mx-auto max-w-7xl px-5 pb-12 pt-10 sm:px-8 sm:pb-14 sm:pt-12 lg:px-10 lg:pb-16 lg:pt-14">
+            {/* Small tag */}
 
-            <div className="mt-7 flex items-center gap-5">
-              {productLogo && (
-                <AnimateIn>
-                  <div className="relative h-[72px] w-[72px] shrink-0 overflow-hidden rounded-[20px] border border-slate-200 bg-white shadow-[0_10px_35px_rgba(15,23,42,0.08)] dark:border-slate-800 dark:bg-slate-900 sm:h-[82px] sm:w-[82px]">
-                    <Image
-                      src={productLogo}
-                      alt={`${product.title} logo`}
-                      fill
-                      sizes="82px"
-                      className="object-contain p-3"
-                    />
-                  </div>
-                </AnimateIn>
-              )}
+            {service.tag && (
+              <AnimateIn>
+                <div className="mb-5 inline-flex items-center gap-2 rounded-full border border-blue-100 bg-blue-50 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.14em] text-blue-600 dark:border-blue-400/15 dark:bg-blue-400/[0.08] dark:text-blue-300">
+                  <span className="h-1.5 w-1.5 rounded-full bg-blue-500" />
 
-              <AnimatedHeading
-                text={product.title}
-                as="h1"
-                delay={0.05}
-                className="text-3xl font-bold tracking-tight text-slate-950 dark:text-white sm:text-4xl lg:text-[42px]"
-              />
-            </div>
+                  {service.tag}
+                </div>
+              </AnimateIn>
+            )}
 
-            {product.shortDescription && (
-              <AnimateIn delay={0.1}>
-                <p className="mt-7 max-w-4xl text-sm leading-7 text-slate-500 dark:text-slate-400 sm:text-[15px]">
-                  {product.shortDescription}
+            {/* Title */}
+
+            <AnimatedHeading
+              text={service.title}
+              as="h1"
+              className="max-w-4xl text-3xl font-bold leading-tight tracking-[-0.03em] text-slate-950 dark:text-white sm:text-4xl lg:text-[46px]"
+            />
+
+            {/* Description */}
+
+            {service.description && (
+              <AnimateIn delay={0.08}>
+                <p className="mt-5 max-w-3xl text-sm leading-7 text-slate-600 dark:text-slate-400 sm:text-[15px] sm:leading-8">
+                  {
+                    service.description
+                  }
                 </p>
               </AnimateIn>
             )}
+
+            {/* Banner */}
+
+            <AnimateIn delay={0.15}>
+              {service.bannerImage ? (
+                <div className="group relative mt-8 overflow-hidden rounded-[28px] border border-slate-200/80 bg-slate-100 shadow-[0_25px_70px_rgba(15,23,42,0.08)] dark:border-white/[0.08] dark:bg-[#0b1728] dark:shadow-[0_25px_80px_rgba(0,0,0,0.28)]">
+                  <div className="relative h-[230px] w-full sm:h-[290px] md:h-[330px] lg:h-[360px]">
+                    <Image
+                      src={
+                        service.bannerImage
+                      }
+                      alt={
+                        service.title
+                      }
+                      fill
+                      priority
+                      sizes="(max-width: 1024px) 100vw, 1200px"
+                      className="object-cover object-center transition-transform duration-700 group-hover:scale-[1.015]"
+                    />
+                  </div>
+
+                  <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-slate-950/[0.05] via-transparent to-white/[0.03] dark:from-black/20 dark:to-transparent" />
+                </div>
+              ) : (
+                <div
+                  className={`relative mt-8 flex h-[230px] items-center justify-end overflow-hidden rounded-[28px] bg-gradient-to-r ${gradient} px-8 shadow-[0_25px_70px_rgba(15,23,42,0.12)] sm:h-[290px] sm:px-12 lg:h-[330px]`}
+                >
+                  <div className="absolute inset-0 opacity-20">
+                    {[
+                      ...Array(4),
+                    ].map(
+                      (
+                        _,
+                        index
+                      ) => (
+                        <div
+                          key={
+                            index
+                          }
+                          className="absolute rounded-full border-[16px] border-white/40"
+                          style={{
+                            width: `${
+                              160 -
+                              index *
+                                26
+                            }px`,
+
+                            height: `${
+                              160 -
+                              index *
+                                26
+                            }px`,
+
+                            left: `${
+                              10 +
+                              index *
+                                12
+                            }%`,
+
+                            top: `${
+                              18 +
+                              (index %
+                                2) *
+                                16
+                            }%`,
+                          }}
+                        />
+                      )
+                    )}
+                  </div>
+
+                  <div className="relative flex h-24 w-24 items-center justify-center rounded-[24px] border border-white/20 bg-white/15 shadow-xl backdrop-blur-sm sm:h-28 sm:w-28">
+                    <CheckCircle2
+                      size={48}
+                      className="text-white"
+                      strokeWidth={
+                        1.5
+                      }
+                    />
+                  </div>
+                </div>
+              )}
+            </AnimateIn>
           </div>
         </section>
 
         {/* =====================================================
-            CONTENT + BROCHURE FORM
+            CONTENT
         ====================================================== */}
 
-        <section className="relative pb-16">
-          <div className="mx-auto grid max-w-7xl items-start gap-7 px-5 sm:px-8 lg:grid-cols-[minmax(0,1fr)_300px] lg:px-10 xl:grid-cols-[minmax(0,1fr)_320px]">
+        <section className="relative bg-[#fbfcfe] py-12 dark:bg-[#07111f] sm:py-14 lg:py-16">
+          <div className="mx-auto grid max-w-7xl items-start gap-8 px-5 sm:px-8 lg:grid-cols-[minmax(0,1fr)_320px] lg:gap-10 lg:px-10 xl:grid-cols-[minmax(0,1fr)_340px] xl:gap-12">
             {/* =================================================
-                LEFT
+                LEFT CONTENT
             ================================================= */}
 
-            <div className="min-w-0 space-y-7">
-              {/* ===============================================
-                  OVERVIEW
-              =============================================== */}
+            <div className="min-w-0">
+              {/* INTRO */}
 
-              {(product.description ||
-                sections.length > 0) && (
-                <AnimateIn>
-                  <div
-                    className={`relative overflow-hidden rounded-[26px] border p-6 shadow-[0_12px_45px_rgba(15,23,42,0.035)] sm:p-8 ${accent.card} ${accent.border}`}
-                  >
-                    <div
-                      className={`pointer-events-none absolute -right-24 -top-24 h-64 w-64 rounded-full blur-[100px] ${accent.glow}`}
-                    />
-
-                    <div className="relative">
-                      <div className="flex items-center gap-3">
-                        <div
-                          className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl ${accent.icon}`}
+              {intro.length >
+                0 && (
+                <AnimateIn delay={0.08}>
+                  <div className="space-y-5 text-sm leading-7 text-slate-600 dark:text-slate-300 sm:text-[15px] sm:leading-8">
+                    {intro.map(
+                      (
+                        paragraph,
+                        index
+                      ) => (
+                        <p
+                          key={`intro-${index}`}
                         >
-                          <CheckCircle2
-                            size={17}
-                          />
-                        </div>
-
-                        <h2 className="text-[16px] font-semibold text-slate-950 dark:text-white">
-                          Overview
-                        </h2>
-                      </div>
-
-                      {product.description && (
-                        <p className="mt-6 whitespace-pre-line text-sm leading-7 text-slate-600 dark:text-slate-300 sm:text-[15px]">
                           {
-                            product.description
+                            paragraph
                           }
                         </p>
-                      )}
+                      )
+                    )}
+                  </div>
+                </AnimateIn>
+              )}
 
-                      {sections.length >
-                        0 && (
-                        <StaggerContainer className="mt-7 space-y-7">
-                          {sections.map(
-                            (
-                              section,
+              {/* CHALLENGES */}
+
+              {challenges.length >
+                0 && (
+                <AnimateIn delay={0.1}>
+                  <div className="mt-8 rounded-[22px] border border-slate-200/80 bg-white p-5 shadow-[0_12px_40px_rgba(15,23,42,0.035)] dark:border-white/[0.07] dark:bg-[#0b1728] dark:shadow-none sm:p-6">
+                    <StaggerContainer className="grid gap-3 sm:grid-cols-2">
+                      {challenges.map(
+                        (
+                          point,
+                          index
+                        ) => (
+                          <StaggerItem
+                            key={
                               index
-                            ) => {
-                              const item =
-                                getSectionItem(
-                                  section
-                                );
-
-                              if (
-                                !item.title &&
-                                !item.description &&
-                                item.features
-                                  .length ===
-                                  0
-                              ) {
-                                return null;
-                              }
-
-                              return (
-                                <StaggerItem
-                                  key={
-                                    index
+                            }
+                          >
+                            <div className="group flex h-full items-start gap-3 rounded-xl p-2 transition-colors hover:bg-slate-50 dark:hover:bg-white/[0.03]">
+                              <span className="mt-[5px] flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-blue-50 text-blue-600 dark:bg-blue-500/10 dark:text-blue-400">
+                                <CheckCircle2
+                                  size={
+                                    12
                                   }
-                                >
-                                  <div>
-                                    {item.title && (
-                                      <h3 className="text-[15px] font-semibold text-slate-900 dark:text-white">
-                                        {
-                                          item.title
-                                        }
-                                      </h3>
-                                    )}
+                                  strokeWidth={
+                                    2.2
+                                  }
+                                />
+                              </span>
 
-                                    {item.description && (
-                                      <p
-                                        className={`whitespace-pre-line text-sm leading-7 text-slate-600 dark:text-slate-300 ${
-                                          item.title
-                                            ? "mt-2"
-                                            : ""
-                                        }`}
-                                      >
-                                        {
-                                          item.description
-                                        }
-                                      </p>
-                                    )}
-
-                                    {item.features
-                                      .length >
-                                      0 && (
-                                      <ul className="mt-3 space-y-1.5">
-                                        {item.features.map(
-                                          (
-                                            feature,
-                                            featureIndex
-                                          ) => (
-                                            <li
-                                              key={
-                                                featureIndex
-                                              }
-                                              className="flex items-start gap-2.5 text-sm leading-6 text-slate-600 dark:text-slate-300"
-                                            >
-                                              <span className="mt-[9px] h-1.5 w-1.5 shrink-0 rounded-full bg-slate-400 dark:bg-slate-500" />
-
-                                              <span>
-                                                {
-                                                  feature
-                                                }
-                                              </span>
-                                            </li>
-                                          )
-                                        )}
-                                      </ul>
-                                    )}
-                                  </div>
-                                </StaggerItem>
-                              );
-                            }
-                          )}
-                        </StaggerContainer>
-                      )}
-                    </div>
-                  </div>
-                </AnimateIn>
-              )}
-
-              {/* ===============================================
-                  FEATURES
-              =============================================== */}
-
-              {features.length > 0 && (
-                <AnimateIn>
-                  <div
-                    className={`relative overflow-hidden rounded-[26px] border p-6 shadow-[0_12px_45px_rgba(15,23,42,0.035)] sm:p-8 ${accent.card} ${accent.border}`}
-                  >
-                    <div
-                      className={`pointer-events-none absolute -right-24 -top-24 h-64 w-64 rounded-full blur-[100px] ${accent.glow}`}
-                    />
-
-                    <div className="relative">
-                      <div className="flex items-center gap-3">
-                        <div
-                          className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl ${accent.icon}`}
-                        >
-                          <ListChecks
-                            size={17}
-                          />
-                        </div>
-
-                        <h2 className="text-[16px] font-semibold text-slate-950 dark:text-white">
-                          Key features
-                        </h2>
-                      </div>
-
-                      <StaggerContainer className="mt-6 space-y-5">
-                        {features.map(
-                          (
-                            feature,
-                            index
-                          ) => {
-                            const item =
-                              getTextItem(
-                                feature
-                              );
-
-                            if (
-                              !item.title &&
-                              !item.description
-                            ) {
-                              return null;
-                            }
-
-                            return (
-                              <StaggerItem
-                                key={
-                                  index
+                              <p className="text-sm leading-6 text-slate-600 dark:text-slate-300">
+                                {
+                                  point
                                 }
-                              >
-                                <div className="text-sm leading-7 text-slate-600 dark:text-slate-300">
-                                  {item.title && (
-                                    <h3 className="font-semibold text-slate-900 dark:text-white">
-                                      {
-                                        item.title
-                                      }
-                                    </h3>
-                                  )}
-
-                                  {item.description && (
-                                    <p
-                                      className={
-                                        item.title
-                                          ? "mt-1"
-                                          : ""
-                                      }
-                                    >
-                                      {
-                                        item.description
-                                      }
-                                    </p>
-                                  )}
-                                </div>
-                              </StaggerItem>
-                            );
-                          }
-                        )}
-                      </StaggerContainer>
-                    </div>
+                              </p>
+                            </div>
+                          </StaggerItem>
+                        )
+                      )}
+                    </StaggerContainer>
                   </div>
                 </AnimateIn>
               )}
 
-              {/* ===============================================
-                  BENEFITS
-              =============================================== */}
+              {/* MIDDLE PARAGRAPHS */}
 
-              {benefits.length > 0 && (
-                <AnimateIn>
-                  <div
-                    className={`relative overflow-hidden rounded-[26px] border p-6 shadow-[0_12px_45px_rgba(15,23,42,0.035)] sm:p-8 ${accent.card} ${accent.border}`}
-                  >
-                    <div className="flex items-center gap-3">
-                      <div
-                        className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl ${accent.icon}`}
+              {middle.length >
+                0 && (
+                <AnimateIn delay={0.12}>
+                  <div className="mt-8 space-y-5 text-sm leading-7 text-slate-600 dark:text-slate-300 sm:text-[15px] sm:leading-8">
+                    {middle.map(
+                      (
+                        paragraph,
+                        index
+                      ) => (
+                        <p
+                          key={`middle-${index}`}
+                        >
+                          {
+                            paragraph
+                          }
+                        </p>
+                      )
+                    )}
+                  </div>
+                </AnimateIn>
+              )}
+
+              {/* SECTIONS */}
+
+              {sections.length >
+                0 && (
+                <StaggerContainer className="mt-9 space-y-5">
+                  {sections.map(
+                    (
+                      section,
+                      index
+                    ) => (
+                      <StaggerItem
+                        key={
+                          index
+                        }
                       >
-                        <CheckCircle2
-                          size={17}
-                        />
-                      </div>
+                        <div className="group rounded-[22px] border border-slate-200/80 bg-white p-5 shadow-[0_12px_40px_rgba(15,23,42,0.035)] transition-all duration-300 hover:-translate-y-0.5 hover:shadow-[0_18px_50px_rgba(15,23,42,0.06)] dark:border-white/[0.07] dark:bg-[#0b1728] dark:shadow-none dark:hover:border-blue-400/20 sm:p-6">
+                          {section.title && (
+                            <div className="flex items-start gap-3">
+                              <div className="mt-0.5 flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-blue-600 dark:bg-blue-500/10 dark:text-blue-400">
+                                <ChevronRight
+                                  size={
+                                    16
+                                  }
+                                />
+                              </div>
 
-                      <h2 className="text-[16px] font-semibold text-slate-950 dark:text-white">
-                        Benefits
-                      </h2>
-                    </div>
+                              <h2 className="pt-1 text-[15px] font-semibold leading-6 text-slate-950 dark:text-white sm:text-base">
+                                {
+                                  section.title
+                                }
+                              </h2>
+                            </div>
+                          )}
 
-                    <StaggerContainer className="mt-6 space-y-5">
+                          {section.body && (
+                            <p
+                              className={`whitespace-pre-line text-sm leading-7 text-slate-600 dark:text-slate-300 sm:text-[15px] sm:leading-8 ${
+                                section.title
+                                  ? "mt-4 pl-0 sm:pl-11"
+                                  : ""
+                              }`}
+                            >
+                              {
+                                section.body
+                              }
+                            </p>
+                          )}
+                        </div>
+                      </StaggerItem>
+                    )
+                  )}
+                </StaggerContainer>
+              )}
+
+              {/* BENEFITS */}
+
+              {benefits.length >
+                0 && (
+                <AnimateIn delay={0.15}>
+                  <div className="mt-9">
+                    <StaggerContainer className="grid gap-3 sm:grid-cols-2">
                       {benefits.map(
                         (
-                          benefit,
+                          point,
                           index
-                        ) => {
-                          const item =
-                            getTextItem(
-                              benefit
-                            );
+                        ) => (
+                          <StaggerItem
+                            key={
+                              index
+                            }
+                          >
+                            <div className="flex h-full items-start gap-3 rounded-[16px] border border-slate-200/80 bg-white px-4 py-3.5 transition-all duration-300 hover:border-blue-200 hover:shadow-[0_8px_25px_rgba(15,23,42,0.05)] dark:border-white/[0.07] dark:bg-[#0b1728] dark:hover:border-blue-400/20">
+                              <span className="mt-[3px] flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-blue-600 text-white shadow-sm dark:bg-blue-500">
+                                <CheckCircle2
+                                  size={
+                                    12
+                                  }
+                                  strokeWidth={
+                                    2.5
+                                  }
+                                />
+                              </span>
 
-                          if (
-                            !item.title &&
-                            !item.description
-                          ) {
-                            return null;
-                          }
-
-                          return (
-                            <StaggerItem
-                              key={index}
-                            >
-                              <div className="text-sm leading-7 text-slate-600 dark:text-slate-300">
-                                {item.title && (
-                                  <h3 className="font-semibold text-slate-900 dark:text-white">
-                                    {
-                                      item.title
-                                    }
-                                  </h3>
-                                )}
-
-                                {item.description && (
-                                  <p
-                                    className={
-                                      item.title
-                                        ? "mt-1"
-                                        : ""
-                                    }
-                                  >
-                                    {
-                                      item.description
-                                    }
-                                  </p>
-                                )}
-                              </div>
-                            </StaggerItem>
-                          );
-                        }
+                              <p className="text-sm leading-6 text-slate-600 dark:text-slate-300">
+                                {
+                                  point
+                                }
+                              </p>
+                            </div>
+                          </StaggerItem>
+                        )
                       )}
                     </StaggerContainer>
                   </div>
                 </AnimateIn>
               )}
 
-              
+              {/* CLOSING */}
 
-              {faqs.length > 0 && (
-                <AnimateIn>
-                  <div
-                    className={`relative overflow-hidden rounded-[26px] border p-6 shadow-[0_12px_45px_rgba(15,23,42,0.035)] sm:p-8 ${accent.card} ${accent.border}`}
-                  >
-                    <StaggerContainer className="space-y-6">
-                      {faqs.map(
+              {service.closing && (
+                <AnimateIn delay={0.16}>
+                  <div className="mt-8 border-l-2 border-blue-500 pl-4">
+                    <p className="text-sm leading-7 text-slate-600 dark:text-slate-300 sm:text-[15px] sm:leading-8">
+                      {
+                        service.closing
+                      }
+                    </p>
+                  </div>
+                </AnimateIn>
+              )}
+
+              {/* COVERAGE */}
+
+              {coverage.length >
+                0 && (
+                <AnimateIn delay={0.18}>
+                  <div className="mt-10">
+                    <h2 className="text-lg font-semibold tracking-tight text-slate-950 dark:text-white">
+                      Our service
+                      coverage areas
+                      include:
+                    </h2>
+
+                    <div className="mt-2 h-[2px] w-10 rounded-full bg-blue-500" />
+
+                    <StaggerContainer className="mt-5 grid gap-3 sm:grid-cols-2">
+                      {coverage.map(
                         (
-                          faq,
+                          item,
                           index
-                        ) => {
-                          const item =
-                            getFaqItem(
-                              faq
-                            );
+                        ) => (
+                          <StaggerItem
+                            key={
+                              index
+                            }
+                          >
+                            <div className="flex items-center gap-3 rounded-xl border border-slate-200/70 bg-white px-4 py-3 dark:border-white/[0.07] dark:bg-[#0b1728]">
+                              <CheckCircle2
+                                size={
+                                  16
+                                }
+                                className="shrink-0 text-blue-600 dark:text-blue-400"
+                              />
 
-                          if (
-                            !item.question &&
-                            !item.answer
-                          ) {
-                            return null;
-                          }
-
-                          return (
-                            <StaggerItem
-                              key={index}
-                            >
-                              <div>
-                                {item.question && (
-                                  <h3 className="text-sm font-semibold text-slate-950 dark:text-white">
-                                    {
-                                      item.question
-                                    }
-                                  </h3>
-                                )}
-
-                                {item.answer && (
-                                  <p className="mt-2 whitespace-pre-line text-sm leading-7 text-slate-600 dark:text-slate-300">
-                                    {
-                                      item.answer
-                                    }
-                                  </p>
-                                )}
-                              </div>
-                            </StaggerItem>
-                          );
-                        }
+                              <span className="text-sm leading-6 text-slate-600 dark:text-slate-300">
+                                {
+                                  item
+                                }
+                              </span>
+                            </div>
+                          </StaggerItem>
+                        )
                       )}
                     </StaggerContainer>
+                  </div>
+                </AnimateIn>
+              )}
+
+              {/* QA */}
+
+              {qa.length >
+                0 && (
+                <AnimateIn delay={0.2}>
+                  <div className="mt-9 space-y-5 rounded-[22px] border border-slate-200/80 bg-white p-5 shadow-[0_12px_40px_rgba(15,23,42,0.035)] dark:border-white/[0.07] dark:bg-[#0b1728] dark:shadow-none sm:p-6">
+                    {qa.map(
+                      (
+                        paragraph,
+                        index
+                      ) => (
+                        <p
+                          key={`qa-${index}`}
+                          className="text-sm leading-7 text-slate-600 dark:text-slate-300 sm:text-[15px] sm:leading-8"
+                        >
+                          {
+                            paragraph
+                          }
+                        </p>
+                      )
+                    )}
                   </div>
                 </AnimateIn>
               )}
             </div>
 
-            
+            {/* =================================================
+                BROCHURE FORM
+            ================================================= */}
 
             <AnimateIn
               delay={0.15}
               direction="left"
               className="lg:sticky lg:top-24"
             >
-              <BrochureForm
-                productId={product.id}
-                gradientFrom={product.brochureGradientFrom}
-                gradientVia={product.brochureGradientVia}
-                gradientTo={product.brochureGradientTo}
-              />
+              <div className="relative">
+                <div className="pointer-events-none absolute -inset-8 -z-10 rounded-full bg-blue-500/[0.06] blur-[55px] dark:bg-blue-500/[0.10]" />
+
+                <BrochureForm
+                  gradientFrom={
+                    brochureGradientFrom
+                  }
+                  gradientVia={
+                    brochureGradientVia
+                  }
+                  gradientTo={
+                    brochureGradientTo
+                  }
+                />
+              </div>
             </AnimateIn>
           </div>
         </section>
