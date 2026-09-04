@@ -16,6 +16,7 @@ import {
   StaggerItem,
 } from "../../../../components/stagger-container";
 import { BrochureForm } from "../../../../components/brochure-form";
+import { prisma } from "../../../../lib/prisma";
 
 /* =========================================================
    TYPES
@@ -69,26 +70,47 @@ type FaqItem = {
 async function getProduct(
   slug: string
 ): Promise<Product | null> {
-  const baseUrl =
-    process.env.NEXT_PUBLIC_SITE_URL ||
-    "http://localhost:3000";
-
   try {
-    const response = await fetch(
-      `${baseUrl}/api/products/${encodeURIComponent(slug)}`,
-      {
-        cache: "no-store",
-      }
-    );
+    const product =
+      await prisma.product.findUnique({
+        where: {
+          slug,
+        },
 
-    if (!response.ok) {
+        select: {
+          id: true,
+          title: true,
+          slug: true,
+
+          bannerImage: true,
+          logoImage: true,
+
+          shortDescription: true,
+          description: true,
+
+          features: true,
+          benefits: true,
+          sections: true,
+          faqs: true,
+
+          brochureUrl: true,
+
+          brochureGradientFrom: true,
+          brochureGradientVia: true,
+          brochureGradientTo: true,
+
+          isActive: true,
+        },
+      });
+
+    if (!product) {
       return null;
     }
 
-    return response.json();
+    return product;
   } catch (error) {
     console.error(
-      "Product detail fetch error:",
+      "Product detail database error:",
       error
     );
 
