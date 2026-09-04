@@ -15,6 +15,7 @@ interface ServiceFormValues {
 
   image: string;
   bannerImage: string;
+  darkBannerImage: string;
   href: string;
   gradient: string;
 
@@ -43,6 +44,7 @@ const emptyForm: ServiceFormValues = {
 
   image: "",
   bannerImage: "",
+  darkBannerImage: "",
   href: "",
   gradient: "",
 
@@ -67,34 +69,210 @@ export function ServiceForm({
 }) {
   const router = useRouter();
 
-  const [form, setForm] = useState<ServiceFormValues>(
-    initialValues ?? emptyForm
+  const [form, setForm] =
+    useState<ServiceFormValues>(
+      initialValues ?? emptyForm
+    );
+
+  const [error, setError] =
+    useState("");
+
+  const [saving, setSaving] =
+    useState(false);
+
+  // =========================================================
+  // BANNER FILE STATES
+  // =========================================================
+
+  const [
+    lightBannerFile,
+    setLightBannerFile,
+  ] = useState<File | null>(null);
+
+  const [
+    darkBannerFile,
+    setDarkBannerFile,
+  ] = useState<File | null>(null);
+
+  const [
+    lightBannerPreview,
+    setLightBannerPreview,
+  ] = useState(
+    initialValues?.bannerImage ?? ""
   );
 
-  const [error, setError] = useState("");
-  const [saving, setSaving] = useState(false);
+  const [
+    darkBannerPreview,
+    setDarkBannerPreview,
+  ] = useState(
+    initialValues?.darkBannerImage ?? ""
+  );
 
   // =========================================================
   // BULK IMPORT STATES
   // =========================================================
 
-  const [bulkJson, setBulkJson] = useState("");
-  const [importMessage, setImportMessage] =
+  const [bulkJson, setBulkJson] =
     useState("");
 
-  const isEditing = Boolean(initialValues?.id);
+  const [
+    importMessage,
+    setImportMessage,
+  ] = useState("");
+
+  const isEditing = Boolean(
+    initialValues?.id
+  );
+
+  // =========================================================
+  // BANNER UPLOAD
+  // =========================================================
+
+  const uploadBanner = async (
+    file: File
+  ): Promise<string> => {
+    const formData = new FormData();
+
+    formData.append(
+      "file",
+      file
+    );
+
+    const response = await fetch(
+      "/api/admin/services/upload",
+      {
+        method: "POST",
+        credentials: "same-origin",
+        body: formData,
+      }
+    );
+
+    const data = await response
+      .json()
+      .catch(() => null);
+
+    if (!response.ok) {
+      throw new Error(
+        data?.error ||
+          "Banner image upload failed."
+      );
+    }
+
+    if (!data?.url) {
+      throw new Error(
+        "Uploaded banner path was not returned."
+      );
+    }
+
+    return data.url;
+  };
+
+  // =========================================================
+  // LIGHT BANNER CHANGE
+  // =========================================================
+
+  const handleLightBannerChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const file =
+      e.target.files?.[0];
+
+    if (!file) {
+      return;
+    }
+
+    if (
+      !file.type.startsWith(
+        "image/"
+      )
+    ) {
+      setError(
+        "Please select an image file."
+      );
+
+      return;
+    }
+
+    setError("");
+
+    setLightBannerFile(
+      file
+    );
+
+    const preview =
+      URL.createObjectURL(
+        file
+      );
+
+    setLightBannerPreview(
+      preview
+    );
+  };
+
+  // =========================================================
+  // DARK BANNER CHANGE
+  // =========================================================
+
+  const handleDarkBannerChange = (
+    e: React.ChangeEvent<HTMLInputElement>
+  ) => {
+    const file =
+      e.target.files?.[0];
+
+    if (!file) {
+      return;
+    }
+
+    if (
+      !file.type.startsWith(
+        "image/"
+      )
+    ) {
+      setError(
+        "Please select an image file."
+      );
+
+      return;
+    }
+
+    setError("");
+
+    setDarkBannerFile(
+      file
+    );
+
+    const preview =
+      URL.createObjectURL(
+        file
+      );
+
+    setDarkBannerPreview(
+      preview
+    );
+  };
 
   // =========================================================
   // SLUG GENERATOR
   // =========================================================
 
-  const generateSlug = (value: string) => {
+  const generateSlug = (
+    value: string
+  ) => {
     return value
       .toLowerCase()
       .trim()
-      .replace(/[^a-z0-9\s-]/g, "")
-      .replace(/\s+/g, "-")
-      .replace(/-+/g, "-");
+      .replace(
+        /[^a-z0-9\s-]/g,
+        ""
+      )
+      .replace(
+        /\s+/g,
+        "-"
+      )
+      .replace(
+        /-+/g,
+        "-"
+      );
   };
 
   // =========================================================
@@ -109,19 +287,21 @@ export function ServiceForm({
         | "slug"
         | "description"
         | "image"
-        | "bannerImage"
         | "href"
         | "gradient"
         | "closing"
     ) =>
     (
       e: React.ChangeEvent<
-        HTMLInputElement | HTMLTextAreaElement
+        | HTMLInputElement
+        | HTMLTextAreaElement
       >
     ) => {
       setForm((prev) => ({
         ...prev,
-        [field]: e.target.value,
+
+        [field]:
+          e.target.value,
       }));
     };
 
@@ -132,7 +312,8 @@ export function ServiceForm({
   const handleTitleChange = (
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
-    const value = e.target.value;
+    const value =
+      e.target.value;
 
     setForm((prev) => ({
       ...prev,
@@ -140,25 +321,35 @@ export function ServiceForm({
       title: value,
 
       slug:
-        !isEditing || !prev.slug
-          ? generateSlug(value)
+        !isEditing ||
+        !prev.slug
+          ? generateSlug(
+              value
+            )
           : prev.slug,
     }));
   };
 
   // =========================================================
   // ARRAY HELPERS
-  // One line = one array item
   // =========================================================
 
-  const arrayToText = (items: string[]) => {
-    return items.join("\n");
+  const arrayToText = (
+    items: string[]
+  ) => {
+    return items.join(
+      "\n"
+    );
   };
 
-  const textToArray = (value: string) => {
+  const textToArray = (
+    value: string
+  ) => {
     return value
       .split("\n")
-      .map((item) => item.trim())
+      .map((item) =>
+        item.trim()
+      )
       .filter(Boolean);
   };
 
@@ -178,7 +369,10 @@ export function ServiceForm({
       setForm((prev) => ({
         ...prev,
 
-        [field]: textToArray(e.target.value),
+        [field]:
+          textToArray(
+            e.target.value
+          ),
       }));
     };
 
@@ -202,31 +396,42 @@ export function ServiceForm({
 
   const updateSection = (
     index: number,
-    field: "title" | "body",
+    field:
+      | "title"
+      | "body",
     value: string
   ) => {
     setForm((prev) => ({
       ...prev,
 
-      sections: prev.sections.map(
-        (section, i) =>
-          i === index
-            ? {
-                ...section,
-                [field]: value,
-              }
-            : section
-      ),
+      sections:
+        prev.sections.map(
+          (
+            section,
+            i
+          ) =>
+            i === index
+              ? {
+                  ...section,
+                  [field]:
+                    value,
+                }
+              : section
+        ),
     }));
   };
 
-  const removeSection = (index: number) => {
+  const removeSection = (
+    index: number
+  ) => {
     setForm((prev) => ({
       ...prev,
 
-      sections: prev.sections.filter(
-        (_, i) => i !== index
-      ),
+      sections:
+        prev.sections.filter(
+          (_, i) =>
+            i !== index
+        ),
     }));
   };
 
@@ -234,421 +439,597 @@ export function ServiceForm({
   // BULK JSON IMPORT
   // =========================================================
 
-  const handleBulkImport = () => {
-    setError("");
-    setImportMessage("");
-
-    if (!bulkJson.trim()) {
-      setError(
-        "Please paste service JSON first."
-      );
-      return;
-    }
-
-    try {
-      const parsed: unknown =
-        JSON.parse(bulkJson);
+  const handleBulkImport =
+    () => {
+      setError("");
+      setImportMessage("");
 
       if (
-        typeof parsed !== "object" ||
-        parsed === null ||
-        Array.isArray(parsed)
+        !bulkJson.trim()
       ) {
-        throw new Error(
-          "JSON must contain one service object."
+        setError(
+          "Please paste service JSON first."
         );
+
+        return;
       }
 
-      const data = parsed as Record<
-        string,
-        unknown
-      >;
+      try {
+        const parsed: unknown =
+          JSON.parse(
+            bulkJson
+          );
 
-      // -----------------------------------------
-      // STRING HELPER
-      // -----------------------------------------
-
-      const getString = (
-        key: string,
-        fallback = ""
-      ) => {
-        const value = data[key];
-
-        return typeof value === "string"
-          ? value
-          : fallback;
-      };
-
-      // -----------------------------------------
-      // STRING ARRAY HELPER
-      // -----------------------------------------
-
-      const getArray = (key: string) => {
-        const value = data[key];
-
-        if (!Array.isArray(value)) {
-          return [];
+        if (
+          typeof parsed !==
+            "object" ||
+          parsed === null ||
+          Array.isArray(
+            parsed
+          )
+        ) {
+          throw new Error(
+            "JSON must contain one service object."
+          );
         }
 
-        return value.filter(
-          (item): item is string =>
-            typeof item === "string"
+        const data =
+          parsed as Record<
+            string,
+            unknown
+          >;
+
+        // ========================================
+        // STRING HELPER
+        // ========================================
+
+        const getString = (
+          key: string,
+          fallback = ""
+        ) => {
+          const value =
+            data[key];
+
+          return typeof value ===
+            "string"
+            ? value
+            : fallback;
+        };
+
+        // ========================================
+        // ARRAY HELPER
+        // ========================================
+
+        const getArray = (
+          key: string
+        ) => {
+          const value =
+            data[key];
+
+          if (
+            !Array.isArray(
+              value
+            )
+          ) {
+            return [];
+          }
+
+          return value.filter(
+            (
+              item
+            ): item is string =>
+              typeof item ===
+              "string"
+          );
+        };
+
+        // ========================================
+        // SECTIONS
+        // ========================================
+
+        const importedSections =
+          Array.isArray(
+            data.sections
+          )
+            ? data.sections
+                .filter(
+                  (item) =>
+                    typeof item ===
+                      "object" &&
+                    item !==
+                      null
+                )
+                .map(
+                  (
+                    item
+                  ) => {
+                    const section =
+                      item as Record<
+                        string,
+                        unknown
+                      >;
+
+                    return {
+                      title:
+                        typeof section.title ===
+                        "string"
+                          ? section.title
+                          : "",
+
+                      body:
+                        typeof section.body ===
+                        "string"
+                          ? section.body
+                          : "",
+                    };
+                  }
+                )
+                .filter(
+                  (
+                    section
+                  ) =>
+                    section.title.trim() ||
+                    section.body.trim()
+                )
+            : [];
+
+        const importedTitle =
+          getString(
+            "title"
+          );
+
+        const importedSlug =
+          generateSlug(
+            getString(
+              "slug",
+              importedTitle
+            )
+          );
+
+        let importedHref =
+          getString(
+            "href"
+          );
+
+        if (
+          !importedHref &&
+          importedSlug
+        ) {
+          importedHref =
+            `/${importedSlug}`;
+        }
+
+        const importedBanner =
+          getString(
+            "bannerImage"
+          );
+
+        const importedDarkBanner =
+          getString(
+            "darkBannerImage"
+          );
+
+        // ========================================
+        // FILL FORM
+        // ========================================
+
+        setForm(
+          (
+            previous
+          ) => ({
+            ...previous,
+
+            tag:
+              getString(
+                "tag"
+              ),
+
+            title:
+              importedTitle,
+
+            slug:
+              importedSlug,
+
+            description:
+              getString(
+                "description"
+              ),
+
+            image:
+              getString(
+                "image"
+              ),
+
+            bannerImage:
+              importedBanner,
+
+            darkBannerImage:
+              importedDarkBanner,
+
+            href:
+              importedHref,
+
+            gradient:
+              getString(
+                "gradient"
+              ),
+
+            intro:
+              getArray(
+                "intro"
+              ),
+
+            challenges:
+              getArray(
+                "challenges"
+              ),
+
+            middle:
+              getArray(
+                "middle"
+              ),
+
+            benefits:
+              getArray(
+                "benefits"
+              ),
+
+            closing:
+              getString(
+                "closing"
+              ),
+
+            coverage:
+              getArray(
+                "coverage"
+              ),
+
+            qa:
+              getArray(
+                "qa"
+              ),
+
+            sections:
+              importedSections,
+
+            order:
+              typeof data.order ===
+                "number" &&
+              Number.isFinite(
+                data.order
+              )
+                ? Math.trunc(
+                    data.order
+                  )
+                : 0,
+
+            isActive:
+              typeof data.isActive ===
+              "boolean"
+                ? data.isActive
+                : true,
+          })
         );
-      };
 
-      // -----------------------------------------
-      // SECTIONS
-      // -----------------------------------------
+        // reset selected files after JSON import
 
-      const importedSections =
-        Array.isArray(data.sections)
-          ? data.sections
-              .filter(
-                (item) =>
-                  typeof item === "object" &&
-                  item !== null
-              )
-              .map((item) => {
-                const section =
-                  item as Record<
-                    string,
-                    unknown
-                  >;
+        setLightBannerFile(
+          null
+        );
 
-                return {
-                  title:
-                    typeof section.title ===
-                    "string"
-                      ? section.title
-                      : "",
+        setDarkBannerFile(
+          null
+        );
 
-                  body:
-                    typeof section.body ===
-                    "string"
-                      ? section.body
-                      : "",
-                };
-              })
-              .filter(
-                (section) =>
-                  section.title.trim() ||
-                  section.body.trim()
-              )
-          : [];
+        setLightBannerPreview(
+          importedBanner
+        );
 
-      const importedTitle =
-        getString("title");
+        setDarkBannerPreview(
+          importedDarkBanner
+        );
 
-      const importedSlug = generateSlug(
-        getString(
-          "slug",
-          importedTitle
-        )
-      );
-
-      let importedHref =
-        getString("href");
-
-      if (
-        !importedHref &&
-        importedSlug
-      ) {
-        importedHref = `/${importedSlug}`;
-      }
-
-      // -----------------------------------------
-      // FILL COMPLETE FORM
-      // -----------------------------------------
-
-      setForm((previous) => ({
-        ...previous,
-
-        tag:
-          getString("tag"),
-
-        title:
-          importedTitle,
-
-        slug:
-          importedSlug,
-
-        description:
-          getString("description"),
-
-        image:
-          getString("image"),
-
-        bannerImage:
-          getString("bannerImage"),
-
-        href:
-          importedHref,
-
-        gradient:
-          getString("gradient"),
-
-        intro:
-          getArray("intro"),
-
-        challenges:
-          getArray("challenges"),
-
-        middle:
-          getArray("middle"),
-
-        benefits:
-          getArray("benefits"),
-
-        closing:
-          getString("closing"),
-
-        coverage:
-          getArray("coverage"),
-
-        qa:
-          getArray("qa"),
-
-        sections:
-          importedSections,
-
-        order:
-          typeof data.order === "number" &&
-          Number.isFinite(data.order)
-            ? Math.trunc(data.order)
-            : 0,
-
-        isActive:
-          typeof data.isActive ===
-          "boolean"
-            ? data.isActive
-            : true,
-      }));
-
-      setImportMessage(
-        isEditing
-          ? "Service JSON imported successfully. Review the fields and click Save Changes."
-          : "Service JSON imported successfully. Review the fields and click Create Service."
-      );
-    } catch (error) {
-      console.error(
-        "Bulk JSON import error:",
+        setImportMessage(
+          isEditing
+            ? "Service JSON imported successfully. Review the fields and click Save Changes."
+            : "Service JSON imported successfully. Review the fields and click Create Service."
+        );
+      } catch (
         error
-      );
+      ) {
+        console.error(
+          "Bulk JSON import error:",
+          error
+        );
 
-      setError(
-        error instanceof Error
-          ? `Invalid JSON: ${error.message}`
-          : "Invalid service JSON."
-      );
-    }
-  };
+        setError(
+          error instanceof Error
+            ? `Invalid JSON: ${error.message}`
+            : "Invalid service JSON."
+        );
+      }
+    };
 
   // =========================================================
   // SUBMIT
   // =========================================================
 
-  const handleSubmit = async (
-    e: React.FormEvent
-  ) => {
-    e.preventDefault();
+  const handleSubmit =
+    async (
+      e: React.FormEvent
+    ) => {
+      e.preventDefault();
 
-    setError("");
-    setSaving(true);
+      setError("");
+      setSaving(true);
 
-    try {
-      // -----------------------------------------
-      // VALIDATION
-      // -----------------------------------------
+      try {
+        // ========================================
+        // VALIDATION
+        // ========================================
 
-      if (!form.title.trim()) {
-        throw new Error(
-          "Title is required."
-        );
-      }
+        if (
+          !form.title.trim()
+        ) {
+          throw new Error(
+            "Title is required."
+          );
+        }
 
-      if (!form.slug.trim()) {
-        throw new Error(
-          "Slug is required."
-        );
-      }
+        if (
+          !form.slug.trim()
+        ) {
+          throw new Error(
+            "Slug is required."
+          );
+        }
 
-      if (!form.description.trim()) {
-        throw new Error(
-          "Description is required."
-        );
-      }
+        if (
+          !form.description.trim()
+        ) {
+          throw new Error(
+            "Description is required."
+          );
+        }
 
-      if (!form.image.trim()) {
-        throw new Error(
-          "Service image is required."
-        );
-      }
+        if (
+          !form.image.trim()
+        ) {
+          throw new Error(
+            "Service image is required."
+          );
+        }
 
-      if (!form.href.trim()) {
-        throw new Error(
-          "Href is required."
-        );
-      }
+        if (
+          !form.href.trim()
+        ) {
+          throw new Error(
+            "Href is required."
+          );
+        }
 
-      // -----------------------------------------
-      // API URL
-      // -----------------------------------------
+        // ========================================
+        // API
+        // ========================================
 
-      const url = isEditing
-        ? `/api/admin/services/${initialValues!.id}`
-        : "/api/admin/services";
+        const url =
+          isEditing
+            ? `/api/admin/services/${initialValues!.id}`
+            : "/api/admin/services";
 
-      const method = isEditing
-        ? "PUT"
-        : "POST";
+        const method =
+          isEditing
+            ? "PUT"
+            : "POST";
 
-      // -----------------------------------------
-      // CLEAN SECTIONS
-      // -----------------------------------------
+        // ========================================
+        // UPLOAD LIGHT/DARK BANNERS
+        // ========================================
 
-      const cleanSections =
-        form.sections
-          .map((section) => ({
-            title:
-              section.title.trim(),
+        let finalBannerImage =
+          form.bannerImage;
 
-            body:
-              section.body.trim(),
-          }))
-          .filter(
-            (section) =>
-              section.title ||
-              section.body
+        let finalDarkBannerImage =
+          form.darkBannerImage;
+
+        if (
+          lightBannerFile
+        ) {
+          finalBannerImage =
+            await uploadBanner(
+              lightBannerFile
+            );
+        }
+
+        if (
+          darkBannerFile
+        ) {
+          finalDarkBannerImage =
+            await uploadBanner(
+              darkBannerFile
+            );
+        }
+
+        // ========================================
+        // CLEAN SECTIONS
+        // ========================================
+
+        const cleanSections =
+          form.sections
+            .map(
+              (
+                section
+              ) => ({
+                title:
+                  section.title.trim(),
+
+                body:
+                  section.body.trim(),
+              })
+            )
+            .filter(
+              (
+                section
+              ) =>
+                section.title ||
+                section.body
+            );
+
+        // ========================================
+        // PAYLOAD
+        // ========================================
+
+        const payload = {
+          tag:
+            form.tag.trim() ||
+            null,
+
+          title:
+            form.title.trim(),
+
+          slug:
+            generateSlug(
+              form.slug
+            ),
+
+          description:
+            form.description.trim(),
+
+          image:
+            form.image.trim(),
+
+          // LIGHT THEME BANNER
+          bannerImage:
+            finalBannerImage.trim() ||
+            null,
+
+          // DARK THEME BANNER
+          darkBannerImage:
+            finalDarkBannerImage.trim() ||
+            null,
+
+          href:
+            form.href.trim(),
+
+          gradient:
+            form.gradient.trim() ||
+            null,
+
+          intro:
+            form.intro.length >
+            0
+              ? form.intro
+              : null,
+
+          challenges:
+            form.challenges
+              .length > 0
+              ? form.challenges
+              : null,
+
+          middle:
+            form.middle.length >
+            0
+              ? form.middle
+              : null,
+
+          benefits:
+            form.benefits
+              .length > 0
+              ? form.benefits
+              : null,
+
+          closing:
+            form.closing.trim() ||
+            null,
+
+          coverage:
+            form.coverage
+              .length > 0
+              ? form.coverage
+              : null,
+
+          qa:
+            form.qa.length > 0
+              ? form.qa
+              : null,
+
+          sections:
+            cleanSections.length >
+            0
+              ? cleanSections
+              : null,
+
+          order:
+            Number(
+              form.order
+            ) || 0,
+
+          isActive:
+            form.isActive,
+        };
+
+        // ========================================
+        // SAVE SERVICE
+        // ========================================
+
+        const res =
+          await fetch(
+            url,
+            {
+              method,
+
+              headers: {
+                "Content-Type":
+                  "application/json",
+              },
+
+              credentials:
+                "same-origin",
+
+              body:
+                JSON.stringify(
+                  payload
+                ),
+            }
           );
 
-      // -----------------------------------------
-      // PAYLOAD
-      // -----------------------------------------
+        const data =
+          await res
+            .json()
+            .catch(
+              () => null
+            );
 
-      const payload = {
-        tag:
-          form.tag.trim() || null,
+        if (!res.ok) {
+          throw new Error(
+            data?.error ||
+              `Something went wrong. Status: ${res.status}`
+          );
+        }
 
-        title:
-          form.title.trim(),
-
-        slug:
-          generateSlug(form.slug),
-
-        description:
-          form.description.trim(),
-
-        image:
-          form.image.trim(),
-
-        bannerImage:
-          form.bannerImage.trim() ||
-          null,
-
-        href:
-          form.href.trim(),
-
-        gradient:
-          form.gradient.trim() ||
-          null,
-
-        intro:
-          form.intro.length > 0
-            ? form.intro
-            : null,
-
-        challenges:
-          form.challenges.length > 0
-            ? form.challenges
-            : null,
-
-        middle:
-          form.middle.length > 0
-            ? form.middle
-            : null,
-
-        benefits:
-          form.benefits.length > 0
-            ? form.benefits
-            : null,
-
-        closing:
-          form.closing.trim() ||
-          null,
-
-        coverage:
-          form.coverage.length > 0
-            ? form.coverage
-            : null,
-
-        qa:
-          form.qa.length > 0
-            ? form.qa
-            : null,
-
-        sections:
-          cleanSections.length > 0
-            ? cleanSections
-            : null,
-
-        order:
-          Number(form.order) || 0,
-
-        isActive:
-          form.isActive,
-      };
-
-      // -----------------------------------------
-      // REQUEST
-      // -----------------------------------------
-
-      const res = await fetch(url, {
-        method,
-
-        headers: {
-          "Content-Type":
-            "application/json",
-        },
-
-        credentials: "same-origin",
-
-        body: JSON.stringify(
-          payload
-        ),
-      });
-
-      const data =
-        await res
-          .json()
-          .catch(() => null);
-
-      if (!res.ok) {
-        throw new Error(
-          data?.error ||
-            `Something went wrong. Status: ${res.status}`
+        router.push(
+          "/admin/services"
         );
-      }
 
-      router.push(
-        "/admin/services"
-      );
-
-      router.refresh();
-    } catch (error) {
-      console.error(
-        "Service save error:",
+        router.refresh();
+      } catch (
         error
-      );
+      ) {
+        console.error(
+          "Service save error:",
+          error
+        );
 
-      setError(
-        error instanceof Error
-          ? error.message
-          : "Something went wrong."
-      );
-    } finally {
-      setSaving(false);
-    }
-  };
+        setError(
+          error instanceof Error
+            ? error.message
+            : "Something went wrong."
+        );
+      } finally {
+        setSaving(false);
+      }
+    };
 
   // =========================================================
   // COMMON CLASSES
@@ -669,7 +1050,9 @@ export function ServiceForm({
 
   return (
     <form
-      onSubmit={handleSubmit}
+      onSubmit={
+        handleSubmit
+      }
       className="max-w-4xl space-y-8"
     >
       {/* ========================================
@@ -677,19 +1060,19 @@ export function ServiceForm({
       ======================================== */}
 
       <div className="overflow-hidden rounded-2xl border border-violet-200 bg-white dark:border-violet-900/60 dark:bg-slate-900">
-        {/* Header */}
-
         <div className="border-b border-violet-100 bg-gradient-to-r from-violet-50 via-purple-50 to-indigo-50 px-6 py-5 dark:border-violet-900/40 dark:from-violet-950/40 dark:via-purple-950/30 dark:to-indigo-950/30">
           <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-center">
             <div>
               <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
-                Bulk Service Import
+                Bulk Service
+                Import
               </h2>
 
               <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-                Paste complete service JSON
-                and automatically fill every
-                service field.
+                Paste complete
+                service JSON and
+                automatically fill
+                every service field.
               </p>
             </div>
 
@@ -699,19 +1082,23 @@ export function ServiceForm({
           </div>
         </div>
 
-        {/* Content */}
-
         <div className="p-6">
           <label
-            className={labelClass}
+            className={
+              labelClass
+            }
           >
             Service JSON
           </label>
 
           <textarea
             rows={14}
-            value={bulkJson}
-            onChange={(e) => {
+            value={
+              bulkJson
+            }
+            onChange={(
+              e
+            ) => {
               setBulkJson(
                 e.target.value
               );
@@ -721,17 +1108,22 @@ export function ServiceForm({
               );
 
               if (error) {
-                setError("");
+                setError(
+                  ""
+                );
               }
             }}
-            spellCheck={false}
+            spellCheck={
+              false
+            }
             placeholder={`{
   "tag": "",
   "title": "Website Development",
   "slug": "website-development",
   "description": "Service description...",
   "image": "/web-devlopment.png",
-  "bannerImage": "/web-devlopment.png",
+  "bannerImage": "/web-development-light.png",
+  "darkBannerImage": "/web-development-dark.png",
   "href": "/website-development",
   "gradient": "from-blue-700 to-cyan-300",
   "intro": [],
@@ -749,11 +1141,15 @@ export function ServiceForm({
           />
 
           <p
-            className={helpClass}
+            className={
+              helpClass
+            }
           >
-            JSON only fills the form.
-            Nothing is saved to the
-            database until you click{" "}
+            JSON only fills
+            the form. Nothing
+            is saved to the
+            database until you
+            click{" "}
             {isEditing
               ? "Save Changes"
               : "Create Service"}
@@ -768,16 +1164,25 @@ export function ServiceForm({
               }
               className="rounded-lg bg-violet-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2 dark:focus:ring-offset-slate-900"
             >
-              Import & Fill All Fields
+              Import & Fill
+              All Fields
             </button>
 
             {bulkJson && (
               <button
                 type="button"
                 onClick={() => {
-                  setBulkJson("");
-                  setImportMessage("");
-                  setError("");
+                  setBulkJson(
+                    ""
+                  );
+
+                  setImportMessage(
+                    ""
+                  );
+
+                  setError(
+                    ""
+                  );
                 }}
                 className="rounded-lg border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-600 transition hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:bg-slate-800"
               >
@@ -788,7 +1193,9 @@ export function ServiceForm({
 
           {importMessage && (
             <div className="mt-5 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-700 dark:border-emerald-900 dark:bg-emerald-950/30 dark:text-emerald-400">
-              {importMessage}
+              {
+                importMessage
+              }
             </div>
           )}
         </div>
@@ -804,8 +1211,9 @@ export function ServiceForm({
         </h2>
 
         <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-          Main information used on the
-          services listing and detail
+          Main information
+          used on the services
+          listing and detail
           page.
         </p>
 
@@ -814,19 +1222,25 @@ export function ServiceForm({
 
           <div>
             <label
-              className={labelClass}
+              className={
+                labelClass
+              }
             >
               Tag
             </label>
 
             <input
               type="text"
-              value={form.tag}
+              value={
+                form.tag
+              }
               onChange={handleChange(
                 "tag"
               )}
               placeholder="e.g. Cloud Services"
-              className={inputClass}
+              className={
+                inputClass
+              }
             />
           </div>
 
@@ -834,7 +1248,9 @@ export function ServiceForm({
 
           <div>
             <label
-              className={labelClass}
+              className={
+                labelClass
+              }
             >
               Title *
             </label>
@@ -842,12 +1258,16 @@ export function ServiceForm({
             <input
               type="text"
               required
-              value={form.title}
+              value={
+                form.title
+              }
               onChange={
                 handleTitleChange
               }
               placeholder="Cloud Services"
-              className={inputClass}
+              className={
+                inputClass
+              }
             />
           </div>
 
@@ -855,7 +1275,9 @@ export function ServiceForm({
 
           <div>
             <label
-              className={labelClass}
+              className={
+                labelClass
+              }
             >
               Slug *
             </label>
@@ -863,22 +1285,34 @@ export function ServiceForm({
             <input
               type="text"
               required
-              value={form.slug}
-              onChange={(e) =>
-                setForm((prev) => ({
-                  ...prev,
+              value={
+                form.slug
+              }
+              onChange={(
+                e
+              ) =>
+                setForm(
+                  (
+                    prev
+                  ) => ({
+                    ...prev,
 
-                  slug: generateSlug(
-                    e.target.value
-                  ),
-                }))
+                    slug:
+                      generateSlug(
+                        e.target
+                          .value
+                      ),
+                  })
+                )
               }
               placeholder="cloud-services"
               className={`${inputClass} font-mono`}
             />
 
             <p
-              className={helpClass}
+              className={
+                helpClass
+              }
             >
               Example:
               cloud-services
@@ -889,7 +1323,9 @@ export function ServiceForm({
 
           <div>
             <label
-              className={labelClass}
+              className={
+                labelClass
+              }
             >
               Description *
             </label>
@@ -920,65 +1356,154 @@ export function ServiceForm({
         </h2>
 
         <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-          Images and public URL used by
-          the service.
+          Images and public
+          URL used by the
+          service.
         </p>
 
-        <div className="mt-6 space-y-5">
+        <div className="mt-6 space-y-6">
           {/* Service Image */}
 
           <div>
             <label
-              className={labelClass}
+              className={
+                labelClass
+              }
             >
-              Service Card Image *
+              Service Card
+              Image *
             </label>
 
             <input
               type="text"
               required
-              value={form.image}
+              value={
+                form.image
+              }
               onChange={handleChange(
                 "image"
               )}
               placeholder="/service-grid.png"
-              className={inputClass}
+              className={
+                inputClass
+              }
             />
 
             <p
-              className={helpClass}
+              className={
+                helpClass
+              }
             >
-              Image displayed on the
-              services listing page.
+              Image displayed
+              on the services
+              listing page.
             </p>
           </div>
 
-          {/* Banner */}
+          {/* ======================================
+              LIGHT BANNER IMAGE
+          ====================================== */}
 
           <div>
             <label
-              className={labelClass}
+              className={
+                labelClass
+              }
             >
-              Banner Image
+              Light Banner
+              Image
             </label>
 
-            <input
-              type="text"
-              value={
-                form.bannerImage
-              }
-              onChange={handleChange(
-                "bannerImage"
+            <div className="rounded-xl border border-slate-200 p-4 dark:border-slate-700">
+              {lightBannerPreview ? (
+                <div className="mb-4 overflow-hidden rounded-xl border border-slate-200 bg-slate-50 dark:border-slate-700 dark:bg-slate-950">
+                  <img
+                    src={
+                      lightBannerPreview
+                    }
+                    alt="Light banner preview"
+                    className="h-52 w-full object-contain"
+                  />
+                </div>
+              ) : (
+                <div className="mb-4 flex h-40 items-center justify-center rounded-xl border border-dashed border-slate-300 bg-slate-50 px-4 text-center text-sm text-slate-400 dark:border-slate-700 dark:bg-slate-950">
+                  No light
+                  banner selected
+                </div>
               )}
-              placeholder="/cloud-services-banner.png"
-              className={inputClass}
-            />
+
+              <input
+                type="file"
+                accept="image/png,image/jpeg,image/webp,image/avif"
+                onChange={
+                  handleLightBannerChange
+                }
+                className="block w-full cursor-pointer rounded-lg border border-slate-200 bg-white text-sm text-slate-500 file:mr-4 file:cursor-pointer file:border-0 file:bg-violet-50 file:px-4 file:py-2.5 file:text-sm file:font-semibold file:text-violet-600 hover:file:bg-violet-100 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-400 dark:file:bg-violet-500/10 dark:file:text-violet-400"
+              />
+            </div>
 
             <p
-              className={helpClass}
+              className={
+                helpClass
+              }
             >
-              Image displayed on the
-              service detail page.
+              Banner displayed
+              when website is
+              using light
+              theme.
+            </p>
+          </div>
+
+          {/* ======================================
+              DARK BANNER IMAGE
+          ====================================== */}
+
+          <div>
+            <label
+              className={
+                labelClass
+              }
+            >
+              Dark Banner Image
+            </label>
+
+            <div className="rounded-xl border border-slate-200 p-4 dark:border-slate-700">
+              {darkBannerPreview ? (
+                <div className="mb-4 overflow-hidden rounded-xl border border-slate-700 bg-slate-950">
+                  <img
+                    src={
+                      darkBannerPreview
+                    }
+                    alt="Dark banner preview"
+                    className="h-52 w-full object-contain"
+                  />
+                </div>
+              ) : (
+                <div className="mb-4 flex h-40 items-center justify-center rounded-xl border border-dashed border-slate-700 bg-slate-950 px-4 text-center text-sm text-slate-500">
+                  No dark
+                  banner selected
+                </div>
+              )}
+
+              <input
+                type="file"
+                accept="image/png,image/jpeg,image/webp,image/avif"
+                onChange={
+                  handleDarkBannerChange
+                }
+                className="block w-full cursor-pointer rounded-lg border border-slate-200 bg-white text-sm text-slate-500 file:mr-4 file:cursor-pointer file:border-0 file:bg-violet-50 file:px-4 file:py-2.5 file:text-sm file:font-semibold file:text-violet-600 hover:file:bg-violet-100 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-400 dark:file:bg-violet-500/10 dark:file:text-violet-400"
+              />
+            </div>
+
+            <p
+              className={
+                helpClass
+              }
+            >
+              Banner displayed
+              when website is
+              using dark
+              theme.
             </p>
           </div>
 
@@ -986,7 +1511,9 @@ export function ServiceForm({
 
           <div>
             <label
-              className={labelClass}
+              className={
+                labelClass
+              }
             >
               Link (href) *
             </label>
@@ -994,16 +1521,22 @@ export function ServiceForm({
             <input
               type="text"
               required
-              value={form.href}
+              value={
+                form.href
+              }
               onChange={handleChange(
                 "href"
               )}
               placeholder="/cloud-services"
-              className={inputClass}
+              className={
+                inputClass
+              }
             />
 
             <p
-              className={helpClass}
+              className={
+                helpClass
+              }
             >
               Example:
               /website-development
@@ -1014,7 +1547,9 @@ export function ServiceForm({
 
           <div>
             <label
-              className={labelClass}
+              className={
+                labelClass
+              }
             >
               Gradient
             </label>
@@ -1028,15 +1563,20 @@ export function ServiceForm({
                 "gradient"
               )}
               placeholder="from-blue-500 to-cyan-500"
-              className={inputClass}
+              className={
+                inputClass
+              }
             />
 
             <p
-              className={helpClass}
+              className={
+                helpClass
+              }
             >
               Optional Tailwind
-              gradient classes used by
-              the service page.
+              gradient classes
+              used by the
+              service page.
             </p>
           </div>
         </div>
@@ -1052,8 +1592,9 @@ export function ServiceForm({
         </h2>
 
         <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-          Enter one item per line for
-          list content.
+          Enter one item per
+          line for list
+          content.
         </p>
 
         <div className="mt-6 space-y-6">
@@ -1061,7 +1602,9 @@ export function ServiceForm({
 
           <div>
             <label
-              className={labelClass}
+              className={
+                labelClass
+              }
             >
               Introduction
             </label>
@@ -1079,9 +1622,12 @@ export function ServiceForm({
             />
 
             <p
-              className={helpClass}
+              className={
+                helpClass
+              }
             >
-              One paragraph per line.
+              One paragraph per
+              line.
             </p>
           </div>
 
@@ -1089,7 +1635,9 @@ export function ServiceForm({
 
           <div>
             <label
-              className={labelClass}
+              className={
+                labelClass
+              }
             >
               Challenges
             </label>
@@ -1107,9 +1655,12 @@ export function ServiceForm({
             />
 
             <p
-              className={helpClass}
+              className={
+                helpClass
+              }
             >
-              One challenge per line.
+              One challenge per
+              line.
             </p>
           </div>
 
@@ -1117,7 +1668,9 @@ export function ServiceForm({
 
           <div>
             <label
-              className={labelClass}
+              className={
+                labelClass
+              }
             >
               Middle Content
             </label>
@@ -1135,9 +1688,12 @@ export function ServiceForm({
             />
 
             <p
-              className={helpClass}
+              className={
+                helpClass
+              }
             >
-              One paragraph per line.
+              One paragraph per
+              line.
             </p>
           </div>
 
@@ -1145,7 +1701,9 @@ export function ServiceForm({
 
           <div>
             <label
-              className={labelClass}
+              className={
+                labelClass
+              }
             >
               Benefits
             </label>
@@ -1163,9 +1721,12 @@ export function ServiceForm({
             />
 
             <p
-              className={helpClass}
+              className={
+                helpClass
+              }
             >
-              One benefit per line.
+              One benefit per
+              line.
             </p>
           </div>
 
@@ -1173,14 +1734,18 @@ export function ServiceForm({
 
           <div>
             <label
-              className={labelClass}
+              className={
+                labelClass
+              }
             >
               Closing Content
             </label>
 
             <textarea
               rows={6}
-              value={form.closing}
+              value={
+                form.closing
+              }
               onChange={handleChange(
                 "closing"
               )}
@@ -1193,7 +1758,9 @@ export function ServiceForm({
 
           <div>
             <label
-              className={labelClass}
+              className={
+                labelClass
+              }
             >
               Coverage
             </label>
@@ -1211,10 +1778,12 @@ export function ServiceForm({
             />
 
             <p
-              className={helpClass}
+              className={
+                helpClass
+              }
             >
-              One coverage item per
-              line.
+              One coverage item
+              per line.
             </p>
           </div>
 
@@ -1222,9 +1791,12 @@ export function ServiceForm({
 
           <div>
             <label
-              className={labelClass}
+              className={
+                labelClass
+              }
             >
-              Q&A / Additional Points
+              Q&A / Additional
+              Points
             </label>
 
             <textarea
@@ -1240,7 +1812,9 @@ export function ServiceForm({
             />
 
             <p
-              className={helpClass}
+              className={
+                helpClass
+              }
             >
               One item per line.
             </p>
@@ -1261,21 +1835,24 @@ export function ServiceForm({
 
             <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
               Add title and body
-              sections when required.
+              sections when
+              required.
             </p>
           </div>
 
           <button
             type="button"
-            onClick={addSection}
+            onClick={
+              addSection
+            }
             className="rounded-lg bg-violet-50 px-4 py-2 text-sm font-semibold text-violet-600 transition hover:bg-violet-100 dark:bg-violet-500/10 dark:text-violet-400 dark:hover:bg-violet-500/20"
           >
             + Add Section
           </button>
         </div>
 
-        {form.sections.length ===
-        0 ? (
+        {form.sections
+          .length === 0 ? (
           <div className="mt-6 rounded-xl border border-dashed border-slate-300 p-8 text-center text-sm text-slate-400 dark:border-slate-700">
             No custom sections
             added.
@@ -1288,13 +1865,16 @@ export function ServiceForm({
                 index
               ) => (
                 <div
-                  key={index}
+                  key={
+                    index
+                  }
                   className="rounded-xl border border-slate-200 p-5 dark:border-slate-700"
                 >
                   <div className="flex items-center justify-between">
                     <p className="text-sm font-semibold text-slate-700 dark:text-slate-300">
                       Section{" "}
-                      {index + 1}
+                      {index +
+                        1}
                     </p>
 
                     <button
@@ -1316,7 +1896,9 @@ export function ServiceForm({
                       value={
                         section.title
                       }
-                      onChange={(e) =>
+                      onChange={(
+                        e
+                      ) =>
                         updateSection(
                           index,
                           "title",
@@ -1335,7 +1917,9 @@ export function ServiceForm({
                       value={
                         section.body
                       }
-                      onChange={(e) =>
+                      onChange={(
+                        e
+                      ) =>
                         updateSection(
                           index,
                           "body",
@@ -1363,11 +1947,13 @@ export function ServiceForm({
           Display Settings
         </h2>
 
-        {/* Order */}
+        {/* Display Order */}
 
         <div className="mt-6">
           <label
-            className={labelClass}
+            className={
+              labelClass
+            }
           >
             Display Order
           </label>
@@ -1375,16 +1961,25 @@ export function ServiceForm({
           <input
             type="number"
             min={0}
-            value={form.order}
-            onChange={(e) =>
-              setForm((prev) => ({
-                ...prev,
+            value={
+              form.order
+            }
+            onChange={(
+              e
+            ) =>
+              setForm(
+                (
+                  prev
+                ) => ({
+                  ...prev,
 
-                order:
-                  Number(
-                    e.target.value
-                  ) || 0,
-              }))
+                  order:
+                    Number(
+                      e.target
+                        .value
+                    ) || 0,
+                })
+              )
             }
             className={`${inputClass} max-w-40`}
           />
@@ -1400,21 +1995,26 @@ export function ServiceForm({
               </p>
 
               <p className="mt-1 text-xs text-slate-400">
-                Inactive services can
-                be hidden from the
-                public website.
+                Inactive services
+                can be hidden
+                from the public
+                website.
               </p>
             </div>
 
             <button
               type="button"
               onClick={() =>
-                setForm((prev) => ({
-                  ...prev,
+                setForm(
+                  (
+                    prev
+                  ) => ({
+                    ...prev,
 
-                  isActive:
-                    !prev.isActive,
-                }))
+                    isActive:
+                      !prev.isActive,
+                  })
+                )
               }
               aria-pressed={
                 form.isActive
@@ -1454,7 +2054,9 @@ export function ServiceForm({
       <div className="flex flex-wrap items-center gap-3">
         <RippleButton
           type="submit"
-          disabled={saving}
+          disabled={
+            saving
+          }
           className="rounded-lg bg-violet-600 px-6 py-2.5 text-sm font-semibold text-white hover:bg-violet-500 disabled:cursor-not-allowed disabled:opacity-60"
         >
           {saving
@@ -1471,7 +2073,9 @@ export function ServiceForm({
               "/admin/services"
             )
           }
-          disabled={saving}
+          disabled={
+            saving
+          }
           className="rounded-lg border border-slate-200 px-6 py-2.5 text-sm font-medium text-slate-600 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-60 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
         >
           Cancel

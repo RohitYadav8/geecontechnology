@@ -21,34 +21,50 @@ export async function GET(
 
   if (!admin) {
     return NextResponse.json(
-      { error: "Unauthorized" },
-      { status: 401 }
+      {
+        error: "Unauthorized",
+      },
+      {
+        status: 401,
+      }
     );
   }
 
   try {
     const { id } = await params;
 
-    const service = await prisma.service.findUnique({
-      where: {
-        id,
-      },
-    });
+    const service =
+      await prisma.service.findUnique({
+        where: {
+          id,
+        },
+      });
 
     if (!service) {
       return NextResponse.json(
-        { error: "Service not found." },
-        { status: 404 }
+        {
+          error: "Service not found.",
+        },
+        {
+          status: 404,
+        }
       );
     }
 
     return NextResponse.json(service);
   } catch (error) {
-    console.error("Get service error:", error);
+    console.error(
+      "Get service error:",
+      error
+    );
 
     return NextResponse.json(
-      { error: "Failed to fetch service." },
-      { status: 500 }
+      {
+        error: "Failed to fetch service.",
+      },
+      {
+        status: 500,
+      }
     );
   }
 }
@@ -65,8 +81,12 @@ export async function PUT(
 
   if (!admin) {
     return NextResponse.json(
-      { error: "Unauthorized" },
-      { status: 401 }
+      {
+        error: "Unauthorized",
+      },
+      {
+        status: 401,
+      }
     );
   }
 
@@ -80,9 +100,11 @@ export async function PUT(
       title,
       slug,
       description,
-
       image,
+
       bannerImage,
+      darkBannerImage,
+
       href,
       gradient,
 
@@ -99,26 +121,31 @@ export async function PUT(
       isActive,
     } = body;
 
-    // --------------------------------------------------------
+    // ========================================================
     // CHECK EXISTING SERVICE
-    // --------------------------------------------------------
+    // ========================================================
 
-    const existingService = await prisma.service.findUnique({
-      where: {
-        id,
-      },
-    });
+    const existingService =
+      await prisma.service.findUnique({
+        where: {
+          id,
+        },
+      });
 
     if (!existingService) {
       return NextResponse.json(
-        { error: "Service not found." },
-        { status: 404 }
+        {
+          error: "Service not found.",
+        },
+        {
+          status: 404,
+        }
       );
     }
 
-    // --------------------------------------------------------
+    // ========================================================
     // CLEAN VALUES
-    // --------------------------------------------------------
+    // ========================================================
 
     const cleanTitle =
       typeof title === "string"
@@ -151,6 +178,12 @@ export async function PUT(
         ? bannerImage.trim()
         : null;
 
+    const cleanDarkBannerImage =
+      typeof darkBannerImage === "string" &&
+      darkBannerImage.trim()
+        ? darkBannerImage.trim()
+        : null;
+
     const cleanHref =
       typeof href === "string"
         ? href.trim()
@@ -174,48 +207,68 @@ export async function PUT(
         ? closing.trim()
         : null;
 
-    // --------------------------------------------------------
+    // ========================================================
     // VALIDATION
-    // --------------------------------------------------------
+    // ========================================================
 
     if (!cleanTitle) {
       return NextResponse.json(
-        { error: "Title is required." },
-        { status: 400 }
+        {
+          error: "Title is required.",
+        },
+        {
+          status: 400,
+        }
       );
     }
 
     if (!cleanSlug) {
       return NextResponse.json(
-        { error: "Slug is required." },
-        { status: 400 }
+        {
+          error: "Slug is required.",
+        },
+        {
+          status: 400,
+        }
       );
     }
 
     if (!cleanDescription) {
       return NextResponse.json(
-        { error: "Description is required." },
-        { status: 400 }
+        {
+          error: "Description is required.",
+        },
+        {
+          status: 400,
+        }
       );
     }
 
     if (!cleanImage) {
       return NextResponse.json(
-        { error: "Image is required." },
-        { status: 400 }
+        {
+          error: "Image is required.",
+        },
+        {
+          status: 400,
+        }
       );
     }
 
     if (!cleanHref) {
       return NextResponse.json(
-        { error: "Href is required." },
-        { status: 400 }
+        {
+          error: "Href is required.",
+        },
+        {
+          status: 400,
+        }
       );
     }
 
-    // --------------------------------------------------------
+    // ========================================================
     // DUPLICATE SLUG CHECK
-    // --------------------------------------------------------
+    // ========================================================
 
     const serviceWithSameSlug =
       await prisma.service.findUnique({
@@ -233,85 +286,103 @@ export async function PUT(
           error:
             "Another service with this slug already exists.",
         },
-        { status: 409 }
+        {
+          status: 409,
+        }
       );
     }
 
-    // --------------------------------------------------------
+    // ========================================================
     // UPDATE
-    // --------------------------------------------------------
+    // ========================================================
 
-    const service = await prisma.service.update({
-      where: {
-        id,
-      },
+    const service =
+      await prisma.service.update({
+        where: {
+          id,
+        },
 
-      data: {
-        tag: cleanTag,
+        data: {
+          tag: cleanTag,
 
-        title: cleanTitle,
+          title: cleanTitle,
 
-        slug: cleanSlug,
+          slug: cleanSlug,
 
-        description: cleanDescription,
+          description:
+            cleanDescription,
 
-        image: cleanImage,
+          image: cleanImage,
 
-        bannerImage: cleanBannerImage,
+          // LIGHT BANNER
+          bannerImage:
+            bannerImage !== undefined
+              ? cleanBannerImage
+              : existingService.bannerImage,
 
-        href: cleanHref,
+          // DARK BANNER
+          darkBannerImage:
+            darkBannerImage !== undefined
+              ? cleanDarkBannerImage
+              : existingService.darkBannerImage,
 
-        gradient: cleanGradient,
+          href: cleanHref,
 
-        intro:
-          intro !== undefined
-            ? intro
-            : existingService.intro,
+          gradient: cleanGradient,
 
-        challenges:
-          challenges !== undefined
-            ? challenges
-            : existingService.challenges,
+          intro:
+            intro !== undefined
+              ? intro
+              : existingService.intro,
 
-        middle:
-          middle !== undefined
-            ? middle
-            : existingService.middle,
+          challenges:
+            challenges !== undefined
+              ? challenges
+              : existingService.challenges,
 
-        benefits:
-          benefits !== undefined
-            ? benefits
-            : existingService.benefits,
+          middle:
+            middle !== undefined
+              ? middle
+              : existingService.middle,
 
-        closing: cleanClosing,
+          benefits:
+            benefits !== undefined
+              ? benefits
+              : existingService.benefits,
 
-        coverage:
-          coverage !== undefined
-            ? coverage
-            : existingService.coverage,
+          closing:
+            closing !== undefined
+              ? cleanClosing
+              : existingService.closing,
 
-        qa:
-          qa !== undefined
-            ? qa
-            : existingService.qa,
+          coverage:
+            coverage !== undefined
+              ? coverage
+              : existingService.coverage,
 
-        sections:
-          sections !== undefined
-            ? sections
-            : existingService.sections,
+          qa:
+            qa !== undefined
+              ? qa
+              : existingService.qa,
 
-        order:
-          typeof order === "number" &&
-          Number.isFinite(order)
-            ? Math.trunc(order)
-            : existingService.order,
+          sections:
+            sections !== undefined
+              ? sections
+              : existingService.sections,
 
-        isActive:
-          typeof isActive === "boolean"
-            ? isActive
-            : existingService.isActive,
-      },
-    });
+          order:
+            typeof order === "number" &&
+            Number.isFinite(order)
+              ? Math.trunc(order)
+              : existingService.order,
+
+          isActive:
+            typeof isActive ===
+            "boolean"
+              ? isActive
+              : existingService.isActive,
+        },
+      });
 
     return NextResponse.json({
       success: true,
@@ -347,24 +418,33 @@ export async function DELETE(
 
   if (!admin) {
     return NextResponse.json(
-      { error: "Unauthorized" },
-      { status: 401 }
+      {
+        error: "Unauthorized",
+      },
+      {
+        status: 401,
+      }
     );
   }
 
   try {
     const { id } = await params;
 
-    const existingService = await prisma.service.findUnique({
-      where: {
-        id,
-      },
-    });
+    const existingService =
+      await prisma.service.findUnique({
+        where: {
+          id,
+        },
+      });
 
     if (!existingService) {
       return NextResponse.json(
-        { error: "Service not found." },
-        { status: 404 }
+        {
+          error: "Service not found.",
+        },
+        {
+          status: 404,
+        }
       );
     }
 
@@ -376,7 +456,8 @@ export async function DELETE(
 
     return NextResponse.json({
       success: true,
-      message: "Service deleted successfully.",
+      message:
+        "Service deleted successfully.",
     });
   } catch (error) {
     console.error(

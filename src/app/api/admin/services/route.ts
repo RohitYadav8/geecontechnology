@@ -62,12 +62,16 @@ export async function POST(request: NextRequest) {
       title,
       slug,
       description,
-
       image,
+
+      // Light theme banner
       bannerImage,
+
+      // Dark theme banner
+      darkBannerImage,
+
       href,
       gradient,
-
       intro,
       challenges,
       middle,
@@ -76,7 +80,6 @@ export async function POST(request: NextRequest) {
       coverage,
       qa,
       sections,
-
       order,
       isActive,
     } = body;
@@ -110,10 +113,18 @@ export async function POST(request: NextRequest) {
         ? image.trim()
         : "";
 
+    // Light banner
     const cleanBannerImage =
       typeof bannerImage === "string" &&
       bannerImage.trim()
         ? bannerImage.trim()
+        : null;
+
+    // Dark banner
+    const cleanDarkBannerImage =
+      typeof darkBannerImage === "string" &&
+      darkBannerImage.trim()
+        ? darkBannerImage.trim()
         : null;
 
     const cleanHref =
@@ -207,14 +218,26 @@ export async function POST(request: NextRequest) {
       await prisma.service.create({
         data: {
           tag: cleanTag,
+
           title: cleanTitle,
+
           slug: cleanSlug,
-          description: cleanDescription,
+
+          description:
+            cleanDescription,
 
           image: cleanImage,
+
+          // Light theme banner
           bannerImage:
             cleanBannerImage,
+
+          // Dark theme banner
+          darkBannerImage:
+            cleanDarkBannerImage,
+
           href: cleanHref,
+
           gradient:
             cleanGradient,
 

@@ -1,5 +1,4 @@
 import { cookies } from "next/headers";
-
 import {
   redirect,
   notFound,
@@ -164,8 +163,13 @@ export default async function EditServicePage({
                 image:
                   service.image,
 
+                // LIGHT BANNER
                 bannerImage:
                   service.bannerImage ?? "",
+
+                // DARK BANNER
+                darkBannerImage:
+                  service.darkBannerImage ?? "",
 
                 href:
                   service.href,

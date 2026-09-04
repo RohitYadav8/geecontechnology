@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+
 import { prisma } from "../../../../lib/prisma";
 
 export async function GET() {
@@ -7,6 +8,7 @@ export async function GET() {
       where: {
         isActive: true,
       },
+
       orderBy: [
         {
           order: "asc",
@@ -15,12 +17,20 @@ export async function GET() {
           createdAt: "desc",
         },
       ],
+
       select: {
         id: true,
         title: true,
         slug: true,
         description: true,
         image: true,
+
+        // Light theme banner
+        bannerImage: true,
+
+        // Dark theme banner
+        darkBannerImage: true,
+
         href: true,
         order: true,
       },
@@ -28,7 +38,10 @@ export async function GET() {
 
     return NextResponse.json(services);
   } catch (error) {
-    console.error("Public services error:", error);
+    console.error(
+      "Public services error:",
+      error
+    );
 
     return NextResponse.json(
       {

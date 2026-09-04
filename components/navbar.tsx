@@ -65,13 +65,13 @@ const navLinks = [
 
       {
         label: "Social Media Marketing",
-        href: "/social-media-marketing",
+        href: "/social-media-marketing-services",
         icon: Share2,
       },
 
       {
-        label: "Search Engine Optimisation",
-        href: "/search-engine-optimisation",
+        label: "Search Engine Optimization",
+        href: "/search-engine-optimization",
         icon: Globe2,
       },
 
@@ -343,8 +343,8 @@ export function Navbar() {
                       <motion.div
                         initial={{
                           opacity: 0,
-                          y: 12,
-                          scale: 0.98,
+                          y: 10,
+                          scale: 0.985,
                         }}
                         animate={{
                           opacity: 1,
@@ -353,49 +353,49 @@ export function Navbar() {
                         }}
                         exit={{
                           opacity: 0,
-                          y: 8,
-                          scale: 0.985,
+                          y: 7,
+                          scale: 0.99,
                         }}
                         transition={{
-                          duration: 0.18,
+                          duration: 0.16,
                           ease: "easeOut",
                         }}
-                        className="absolute left-1/2 top-full w-[440px] -translate-x-1/2 pt-4"
+                        className="absolute left-1/2 top-full w-[360px] -translate-x-1/2 pt-3"
                       >
                         {/* HOVER BRIDGE */}
 
-                        <div className="absolute left-0 right-0 top-0 h-4" />
+                        <div className="absolute left-0 right-0 top-0 h-3" />
 
                         {/* DROPDOWN PANEL */}
 
-                        <div className="relative overflow-hidden rounded-[22px] border border-slate-200/80 bg-white/95 p-2.5 shadow-[0_24px_70px_-24px_rgba(15,23,42,0.35)] backdrop-blur-2xl dark:border-white/[0.09] dark:bg-[#0b1220]/95 dark:shadow-[0_28px_80px_-24px_rgba(0,0,0,0.7)]">
+                        <div className="relative overflow-hidden rounded-[18px] border border-slate-200/80 bg-white/95 p-2 shadow-[0_20px_55px_-24px_rgba(15,23,42,0.35)] backdrop-blur-2xl dark:border-white/[0.09] dark:bg-[#0b1220]/95 dark:shadow-[0_24px_65px_-24px_rgba(0,0,0,0.7)]">
                           {/* BACKGROUND GLOW */}
 
-                          <div className="pointer-events-none absolute -right-16 -top-16 h-40 w-40 rounded-full bg-blue-500/[0.08] blur-3xl" />
+                          <div className="pointer-events-none absolute -right-14 -top-14 h-32 w-32 rounded-full bg-blue-500/[0.07] blur-3xl" />
 
-                          <div className="pointer-events-none absolute -bottom-20 -left-16 h-40 w-40 rounded-full bg-cyan-400/[0.06] blur-3xl" />
+                          <div className="pointer-events-none absolute -bottom-16 -left-14 h-32 w-32 rounded-full bg-cyan-400/[0.05] blur-3xl" />
 
                           {/* DROPDOWN HEADER */}
 
-                          <div className="relative mb-2 flex items-center justify-between border-b border-slate-100 px-3 pb-3 pt-2 dark:border-white/[0.06]">
+                          <div className="relative mb-1.5 flex items-center justify-between border-b border-slate-100 px-2.5 pb-2.5 pt-1.5 dark:border-white/[0.06]">
                             <div>
-                              <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-blue-600 dark:text-blue-400">
+                              <p className="text-[9px] font-bold uppercase tracking-[0.16em] text-blue-600 dark:text-blue-400">
                                 Our Services
                               </p>
 
-                              <p className="mt-1 text-xs text-slate-400 dark:text-slate-500">
+                              <p className="mt-0.5 text-[11px] text-slate-400 dark:text-slate-500">
                                 Explore our technology solutions
                               </p>
                             </div>
 
                             <Link
                               href="/services"
-                              className="group/all flex items-center gap-1 text-xs font-semibold text-slate-500 transition-colors hover:text-blue-600 dark:text-slate-400 dark:hover:text-blue-400"
+                              className="group/all flex items-center gap-1 text-[11px] font-semibold text-slate-500 transition-colors hover:text-blue-600 dark:text-slate-400 dark:hover:text-blue-400"
                             >
                               View All
 
                               <ChevronRight
-                                size={14}
+                                size={12}
                                 className="transition-transform duration-200 group-hover/all:translate-x-0.5"
                               />
                             </Link>
@@ -403,7 +403,7 @@ export function Navbar() {
 
                           {/* SERVICE LINKS */}
 
-                          <div className="relative grid grid-cols-1 gap-1">
+                          <div className="relative grid grid-cols-1 gap-0.5">
                             {link.children.map(
                               (child, index) => {
                                 const childActive =
@@ -419,20 +419,20 @@ export function Navbar() {
                                     key={child.label}
                                     initial={{
                                       opacity: 0,
-                                      x: -6,
+                                      x: -4,
                                     }}
                                     animate={{
                                       opacity: 1,
                                       x: 0,
                                     }}
                                     transition={{
-                                      duration: 0.2,
-                                      delay: index * 0.025,
+                                      duration: 0.16,
+                                      delay: index * 0.02,
                                     }}
                                   >
                                     <Link
                                       href={child.href}
-                                      className={`group/item relative flex items-center gap-3 overflow-hidden rounded-xl px-3 py-2.5 transition-all duration-200 ${
+                                      className={`group/item relative flex items-center gap-2.5 overflow-hidden rounded-[10px] px-2.5 py-1.5 transition-all duration-200 ${
                                         childActive
                                           ? "bg-blue-50 text-blue-700 dark:bg-blue-500/[0.12] dark:text-blue-300"
                                           : "text-slate-600 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-white/[0.05]"
@@ -441,7 +441,7 @@ export function Navbar() {
                                       {/* ACTIVE LINE */}
 
                                       <span
-                                        className={`absolute bottom-2 left-0 top-2 w-[3px] rounded-r-full bg-gradient-to-b from-blue-500 to-cyan-400 transition-all duration-200 ${
+                                        className={`absolute bottom-1.5 left-0 top-1.5 w-[2px] rounded-r-full bg-gradient-to-b from-blue-500 to-cyan-400 transition-all duration-200 ${
                                           childActive
                                             ? "opacity-100"
                                             : "scale-y-50 opacity-0 group-hover/item:scale-y-100 group-hover/item:opacity-100"
@@ -451,28 +451,28 @@ export function Navbar() {
                                       {/* ICON */}
 
                                       <span
-                                        className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border transition-all duration-200 ${
+                                        className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-[7px] border transition-all duration-200 ${
                                           childActive
                                             ? "border-blue-200 bg-white text-blue-600 dark:border-blue-500/20 dark:bg-blue-500/10 dark:text-blue-400"
                                             : "border-slate-200/80 bg-white text-slate-400 group-hover/item:border-blue-200 group-hover/item:text-blue-600 dark:border-white/[0.07] dark:bg-white/[0.035] dark:text-slate-500 dark:group-hover/item:border-blue-500/20 dark:group-hover/item:text-blue-400"
                                         }`}
                                       >
                                         <Icon
-                                          size={16}
+                                          size={13}
                                           strokeWidth={1.8}
                                         />
                                       </span>
 
                                       {/* LABEL */}
 
-                                      <span className="min-w-0 flex-1 text-[13px] font-medium transition-colors group-hover/item:text-[#1a2b4a] dark:group-hover/item:text-white">
+                                      <span className="min-w-0 flex-1 text-[12px] font-medium transition-colors group-hover/item:text-[#1a2b4a] dark:group-hover/item:text-white">
                                         {child.label}
                                       </span>
 
                                       {/* ARROW */}
 
                                       <ChevronRight
-                                        size={15}
+                                        size={13}
                                         className={`shrink-0 transition-all duration-200 ${
                                           childActive
                                             ? "translate-x-0 text-blue-600 dark:text-blue-400"
@@ -488,7 +488,7 @@ export function Navbar() {
 
                           {/* BOTTOM ACCENT */}
 
-                          <div className="relative mt-2 h-[2px] overflow-hidden rounded-full bg-slate-100 dark:bg-white/[0.05]">
+                          <div className="relative mt-1.5 h-[2px] overflow-hidden rounded-full bg-slate-100 dark:bg-white/[0.05]">
                             <motion.div
                               initial={{
                                 x: "-100%",
@@ -497,7 +497,7 @@ export function Navbar() {
                                 x: "0%",
                               }}
                               transition={{
-                                duration: 0.6,
+                                duration: 0.5,
                                 ease: "easeOut",
                               }}
                               className="h-full w-1/3 rounded-full bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-400"
@@ -636,7 +636,7 @@ export function Navbar() {
                     }`}
                   >
                     <div className="overflow-hidden">
-                      <div className="mb-2 mt-1 space-y-1 rounded-2xl border border-slate-100 bg-slate-50/70 p-2 dark:border-white/[0.06] dark:bg-white/[0.025]">
+                      <div className="mb-2 mt-1 space-y-0.5 rounded-2xl border border-slate-100 bg-slate-50/70 p-2 dark:border-white/[0.06] dark:bg-white/[0.025]">
                         {link.children.map((child) => {
                           const Icon = child.icon;
 
@@ -650,14 +650,14 @@ export function Navbar() {
                             <Link
                               key={child.label}
                               href={child.href}
-                              className={`group flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-all ${
+                              className={`group flex items-center gap-2.5 rounded-xl px-2.5 py-2 text-[13px] transition-all ${
                                 childActive
                                   ? "bg-white text-blue-600 shadow-sm dark:bg-white/[0.06] dark:text-blue-400"
                                   : "text-slate-600 hover:bg-white hover:text-blue-600 dark:text-slate-400 dark:hover:bg-white/[0.05] dark:hover:text-white"
                               }`}
                             >
-                              <span className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-400 transition group-hover:border-blue-200 group-hover:text-blue-600 dark:border-white/[0.07] dark:bg-white/[0.035] dark:text-slate-500 dark:group-hover:text-blue-400">
-                                <Icon size={15} />
+                              <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-400 transition group-hover:border-blue-200 group-hover:text-blue-600 dark:border-white/[0.07] dark:bg-white/[0.035] dark:text-slate-500 dark:group-hover:text-blue-400">
+                                <Icon size={14} />
                               </span>
 
                               <span className="min-w-0 flex-1">
@@ -665,7 +665,7 @@ export function Navbar() {
                               </span>
 
                               <ChevronRight
-                                size={14}
+                                size={13}
                                 className="shrink-0 text-slate-300 transition-transform group-hover:translate-x-0.5 group-hover:text-blue-500"
                               />
                             </Link>

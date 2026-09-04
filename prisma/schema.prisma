@@ -56,27 +56,31 @@ model CandidateSubmission {
 }
 
 model Service {
-  id                   String   @id @default(cuid())
-  tag                  String?
-  title                String
-  description          String   @db.Text
-  image                String
-  href                 String
-  order                Int      @default(0)
-  createdAt            DateTime @default(now())
-  updatedAt            DateTime @updatedAt
-  isActive             Boolean  @default(true)
-  slug                 String   @unique
-  bannerImage          String?
-  benefits             Json?
-  challenges           Json?
-  closing              String?  @db.Text
-  coverage             Json?
-  gradient             String?
-  intro                Json?
-  middle               Json?
-  qa                   Json?
-  sections             Json?
+  id          String   @id @default(cuid())
+  tag         String?
+  title       String
+  description String   @db.Text
+  image       String
+  href        String
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  isActive    Boolean  @default(true)
+  slug        String   @unique
+
+  bannerImage     String?
+  darkBannerImage String?
+
+  benefits   Json?
+  challenges Json?
+  closing    String? @db.Text
+  coverage   Json?
+  gradient   String?
+  intro      Json?
+  middle     Json?
+  qa         Json?
+  sections   Json?
+
   brochureGradientFrom String?
   brochureGradientTo   String?
   brochureGradientVia  String?
