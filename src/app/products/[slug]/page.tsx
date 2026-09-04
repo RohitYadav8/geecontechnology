@@ -301,34 +301,42 @@ export default async function ProductPage({
 
         {product.bannerImage && (
           <section className="relative overflow-hidden border-b border-slate-100 bg-white dark:border-slate-800/70 dark:bg-[#07101f]">
-            {/* subtle dynamic glow */}
+            {/* SUBTLE DYNAMIC GLOW */}
 
             <div
-              className="pointer-events-none absolute -left-20 top-0 h-64 w-64 rounded-full opacity-[0.10] blur-[100px]"
+              className="pointer-events-none absolute -left-20 top-0 h-64 w-64 rounded-full opacity-[0.08] blur-[100px]"
               style={{
                 background: gradientFrom,
               }}
             />
 
             <div
-              className="pointer-events-none absolute -right-20 bottom-0 h-64 w-64 rounded-full opacity-[0.10] blur-[100px]"
+              className="pointer-events-none absolute -right-20 bottom-0 h-64 w-64 rounded-full opacity-[0.08] blur-[100px]"
               style={{
                 background: gradientTo,
               }}
             />
 
-            <div className="relative mx-auto max-w-[1600px] px-0">
-              <div className="relative h-[180px] w-full sm:h-[220px] md:h-[260px] lg:h-[290px] xl:h-[310px]">
-                <Image
-                  src={product.bannerImage}
-                  alt={product.title}
-                  fill
-                  priority
-                  sizes="100vw"
-                  className="object-contain object-center"
-                />
+            {/* =================================================
+                FULL WIDTH RESPONSIVE BANNER
+            ================================================= */}
+
+            <AnimateIn delay={0.05}>
+              <div className="relative w-full overflow-hidden bg-white dark:bg-[#07101f]">
+                <div className="relative aspect-[91/20] w-full">
+                  <Image
+                    src={product.bannerImage}
+                    alt={product.title}
+                    fill
+                    priority
+                    sizes="100vw"
+                    className="object-cover object-center"
+                  />
+                </div>
+
+                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-slate-950/[0.02] via-transparent to-transparent dark:from-black/[0.10]" />
               </div>
-            </div>
+            </AnimateIn>
           </section>
         )}
 

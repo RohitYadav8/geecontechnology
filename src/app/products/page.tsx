@@ -4,7 +4,6 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import {
-  ArrowRight,
   ArrowUpRight,
   Boxes,
   Loader2,
@@ -199,15 +198,16 @@ export default function ProductsPage() {
             <div className="mt-12">
               <div className="mb-6 flex items-center gap-3 text-sm text-slate-500 dark:text-slate-400">
                 <Loader2 className="h-4 w-4 animate-spin" />
+
                 Loading products...
               </div>
 
-              <div className="grid gap-7 sm:grid-cols-2 lg:grid-cols-3">
+              <div className="grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
                 {Array.from({ length: 6 }).map(
                   (_, index) => (
                     <div
                       key={index}
-                      className="h-[520px] animate-pulse rounded-[28px] border border-slate-200 bg-slate-100 dark:border-slate-800 dark:bg-slate-900"
+                      className="h-[410px] animate-pulse rounded-[18px] border border-slate-200 bg-slate-100 dark:border-slate-800 dark:bg-slate-900"
                     />
                   )
                 )}
@@ -237,10 +237,10 @@ export default function ProductsPage() {
                PRODUCT GRID
             ================================================= */
 
-            <StaggerContainer className="mt-14 grid gap-7 sm:grid-cols-2 lg:grid-cols-3">
+            <StaggerContainer className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {products.map((product) => (
                 <StaggerItem key={product.id}>
-                  <div className="group/card relative h-[520px] [perspective:1500px]">
+                  <div className="group/card relative h-[410px] [perspective:1500px]">
                     <div className="relative h-full w-full transition-transform duration-700 ease-[cubic-bezier(.2,.7,.2,1)] [transform-style:preserve-3d] lg:group-hover/card:[transform:rotateY(180deg)]">
                       {/* =========================================
                           FRONT CARD
@@ -254,120 +254,109 @@ export default function ProductsPage() {
                           h-full
                           flex-col
                           overflow-hidden
-                          rounded-[28px]
+                          rounded-[18px]
                           border
-                          border-slate-200/80
-                          bg-white/95
-                          shadow-[0_18px_55px_-30px_rgba(15,23,42,0.35)]
-                          backdrop-blur
+                          border-slate-200
+                          bg-white
+                          shadow-[0_10px_30px_rgba(15,23,42,0.08)]
                           transition-all
                           duration-500
                           [backface-visibility:hidden]
                           lg:group-hover/card:border-blue-300
-                          lg:group-hover/card:shadow-[0_28px_80px_-30px_rgba(37,99,235,0.28)]
+                          lg:group-hover/card:shadow-[0_18px_45px_rgba(15,23,42,0.12)]
                           dark:border-slate-800
-                          dark:bg-slate-900/95
+                          dark:bg-slate-900
+                          dark:lg:group-hover/card:border-blue-500/30
                         "
                       >
                         {/* =====================================
-                            IMAGE
+                            TOP BANNER
                         ===================================== */}
 
-                        <div className="relative h-[210px] shrink-0 overflow-hidden bg-gradient-to-br from-slate-100 via-white to-blue-50 dark:from-slate-900 dark:via-slate-900 dark:to-blue-950/40">
+                        <div className="relative h-[110px] shrink-0 overflow-hidden bg-slate-100 dark:bg-slate-800">
                           {product.bannerImage ? (
                             <Image
                               src={product.bannerImage}
                               alt={product.title}
                               fill
                               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
-                              className="object-contain p-7 transition-transform duration-700 lg:group-hover/card:scale-[1.05]"
+                              className="object-cover object-center transition-transform duration-700 lg:group-hover/card:scale-[1.03]"
                             />
                           ) : (
-                            <div className="flex h-full items-center justify-center px-8 text-center">
-                              <span className="text-lg font-semibold text-slate-400">
-                                {product.title}
-                              </span>
-                            </div>
+                            <div className="h-full w-full bg-gradient-to-r from-blue-500 via-blue-600 to-cyan-400" />
                           )}
 
-                          <div className="pointer-events-none absolute inset-x-0 bottom-0 h-16 bg-gradient-to-t from-white/90 to-transparent dark:from-slate-900/90" />
-
-                          {/* PRODUCT LOGO */}
-
-                          {product.logoImage && (
-                            <div className="absolute bottom-4 left-6 flex h-14 w-14 items-center justify-center overflow-hidden rounded-2xl border border-white/80 bg-white p-2 shadow-lg">
-                              <Image
-                                src={product.logoImage}
-                                alt={`${product.title} logo`}
-                                width={56}
-                                height={56}
-                                className="h-full w-full object-contain"
-                              />
-                            </div>
-                          )}
+                          <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent to-black/[0.02] dark:to-black/10" />
                         </div>
+
+                        {/* =====================================
+                            PRODUCT LOGO
+                        ===================================== */}
+
+                        {product.logoImage && (
+                          <div className="relative z-10 mx-auto -mt-[42px] flex h-[84px] w-[84px] shrink-0 items-center justify-center overflow-hidden rounded-full border-[3px] border-blue-500 bg-white p-3 shadow-[0_8px_22px_rgba(15,23,42,0.12)] dark:border-blue-400 dark:bg-slate-950">
+                            <Image
+                              src={product.logoImage}
+                              alt={`${product.title} logo`}
+                              width={84}
+                              height={84}
+                              className="h-full w-full object-contain"
+                            />
+                          </div>
+                        )}
+
+                        {/* If logo missing */}
+
+                        {!product.logoImage && (
+                          <div className="relative z-10 mx-auto -mt-[26px] flex h-[52px] items-center justify-center rounded-full border border-blue-200 bg-white px-4 text-[11px] font-semibold text-blue-600 shadow-sm dark:border-blue-500/20 dark:bg-slate-950 dark:text-blue-400">
+                            {product.title}
+                          </div>
+                        )}
 
                         {/* =====================================
                             FRONT CONTENT
                         ===================================== */}
 
-                        <div className="flex flex-1 flex-col p-6">
-                          <p className="text-[10px] font-semibold uppercase tracking-[0.2em] text-blue-600 dark:text-blue-400">
-                            Enterprise Product
-                          </p>
-
-                          <h2 className="mt-3 text-xl font-semibold tracking-tight text-slate-950 dark:text-white">
+                        <div className="flex min-h-0 flex-1 flex-col px-5 pb-5 pt-4 text-center">
+                          <h2 className="text-[20px] font-medium leading-tight tracking-[-0.02em] text-slate-800 dark:text-white">
                             {product.title}
                           </h2>
 
-                          {/* CARD TAGLINE */}
+                          {/* SHORT DESCRIPTION */}
 
-                          {product.cardTagline ? (
-                            <p className="mt-3 line-clamp-2 text-sm font-semibold leading-6 text-slate-700 dark:text-slate-200">
-                              {product.cardTagline}
-                            </p>
-                          ) : product.shortDescription ? (
-                            <p className="mt-3 line-clamp-2 text-sm font-semibold leading-6 text-slate-700 dark:text-slate-200">
+                          {product.shortDescription && (
+                            <p className="mt-1.5 text-[13px] leading-5 text-slate-400 dark:text-slate-500">
                               {product.shortDescription}
                             </p>
-                          ) : null}
+                          )}
+
+                          {/* CARD TAGLINE */}
+
+                          {product.cardTagline && (
+                            <p className="mt-5 line-clamp-3 text-[13px] leading-[1.65] text-slate-600 dark:text-slate-300">
+                              {product.cardTagline}
+                            </p>
+                          )}
 
                           {/* SECONDARY TEXT */}
 
                           {product.cardSecondaryText && (
-                            <p className="mt-2 line-clamp-2 text-xs leading-6 text-slate-500 dark:text-slate-400">
+                            <p className="mt-1 line-clamp-2 text-[13px] leading-[1.65] text-slate-600 dark:text-slate-300">
                               {product.cardSecondaryText}
                             </p>
                           )}
 
-                          {/* MOBILE */}
+                          {/* MOBILE READ MORE */}
 
-                          <div className="mt-auto pt-5 lg:hidden">
+                          <div className="mt-auto pt-3 lg:hidden">
                             <Link
                               href={`/products/${product.slug}`}
-                              className="inline-flex items-center gap-2 text-sm font-semibold text-blue-600 dark:text-blue-400"
+                              className="inline-flex items-center gap-1.5 text-[13px] font-semibold text-blue-600 dark:text-blue-400"
                             >
-                              Explore Product
+                              Read More
 
-                              <ArrowUpRight size={15} />
+                              <ArrowUpRight size={14} />
                             </Link>
-                          </div>
-
-                          {/* DESKTOP HINT */}
-
-                          <div className="mt-auto hidden pt-5 lg:block">
-                            <div className="h-px bg-slate-100 dark:bg-slate-800" />
-
-                            <div className="mt-4 flex items-center justify-between">
-                              <p className="text-xs text-slate-400">
-                                Hover to explore
-                              </p>
-
-                              <ArrowRight
-                                size={14}
-                                className="text-slate-300"
-                              />
-                            </div>
                           </div>
                         </div>
                       </article>
@@ -383,106 +372,89 @@ export default function ProductsPage() {
                           hidden
                           h-full
                           overflow-hidden
-                          rounded-[28px]
+                          rounded-[18px]
                           border
-                          border-blue-500/20
-                          bg-gradient-to-br
-                          from-[#071a38]
-                          via-[#092655]
-                          to-[#0b3476]
-                          text-white
-                          shadow-[0_28px_80px_-30px_rgba(37,99,235,0.35)]
+                          border-slate-200
+                          bg-white
+                          text-slate-700
+                          shadow-[0_10px_30px_rgba(15,23,42,0.08)]
                           [backface-visibility:hidden]
                           [transform:rotateY(180deg)]
+                          dark:border-slate-800
+                          dark:bg-slate-900
+                          dark:text-slate-200
                           lg:flex
                           lg:flex-col
                         "
                       >
-                        {/* GLOW */}
+                        <div className="flex h-full flex-col text-center">
+                          {/* =====================================
+                              FLIP CONTENT
+                          ===================================== */}
 
-                        <div className="pointer-events-none absolute -right-20 -top-20 h-52 w-52 rounded-full bg-blue-400/20 blur-[80px]" />
+                          <div className="flex min-h-0 flex-1 flex-col px-5 pb-4 pt-5">
+                            {/* EYEBROW */}
 
-                        <div className="pointer-events-none absolute -bottom-20 -left-20 h-48 w-48 rounded-full bg-cyan-400/10 blur-[80px]" />
-
-                        <div className="relative flex flex-1 flex-col p-7">
-                          {/* FLIP EYEBROW */}
-
-                          <div className="flex items-center justify-between gap-4">
-                            <p className="line-clamp-1 text-[10px] font-semibold uppercase tracking-[0.22em] text-blue-300">
+                            <p className="line-clamp-1 text-[10px] font-medium uppercase tracking-[0.04em] text-slate-400 dark:text-slate-500">
                               {product.flipEyebrow ||
-                                "Product Overview"}
+                                `TAKE A TOUR OF ${product.title}`}
                             </p>
 
-                            {product.logoImage && (
-                              <div className="flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-xl bg-white p-1.5 shadow-sm">
-                                <Image
-                                  src={product.logoImage}
-                                  alt={`${product.title} logo`}
-                                  width={40}
-                                  height={40}
-                                  className="h-full w-full object-contain"
-                                />
-                              </div>
-                            )}
-                          </div>
+                            <div className="mt-4 h-px w-full bg-slate-100 dark:bg-slate-800" />
 
-                          <div className="mt-5 h-px bg-white/10" />
+                            {/* CENTER */}
 
-                          <div className="flex flex-1 flex-col justify-center">
-                            {/* FLIP TITLE */}
+                            <div className="flex min-h-0 flex-1 flex-col justify-center">
+                              {/* TITLE */}
 
-                            <h3 className="text-2xl font-semibold leading-tight tracking-tight">
-                              {product.flipTitle ||
-                                product.title}
-                            </h3>
+                              <h3 className="text-[18px] font-semibold uppercase leading-tight text-slate-700 dark:text-white">
+                                {product.flipTitle ||
+                                  product.title}
+                              </h3>
 
-                            {/* PRODUCT NAME */}
+                              {/* DESCRIPTION */}
 
-                            {product.flipTitle && (
-                              <p className="mt-3 text-xs font-semibold uppercase tracking-[0.16em] text-blue-200/70">
-                                {product.title}
+                              <p className="mt-4 line-clamp-7 text-[13px] leading-[1.7] text-slate-500 dark:text-slate-300">
+                                {product.flipDescription ||
+                                  product.description ||
+                                  product.shortDescription ||
+                                  ""}
                               </p>
-                            )}
+                            </div>
 
-                            {/* FLIP DESCRIPTION */}
+                            {/* SOCIAL ICON STYLE DIVIDER
+                                Keeping only visual placeholders,
+                                no additional links/content added.
+                            */}
 
-                            <p className="mt-5 line-clamp-7 text-sm leading-7 text-slate-300">
-                              {product.flipDescription ||
-                                product.description ||
-                                product.shortDescription ||
-                                `Discover how ${product.title} can help streamline your business operations.`}
-                            </p>
+                            <div className="mx-auto mt-3 flex w-[190px] items-center justify-center">
+                              <div className="h-px flex-1 bg-slate-100 dark:bg-slate-800" />
+
+                              {product.logoImage && (
+                                <div className="mx-4 flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-full border border-slate-200 bg-white p-1.5 dark:border-slate-700 dark:bg-slate-950">
+                                  <Image
+                                    src={product.logoImage}
+                                    alt={`${product.title} logo`}
+                                    width={32}
+                                    height={32}
+                                    className="h-full w-full object-contain"
+                                  />
+                                </div>
+                              )}
+
+                              <div className="h-px flex-1 bg-slate-100 dark:bg-slate-800" />
+                            </div>
                           </div>
 
-                          {/* EXPLORE BUTTON */}
+                          {/* =====================================
+                              READ MORE
+                          ===================================== */}
 
                           <Link
                             href={`/products/${product.slug}`}
-                            className="
-                              group/link
-                              mt-6
-                              flex
-                              items-center
-                              justify-between
-                              rounded-xl
-                              bg-white
-                              px-5
-                              py-3.5
-                              text-sm
-                              font-semibold
-                              text-blue-700
-                              transition-all
-                              duration-300
-                              hover:-translate-y-0.5
-                              hover:bg-blue-50
-                            "
+                            className="flex h-[48px] shrink-0 items-center justify-center bg-[#4597d1] text-[16px] font-medium text-white transition-colors duration-300 hover:bg-[#3488c3] dark:bg-blue-600 dark:hover:bg-blue-500"
                           >
-                            <span>Explore Product</span>
-
-                            <ArrowRight
-                              size={16}
-                              className="transition-transform duration-300 group-hover/link:translate-x-1"
-                            />
+                            Read More
                           </Link>
                         </div>
                       </article>
