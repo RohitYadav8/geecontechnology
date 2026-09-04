@@ -198,7 +198,6 @@ export default function ProductsPage() {
             <div className="mt-12">
               <div className="mb-6 flex items-center gap-3 text-sm text-slate-500 dark:text-slate-400">
                 <Loader2 className="h-4 w-4 animate-spin" />
-
                 Loading products...
               </div>
 
@@ -207,7 +206,7 @@ export default function ProductsPage() {
                   (_, index) => (
                     <div
                       key={index}
-                      className="h-[410px] animate-pulse rounded-[18px] border border-slate-200 bg-slate-100 dark:border-slate-800 dark:bg-slate-900"
+                      className="h-[390px] animate-pulse rounded-[18px] border border-slate-200 bg-slate-100 dark:border-slate-800 dark:bg-slate-900"
                     />
                   )
                 )}
@@ -240,7 +239,7 @@ export default function ProductsPage() {
             <StaggerContainer className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
               {products.map((product) => (
                 <StaggerItem key={product.id}>
-                  <div className="group/card relative h-[410px] [perspective:1500px]">
+                  <div className="group/card relative h-[390px] [perspective:1500px]">
                     <div className="relative h-full w-full transition-transform duration-700 ease-[cubic-bezier(.2,.7,.2,1)] [transform-style:preserve-3d] lg:group-hover/card:[transform:rotateY(180deg)]">
                       {/* =========================================
                           FRONT CARD
@@ -273,7 +272,7 @@ export default function ProductsPage() {
                             TOP BANNER
                         ===================================== */}
 
-                        <div className="relative h-[110px] shrink-0 overflow-hidden bg-slate-100 dark:bg-slate-800">
+                        <div className="relative h-[96px] shrink-0 overflow-hidden bg-slate-100 dark:bg-slate-800">
                           {product.bannerImage ? (
                             <Image
                               src={product.bannerImage}
@@ -286,7 +285,7 @@ export default function ProductsPage() {
                             <div className="h-full w-full bg-gradient-to-r from-blue-500 via-blue-600 to-cyan-400" />
                           )}
 
-                          <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent to-black/[0.02] dark:to-black/10" />
+                          <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-transparent to-black/[0.03] dark:to-black/10" />
                         </div>
 
                         {/* =====================================
@@ -294,21 +293,19 @@ export default function ProductsPage() {
                         ===================================== */}
 
                         {product.logoImage && (
-                          <div className="relative z-10 mx-auto -mt-[42px] flex h-[84px] w-[84px] shrink-0 items-center justify-center overflow-hidden rounded-full border-[3px] border-blue-500 bg-white p-3 shadow-[0_8px_22px_rgba(15,23,42,0.12)] dark:border-blue-400 dark:bg-slate-950">
+                          <div className="relative z-10 mx-auto -mt-[36px] flex h-[74px] w-[74px] shrink-0 items-center justify-center overflow-hidden rounded-full border-[3px] border-blue-500 bg-white p-2.5 shadow-[0_8px_22px_rgba(15,23,42,0.12)] dark:border-blue-400 dark:bg-slate-950">
                             <Image
                               src={product.logoImage}
                               alt={`${product.title} logo`}
-                              width={84}
-                              height={84}
+                              width={74}
+                              height={74}
                               className="h-full w-full object-contain"
                             />
                           </div>
                         )}
 
-                        {/* If logo missing */}
-
                         {!product.logoImage && (
-                          <div className="relative z-10 mx-auto -mt-[26px] flex h-[52px] items-center justify-center rounded-full border border-blue-200 bg-white px-4 text-[11px] font-semibold text-blue-600 shadow-sm dark:border-blue-500/20 dark:bg-slate-950 dark:text-blue-400">
+                          <div className="relative z-10 mx-auto -mt-[22px] flex h-[44px] items-center justify-center rounded-full border border-blue-200 bg-white px-4 text-[10px] font-semibold text-blue-600 shadow-sm dark:border-blue-500/20 dark:bg-slate-950 dark:text-blue-400">
                             {product.title}
                           </div>
                         )}
@@ -317,45 +314,36 @@ export default function ProductsPage() {
                             FRONT CONTENT
                         ===================================== */}
 
-                        <div className="flex min-h-0 flex-1 flex-col px-5 pb-5 pt-4 text-center">
-                          <h2 className="text-[20px] font-medium leading-tight tracking-[-0.02em] text-slate-800 dark:text-white">
+                        <div className="flex min-h-0 flex-1 flex-col px-5 pb-4 pt-3 text-center">
+                          <h2 className="text-[19px] font-medium leading-tight tracking-[-0.02em] text-slate-800 dark:text-white">
                             {product.title}
                           </h2>
 
-                          {/* SHORT DESCRIPTION */}
-
                           {product.shortDescription && (
-                            <p className="mt-1.5 text-[13px] leading-5 text-slate-400 dark:text-slate-500">
+                            <p className="mt-1 text-[12px] leading-5 text-slate-400 dark:text-slate-500">
                               {product.shortDescription}
                             </p>
                           )}
 
-                          {/* CARD TAGLINE */}
-
                           {product.cardTagline && (
-                            <p className="mt-5 line-clamp-3 text-[13px] leading-[1.65] text-slate-600 dark:text-slate-300">
+                            <p className="mt-4 line-clamp-3 text-[12.5px] leading-[1.6] text-slate-600 dark:text-slate-300">
                               {product.cardTagline}
                             </p>
                           )}
 
-                          {/* SECONDARY TEXT */}
-
                           {product.cardSecondaryText && (
-                            <p className="mt-1 line-clamp-2 text-[13px] leading-[1.65] text-slate-600 dark:text-slate-300">
+                            <p className="mt-1 line-clamp-2 text-[12.5px] leading-[1.6] text-slate-600 dark:text-slate-300">
                               {product.cardSecondaryText}
                             </p>
                           )}
 
-                          {/* MOBILE READ MORE */}
-
-                          <div className="mt-auto pt-3 lg:hidden">
+                          <div className="mt-auto pt-2 lg:hidden">
                             <Link
                               href={`/products/${product.slug}`}
-                              className="inline-flex items-center gap-1.5 text-[13px] font-semibold text-blue-600 dark:text-blue-400"
+                              className="inline-flex items-center gap-1.5 text-[12px] font-semibold text-blue-600 dark:text-blue-400"
                             >
                               Read More
-
-                              <ArrowUpRight size={14} />
+                              <ArrowUpRight size={13} />
                             </Link>
                           </div>
                         </div>
@@ -388,33 +376,21 @@ export default function ProductsPage() {
                         "
                       >
                         <div className="flex h-full flex-col text-center">
-                          {/* =====================================
-                              FLIP CONTENT
-                          ===================================== */}
-
-                          <div className="flex min-h-0 flex-1 flex-col px-5 pb-4 pt-5">
-                            {/* EYEBROW */}
-
+                          <div className="flex min-h-0 flex-1 flex-col px-5 pb-3 pt-4">
                             <p className="line-clamp-1 text-[10px] font-medium uppercase tracking-[0.04em] text-slate-400 dark:text-slate-500">
                               {product.flipEyebrow ||
                                 `TAKE A TOUR OF ${product.title}`}
                             </p>
 
-                            <div className="mt-4 h-px w-full bg-slate-100 dark:bg-slate-800" />
-
-                            {/* CENTER */}
+                            <div className="mt-3 h-px w-full bg-slate-100 dark:bg-slate-800" />
 
                             <div className="flex min-h-0 flex-1 flex-col justify-center">
-                              {/* TITLE */}
-
-                              <h3 className="text-[18px] font-semibold uppercase leading-tight text-slate-700 dark:text-white">
+                              <h3 className="text-[17px] font-semibold uppercase leading-tight text-slate-700 dark:text-white">
                                 {product.flipTitle ||
                                   product.title}
                               </h3>
 
-                              {/* DESCRIPTION */}
-
-                              <p className="mt-4 line-clamp-7 text-[13px] leading-[1.7] text-slate-500 dark:text-slate-300">
+                              <p className="mt-3 line-clamp-6 text-[12.5px] leading-[1.65] text-slate-500 dark:text-slate-300">
                                 {product.flipDescription ||
                                   product.description ||
                                   product.shortDescription ||
@@ -422,37 +398,22 @@ export default function ProductsPage() {
                               </p>
                             </div>
 
-                            {/* SOCIAL ICON STYLE DIVIDER
-                                Keeping only visual placeholders,
-                                no additional links/content added.
-                            */}
-
-                            <div className="mx-auto mt-3 flex w-[190px] items-center justify-center">
-                              <div className="h-px flex-1 bg-slate-100 dark:bg-slate-800" />
-
-                              {product.logoImage && (
-                                <div className="mx-4 flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-full border border-slate-200 bg-white p-1.5 dark:border-slate-700 dark:bg-slate-950">
-                                  <Image
-                                    src={product.logoImage}
-                                    alt={`${product.title} logo`}
-                                    width={32}
-                                    height={32}
-                                    className="h-full w-full object-contain"
-                                  />
-                                </div>
-                              )}
-
-                              <div className="h-px flex-1 bg-slate-100 dark:bg-slate-800" />
-                            </div>
+                            {product.logoImage && (
+                              <div className="mx-auto mt-2 flex h-8 w-8 shrink-0 items-center justify-center overflow-hidden rounded-full border border-slate-200 bg-white p-1.5 dark:border-slate-700 dark:bg-slate-950">
+                                <Image
+                                  src={product.logoImage}
+                                  alt={`${product.title} logo`}
+                                  width={32}
+                                  height={32}
+                                  className="h-full w-full object-contain"
+                                />
+                              </div>
+                            )}
                           </div>
-
-                          {/* =====================================
-                              READ MORE
-                          ===================================== */}
 
                           <Link
                             href={`/products/${product.slug}`}
-                            className="flex h-[48px] shrink-0 items-center justify-center bg-[#4597d1] text-[16px] font-medium text-white transition-colors duration-300 hover:bg-[#3488c3] dark:bg-blue-600 dark:hover:bg-blue-500"
+                            className="flex h-[44px] shrink-0 items-center justify-center bg-[#4597d1] text-[14px] font-medium text-white transition-colors duration-300 hover:bg-[#3488c3] dark:bg-blue-600 dark:hover:bg-blue-500"
                           >
                             Read More
                           </Link>
