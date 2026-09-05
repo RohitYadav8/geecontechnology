@@ -24,7 +24,7 @@ export const clients: Client[] = [
     { id: "client-04", name: "Client Four", logo: "/toc.png", category: "Manufacturing", featured: true },
     { id: "client-05", name: "Client Five", logo: "/sirmaxo-logo.png", category: "Technology" },
     { id: "client-06", name: "Client Six", logo: "/sacorinadalip.png", category: "Education" },
-    { id: "client-07", name: "Client Seven", logo: "/poundsoft.png", category: "Logistics" },
+    { id: "client-07", name: "Client Seven", logo: "/Poundsoft.png", category: "Logistics" },
     { id: "client-08", name: "Client Eight", logo: "/findusonweb.png", category: "Healthcare" },
     { id: "client-09", name: "Client Nine", logo: "/compassion.png", category: "Finance" },
     { id: "client-10", name: "Client Ten", logo: "/algoma.png", category: "Technology" },
