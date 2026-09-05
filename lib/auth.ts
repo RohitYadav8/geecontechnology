@@ -11,7 +11,7 @@ export interface AdminTokenPayload {
   adminId: string;
   email: string;
   role: string;
-}
+}[]
 
 /**
  * Creates a signed JWT for a logged-in admin.
