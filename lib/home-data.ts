@@ -133,7 +133,7 @@ export const clients = [
   {
     id: "poundsoft",
     name: "Poundsoft",
-    logo: "/poundsoft.png",
+    logo: "/Poundsoft.png",
   },
   {
     id: "findus",
