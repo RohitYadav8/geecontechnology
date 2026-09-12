@@ -7,6 +7,7 @@ import {
   Briefcase,
   Mail,
   Phone,
+  Share2,
   X,
 } from "lucide-react";
 
@@ -14,6 +15,10 @@ import {
   AnimatePresence,
   motion,
 } from "motion/react";
+
+/* =====================================================
+   FACEBOOK ICON
+===================================================== */
 
 function FacebookIcon() {
   return (
@@ -28,6 +33,10 @@ function FacebookIcon() {
   );
 }
 
+/* =====================================================
+   LINKEDIN ICON
+===================================================== */
+
 function LinkedinIcon() {
   return (
     <svg
@@ -41,6 +50,10 @@ function LinkedinIcon() {
   );
 }
 
+/* =====================================================
+   INSTAGRAM ICON
+===================================================== */
+
 function InstagramIcon() {
   return (
     <svg
@@ -51,8 +64,20 @@ function InstagramIcon() {
       strokeWidth="1.8"
       aria-hidden="true"
     >
-      <rect x="3" y="3" width="18" height="18" rx="5" />
-      <circle cx="12" cy="12" r="4" />
+      <rect
+        x="3"
+        y="3"
+        width="18"
+        height="18"
+        rx="5"
+      />
+
+      <circle
+        cx="12"
+        cy="12"
+        r="4"
+      />
+
       <circle
         cx="17.3"
         cy="6.7"
@@ -63,6 +88,10 @@ function InstagramIcon() {
     </svg>
   );
 }
+
+/* =====================================================
+   X / TWITTER ICON
+===================================================== */
 
 function TwitterIcon() {
   return (
@@ -77,137 +106,357 @@ function TwitterIcon() {
   );
 }
 
-const items = [
+/* =====================================================
+   MENU ITEMS
+===================================================== */
+
+const menuItems = [
   {
     label: "Email",
     href: "mailto:info@geecontechnology.com",
     icon: Mail,
+    external: false,
   },
   {
     label: "Call",
     href: "tel:8655263606",
     icon: Phone,
+    external: false,
   },
   {
     label: "Careers",
     href: "/careers",
     icon: Briefcase,
+    external: false,
+  },
+  {
+    label: "Facebook",
+    href: "https://www.facebook.com/pages/Geecon-Systems-Pvt-Ltd/595625870489482",
+    customIcon: FacebookIcon,
+    external: true,
+  },
+  {
+    label: "X",
+    href: "https://x.com/geecongloballtd",
+    customIcon: TwitterIcon,
+    external: true,
+  },
+  {
+    label: "Instagram",
+    href: "#",
+    customIcon: InstagramIcon,
+    external: false,
+  },
+  {
+    label: "LinkedIn",
+    href: "https://www.linkedin.com/company/geecon-systems-pvt-ltd/?originalSubdomain=in",
+    customIcon: LinkedinIcon,
+    external: true,
   },
 ];
+
+/* =====================================================
+   RADIAL POSITIONS
+
+   IMPORTANT:
+   Sabhi x values negative hain.
+   Isliye koi icon right side se cut nahi hoga.
+===================================================== */
+
+const positions = [
+  { x: -45, y: -150 },   // Email
+  { x: -105, y: -125 },  // Call
+  { x: -150, y: -80 },   // Careers
+  { x: -175, y: -20 },   // Facebook
+  { x: -165, y: 48 },    // X
+  { x: -125, y: 105 },   // Instagram
+  { x: -60, y: 135 },    // LinkedIn
+];
+
+/* =====================================================
+   COMPONENT
+===================================================== */
 
 export function FloatingContactMenu() {
   const [open, setOpen] = useState(false);
 
   return (
-    <div className="fixed bottom-6 right-6 z-[90]">
+    <div
+      className="
+        fixed
+        right-8
+        top-[55%]
+        z-[9999]
+
+        -translate-y-1/2
+
+        sm:right-12
+      "
+    >
+      {/* =================================================
+          RADIAL MENU
+      ================================================= */}
+
       <AnimatePresence>
         {open && (
-          <motion.div
-            initial={{
-              opacity: 0,
-              scale: 0.9,
-              y: 12,
-            }}
-            animate={{
-              opacity: 1,
-              scale: 1,
-              y: 0,
-            }}
-            exit={{
-              opacity: 0,
-              scale: 0.9,
-              y: 12,
-            }}
-            className="absolute bottom-20 right-0 flex flex-col items-end gap-3"
+          <div
+            className="
+              absolute
+              right-8
+              top-8
+
+              h-0
+              w-0
+
+              overflow-visible
+            "
           >
-            {items.map(
-              ({ label, href, icon: Icon }, index) => (
-                <motion.div
-                  key={label}
+            {menuItems.map((item, index) => {
+              const position = positions[index];
+
+              const Icon = item.icon;
+              const CustomIcon = item.customIcon;
+
+              const button = (
+                <motion.span
                   initial={{
                     opacity: 0,
-                    x: 20,
+                    scale: 0.25,
+                    x: 0,
+                    y: 0,
                   }}
                   animate={{
                     opacity: 1,
+                    scale: 1,
+                    x: position.x,
+                    y: position.y,
+                  }}
+                  exit={{
+                    opacity: 0,
+                    scale: 0.25,
                     x: 0,
+                    y: 0,
                   }}
                   transition={{
-                    delay: index * 0.05,
+                    type: "spring",
+                    stiffness: 220,
+                    damping: 18,
+                    delay: index * 0.035,
                   }}
+                  whileHover={{
+                    scale: 1.12,
+                  }}
+                  className="
+                    group
+
+                    absolute
+                    left-0
+                    top-0
+
+                    flex
+                    h-12
+                    w-12
+                    items-center
+                    justify-center
+
+                    rounded-full
+
+                    border
+                    border-white/30
+
+                    bg-gradient-to-br
+                    from-violet-600
+                    via-violet-500
+                    to-blue-500
+
+                    text-white
+
+                    shadow-[0_12px_32px_rgba(124,58,237,0.42)]
+
+                    transition-shadow
+                    duration-300
+
+                    hover:shadow-[0_14px_38px_rgba(124,58,237,0.55)]
+                  "
                 >
-                  <Link
-                    href={href}
-                    className="group flex items-center gap-2"
+                  {/* LUCIDE ICON */}
+
+                  {Icon && (
+                    <Icon
+                      size={18}
+                      strokeWidth={2}
+                    />
+                  )}
+
+                  {/* CUSTOM SOCIAL ICON */}
+
+                  {CustomIcon && (
+                    <CustomIcon />
+                  )}
+
+                  {/* =========================================
+                      TOOLTIP
+                  ========================================= */}
+
+                  <span
+                    className="
+                      pointer-events-none
+
+                      absolute
+                      right-[58px]
+                      top-1/2
+
+                      -translate-y-1/2
+
+                      whitespace-nowrap
+
+                      rounded-lg
+
+                      bg-slate-950/95
+
+                      px-2.5
+                      py-1.5
+
+                      text-[11px]
+                      font-medium
+                      text-white
+
+                      opacity-0
+
+                      shadow-lg
+
+                      transition-all
+                      duration-200
+
+                      group-hover:-translate-x-1
+                      group-hover:opacity-100
+                    "
                   >
-                    <span className="rounded-full bg-slate-950/90 px-3 py-1.5 text-xs text-white shadow-lg backdrop-blur">
-                      {label}
-                    </span>
+                    {item.label}
+                  </span>
+                </motion.span>
+              );
 
-                    <span className="flex h-12 w-12 items-center justify-center rounded-full border border-white/20 bg-gradient-to-br from-violet-600 to-blue-500 text-white shadow-lg shadow-violet-500/20 transition-transform duration-300 group-hover:scale-110">
-                      <Icon size={18} />
-                    </span>
-                  </Link>
-                </motion.div>
-              )
-            )}
+              /* =============================================
+                 EXTERNAL LINKS
+              ============================================= */
 
-            <a
-              href="https://www.facebook.com/pages/Geecon-Systems-Pvt-Ltd/595625870489482"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="Facebook"
-              className="flex h-12 w-12 items-center justify-center rounded-full border border-white/20 bg-gradient-to-br from-violet-600 to-blue-500 text-white shadow-lg"
-            >
-              <FacebookIcon />
-            </a>
+              if (item.external) {
+                return (
+                  <a
+                    key={item.label}
+                    href={item.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={item.label}
+                    className="
+                      absolute
+                      left-0
+                      top-0
+                    "
+                  >
+                    {button}
+                  </a>
+                );
+              }
 
-            <a
-              href="https://x.com/geecongloballtd"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="X"
-              className="flex h-12 w-12 items-center justify-center rounded-full border border-white/20 bg-gradient-to-br from-violet-600 to-blue-500 text-white shadow-lg"
-            >
-              <TwitterIcon />
-            </a>
+              /* =============================================
+                 INTERNAL / EMAIL / PHONE
+              ============================================= */
 
-            <a
-              href="#"
-              aria-label="Instagram"
-              className="flex h-12 w-12 items-center justify-center rounded-full border border-white/20 bg-gradient-to-br from-violet-600 to-blue-500 text-white shadow-lg"
-            >
-              <InstagramIcon />
-            </a>
-
-            <a
-              href="https://www.linkedin.com/company/geecon-systems-pvt-ltd/?originalSubdomain=in"
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label="LinkedIn"
-              className="flex h-12 w-12 items-center justify-center rounded-full border border-white/20 bg-gradient-to-br from-violet-600 to-blue-500 text-white shadow-lg"
-            >
-              <LinkedinIcon />
-            </a>
-          </motion.div>
+              return (
+                <Link
+                  key={item.label}
+                  href={item.href}
+                  aria-label={item.label}
+                  onClick={() => setOpen(false)}
+                  className="
+                    absolute
+                    left-0
+                    top-0
+                  "
+                >
+                  {button}
+                </Link>
+              );
+            })}
+          </div>
         )}
       </AnimatePresence>
 
+      {/* =================================================
+          MAIN OPEN / CLOSE BUTTON
+      ================================================= */}
+
       <motion.button
         type="button"
-        onClick={() =>
-          setOpen((value) => !value)
-        }
-        whileTap={{
-          scale: 0.95,
+        onClick={() => setOpen((value) => !value)}
+        whileHover={{
+          scale: 1.06,
         }}
-        className="flex h-14 w-14 items-center justify-center rounded-full bg-gradient-to-br from-violet-600 to-blue-500 text-white shadow-xl shadow-violet-500/30"
+        whileTap={{
+          scale: 0.94,
+        }}
         aria-label={
           open
             ? "Close contact menu"
             : "Open contact menu"
         }
+        className="
+          relative
+          z-20
+
+          flex
+          h-16
+          w-16
+          items-center
+          justify-center
+
+          rounded-full
+
+          border
+          border-white/30
+
+          bg-gradient-to-br
+          from-violet-600
+          via-violet-500
+          to-sky-400
+
+          text-white
+
+          shadow-[0_15px_40px_rgba(124,58,237,0.48)]
+
+          transition-shadow
+          duration-300
+
+          hover:shadow-[0_18px_48px_rgba(124,58,237,0.58)]
+        "
       >
+        {/* ===============================================
+            OUTER GLOW
+        =============================================== */}
+
+        <span
+          className="
+            pointer-events-none
+
+            absolute
+            inset-[-10px]
+
+            -z-10
+
+            rounded-full
+
+            bg-violet-500/15
+
+            blur-md
+          "
+        />
+
+        {/* ===============================================
+            ICON
+        =============================================== */}
+
         <motion.span
           animate={{
             rotate: open ? 90 : 0,
@@ -217,9 +466,9 @@ export function FloatingContactMenu() {
           }}
         >
           {open ? (
-            <X size={22} />
+            <X size={27} />
           ) : (
-            <Phone size={21} />
+            <Share2 size={24} />
           )}
         </motion.span>
       </motion.button>
