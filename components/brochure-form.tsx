@@ -31,10 +31,10 @@ export function BrochureForm({
   // ============================================================
 
   const from =
-    gradientFrom?.trim() || "#172554";
+    gradientFrom?.trim() || "#2563eb";
 
   const via =
-    gradientVia?.trim() || "#2563eb";
+    gradientVia?.trim() || "#7c5cf6";
 
   const to =
     gradientTo?.trim() || "#06b6d4";
@@ -171,13 +171,13 @@ export function BrochureForm({
   // ============================================================
 
   const labelClassName =
-    "mb-1 block text-[9px] font-bold uppercase tracking-[0.13em] text-slate-500 dark:text-slate-400";
+    "mb-1.5 block text-[10px] font-bold uppercase tracking-[0.14em] text-slate-500 dark:text-slate-400";
 
   const inputClassName =
-    "h-9 w-full rounded-[9px] border border-slate-200 bg-slate-50/60 pl-9 pr-3 text-[12px] text-slate-900 outline-none transition-all duration-200 placeholder:text-slate-400 hover:border-slate-300 hover:bg-white focus:border-blue-300 focus:bg-white focus:ring-2 focus:ring-blue-100/70 disabled:cursor-not-allowed disabled:opacity-60 dark:border-white/[0.09] dark:bg-[#081321] dark:text-white dark:placeholder:text-slate-500 dark:hover:border-white/[0.15] dark:hover:bg-[#091726] dark:focus:border-blue-500/40 dark:focus:bg-[#091726] dark:focus:ring-blue-500/10";
+    "h-11 w-full rounded-xl border border-slate-200 bg-slate-50/70 pl-10 pr-4 text-sm text-slate-900 outline-none transition-all duration-200 placeholder:text-slate-400 hover:border-slate-300 focus:border-violet-400 focus:bg-white focus:ring-4 focus:ring-violet-500/10 disabled:cursor-not-allowed disabled:opacity-60 dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-white dark:placeholder:text-slate-500 dark:hover:border-white/[0.15] dark:focus:border-violet-400/50 dark:focus:bg-white/[0.06]";
 
   const iconClassName =
-    "pointer-events-none absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500";
+    "pointer-events-none absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 dark:text-slate-500";
 
   return (
     <motion.aside
@@ -210,7 +210,7 @@ export function BrochureForm({
 
       <div
         aria-hidden="true"
-        className="pointer-events-none absolute -inset-2 rounded-[24px] opacity-[0.08] blur-xl dark:opacity-[0.13]"
+        className="pointer-events-none absolute -inset-3 rounded-[32px] opacity-[0.12] blur-2xl dark:opacity-[0.18]"
         style={{
           backgroundImage:
             mainGradient,
@@ -221,13 +221,13 @@ export function BrochureForm({
           CARD
       ======================================================= */}
 
-      <div className="relative overflow-hidden rounded-[20px] border border-slate-200/90 bg-white shadow-[0_18px_50px_-30px_rgba(15,23,42,0.4)] dark:border-white/[0.09] dark:bg-[#0b1728] dark:shadow-[0_22px_55px_-32px_rgba(0,0,0,0.9)]">
+      <div className="relative overflow-hidden rounded-[26px] border border-slate-200/80 bg-white p-2 shadow-[0_30px_70px_-35px_rgba(91,33,182,.35)] dark:border-white/[0.07] dark:bg-[#0b1220] dark:shadow-[0_30px_70px_-35px_rgba(0,0,0,0.9)]">
         {/* ====================================================
             COMPACT HEADER
         ===================================================== */}
 
         <div
-          className="relative overflow-hidden px-4 pb-5 pt-4 text-white sm:px-5"
+          className="relative overflow-hidden rounded-[20px] px-5 pb-6 pt-5 text-white"
           style={{
             backgroundImage:
               mainGradient,
@@ -244,19 +244,19 @@ export function BrochureForm({
 
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute -right-14 -top-16 h-36 w-36 rounded-full bg-white/[0.15] blur-[50px]"
+            className="pointer-events-none absolute -right-14 -top-16 h-40 w-40 rounded-full bg-violet-300/40 blur-3xl"
           />
 
           {/* Decorative circles */}
 
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute -right-5 top-1 h-20 w-20 rounded-full border border-white/[0.10]"
+            className="pointer-events-none absolute -bottom-16 -left-12 h-36 w-36 rounded-full bg-cyan-300/30 blur-3xl"
           />
 
           <div
             aria-hidden="true"
-            className="pointer-events-none absolute right-5 top-9 h-11 w-11 rounded-full border border-white/[0.10]"
+            className="pointer-events-none absolute -right-6 top-2 h-24 w-24 rounded-full border border-white/[0.14]"
           />
 
           {/* Header content */}
@@ -270,31 +270,31 @@ export function BrochureForm({
               transition={{
                 duration: 0.2,
               }}
-              className="flex h-9 w-9 shrink-0 items-center justify-center rounded-[10px] border border-white/20 bg-white/[0.14] shadow-sm backdrop-blur-md"
+              className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[14px] border border-white/30 bg-white/[0.16] shadow-lg backdrop-blur-xl"
             >
               <Download
-                size={16}
+                size={18}
                 strokeWidth={2}
               />
             </motion.div>
 
             <div className="min-w-0 flex-1">
-              <div className="mb-1 flex items-center gap-1.5">
+              <div className="mb-2 inline-flex items-center gap-1.5 rounded-full border border-white/30 bg-white/[0.14] px-2.5 py-1 backdrop-blur-xl">
                 <Sparkles
-                  size={9}
-                  className="text-white/70"
+                  size={10}
+                  className="text-cyan-200"
                 />
 
-                <span className="text-[8px] font-bold uppercase tracking-[0.2em] text-white/70">
+                <span className="text-[9px] font-bold uppercase tracking-[0.2em] text-white">
                   Product Brochure
                 </span>
               </div>
 
-              <h3 className="text-[17px] font-bold leading-tight tracking-tight text-white">
+              <h3 className="text-xl font-extrabold leading-tight tracking-[-0.03em] text-white">
                 Download Brochure
               </h3>
 
-              <p className="mt-1.5 max-w-[245px] text-[10px] leading-[16px] text-white/75">
+              <p className="mt-2 max-w-[260px] text-xs leading-5 text-indigo-50/90">
                 Share your details and our
                 team will provide the
                 brochure and relevant
@@ -307,11 +307,7 @@ export function BrochureForm({
 
           <div
             aria-hidden="true"
-            className="absolute -bottom-px left-0 right-0 h-3 bg-white dark:bg-[#0b1728]"
-            style={{
-              clipPath:
-                "polygon(0 72%, 18% 45%, 42% 70%, 67% 38%, 100% 64%, 100% 100%, 0 100%)",
-            }}
+            className="pointer-events-none absolute inset-x-5 bottom-0 h-px bg-gradient-to-r from-transparent via-white/40 to-transparent"
           />
         </div>
 
@@ -319,7 +315,7 @@ export function BrochureForm({
             FORM AREA
         ===================================================== */}
 
-        <div className="relative px-4 pb-4 pt-2.5 sm:px-5">
+        <div className="relative px-3 pb-3 pt-5 sm:px-4">
           {/* Subtle accents */}
 
           <div
@@ -344,7 +340,7 @@ export function BrochureForm({
             {success && (
               <div
                 role="status"
-                className="mb-3 rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-2 text-[10px] font-medium leading-4 text-emerald-700 dark:border-emerald-500/20 dark:bg-emerald-500/10 dark:text-emerald-400"
+                className="mb-4 rounded-xl border border-emerald-200 bg-emerald-50 px-3.5 py-2.5 text-xs font-medium leading-5 text-emerald-700 dark:border-emerald-500/20 dark:bg-emerald-500/10 dark:text-emerald-400"
               >
                 {success}
               </div>
@@ -355,7 +351,7 @@ export function BrochureForm({
             {error && (
               <div
                 role="alert"
-                className="mb-3 rounded-lg border border-red-200 bg-red-50 px-3 py-2 text-[10px] font-medium leading-4 text-red-600 dark:border-red-500/20 dark:bg-red-500/10 dark:text-red-400"
+                className="mb-4 rounded-xl border border-red-200 bg-red-50 px-3.5 py-2.5 text-xs font-medium leading-5 text-red-600 dark:border-red-500/20 dark:bg-red-500/10 dark:text-red-400"
               >
                 {error}
               </div>
@@ -367,7 +363,7 @@ export function BrochureForm({
 
             <form
               onSubmit={handleSubmit}
-              className="space-y-2.5"
+              className="space-y-3.5"
             >
               {/* NAME */}
 
@@ -590,12 +586,12 @@ export function BrochureForm({
                 transition={{
                   duration: 0.2,
                 }}
-                className="group relative mt-1 flex h-10 w-full items-center justify-center gap-2 overflow-hidden rounded-[10px] px-4 text-[11px] font-bold text-white outline-none transition-[filter,opacity] duration-300 hover:brightness-110 focus-visible:ring-3 focus-visible:ring-blue-100 disabled:cursor-not-allowed disabled:opacity-60 dark:focus-visible:ring-blue-500/20"
+                className="group relative mt-2 flex h-12 w-full items-center justify-center gap-2 overflow-hidden rounded-xl px-6 text-xs font-bold tracking-[0.06em] text-white shadow-lg shadow-violet-500/25 outline-none transition-[filter,opacity] duration-300 hover:brightness-110 focus-visible:ring-4 focus-visible:ring-violet-500/20 disabled:cursor-not-allowed disabled:opacity-60"
                 style={{
                   backgroundImage:
                     buttonGradient,
 
-                  boxShadow: `0 10px 24px -16px ${via}`,
+                  boxShadow: `0 14px 30px -14px ${via}`,
                 }}
               >
                 <span className="pointer-events-none absolute inset-0 bg-gradient-to-b from-white/[0.14] to-transparent" />
@@ -627,7 +623,7 @@ export function BrochureForm({
 
               {/* PRIVACY */}
 
-              <p className="px-2 pt-0.5 text-center text-[8px] leading-[13px] text-slate-400 dark:text-slate-500">
+              <p className="px-2 pt-1 text-center text-[10px] leading-4 text-slate-400 dark:text-slate-500">
                 Your details are used only
                 for brochure requests and
                 business communication.
@@ -642,7 +638,7 @@ export function BrochureForm({
 
         <div
           aria-hidden="true"
-          className="h-[2px] w-full"
+          className="mx-auto mt-1 h-[3px] w-16 rounded-full"
           style={{
             backgroundImage:
               mainGradient,

@@ -5,14 +5,9 @@ import Image from "next/image";
 import Link from "next/link";
 
 import {
-  Briefcase,
   ChevronRight,
-  Link2,
-  Package,
-  Phone,
   Send,
   ShieldCheck,
-  User,
 } from "lucide-react";
 
 import { footerLinks } from "../lib/home-data";
@@ -27,12 +22,7 @@ import {
    FOOTER COLUMN CONFIG
 ========================================================= */
 
-const columnIcons = {
-  services: Briefcase,
-  products: Package,
-  about: User,
-  popular: Link2,
-};
+type ColumnKey = "services" | "products" | "about" | "popular";
 
 const columnTitles = {
   services: "Services",
@@ -49,44 +39,32 @@ function FooterColumn({
   columnKey,
   links,
 }: {
-  columnKey: keyof typeof columnIcons;
+  columnKey: ColumnKey;
   links: {
     label: string;
     href: string;
   }[];
 }) {
-  const Icon = columnIcons[columnKey];
-
   return (
     <div className="min-w-0">
-      <div className="flex items-center gap-3">
-        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border border-blue-100 bg-gradient-to-br from-blue-50 to-cyan-50 text-blue-600 shadow-sm dark:border-blue-500/15 dark:from-blue-500/10 dark:to-cyan-500/5 dark:text-blue-400">
-          <Icon size={16} strokeWidth={1.7} />
-        </div>
+      <h4 className="text-[15px] font-bold text-white">
+        {columnTitles[columnKey]}
+      </h4>
 
-        <div className="min-w-0">
-          <h4 className="text-sm font-semibold text-slate-950 dark:text-white">
-            {columnTitles[columnKey]}
-          </h4>
-
-          <span className="mt-2 block h-[2px] w-7 rounded-full bg-gradient-to-r from-blue-600 via-indigo-500 to-cyan-400" />
-        </div>
-      </div>
-
-      <ul className="mt-4 space-y-1">
+      <ul className="mt-5 space-y-2.5">
         {links.map((link) => (
           <li key={link.label}>
             <Link
               href={link.href}
-              className="group flex min-w-0 items-start justify-between gap-3 rounded-lg px-2 py-1.5 text-[13px] text-slate-500 transition-all duration-200 hover:bg-blue-50/70 hover:text-blue-600 dark:text-slate-400 dark:hover:bg-white/[0.04] dark:hover:text-white"
+              className="group inline-flex items-start gap-1.5 text-[13.5px] leading-5 text-indigo-50/85 transition-colors hover:text-white"
             >
-              <span className="min-w-0 break-words leading-5">
+              <span className="min-w-0 break-words">
                 {link.label}
               </span>
 
               <ChevronRight
                 size={12}
-                className="mt-1 shrink-0 text-slate-300 transition-all duration-200 group-hover:translate-x-1 group-hover:text-blue-500 dark:text-slate-700 dark:group-hover:text-blue-400"
+                className="mt-1 shrink-0 -translate-x-1 opacity-0 transition-all duration-200 group-hover:translate-x-0 group-hover:opacity-100"
               />
             </Link>
           </li>
@@ -219,297 +197,198 @@ export function Footer() {
   };
 
   return (
-    <footer className="relative overflow-hidden border-t border-slate-200/80 bg-[#f8fbff] text-slate-500 dark:border-white/[0.06] dark:bg-[#050914] dark:text-slate-400">
-      {/* ================================================= */}
-      {/* BACKGROUND */}
-      {/* ================================================= */}
+    <footer className="brand-grad relative overflow-hidden text-white">
+      {/* Glow blobs */}
+      <div className="pointer-events-none absolute -left-32 top-10 h-96 w-96 rounded-full bg-cyan-300/25 blur-3xl" />
+      <div className="pointer-events-none absolute -right-24 bottom-0 h-96 w-96 rounded-full bg-violet-300/30 blur-3xl" />
 
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_12%_10%,rgba(59,130,246,0.08),transparent_25%),radial-gradient(circle_at_88%_22%,rgba(124,58,237,0.06),transparent_28%)] dark:bg-[radial-gradient(circle_at_10%_15%,rgba(37,99,235,0.12),transparent_30%),radial-gradient(circle_at_88%_20%,rgba(124,58,237,0.09),transparent_28%)]" />
+      <div className="relative mx-auto w-full max-w-7xl px-6 sm:px-8 lg:px-10">
+        {/* ================================================= */}
+        {/* STAY UPDATED */}
+        {/* ================================================= */}
 
-      <div className="pointer-events-none absolute right-0 top-0 h-44 w-44 opacity-30 [background-image:radial-gradient(#3b82f6_1px,transparent_1px)] [background-size:16px_16px] dark:opacity-10" />
+        <AnimateIn>
+          <div className="flex flex-col gap-6 border-b border-white/20 py-12 lg:flex-row lg:items-center lg:justify-between lg:py-14">
+            <div>
+              <h3 className="text-2xl font-extrabold tracking-[-0.02em] sm:text-[32px]">
+                Stay Updated
+              </h3>
 
-      <div className="relative mx-auto w-full max-w-[1500px] px-4 sm:px-6 lg:px-8 xl:px-10">
+              <p className="mt-2 text-[15px] text-indigo-50/85">
+                Subscribe to our newsletter for the
+                latest updates and insights.
+              </p>
+            </div>
+
+            <div className="w-full lg:w-[460px]">
+              <form
+                onSubmit={handleNewsletterSubmit}
+                className={`flex w-full items-center gap-1.5 rounded-2xl border-2 bg-white p-1.5 shadow-[0_20px_50px_-25px_rgba(15,23,42,.6)] transition-all dark:bg-[#0b1220] ${
+                  newsletterError
+                    ? "border-red-400"
+                    : newsletterMessage
+                      ? "border-emerald-400"
+                      : "border-transparent"
+                }`}
+              >
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(event) => {
+                    setEmail(event.target.value);
+
+                    if (newsletterError) {
+                      setNewsletterError("");
+                    }
+
+                    if (newsletterMessage) {
+                      setNewsletterMessage("");
+                    }
+                  }}
+                  placeholder="Enter your email"
+                  disabled={newsletterLoading}
+                  autoComplete="email"
+                  aria-label="Email address"
+                  className="min-w-0 flex-1 bg-transparent px-4 py-3 text-sm text-slate-900 outline-none placeholder:text-slate-400 disabled:cursor-not-allowed disabled:opacity-60 dark:text-white"
+                />
+
+                <button
+                  type="submit"
+                  disabled={newsletterLoading}
+                  aria-label={
+                    newsletterLoading
+                      ? "Subscribing"
+                      : "Subscribe"
+                  }
+                  className="flex shrink-0 items-center gap-2 rounded-xl bg-slate-950 px-5 py-3 text-sm font-bold text-white transition-all duration-200 hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-60 dark:bg-white dark:text-slate-950"
+                >
+                  {newsletterLoading ? (
+                    <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/40 border-t-white" />
+                  ) : (
+                    <Send size={14} />
+                  )}
+                </button>
+              </form>
+
+              {newsletterMessage && (
+                <p
+                  role="status"
+                  className="mt-2 text-xs font-semibold text-emerald-100"
+                >
+                  ✓ {newsletterMessage}
+                </p>
+              )}
+
+              {newsletterError && (
+                <p
+                  role="alert"
+                  className="mt-2 text-xs font-semibold text-red-100"
+                >
+                  {newsletterError}
+                </p>
+              )}
+            </div>
+          </div>
+        </AnimateIn>
+
         {/* ================================================= */}
         {/* MAIN FOOTER */}
         {/* ================================================= */}
 
-        <div className="grid gap-8 py-9 sm:py-10 lg:grid-cols-[260px_minmax(0,1fr)] lg:gap-10 lg:py-12 xl:grid-cols-[280px_minmax(0,1fr)]">
-          {/* ================================================= */}
-          {/* COMPANY + NEWSLETTER */}
-          {/* ================================================= */}
-
+        <div className="grid gap-10 py-12 sm:py-14 lg:grid-cols-[1.3fr_4fr] lg:gap-12">
+          {/* Company */}
           <AnimateIn direction="left">
-            <div className="rounded-2xl border border-slate-200/80 bg-white/75 p-5 shadow-[0_12px_35px_-28px_rgba(15,23,42,0.5)] backdrop-blur-xl lg:border-transparent lg:bg-transparent lg:p-0 lg:shadow-none dark:border-white/[0.07] dark:bg-white/[0.03] lg:dark:bg-transparent">
-              {/* Logo */}
-
-              <Link
-                href="/"
-                className="inline-flex items-center gap-3"
-              >
+            <Link
+              href="/"
+              className="inline-flex items-center gap-3"
+            >
+              <span className="rounded-xl bg-white p-1 shadow-lg shadow-blue-900/20">
                 <Image
                   src="/logo-icon-1.png"
                   alt="Geecon Technology"
                   width={45}
                   height={42}
-                  className="h-9 w-auto"
+                  className="h-8 w-auto"
                 />
+              </span>
 
-                <div className="leading-tight">
-                  <div className="text-lg font-extrabold tracking-tight text-slate-950 dark:text-white">
-                    GEECON
-                  </div>
-
-                  <div className="text-[8px] font-semibold tracking-[0.22em] text-blue-600 dark:text-blue-400">
-                    TECHNOLOGY
-                  </div>
+              <div className="leading-tight">
+                <div className="text-lg font-extrabold tracking-[0.02em]">
+                  GEECON
                 </div>
-              </Link>
 
-              {/* Description */}
+                <div className="text-[9px] font-bold tracking-[0.22em] text-white/75">
+                  TECHNOLOGY
+                </div>
+              </div>
+            </Link>
 
-              <p className="mt-4 max-w-sm text-[13px] leading-6 text-slate-500 dark:text-slate-400">
-                Delivering innovative technology
-                solutions that help businesses grow,
-                transform and succeed in the digital
-                world.
-              </p>
+            <p className="mt-5 max-w-xs text-[14px] leading-7 text-indigo-50/85">
+              Delivering innovative technology
+              solutions that help businesses grow,
+              transform and succeed in the digital
+              world.
+            </p>
 
-              {/* ================================================= */}
-              {/* STAY UPDATED */}
-              {/* ================================================= */}
+            <div className="mt-6 flex items-center gap-3">
+              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-white/25 bg-white/10">
+                <ShieldCheck size={16} />
+              </div>
 
-              <div className="mt-6">
-                <h4 className="text-sm font-semibold text-slate-950 dark:text-white">
-                  Stay Updated
-                </h4>
-
-                <p className="mt-1.5 text-[13px] leading-5 text-slate-500 dark:text-slate-400">
-                  Subscribe to our newsletter for the
-                  latest updates and insights.
+              <div>
+                <p className="text-[12px] font-bold text-white">
+                  Trusted Partner
                 </p>
 
-                <form
-                  onSubmit={
-                    handleNewsletterSubmit
-                  }
-                  className={`mt-3 flex w-full max-w-[250px] items-center gap-1 rounded-lg border bg-white p-1 shadow-sm transition-all dark:bg-white/[0.04] ${
-                    newsletterError
-                      ? "border-red-400 focus-within:border-red-500 dark:border-red-500/50"
-                      : newsletterMessage
-                        ? "border-emerald-400 focus-within:border-emerald-500 dark:border-emerald-500/40"
-                        : "border-slate-200 focus-within:border-blue-400 dark:border-white/[0.08]"
-                  }`}
-                >
-                  <input
-                    type="email"
-                    value={email}
-                    onChange={(event) => {
-                      setEmail(
-                        event.target.value
-                      );
-
-                      if (
-                        newsletterError
-                      ) {
-                        setNewsletterError(
-                          ""
-                        );
-                      }
-
-                      if (
-                        newsletterMessage
-                      ) {
-                        setNewsletterMessage(
-                          ""
-                        );
-                      }
-                    }}
-                    placeholder="Enter your email"
-                    disabled={
-                      newsletterLoading
-                    }
-                    autoComplete="email"
-                    aria-label="Email address"
-                    className="min-w-0 flex-1 bg-transparent px-2.5 py-1.5 text-[13px] text-slate-900 outline-none placeholder:text-slate-400 disabled:cursor-not-allowed disabled:opacity-60 dark:text-white dark:placeholder:text-slate-600"
-                  />
-
-                  <button
-                    type="submit"
-                    disabled={
-                      newsletterLoading
-                    }
-                    aria-label={
-                      newsletterLoading
-                        ? "Subscribing"
-                        : "Subscribe"
-                    }
-                    className="flex h-8 w-8 shrink-0 items-center justify-center rounded-md bg-gradient-to-br from-blue-600 via-blue-500 to-cyan-500 text-white shadow-md shadow-blue-500/20 transition-all duration-200 hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-60"
-                  >
-                    {newsletterLoading ? (
-                      <span className="h-3.5 w-3.5 animate-spin rounded-full border-2 border-white/40 border-t-white" />
-                    ) : (
-                      <Send size={13} />
-                    )}
-                  </button>
-                </form>
-
-                {/* Success */}
-
-                {newsletterMessage && (
-                  <div
-                    role="status"
-                    className="mt-2 flex max-w-[250px] items-start gap-1.5 text-[11px] font-medium text-emerald-600 dark:text-emerald-400"
-                  >
-                    <span>✓</span>
-
-                    <span>
-                      {
-                        newsletterMessage
-                      }
-                    </span>
-                  </div>
-                )}
-
-                {/* Error */}
-
-                {newsletterError && (
-                  <p
-                    role="alert"
-                    className="mt-2 max-w-[250px] text-[11px] font-medium text-red-500 dark:text-red-400"
-                  >
-                    {newsletterError}
-                  </p>
-                )}
+                <p className="mt-0.5 text-[13.5px] text-indigo-50/85">
+                  Secure. Reliable.
+                  Professional.
+                </p>
               </div>
             </div>
           </AnimateIn>
 
-          {/* ================================================= */}
-          {/* FOOTER COLUMNS */}
-          {/* ================================================= */}
-
-          <StaggerContainer className="grid min-w-0 grid-cols-1 gap-7 sm:grid-cols-2 sm:gap-x-8 sm:gap-y-8 xl:grid-cols-4 xl:gap-5">
+          {/* Columns */}
+          <StaggerContainer className="grid min-w-0 grid-cols-1 gap-8 sm:grid-cols-2 xl:grid-cols-4">
             <StaggerItem>
               <FooterColumn
                 columnKey="services"
-                links={
-                  footerLinks.services
-                }
+                links={footerLinks.services}
               />
             </StaggerItem>
 
             <StaggerItem>
               <FooterColumn
                 columnKey="products"
-                links={
-                  footerLinks.products
-                }
+                links={footerLinks.products}
               />
             </StaggerItem>
 
             <StaggerItem>
               <FooterColumn
                 columnKey="about"
-                links={
-                  footerLinks.about
-                }
+                links={footerLinks.about}
               />
             </StaggerItem>
 
             <StaggerItem>
               <FooterColumn
                 columnKey="popular"
-                links={
-                  footerLinks.popular
-                }
+                links={footerLinks.popular}
               />
             </StaggerItem>
           </StaggerContainer>
         </div>
 
         {/* ================================================= */}
-        {/* CONTACT / TRUST */}
-        {/* ================================================= */}
-
-        <div className="grid gap-3 border-t border-slate-200/80 py-5 sm:grid-cols-2 sm:items-center dark:border-white/[0.08]">
-          {/* Phone */}
-
-          <div className="flex items-center gap-3 rounded-xl border border-slate-200/70 bg-white/60 p-3 sm:border-0 sm:bg-transparent sm:p-0 dark:border-white/[0.06] dark:bg-white/[0.025] sm:dark:bg-transparent">
-            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-500/10 dark:text-blue-400">
-              <Phone size={16} />
-            </div>
-
-            <div className="min-w-0">
-              <p className="text-[11px] text-blue-600 dark:text-blue-400">
-                Have Questions?
-              </p>
-
-              <p className="mt-0.5 break-words text-[13px] font-semibold text-slate-950 dark:text-white">
-                +91 98765 43210
-              </p>
-            </div>
-          </div>
-
-          {/* Trusted Partner */}
-
-          <div className="flex items-center gap-3 rounded-xl border border-slate-200/70 bg-white/60 p-3 sm:justify-end sm:border-0 sm:bg-transparent sm:p-0 dark:border-white/[0.06] dark:bg-white/[0.025] sm:dark:bg-transparent">
-            <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-500/10 dark:text-blue-400">
-              <ShieldCheck size={16} />
-            </div>
-
-            <div className="min-w-0">
-              <p className="text-[11px] text-blue-600 dark:text-blue-400">
-                Trusted Partner
-              </p>
-
-              <p className="mt-0.5 text-[13px] font-semibold text-slate-950 dark:text-white">
-                Secure. Reliable.
-                Professional.
-              </p>
-            </div>
-          </div>
-        </div>
-
-        {/* ================================================= */}
         {/* BOTTOM BAR */}
         {/* ================================================= */}
 
-        <div className="flex flex-col items-center justify-between gap-3 border-t border-slate-200/80 py-4 text-center text-[11px] text-slate-400 sm:flex-row sm:text-left dark:border-white/[0.08] dark:text-slate-600">
+        <div className="border-t border-white/20 py-6 text-center text-[13px] text-indigo-50/80">
           <p>
             © 2026 Geecon Technology. All
             Rights Reserved.
           </p>
-
-          <div className="flex flex-wrap items-center justify-center gap-x-3 gap-y-2 sm:justify-end">
-            <Link
-              href="/privacy-policy"
-              className="transition-colors hover:text-blue-600 dark:hover:text-white"
-            >
-              Privacy Policy
-            </Link>
-
-            <span className="text-slate-300 dark:text-slate-800">
-              •
-            </span>
-
-            <Link
-              href="/terms-of-service"
-              className="transition-colors hover:text-blue-600 dark:hover:text-white"
-            >
-              Terms of Service
-            </Link>
-
-            <span className="text-slate-300 dark:text-slate-800">
-              •
-            </span>
-
-            <Link
-              href="/sitemap"
-              className="transition-colors hover:text-blue-600 dark:hover:text-white"
-            >
-              Sitemap
-            </Link>
-          </div>
         </div>
       </div>
     </footer>

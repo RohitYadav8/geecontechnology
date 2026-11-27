@@ -23,12 +23,25 @@ import {
 const BANNER_SRC = "/hr-solutions.png";
 
 // ---------------------------------------------------------
+// Shared card styles
+// ---------------------------------------------------------
+
+const featureCardClassName =
+    "group h-full rounded-[26px] border border-slate-200/80 bg-white p-6 transition-all duration-300 hover:-translate-y-1 hover:border-violet-200 hover:shadow-[0_30px_70px_-35px_rgba(91,33,182,.35)] dark:border-white/[0.07] dark:bg-[#0b1220] dark:hover:border-violet-400/30";
+
+const featureTileClassName =
+    "brand-grad mb-5 flex h-12 w-12 items-center justify-center rounded-[14px] text-sm font-extrabold text-white shadow-lg shadow-violet-500/25";
+
+const featureBarClassName =
+    "brand-grad mt-5 h-[3px] w-8 rounded-full transition-all duration-300 group-hover:w-14";
+
+// ---------------------------------------------------------
 // Page
 // ---------------------------------------------------------
 
 export default function ResourceHrManagementPage() {
     return (
-        <div className="flex min-h-screen flex-col overflow-hidden bg-white dark:bg-slate-950">
+        <div className="flex min-h-screen flex-col overflow-x-clip bg-slate-50 dark:bg-[#060b16]">
 
             {/* =====================================================
                 NAVBAR
@@ -40,205 +53,103 @@ export default function ResourceHrManagementPage() {
                 MAIN
             ===================================================== */}
 
-            <main className="relative flex-1 overflow-hidden">
+            <main className="relative flex-1 overflow-x-clip">
 
                 {/* =================================================
-                    BACKGROUND GRID
+                    HERO
                 ================================================= */}
 
-                <div
-                    className="
-                        pointer-events-none
-                        absolute
-                        inset-0
-                        bg-[linear-gradient(to_right,#e5e7eb_1px,transparent_1px),linear-gradient(to_bottom,#e5e7eb_1px,transparent_1px)]
-                        bg-[size:48px_48px]
-                        opacity-20
-                        dark:opacity-10
-                    "
-                />
+                <section className="brand-grad relative overflow-hidden px-6 pb-40 pt-16 text-center text-white sm:px-8 sm:pb-44 sm:pt-20 lg:px-10">
+                    <FloatingBlob
+                        className="-left-40 top-24 h-[460px] w-[460px]"
+                        color="bg-cyan-300/35"
+                        duration={18}
+                    />
 
-                {/* =================================================
-                    BACKGROUND RADIAL GLOW
-                ================================================= */}
+                    <FloatingBlob
+                        className="-right-28 -top-24 h-[420px] w-[420px]"
+                        color="bg-violet-300/40"
+                        duration={16}
+                    />
 
-                <div
-                    className="
-                        pointer-events-none
-                        absolute
-                        inset-0
-                        bg-[radial-gradient(circle_at_top,rgba(59,130,246,.15),transparent_60%)]
-                    "
-                />
+                    <div
+                        className="pointer-events-none absolute inset-0 opacity-[0.07]"
+                        style={{
+                            backgroundImage:
+                                "linear-gradient(rgba(255,255,255,.6) 1px, transparent 1px), linear-gradient(90deg,rgba(255,255,255,.6) 1px,transparent 1px)",
+                            backgroundSize: "56px 56px",
+                        }}
+                    />
 
-                {/* =================================================
-                    FLOATING BLOBS
-                ================================================= */}
-
-                <FloatingBlob
-                    className="-right-20 top-10 h-72 w-72"
-                    color="bg-blue-400/10"
-                    duration={16}
-                />
-
-                <FloatingBlob
-                    className="-left-16 top-96 h-64 w-64"
-                    color="bg-cyan-300/10"
-                    duration={20}
-                />
-
-                <FloatingBlob
-                    className="right-1/4 top-[800px] h-52 w-52"
-                    color="bg-indigo-400/5"
-                    duration={18}
-                />
+                    <div className="relative mx-auto max-w-5xl">
+                        <AnimateIn delay={0.05}>
+                            <AnimatedHeading
+                                text="Resource & HR Management"
+                                as="h1"
+                                highlightFrom={2}
+                                highlightClassName="brand-text-light"
+                                className="mx-auto max-w-4xl text-[40px] font-extrabold leading-[1.05] tracking-[-0.045em] sm:text-6xl lg:text-[72px]"
+                            />
+                        </AnimateIn>
+                    </div>
+                </section>
 
                 {/* =================================================
                     PAGE SECTION
                 ================================================= */}
 
-                <section className="relative mx-auto max-w-7xl px-6 pb-20 pt-16 sm:pt-20">
+                <section className="relative z-10 mx-auto -mt-28 max-w-7xl px-4 pb-20 sm:-mt-32 sm:px-6 lg:px-10 lg:pb-24">
 
-                    {/* =================================================
-                        HEADING
-                    ================================================= */}
-
-                    <AnimateIn delay={0.05}>
-                        <AnimatedHeading
-                            text="Resource & HR Management"
-                            as="h1"
-                            className="
-                                text-2xl
-                                font-semibold
-                                text-blue-600
-                                dark:text-blue-400
-                                sm:text-3xl
-                            "
-                        />
-                    </AnimateIn>
-
-                    {/* =================================================
-                        MAIN GRID
-                    ================================================= */}
-
-                    <div className="mt-8 grid gap-10 lg:grid-cols-[minmax(0,1fr)_320px]">
+                    <div className="rounded-[32px] border border-slate-100 bg-white p-5 shadow-[0_40px_100px_-40px_rgba(15,23,42,.35)] sm:p-8 lg:p-10 dark:border-white/[0.07] dark:bg-[#0b1220]">
 
                         {/* =================================================
-                            LEFT COLUMN
+                            MAIN GRID
                         ================================================= */}
 
-                        <div>
+                        <div className="grid gap-10 lg:grid-cols-[minmax(0,1fr)_340px]">
 
                             {/* =================================================
-                                HERO IMAGE
+                                LEFT COLUMN
                             ================================================= */}
 
-                            <AnimateIn delay={0.1}>
-                                <MouseGlow className="rounded-2xl">
+                            <div className="min-w-0">
 
-                                    <div
-                                        className="
-                                            rounded-2xl
-                                            bg-gradient-to-br
-                                            from-slate-800/40
-                                            via-blue-500/20
-                                            to-slate-300/40
-                                            p-[2px]
-                                        "
-                                    >
-                                        <div
-                                            className="
-                                                group
-                                                relative
-                                                h-56
-                                                w-full
-                                                overflow-hidden
-                                                rounded-2xl
-                                                bg-white
-                                                dark:bg-slate-900
-                                                sm:h-72
-                                            "
-                                        >
-                                            <Image
-                                                src={BANNER_SRC}
-                                                alt="HR Solutions — Human Resource Management"
-                                                fill
-                                                priority
-                                                sizes="(max-width: 1024px) 100vw, 800px"
-                                                className="
-                                                    object-contain
-                                                    transition-transform
-                                                    duration-1000
-                                                    ease-out
-                                                    group-hover:scale-[1.04]
-                                                "
-                                            />
+                                {/* =================================================
+                                    HERO IMAGE
+                                ================================================= */}
 
-                                            {/* Image overlay */}
-                                            <div
-                                                className="
-                                                    pointer-events-none
-                                                    absolute
-                                                    inset-0
-                                                    bg-gradient-to-t
-                                                    from-blue-950/10
-                                                    via-transparent
-                                                    to-white/10
-                                                    dark:from-blue-950/20
-                                                "
-                                            />
+                                <AnimateIn delay={0.1}>
+                                    <MouseGlow className="rounded-[26px]">
+                                        <div className="brand-grad rounded-[26px] p-2 shadow-[0_30px_70px_-35px_rgba(91,33,182,.45)]">
+                                            <div className="group relative h-56 w-full overflow-hidden rounded-[20px] bg-white sm:h-80 dark:bg-slate-900">
+                                                <Image
+                                                    src={BANNER_SRC}
+                                                    alt="HR Solutions — Human Resource Management"
+                                                    fill
+                                                    priority
+                                                    sizes="(max-width: 1024px) 100vw, 800px"
+                                                    className="object-contain transition-transform duration-1000 ease-out group-hover:scale-[1.04]"
+                                                />
 
-                                            {/* Shine effect */}
-                                            <div
-                                                className="
-                                                    pointer-events-none
-                                                    absolute
-                                                    inset-y-0
-                                                    -left-1/2
-                                                    w-1/3
-                                                    -skew-x-12
-                                                    bg-gradient-to-r
-                                                    from-transparent
-                                                    via-white/20
-                                                    to-transparent
-                                                    opacity-0
-                                                    transition-all
-                                                    duration-1000
-                                                    group-hover:left-[120%]
-                                                    group-hover:opacity-100
-                                                "
-                                            />
+                                                {/* Shine effect */}
+                                                <div className="pointer-events-none absolute inset-y-0 -left-1/2 w-1/3 -skew-x-12 bg-gradient-to-r from-transparent via-white/20 to-transparent opacity-0 transition-all duration-1000 group-hover:left-[120%] group-hover:opacity-100" />
+                                            </div>
                                         </div>
-                                    </div>
+                                    </MouseGlow>
+                                </AnimateIn>
 
-                                </MouseGlow>
-                            </AnimateIn>
+                                {/* =================================================
+                                    CONTENT
+                                ================================================= */}
 
-                            {/* =================================================
-                                CONTENT
-                            ================================================= */}
-
-                            <MouseGlow className="mt-8 rounded-2xl">
-
-                                <StaggerContainer
-                                    className="
-                                        space-y-5
-                                        rounded-2xl
-                                        p-5
-                                        text-sm
-                                        leading-7
-                                        text-slate-500
-                                        dark:text-slate-400
-                                        sm:p-6
-                                    "
-                                >
+                                <StaggerContainer className="mt-10 space-y-5 text-[15px] leading-8 text-slate-600 dark:text-slate-400">
 
                                     {/* -----------------------------------------
                                         PARAGRAPH 01
                                     ----------------------------------------- */}
 
                                     <StaggerItem>
-                                        <p>
+                                        <p className="text-lg font-semibold leading-8 tracking-[-0.01em] text-slate-900 dark:text-white">
                                             HR Management should have a clear
                                             understanding of the level of
                                             training and technical expertise
@@ -302,7 +213,7 @@ export default function ResourceHrManagementPage() {
                                     ----------------------------------------- */}
 
                                     <StaggerItem>
-                                        <p>
+                                        <p className="border-l-[3px] border-violet-400 pl-5 dark:border-violet-400/60">
                                             Will the software be able to
                                             accommodate HR&apos;s company and
                                             benefits carriers&apos; rules? A
@@ -363,7 +274,7 @@ export default function ResourceHrManagementPage() {
                                     ----------------------------------------- */}
 
                                     <StaggerItem>
-                                        <p>
+                                        <p className="rounded-[20px] border border-violet-100 bg-violet-50/60 p-5 text-slate-700 dark:border-violet-400/15 dark:bg-violet-500/[0.06] dark:text-slate-300">
                                             Who is responsible for implementing,
                                             or building, the solution? What
                                             level of training is involved? Some
@@ -377,324 +288,134 @@ export default function ResourceHrManagementPage() {
 
                                 </StaggerContainer>
 
-                            </MouseGlow>
+                            </div>
 
                             {/* =================================================
-                                HR FEATURE CARDS
+                                RIGHT SIDEBAR
                             ================================================= */}
 
-                            <AnimateIn delay={0.3}>
-                                <div className="mt-10 grid gap-4 sm:grid-cols-2">
+                            <AnimateIn
+                                delay={0.25}
+                                direction="left"
+                                className="lg:sticky lg:top-24 lg:self-start"
+                            >
+                                <div className="rounded-[26px] border border-slate-200/80 bg-slate-50/70 p-4 sm:p-5 dark:border-white/[0.07] dark:bg-white/[0.03]">
 
-                                    {/* Flexibility */}
-                                    <TiltCard>
-                                        <div
-                                            className="
-                                                group
-                                                rounded-2xl
-                                                border
-                                                border-slate-200/70
-                                                bg-white/60
-                                                p-5
-                                                backdrop-blur-sm
-                                                transition-shadow
-                                                duration-300
-                                                hover:shadow-xl
-                                                hover:shadow-blue-500/5
-                                                dark:border-slate-800
-                                                dark:bg-slate-900/50
-                                            "
-                                        >
-                                            <div
-                                                className="
-                                                    mb-4
-                                                    flex
-                                                    h-10
-                                                    w-10
-                                                    items-center
-                                                    justify-center
-                                                    rounded-xl
-                                                    bg-blue-500/10
-                                                    text-blue-600
-                                                    dark:text-blue-400
-                                                "
-                                            >
-                                                01
-                                            </div>
+                                    {/* Sidebar heading */}
+                                    <div className="mb-5 px-1">
+                                        <span className="brand-text text-[12px] font-extrabold uppercase tracking-[0.2em]">
+                                            HR Solutions
+                                        </span>
 
-                                            <h3 className="text-sm font-semibold text-slate-900 dark:text-white">
-                                                Flexibility
-                                            </h3>
+                                        <h2 className="mt-2 text-2xl font-extrabold tracking-[-0.035em] text-slate-950 dark:text-white">
+                                            Get the Brochure
+                                        </h2>
 
-                                            <p className="mt-2 text-xs leading-6 text-slate-500 dark:text-slate-400">
-                                                HR technology should adapt to
-                                                changing business requirements.
-                                            </p>
+                                        <p className="mt-2 text-sm leading-6 text-slate-500 dark:text-slate-400">
+                                            Learn more about our resource
+                                            and HR management solutions.
+                                        </p>
+                                    </div>
 
-                                            <div
-                                                className="
-                                                    mt-4
-                                                    h-px
-                                                    w-8
-                                                    bg-blue-500/40
-                                                    transition-all
-                                                    duration-300
-                                                    group-hover:w-14
-                                                "
-                                            />
-                                        </div>
-                                    </TiltCard>
-
-                                    {/* Scalability */}
-                                    <TiltCard>
-                                        <div
-                                            className="
-                                                group
-                                                rounded-2xl
-                                                border
-                                                border-slate-200/70
-                                                bg-white/60
-                                                p-5
-                                                backdrop-blur-sm
-                                                transition-shadow
-                                                duration-300
-                                                hover:shadow-xl
-                                                hover:shadow-cyan-500/5
-                                                dark:border-slate-800
-                                                dark:bg-slate-900/50
-                                            "
-                                        >
-                                            <div
-                                                className="
-                                                    mb-4
-                                                    flex
-                                                    h-10
-                                                    w-10
-                                                    items-center
-                                                    justify-center
-                                                    rounded-xl
-                                                    bg-cyan-500/10
-                                                    text-cyan-600
-                                                    dark:text-cyan-400
-                                                "
-                                            >
-                                                02
-                                            </div>
-
-                                            <h3 className="text-sm font-semibold text-slate-900 dark:text-white">
-                                                Scalability
-                                            </h3>
-
-                                            <p className="mt-2 text-xs leading-6 text-slate-500 dark:text-slate-400">
-                                                Solutions should grow alongside
-                                                your organization.
-                                            </p>
-
-                                            <div
-                                                className="
-                                                    mt-4
-                                                    h-px
-                                                    w-8
-                                                    bg-cyan-500/40
-                                                    transition-all
-                                                    duration-300
-                                                    group-hover:w-14
-                                                "
-                                            />
-                                        </div>
-                                    </TiltCard>
-
-                                    {/* Integration */}
-                                    <TiltCard>
-                                        <div
-                                            className="
-                                                group
-                                                rounded-2xl
-                                                border
-                                                border-slate-200/70
-                                                bg-white/60
-                                                p-5
-                                                backdrop-blur-sm
-                                                transition-shadow
-                                                duration-300
-                                                hover:shadow-xl
-                                                hover:shadow-indigo-500/5
-                                                dark:border-slate-800
-                                                dark:bg-slate-900/50
-                                            "
-                                        >
-                                            <div
-                                                className="
-                                                    mb-4
-                                                    flex
-                                                    h-10
-                                                    w-10
-                                                    items-center
-                                                    justify-center
-                                                    rounded-xl
-                                                    bg-indigo-500/10
-                                                    text-indigo-600
-                                                    dark:text-indigo-400
-                                                "
-                                            >
-                                                03
-                                            </div>
-
-                                            <h3 className="text-sm font-semibold text-slate-900 dark:text-white">
-                                                Integration
-                                            </h3>
-
-                                            <p className="mt-2 text-xs leading-6 text-slate-500 dark:text-slate-400">
-                                                Connect payroll, benefits and
-                                                other business systems.
-                                            </p>
-
-                                            <div
-                                                className="
-                                                    mt-4
-                                                    h-px
-                                                    w-8
-                                                    bg-indigo-500/40
-                                                    transition-all
-                                                    duration-300
-                                                    group-hover:w-14
-                                                "
-                                            />
-                                        </div>
-                                    </TiltCard>
-
-                                    {/* Automation */}
-                                    <TiltCard>
-                                        <div
-                                            className="
-                                                group
-                                                rounded-2xl
-                                                border
-                                                border-slate-200/70
-                                                bg-white/60
-                                                p-5
-                                                backdrop-blur-sm
-                                                transition-shadow
-                                                duration-300
-                                                hover:shadow-xl
-                                                hover:shadow-purple-500/5
-                                                dark:border-slate-800
-                                                dark:bg-slate-900/50
-                                            "
-                                        >
-                                            <div
-                                                className="
-                                                    mb-4
-                                                    flex
-                                                    h-10
-                                                    w-10
-                                                    items-center
-                                                    justify-center
-                                                    rounded-xl
-                                                    bg-purple-500/10
-                                                    text-purple-600
-                                                    dark:text-purple-400
-                                                "
-                                            >
-                                                04
-                                            </div>
-
-                                            <h3 className="text-sm font-semibold text-slate-900 dark:text-white">
-                                                Automation
-                                            </h3>
-
-                                            <p className="mt-2 text-xs leading-6 text-slate-500 dark:text-slate-400">
-                                                Automate repetitive HR data and
-                                                enrollment processes.
-                                            </p>
-
-                                            <div
-                                                className="
-                                                    mt-4
-                                                    h-px
-                                                    w-8
-                                                    bg-purple-500/40
-                                                    transition-all
-                                                    duration-300
-                                                    group-hover:w-14
-                                                "
-                                            />
-                                        </div>
-                                    </TiltCard>
+                                    {/* Form */}
+                                    <BrochureForm />
 
                                 </div>
                             </AnimateIn>
 
                         </div>
+                    </div>
 
-                        {/* =================================================
-                            RIGHT SIDEBAR
-                        ================================================= */}
+                    {/* =================================================
+                        HR FEATURE CARDS
+                    ================================================= */}
 
-                        <AnimateIn
-                            delay={0.25}
-                            direction="left"
-                            className="
-                                lg:sticky
-                                lg:top-24
-                                lg:self-start
-                            "
-                        >
+                    <AnimateIn delay={0.3}>
+                        <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+
+                            {/* Flexibility */}
                             <TiltCard>
-
-                                <MouseGlow className="rounded-2xl">
-
-                                    <div
-                                        className="
-                                            rounded-2xl
-                                            border
-                                            border-slate-200/70
-                                            bg-white/70
-                                            p-4
-                                            shadow-xl
-                                            shadow-blue-500/5
-                                            backdrop-blur-xl
-                                            dark:border-slate-800
-                                            dark:bg-slate-900/70
-                                        "
-                                    >
-
-                                        {/* Sidebar heading */}
-                                        <div className="mb-4">
-                                            <span
-                                                className="
-                                                    text-[10px]
-                                                    font-semibold
-                                                    uppercase
-                                                    tracking-[0.2em]
-                                                    text-blue-600
-                                                    dark:text-blue-400
-                                                "
-                                            >
-                                                HR Solutions
-                                            </span>
-
-                                            <h2 className="mt-1 text-lg font-semibold text-slate-900 dark:text-white">
-                                                Get the Brochure
-                                            </h2>
-
-                                            <p className="mt-1 text-xs leading-5 text-slate-500 dark:text-slate-400">
-                                                Learn more about our resource
-                                                and HR management solutions.
-                                            </p>
-                                        </div>
-
-                                        {/* Form */}
-                                        <BrochureForm />
-
+                                <div className={featureCardClassName}>
+                                    <div className={featureTileClassName}>
+                                        01
                                     </div>
 
-                                </MouseGlow>
+                                    <h3 className="text-lg font-extrabold tracking-[-0.02em] text-slate-950 dark:text-white">
+                                        Flexibility
+                                    </h3>
 
+                                    <p className="mt-2 text-sm leading-6 text-slate-500 dark:text-slate-400">
+                                        HR technology should adapt to
+                                        changing business requirements.
+                                    </p>
+
+                                    <div className={featureBarClassName} />
+                                </div>
                             </TiltCard>
-                        </AnimateIn>
 
-                    </div>
+                            {/* Scalability */}
+                            <TiltCard>
+                                <div className={featureCardClassName}>
+                                    <div className={featureTileClassName}>
+                                        02
+                                    </div>
+
+                                    <h3 className="text-lg font-extrabold tracking-[-0.02em] text-slate-950 dark:text-white">
+                                        Scalability
+                                    </h3>
+
+                                    <p className="mt-2 text-sm leading-6 text-slate-500 dark:text-slate-400">
+                                        Solutions should grow alongside
+                                        your organization.
+                                    </p>
+
+                                    <div className={featureBarClassName} />
+                                </div>
+                            </TiltCard>
+
+                            {/* Integration */}
+                            <TiltCard>
+                                <div className={featureCardClassName}>
+                                    <div className={featureTileClassName}>
+                                        03
+                                    </div>
+
+                                    <h3 className="text-lg font-extrabold tracking-[-0.02em] text-slate-950 dark:text-white">
+                                        Integration
+                                    </h3>
+
+                                    <p className="mt-2 text-sm leading-6 text-slate-500 dark:text-slate-400">
+                                        Connect payroll, benefits and
+                                        other business systems.
+                                    </p>
+
+                                    <div className={featureBarClassName} />
+                                </div>
+                            </TiltCard>
+
+                            {/* Automation */}
+                            <TiltCard>
+                                <div className={featureCardClassName}>
+                                    <div className={featureTileClassName}>
+                                        04
+                                    </div>
+
+                                    <h3 className="text-lg font-extrabold tracking-[-0.02em] text-slate-950 dark:text-white">
+                                        Automation
+                                    </h3>
+
+                                    <p className="mt-2 text-sm leading-6 text-slate-500 dark:text-slate-400">
+                                        Automate repetitive HR data and
+                                        enrollment processes.
+                                    </p>
+
+                                    <div className={featureBarClassName} />
+                                </div>
+                            </TiltCard>
+
+                        </div>
+                    </AnimateIn>
+
                 </section>
             </main>
 

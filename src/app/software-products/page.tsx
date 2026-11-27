@@ -6,8 +6,6 @@ import { Footer } from "../../../components/footer";
 import { AnimateIn } from "../../../components/animate-in";
 import { AnimatedHeading } from "../../../components/animated-heading";
 import { FloatingBlob } from "../../../components/floating-blob";
-import { MouseGlow } from "../../../components/mouse-glow";
-import { TiltCard } from "../../../components/tilt-card";
 
 import {
     StaggerContainer,
@@ -40,9 +38,10 @@ const offerings = [
 // Page
 // ---------------------------------------------------------
 
+
 export default function SoftwareProductsPage() {
     return (
-        <div className="flex min-h-screen flex-col overflow-hidden bg-white dark:bg-slate-950">
+        <div className="flex min-h-screen flex-col overflow-hidden bg-slate-50 dark:bg-[#060b16]">
             {/* =====================================================
                 NAVBAR
             ===================================================== */}
@@ -56,171 +55,79 @@ export default function SoftwareProductsPage() {
             <main className="relative flex-1 overflow-hidden">
 
                 {/* =================================================
-                    BACKGROUND GRID
+                    HERO
                 ================================================= */}
 
-                <div
-                    className="
-                        pointer-events-none
-                        absolute
-                        inset-0
-                        bg-[linear-gradient(to_right,#e5e7eb_1px,transparent_1px),linear-gradient(to_bottom,#e5e7eb_1px,transparent_1px)]
-                        bg-[size:48px_48px]
-                        opacity-20
-                        dark:opacity-10
-                    "
-                />
+                <section className="brand-grad relative overflow-hidden px-6 pb-40 pt-16 text-center text-white sm:px-8 sm:pb-44 sm:pt-20 lg:px-10">
+                    <FloatingBlob
+                        className="-left-40 top-24 h-[460px] w-[460px]"
+                        color="bg-cyan-300/35"
+                        duration={18}
+                    />
 
-                {/* =================================================
-                    RADIAL BACKGROUND GLOW
-                ================================================= */}
+                    <FloatingBlob
+                        className="-right-28 -top-24 h-[420px] w-[420px]"
+                        color="bg-violet-300/40"
+                        duration={16}
+                    />
 
-                <div
-                    className="
-                        pointer-events-none
-                        absolute
-                        inset-0
-                        bg-[radial-gradient(circle_at_top,rgba(59,130,246,.15),transparent_60%)]
-                    "
-                />
+                    <div
+                        className="pointer-events-none absolute inset-0 opacity-[0.07]"
+                        style={{
+                            backgroundImage:
+                                "linear-gradient(rgba(255,255,255,.6) 1px, transparent 1px), linear-gradient(90deg,rgba(255,255,255,.6) 1px,transparent 1px)",
+                            backgroundSize: "56px 56px",
+                        }}
+                    />
 
-                {/* =================================================
-                    FLOATING BLOBS
-                ================================================= */}
-
-                <FloatingBlob
-                    className="-right-20 top-10 h-72 w-72"
-                    color="bg-blue-400/10"
-                    duration={16}
-                />
-
-                <FloatingBlob
-                    className="-left-16 top-96 h-64 w-64"
-                    color="bg-cyan-300/10"
-                    duration={20}
-                />
-
-                <FloatingBlob
-                    className="right-1/4 top-[650px] h-48 w-48"
-                    color="bg-indigo-400/5"
-                    duration={18}
-                />
-
-                {/* =================================================
-                    PAGE CONTENT
-                ================================================= */}
-
-                <section className="relative mx-auto max-w-6xl px-6 pb-20 pt-16 sm:pt-20">
-
-                    {/* =================================================
-                        HEADING
-                    ================================================= */}
-
-                    <AnimateIn delay={0.05}>
+                    <div className="relative mx-auto max-w-4xl">
                         <AnimatedHeading
                             text="Products and Services"
                             as="h1"
-                            className="
-                                text-2xl
-                                font-semibold
-                                text-blue-600
-                                dark:text-blue-400
-                                sm:text-3xl
-                            "
+                            delay={0.05}
+                            highlightFrom={2}
+                            highlightClassName="brand-text-light"
+                            className="text-[40px] font-extrabold leading-[1.05] tracking-[-0.045em] sm:text-6xl lg:text-[72px]"
                         />
-                    </AnimateIn>
+                    </div>
+                </section>
 
-                    {/* =================================================
-                        HERO / BANNER
-                    ================================================= */}
+                {/* =================================================
+                    BANNER (OVERLAPS HERO)
+                ================================================= */}
 
+                <section className="relative z-10 mx-auto -mt-28 max-w-6xl px-4 sm:-mt-32 sm:px-6 lg:px-10">
                     <AnimateIn delay={0.1}>
-                        <MouseGlow className="mt-6 rounded-2xl">
-
-                            <div
-                                className="
-                                    rounded-2xl
-                                    bg-gradient-to-br
-                                    from-slate-300/40
-                                    via-blue-300/30
-                                    to-slate-400/40
-                                    p-[2px]
-                                "
-                            >
-                                <div
-                                    className="
-                                        relative
-                                        flex
-                                        h-56
-                                        w-full
-                                        items-center
-                                        justify-center
-                                        overflow-hidden
-                                        rounded-2xl
-                                        bg-white
-                                        dark:bg-slate-900
-                                        sm:h-72
-                                    "
-                                >
-                                    <Image
-                                        src={BANNER_SRC}
-                                        alt="Products and Services"
-                                        fill
-                                        priority
-                                        sizes="(max-width: 640px) 100vw, 1152px"
-                                        className="
-                                            object-contain
-                                            transition-transform
-                                            duration-700
-                                            ease-out
-                                            hover:scale-[1.02]
-                                        "
-                                    />
-
-                                    {/* Subtle overlay */}
-                                    <div
-                                        className="
-                                            pointer-events-none
-                                            absolute
-                                            inset-0
-                                            bg-gradient-to-t
-                                            from-blue-950/5
-                                            via-transparent
-                                            to-white/10
-                                            dark:from-blue-950/10
-                                            dark:to-white/5
-                                        "
-                                    />
-                                </div>
+                        <div className="rounded-[32px] border border-slate-100 bg-white p-3 shadow-[0_40px_100px_-40px_rgba(15,23,42,.35)] dark:border-white/[0.07] dark:bg-[#0b1220]">
+                            <div className="relative flex h-56 w-full items-center justify-center overflow-hidden rounded-[24px] bg-gradient-to-br from-violet-50 via-white to-indigo-50 sm:h-80 dark:from-violet-500/10 dark:via-[#0b1220] dark:to-indigo-500/10">
+                                <Image
+                                    src={BANNER_SRC}
+                                    alt="Products and Services"
+                                    fill
+                                    priority
+                                    sizes="(max-width: 640px) 100vw, 1152px"
+                                    className="object-contain transition-transform duration-700 ease-out hover:scale-[1.02]"
+                                />
                             </div>
-
-                        </MouseGlow>
+                        </div>
                     </AnimateIn>
+                </section>
 
-                    {/* =================================================
-                        CONTENT GRID
-                    ================================================= */}
+                {/* =================================================
+                    CONTENT GRID
+                ================================================= */}
 
-                    <div className="mt-12 grid gap-12 lg:grid-cols-[minmax(0,1fr)_280px]">
+                <section className="relative mx-auto max-w-6xl px-4 pb-20 pt-12 sm:px-6 sm:pt-16 lg:px-10 lg:pb-24">
+
+                    <div className="grid gap-8 lg:grid-cols-[minmax(0,1fr)_320px] lg:gap-10">
 
                         {/* =================================================
                             LEFT CONTENT
                         ================================================= */}
 
-                        <MouseGlow className="rounded-2xl">
+                        <div className="rounded-[30px] border border-slate-200/80 bg-white p-6 shadow-[0_30px_80px_-50px_rgba(15,23,42,.35)] sm:p-10 dark:border-white/[0.07] dark:bg-[#0b1220]">
 
-                            <StaggerContainer
-                                className="
-                                    space-y-5
-                                    rounded-2xl
-                                    p-5
-                                    text-sm
-                                    leading-7
-                                    text-slate-500
-                                    dark:text-slate-400
-                                    sm:p-6
-                                "
-                            >
+                            <StaggerContainer className="space-y-6 text-[15px] leading-7 text-slate-600 dark:text-slate-400">
 
                                 {/* -----------------------------------------
                                     INTRODUCTION
@@ -244,13 +151,7 @@ export default function SoftwareProductsPage() {
                                 ----------------------------------------- */}
 
                                 <StaggerItem>
-                                    <p
-                                        className="
-                                            italic
-                                            text-slate-600
-                                            dark:text-slate-300
-                                        "
-                                    >
+                                    <p className="text-xl font-extrabold leading-8 tracking-[-0.03em] text-slate-950 sm:text-2xl dark:text-white">
                                         Products and services which we can
                                         provide to our customers
                                     </p>
@@ -261,51 +162,17 @@ export default function SoftwareProductsPage() {
                                 ----------------------------------------- */}
 
                                 <StaggerItem>
-                                    <ul className="space-y-3 pt-2">
+                                    <ul className="grid gap-3 sm:grid-cols-2">
                                         {offerings.map((item) => (
                                             <li
                                                 key={item}
-                                                className="
-                                                    group
-                                                    flex
-                                                    items-center
-                                                    gap-3
-                                                    rounded-xl
-                                                    px-3
-                                                    py-2
-                                                    transition-all
-                                                    duration-300
-                                                    hover:bg-blue-500/5
-                                                    hover:translate-x-1
-                                                    dark:hover:bg-blue-400/5
-                                                "
+                                                className="group flex items-center gap-3 rounded-2xl border border-slate-200/80 bg-slate-50/70 px-4 py-3 transition-all duration-300 hover:-translate-y-0.5 hover:border-violet-200 hover:bg-white hover:shadow-[0_20px_50px_-30px_rgba(91,33,182,.35)] dark:border-white/[0.07] dark:bg-white/[0.03] dark:hover:border-violet-400/30"
                                             >
                                                 {/* Indicator */}
-                                                <span
-                                                    className="
-                                                        h-4
-                                                        w-1.5
-                                                        shrink-0
-                                                        rounded-full
-                                                        bg-red-500
-                                                        transition-all
-                                                        duration-300
-                                                        group-hover:h-6
-                                                        group-hover:bg-blue-500
-                                                    "
-                                                />
+                                                <span className="brand-grad h-5 w-1.5 shrink-0 rounded-full transition-all duration-300 group-hover:h-7" />
 
                                                 {/* Text */}
-                                                <span
-                                                    className="
-                                                        text-slate-700
-                                                        transition-colors
-                                                        duration-300
-                                                        group-hover:text-blue-600
-                                                        dark:text-slate-300
-                                                        dark:group-hover:text-blue-400
-                                                    "
-                                                >
+                                                <span className="text-sm font-semibold text-slate-800 transition-colors duration-300 group-hover:text-violet-600 dark:text-slate-200 dark:group-hover:text-violet-300">
                                                     {item}
                                                 </span>
                                             </li>
@@ -315,7 +182,7 @@ export default function SoftwareProductsPage() {
 
                             </StaggerContainer>
 
-                        </MouseGlow>
+                        </div>
 
                         {/* =================================================
                             SIDEBAR IMAGE
@@ -324,62 +191,22 @@ export default function SoftwareProductsPage() {
                         <AnimateIn
                             delay={0.25}
                             direction="left"
-                            className="
-                                lg:sticky
-                                lg:top-24
-                                lg:self-start
-                            "
+                            className="lg:sticky lg:top-24 lg:self-start"
                         >
-                            <TiltCard className="mx-auto w-fit">
+                            <div className="brand-grad relative overflow-hidden rounded-[28px] p-2 shadow-[0_30px_70px_-30px_rgba(91,33,182,.5)]">
+                                <div className="pointer-events-none absolute -right-16 -top-16 h-40 w-40 rounded-full bg-violet-300/40 blur-3xl" />
+                                <div className="pointer-events-none absolute -bottom-16 -left-16 h-40 w-40 rounded-full bg-cyan-300/30 blur-3xl" />
 
-                                <div
-                                    className="
-                                        relative
-                                        h-56
-                                        w-56
-                                        overflow-hidden
-                                        rounded-2xl
-                                        border
-                                        border-blue-500/10
-                                        bg-white/60
-                                        p-4
-                                        shadow-xl
-                                        shadow-blue-500/5
-                                        backdrop-blur-sm
-                                        dark:bg-slate-900/60
-                                    "
-                                >
-
-                                    {/* Decorative glow */}
-                                    <div
-                                        className="
-                                            pointer-events-none
-                                            absolute
-                                            -right-10
-                                            -top-10
-                                            h-28
-                                            w-28
-                                            rounded-full
-                                            bg-blue-500/10
-                                            blur-3xl
-                                        "
-                                    />
-
+                                <div className="relative h-72 w-full overflow-hidden rounded-[22px] bg-white p-4 dark:bg-[#0b1220]">
                                     <Image
                                         src={SIDEBAR_SRC}
                                         alt="Geecon team illustration"
                                         fill
-                                        sizes="224px"
-                                        className="
-                                            relative
-                                            z-[1]
-                                            object-contain
-                                        "
+                                        sizes="(max-width: 1024px) 100vw, 320px"
+                                        className="relative z-[1] object-contain p-4"
                                     />
-
                                 </div>
-
-                            </TiltCard>
+                            </div>
                         </AnimateIn>
 
                     </div>
@@ -389,76 +216,24 @@ export default function SoftwareProductsPage() {
                     ================================================= */}
 
                     <AnimateIn delay={0.35}>
-                        <div className="mt-16 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
+                        <div className="mt-12 grid gap-5 sm:grid-cols-2 lg:grid-cols-4">
 
                             {offerings.slice(0, 4).map((item, index) => (
-                                <MouseGlow
+                                <div
                                     key={item}
-                                    className="rounded-2xl"
+                                    className="group h-full rounded-[26px] border border-slate-200/80 bg-white p-6 transition-all duration-300 hover:-translate-y-1 hover:border-violet-200 hover:shadow-[0_30px_70px_-35px_rgba(91,33,182,.35)] dark:border-white/[0.07] dark:bg-[#0b1220]"
                                 >
-                                    <div
-                                        className="
-                                            group
-                                            h-full
-                                            rounded-2xl
-                                            border
-                                            border-slate-200/70
-                                            bg-white/60
-                                            p-5
-                                            backdrop-blur-sm
-                                            transition-all
-                                            duration-300
-                                            hover:-translate-y-1
-                                            hover:shadow-xl
-                                            hover:shadow-blue-500/5
-                                            dark:border-slate-800
-                                            dark:bg-slate-900/50
-                                        "
-                                    >
-                                        {/* Number */}
-                                        <div
-                                            className="
-                                                mb-4
-                                                flex
-                                                h-9
-                                                w-9
-                                                items-center
-                                                justify-center
-                                                rounded-xl
-                                                bg-blue-500/10
-                                                text-sm
-                                                font-semibold
-                                                text-blue-600
-                                                dark:text-blue-400
-                                            "
-                                        >
-                                            {String(index + 1).padStart(2, "0")}
-                                        </div>
-
-                                        <h3
-                                            className="
-                                                text-sm
-                                                font-semibold
-                                                text-slate-900
-                                                dark:text-white
-                                            "
-                                        >
-                                            {item}
-                                        </h3>
-
-                                        <div
-                                            className="
-                                                mt-4
-                                                h-px
-                                                w-8
-                                                bg-blue-500/40
-                                                transition-all
-                                                duration-300
-                                                group-hover:w-14
-                                            "
-                                        />
+                                    {/* Number */}
+                                    <div className="brand-grad mb-5 flex h-12 w-12 items-center justify-center rounded-[14px] text-sm font-extrabold text-white shadow-lg shadow-violet-500/25">
+                                        {String(index + 1).padStart(2, "0")}
                                     </div>
-                                </MouseGlow>
+
+                                    <h3 className="text-base font-extrabold tracking-[-0.02em] text-slate-950 dark:text-white">
+                                        {item}
+                                    </h3>
+
+                                    <div className="brand-grad mt-4 h-[3px] w-8 rounded-full transition-all duration-300 group-hover:w-14" />
+                                </div>
                             ))}
 
                         </div>

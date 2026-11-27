@@ -9,6 +9,7 @@ import {
   Image as ImageIcon,
   Settings,
   Search,
+  Rocket,
 } from "lucide-react";
 
 type BlogPostFormValues = {
@@ -290,16 +291,16 @@ export function BlogPostForm({
   // =========================================================
 
   const inputClass =
-    "w-full rounded-xl border border-slate-200 bg-white px-3.5 py-2.5 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-violet-500 focus:ring-2 focus:ring-violet-500/10 dark:border-slate-700 dark:bg-slate-950 dark:text-white";
+    "w-full rounded-xl border border-slate-200 bg-slate-50/70 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-violet-400 focus:bg-white focus:outline-none focus:ring-4 focus:ring-violet-500/10 dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-white dark:focus:bg-white/[0.06]";
 
   const textareaClass =
     `${inputClass} resize-y`;
 
   const labelClass =
-    "mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300";
+    "mb-2 block text-[13px] font-semibold text-slate-700 dark:text-slate-300";
 
   const helpClass =
-    "mt-1.5 text-xs text-slate-400";
+    "mt-1.5 text-xs text-slate-400 dark:text-slate-500";
 
   // =========================================================
   // UI
@@ -314,18 +315,18 @@ export function BlogPostForm({
           BASIC INFORMATION
       =============================================== */}
 
-      <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-        <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-violet-50 text-violet-600 dark:bg-violet-500/10 dark:text-violet-400">
+      <section className="rounded-[24px] border border-slate-200/80 bg-white p-6 shadow-[0_30px_70px_-45px_rgba(15,23,42,.45)] sm:p-7 dark:border-white/[0.07] dark:bg-[#0b1220]">
+        <div className="flex items-center gap-3 border-b border-slate-100 pb-5 dark:border-white/[0.06]">
+          <div className="brand-grad flex h-11 w-11 shrink-0 items-center justify-center rounded-[14px] text-white shadow-lg shadow-violet-500/25">
             <FileText size={18} />
           </div>
 
           <div>
-            <h2 className="font-semibold text-slate-900 dark:text-white">
+            <h2 className="text-lg font-extrabold tracking-[-0.02em] text-slate-900 dark:text-white">
               Basic Information
             </h2>
 
-            <p className="text-xs text-slate-400">
+            <p className="mt-0.5 text-xs text-slate-500 dark:text-slate-400">
               Main blog post content.
             </p>
           </div>
@@ -452,18 +453,18 @@ export function BlogPostForm({
           MEDIA
       =============================================== */}
 
-      <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-        <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-500/10 dark:text-blue-400">
+      <section className="rounded-[24px] border border-slate-200/80 bg-white p-6 shadow-[0_30px_70px_-45px_rgba(15,23,42,.45)] sm:p-7 dark:border-white/[0.07] dark:bg-[#0b1220]">
+        <div className="flex items-center gap-3 border-b border-slate-100 pb-5 dark:border-white/[0.06]">
+          <div className="brand-grad flex h-11 w-11 shrink-0 items-center justify-center rounded-[14px] text-white shadow-lg shadow-violet-500/25">
             <ImageIcon size={18} />
           </div>
 
           <div>
-            <h2 className="font-semibold text-slate-900 dark:text-white">
+            <h2 className="text-lg font-extrabold tracking-[-0.02em] text-slate-900 dark:text-white">
               Media
             </h2>
 
-            <p className="text-xs text-slate-400">
+            <p className="mt-0.5 text-xs text-slate-500 dark:text-slate-400">
               Blog images.
             </p>
           </div>
@@ -506,18 +507,18 @@ export function BlogPostForm({
           BLOG DETAILS
       =============================================== */}
 
-      <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-        <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400">
+      <section className="rounded-[24px] border border-slate-200/80 bg-white p-6 shadow-[0_30px_70px_-45px_rgba(15,23,42,.45)] sm:p-7 dark:border-white/[0.07] dark:bg-[#0b1220]">
+        <div className="flex items-center gap-3 border-b border-slate-100 pb-5 dark:border-white/[0.06]">
+          <div className="brand-grad flex h-11 w-11 shrink-0 items-center justify-center rounded-[14px] text-white shadow-lg shadow-violet-500/25">
             <Settings size={18} />
           </div>
 
           <div>
-            <h2 className="font-semibold text-slate-900 dark:text-white">
+            <h2 className="text-lg font-extrabold tracking-[-0.02em] text-slate-900 dark:text-white">
               Blog Details
             </h2>
 
-            <p className="text-xs text-slate-400">
+            <p className="mt-0.5 text-xs text-slate-500 dark:text-slate-400">
               Category, author and tags.
             </p>
           </div>
@@ -610,17 +611,23 @@ export function BlogPostForm({
           PUBLISHING
       =============================================== */}
 
-      <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-        <h2 className="font-semibold text-slate-900 dark:text-white">
-          Publishing
-        </h2>
+      <section className="rounded-[24px] border border-slate-200/80 bg-white p-6 shadow-[0_30px_70px_-45px_rgba(15,23,42,.45)] sm:p-7 dark:border-white/[0.07] dark:bg-[#0b1220]">
+        <div className="flex items-center gap-3 border-b border-slate-100 pb-5 dark:border-white/[0.06]">
+          <div className="brand-grad flex h-11 w-11 shrink-0 items-center justify-center rounded-[14px] text-white shadow-lg shadow-violet-500/25">
+            <Rocket size={18} />
+          </div>
+
+          <h2 className="text-lg font-extrabold tracking-[-0.02em] text-slate-900 dark:text-white">
+            Publishing
+          </h2>
+        </div>
 
         <div className="mt-6 space-y-5">
           {/* PUBLISHED */}
 
-          <label className="flex cursor-pointer items-center justify-between gap-4 rounded-xl border border-slate-200 p-4 dark:border-slate-700">
+          <label className="flex cursor-pointer items-center justify-between gap-4 rounded-2xl border border-slate-200 bg-slate-50/60 p-4 transition-colors hover:border-violet-300 hover:bg-violet-50/40 dark:border-white/[0.08] dark:bg-white/[0.03] dark:hover:border-violet-400/30">
             <div>
-              <p className="text-sm font-medium text-slate-800 dark:text-slate-200">
+              <p className="text-sm font-bold text-slate-800 dark:text-slate-200">
                 Publish Post
               </p>
 
@@ -642,15 +649,15 @@ export function BlogPostForm({
                   event.target.checked
                 )
               }
-              className="h-4 w-4 accent-violet-600"
+              className="h-5 w-5 shrink-0 accent-violet-600"
             />
           </label>
 
           {/* FEATURED */}
 
-          <label className="flex cursor-pointer items-center justify-between gap-4 rounded-xl border border-slate-200 p-4 dark:border-slate-700">
+          <label className="flex cursor-pointer items-center justify-between gap-4 rounded-2xl border border-slate-200 bg-slate-50/60 p-4 transition-colors hover:border-violet-300 hover:bg-violet-50/40 dark:border-white/[0.08] dark:bg-white/[0.03] dark:hover:border-violet-400/30">
             <div>
-              <p className="text-sm font-medium text-slate-800 dark:text-slate-200">
+              <p className="text-sm font-bold text-slate-800 dark:text-slate-200">
                 Featured Post
               </p>
 
@@ -671,7 +678,7 @@ export function BlogPostForm({
                   event.target.checked
                 )
               }
-              className="h-4 w-4 accent-violet-600"
+              className="h-5 w-5 shrink-0 accent-violet-600"
             />
           </label>
 
@@ -742,18 +749,18 @@ export function BlogPostForm({
           SEO
       =============================================== */}
 
-      <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-        <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-amber-50 text-amber-600 dark:bg-amber-500/10 dark:text-amber-400">
+      <section className="rounded-[24px] border border-slate-200/80 bg-white p-6 shadow-[0_30px_70px_-45px_rgba(15,23,42,.45)] sm:p-7 dark:border-white/[0.07] dark:bg-[#0b1220]">
+        <div className="flex items-center gap-3 border-b border-slate-100 pb-5 dark:border-white/[0.06]">
+          <div className="brand-grad flex h-11 w-11 shrink-0 items-center justify-center rounded-[14px] text-white shadow-lg shadow-violet-500/25">
             <Search size={18} />
           </div>
 
           <div>
-            <h2 className="font-semibold text-slate-900 dark:text-white">
+            <h2 className="text-lg font-extrabold tracking-[-0.02em] text-slate-900 dark:text-white">
               SEO
             </h2>
 
-            <p className="text-xs text-slate-400">
+            <p className="mt-0.5 text-xs text-slate-500 dark:text-slate-400">
               Search engine metadata.
             </p>
           </div>
@@ -863,7 +870,7 @@ export function BlogPostForm({
       =============================================== */}
 
       {error && (
-        <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600 dark:border-red-900 dark:bg-red-950/40 dark:text-red-400">
+        <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-600 dark:border-red-500/20 dark:bg-red-500/10 dark:text-red-400">
           {error}
         </div>
       )}
@@ -872,11 +879,11 @@ export function BlogPostForm({
           ACTIONS
       =============================================== */}
 
-      <div className="flex flex-wrap items-center gap-3">
+      <div className="flex flex-wrap items-center gap-3 rounded-[24px] border border-slate-200/80 bg-white p-4 shadow-[0_30px_70px_-45px_rgba(15,23,42,.45)] sm:p-5 dark:border-white/[0.07] dark:bg-[#0b1220]">
         <button
           type="submit"
           disabled={saving}
-          className="inline-flex items-center gap-2 rounded-xl bg-violet-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-violet-500 disabled:cursor-not-allowed disabled:opacity-60"
+          className="brand-grad inline-flex items-center justify-center gap-2 rounded-xl px-6 py-3 text-sm font-bold text-white shadow-lg shadow-violet-500/25 transition-all duration-300 hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0"
         >
           <Save size={16} />
 
@@ -895,7 +902,7 @@ export function BlogPostForm({
               "/admin/blog-posts"
             )
           }
-          className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-600 transition hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:bg-slate-800"
+          className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-6 py-3 text-sm font-bold text-slate-700 transition-colors hover:border-violet-300 hover:text-violet-600 disabled:cursor-not-allowed disabled:opacity-60 dark:border-white/[0.1] dark:bg-white/[0.04] dark:text-slate-200 dark:hover:text-violet-300"
         >
           <ArrowLeft size={16} />
           Back to Posts

@@ -85,7 +85,7 @@ export function MediaCardActions({
         type="button"
         onClick={handleCopy}
         disabled={deleting}
-        className="flex items-center gap-1 rounded-md bg-white/90 px-2 py-1 text-xs font-medium text-slate-700 shadow-sm transition hover:bg-white disabled:cursor-not-allowed disabled:opacity-50"
+        className="flex items-center gap-1 rounded-lg bg-white px-2.5 py-1.5 text-xs font-bold text-violet-700 shadow-lg shadow-violet-950/20 transition hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-50"
       >
         {copied ? (
           <Check size={12} />
@@ -100,7 +100,7 @@ export function MediaCardActions({
         type="button"
         onClick={handleDelete}
         disabled={deleting}
-        className="flex items-center gap-1 rounded-md bg-white/90 px-2 py-1 text-xs font-medium text-red-600 shadow-sm transition hover:bg-white disabled:cursor-not-allowed disabled:opacity-50"
+        className="flex items-center gap-1 rounded-lg bg-red-50 px-2.5 py-1.5 text-xs font-bold text-red-600 shadow-lg shadow-violet-950/20 transition hover:-translate-y-0.5 hover:bg-red-100 disabled:cursor-not-allowed disabled:opacity-50"
       >
         {deleting ? (
           <RefreshCw

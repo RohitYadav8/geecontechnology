@@ -25,7 +25,6 @@ import { AnimateIn } from "../../../components/animate-in";
 import { AnimatedHeading } from "../../../components/animated-heading";
 import { FloatingBlob } from "../../../components/floating-blob";
 import { StatCounter } from "../../../components/stat-counter";
-import { MouseGlow } from "../../../components/mouse-glow";
 import { RippleButton } from "../../../components/ripple-button";
 
 /* =========================================================
@@ -382,59 +381,71 @@ export default function CareersPage() {
     };
 
   return (
-    <div className="relative min-h-screen bg-white dark:bg-slate-950">
+    <div className="relative min-h-screen bg-slate-50 dark:bg-[#060b16]">
       <Navbar />
 
       <main className="relative flex-1 overflow-hidden">
-        {/* ================================================= */}
-        {/* BACKGROUND */}
-        {/* ================================================= */}
+        {/* =========================================================
+            HERO
+        ========================================================= */}
 
-        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,#e5e7eb_1px,transparent_1px),linear-gradient(to_bottom,#e5e7eb_1px,transparent_1px)] bg-[size:48px_48px] opacity-[0.16] dark:opacity-[0.06]" />
+        <section className="brand-grad relative overflow-hidden px-6 pb-40 pt-16 text-center text-white sm:px-8 sm:pb-44 sm:pt-20 lg:px-10">
+          <FloatingBlob
+            className="-left-40 top-24 h-[460px] w-[460px]"
+            color="bg-cyan-300/35"
+            duration={18}
+          />
 
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_20%_0%,rgba(59,130,246,.12),transparent_34%),radial-gradient(circle_at_90%_30%,rgba(6,182,212,.09),transparent_28%)]" />
+          <FloatingBlob
+            className="-right-28 -top-24 h-[420px] w-[420px]"
+            color="bg-violet-300/40"
+            duration={16}
+          />
 
-        <FloatingBlob
-          className="-right-20 top-10 h-72 w-72"
-          color="bg-blue-400/10"
-          duration={16}
-        />
+          <div
+            className="pointer-events-none absolute inset-0 opacity-[0.07]"
+            style={{
+              backgroundImage:
+                "linear-gradient(rgba(255,255,255,.6) 1px, transparent 1px), linear-gradient(90deg,rgba(255,255,255,.6) 1px,transparent 1px)",
+              backgroundSize: "56px 56px",
+            }}
+          />
 
-        <FloatingBlob
-          className="-left-16 top-[520px] h-64 w-64"
-          color="bg-cyan-300/10"
-          duration={20}
-        />
+          <div className="relative mx-auto max-w-4xl">
+            <AnimateIn>
+              <div className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/[0.14] px-4 py-2 text-[11px] font-bold uppercase tracking-[0.2em] backdrop-blur-xl">
+                <Sparkles
+                  size={14}
+                  className="text-cyan-200"
+                />
+
+                Careers
+              </div>
+            </AnimateIn>
+
+            <AnimatedHeading
+              text="Career With Us"
+              as="h1"
+              delay={0.08}
+              highlightFrom={2}
+              highlightClassName="brand-text-light"
+              className="mt-7 text-[44px] font-extrabold leading-[1.04] tracking-[-0.045em] sm:text-6xl lg:text-[76px]"
+            />
+          </div>
+        </section>
 
         {/* =========================================================
             CAREER INTRO
         ========================================================= */}
 
-        <section className="relative mx-auto max-w-7xl px-6 pb-20 pt-16 sm:pt-20 lg:pb-24">
-          <AnimateIn>
-            <div className="mb-10 max-w-3xl">
-              <div className="mb-4 inline-flex items-center gap-2 rounded-full border border-blue-100 bg-blue-50 px-3.5 py-1.5 text-xs font-semibold uppercase tracking-[0.16em] text-blue-600 dark:border-blue-500/20 dark:bg-blue-500/10 dark:text-blue-400">
-                <Sparkles
-                  size={14}
-                />
-
-                Careers
-              </div>
-
-              <AnimatedHeading
-                text="Career With Us"
-                as="h1"
-                className="text-3xl font-semibold tracking-tight text-slate-950 dark:text-white sm:text-4xl lg:text-5xl"
-              />
-            </div>
-          </AnimateIn>
-
+        <section className="relative z-10 mx-auto -mt-28 max-w-7xl px-4 pb-20 sm:-mt-32 sm:px-6 lg:px-10 lg:pb-24">
+          <div className="rounded-[32px] border border-slate-100 bg-white p-6 shadow-[0_40px_100px_-40px_rgba(15,23,42,.35)] sm:p-10 lg:p-12 dark:border-white/[0.07] dark:bg-[#0b1220]">
           <div className="grid items-start gap-12 lg:grid-cols-[minmax(0,1fr)_400px] xl:grid-cols-[minmax(0,1fr)_440px]">
             {/* LEFT */}
 
             <AnimateIn delay={0.15}>
               <div className="max-w-3xl">
-                <p className="text-xl font-medium leading-8 text-slate-900 dark:text-white sm:text-2xl sm:leading-9">
+                <p className="text-xl font-bold leading-8 tracking-[-0.02em] text-slate-950 dark:text-white sm:text-[26px] sm:leading-10">
                   Come on, join US.
                   And we will help
                   You to explore your
@@ -444,7 +455,7 @@ export default function CareersPage() {
 
                 <div className="mt-7 space-y-5 text-[15px] leading-7 text-slate-600 dark:text-slate-400">
                   <p>
-                    <span className="font-semibold text-slate-900 dark:text-white">
+                    <span className="brand-text font-extrabold">
                       Geecon
                     </span>{" "}
                     Group has many
@@ -554,26 +565,19 @@ export default function CareersPage() {
                   transition={{
                     duration: 0.6,
                   }}
-                  className="mt-10 grid grid-cols-3 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900"
+                  className="mt-10 grid grid-cols-3 gap-3"
                 >
                   {careerStats.map(
                     (
-                      stat,
-                      index
+                      stat
                     ) => (
                       <div
                         key={
                           stat.label
                         }
-                        className={`px-3 py-6 sm:px-6 ${
-                          index !==
-                          careerStats.length -
-                            1
-                            ? "border-r border-slate-200 dark:border-slate-800"
-                            : ""
-                        }`}
+                        className="rounded-[20px] border border-slate-200 bg-white px-3 py-6 text-center sm:px-6 dark:border-white/[0.07] dark:bg-white/[0.03]"
                       >
-                        <div className="text-2xl font-bold tracking-tight text-[#1a2b4a] dark:text-blue-400 sm:text-3xl">
+                        <div className="brand-text text-2xl font-extrabold tracking-tight sm:text-4xl">
                           <StatCounter
                             value={
                               stat.value
@@ -584,7 +588,7 @@ export default function CareersPage() {
                           />
                         </div>
 
-                        <div className="mt-1.5 text-[9px] font-medium uppercase tracking-[0.12em] text-slate-400 sm:text-[11px]">
+                        <div className="mt-1.5 text-[9px] font-bold uppercase tracking-[0.12em] text-slate-500 sm:text-[11px] dark:text-slate-400">
                           {
                             stat.label
                           }
@@ -599,7 +603,7 @@ export default function CareersPage() {
                 <div className="mt-8 flex flex-wrap gap-4">
                   <Link
                     href="/careers/openings"
-                    className="group inline-flex items-center gap-2 rounded-xl bg-[#1a2b4a] px-6 py-3.5 text-sm font-semibold text-white shadow-sm transition-all duration-300 hover:-translate-y-0.5 hover:bg-[#111f38] hover:shadow-lg dark:bg-blue-600 dark:hover:bg-blue-500"
+                    className="brand-grad group inline-flex items-center gap-2 rounded-xl px-6 py-3.5 text-sm font-bold text-white shadow-lg shadow-violet-500/25 transition-all duration-300 hover:-translate-y-0.5"
                   >
                     <BriefcaseBusiness
                       size={17}
@@ -610,17 +614,6 @@ export default function CareersPage() {
                     <ArrowRight
                       size={16}
                       className="transition-transform duration-300 group-hover:translate-x-1"
-                    />
-                  </Link>
-
-                  <Link
-                    href="/careers/openings"
-                    className="group inline-flex items-center gap-2 rounded-xl bg-[#1a2b4a] px-6 py-3.5 text-sm font-semibold text-white"
-                  >
-                    View Openings
-
-                    <ArrowRight
-                      size={16}
                     />
                   </Link>
                 </div>
@@ -635,7 +628,7 @@ export default function CareersPage() {
             >
               <div
                 ref={imageRef}
-                className="relative overflow-hidden rounded-[28px] border border-slate-200 bg-slate-100 p-2 shadow-[0_20px_60px_-25px_rgba(15,23,42,.25)] dark:border-slate-800 dark:bg-slate-900"
+                className="brand-grad relative overflow-hidden rounded-[28px] p-2 shadow-[0_30px_70px_-30px_rgba(91,33,182,.5)]"
               >
                 <div className="relative h-[440px] w-full overflow-hidden rounded-[22px] sm:h-[520px] lg:h-[610px]">
                   <motion.div
@@ -656,9 +649,9 @@ export default function CareersPage() {
 
                   <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-slate-950/30 via-transparent to-transparent" />
 
-                  <div className="absolute bottom-5 left-5 right-5 rounded-2xl border border-white/20 bg-white/85 p-4 shadow-lg backdrop-blur-xl dark:bg-slate-950/75">
+                  <div className="absolute bottom-5 left-5 right-5 rounded-2xl border border-white/40 bg-white/90 p-4 shadow-lg backdrop-blur-xl dark:bg-slate-950/80">
                     <div className="flex items-center gap-3">
-                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-[#1a2b4a] text-white dark:bg-blue-600">
+                      <div className="brand-grad flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-white shadow-lg shadow-violet-500/25">
                         <Users
                           size={
                             18
@@ -685,6 +678,7 @@ export default function CareersPage() {
               </div>
             </AnimateIn>
           </div>
+          </div>
         </section>
 
         {/* =========================================================
@@ -693,14 +687,16 @@ export default function CareersPage() {
 
         <section
           id="application-form"
-          className="relative border-t border-slate-100 bg-slate-50/70 py-14 dark:border-slate-800 dark:bg-slate-900/20"
+          className="relative px-4 pb-24 sm:px-6 sm:pb-28 lg:px-10"
         >
-          <div className="mx-auto grid max-w-6xl gap-10 px-6 lg:grid-cols-[minmax(0,0.8fr)_minmax(420px,0.95fr)] lg:items-start">
+          <div className="mx-auto grid max-w-[1200px] gap-6 overflow-hidden rounded-[32px] border border-slate-200/80 bg-white p-3 shadow-[0_40px_100px_-45px_rgba(15,23,42,.45)] lg:grid-cols-[minmax(0,0.8fr)_minmax(420px,1.2fr)] lg:items-stretch lg:gap-0 dark:border-white/[0.07] dark:bg-[#0b1220]">
             {/* FORM INTRO */}
 
             <AnimateIn>
-              <div className="max-w-md lg:sticky lg:top-28">
-                <div className="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.15em] text-blue-600 dark:border-blue-500/20 dark:bg-blue-500/10 dark:text-blue-400">
+              <div className="brand-grad relative h-full overflow-hidden rounded-[24px] p-8 text-white sm:p-10">
+                <div className="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full bg-violet-300/40 blur-3xl" />
+                <div className="pointer-events-none absolute -bottom-24 -left-16 h-64 w-64 rounded-full bg-cyan-300/30 blur-3xl" />
+                <div className="relative inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/[0.14] px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-[0.18em] backdrop-blur-xl">
                   <Send
                     size={12}
                   />
@@ -708,7 +704,7 @@ export default function CareersPage() {
                   Application
                 </div>
 
-                <h2 className="mt-4 text-2xl font-semibold tracking-tight text-slate-950 dark:text-white sm:text-3xl">
+                <h2 className="relative mt-5 text-3xl font-extrabold tracking-[-0.03em] sm:text-[40px] sm:leading-tight">
                   Submit Your
                   Details
                 </h2>
@@ -718,9 +714,9 @@ export default function CareersPage() {
             {/* FORM */}
 
             <AnimateIn delay={0.15}>
-              <div className="rounded-2xl bg-gradient-to-br from-blue-500/25 via-cyan-300/15 to-blue-700/25 p-[1px] shadow-[0_16px_45px_-28px_rgba(37,99,235,.35)]">
-                <MouseGlow className="rounded-2xl">
-                  <div className="rounded-[15px] border border-white/70 bg-white/90 p-5 backdrop-blur-xl dark:border-slate-800 dark:bg-slate-900/90 sm:p-6">
+              <div>
+                <div>
+                  <div className="p-5 sm:p-8 lg:p-10">
                     <form
                       onSubmit={
                         handleSubmit
@@ -749,7 +745,7 @@ export default function CareersPage() {
                               "firstName"
                             )}
                             required
-                            className="w-full rounded-lg border border-slate-200 bg-white px-3.5 py-2.5 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+                            className="w-full rounded-xl border border-slate-200 bg-slate-50/70 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-violet-400 focus:bg-white focus:ring-4 focus:ring-violet-500/10 dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-white"
                           />
                         </div>
 
@@ -772,7 +768,7 @@ export default function CareersPage() {
                               "lastName"
                             )}
                             required
-                            className="w-full rounded-lg border border-slate-200 bg-white px-3.5 py-2.5 text-sm text-slate-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+                            className="w-full rounded-xl border border-slate-200 bg-slate-50/70 px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-violet-400 focus:bg-white focus:ring-4 focus:ring-violet-500/10 dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-white"
                           />
                         </div>
                       </div>
@@ -799,7 +795,7 @@ export default function CareersPage() {
                               "email"
                             )}
                             required
-                            className="w-full rounded-lg border border-slate-200 bg-white px-3.5 py-2.5 text-sm text-slate-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+                            className="w-full rounded-xl border border-slate-200 bg-slate-50/70 px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-violet-400 focus:bg-white focus:ring-4 focus:ring-violet-500/10 dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-white"
                           />
                         </div>
 
@@ -821,7 +817,7 @@ export default function CareersPage() {
                               "phone"
                             )}
                             required
-                            className="w-full rounded-lg border border-slate-200 bg-white px-3.5 py-2.5 text-sm text-slate-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+                            className="w-full rounded-xl border border-slate-200 bg-slate-50/70 px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-violet-400 focus:bg-white focus:ring-4 focus:ring-violet-500/10 dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-white"
                           />
                         </div>
                       </div>
@@ -868,8 +864,8 @@ export default function CareersPage() {
                           }}
                           className={`flex w-full cursor-pointer flex-col items-center justify-center rounded-xl border border-dashed px-4 py-6 text-center transition-all ${
                             isDragging
-                              ? "border-blue-500 bg-blue-50 text-blue-600 dark:bg-blue-500/10 dark:text-blue-400"
-                              : "border-slate-300 bg-slate-50/60 text-slate-600 hover:border-blue-400 hover:bg-blue-50/60 dark:border-slate-700 dark:bg-slate-950/50 dark:text-slate-300 dark:hover:border-blue-500 dark:hover:bg-blue-500/5"
+                              ? "border-violet-500 bg-violet-50 text-violet-600 dark:bg-violet-500/10 dark:text-violet-300"
+                              : "border-slate-300 bg-slate-50/60 text-slate-600 hover:border-violet-400 hover:bg-violet-50/60 dark:border-white/[0.12] dark:bg-white/[0.03] dark:text-slate-300 dark:hover:border-violet-400 dark:hover:bg-violet-500/5"
                           }`}
                         >
                           <motion.div
@@ -883,7 +879,7 @@ export default function CareersPage() {
                                   ? 1.05
                                   : 1,
                             }}
-                            className="flex h-10 w-10 items-center justify-center rounded-xl bg-white text-[#1a2b4a] shadow-sm dark:bg-slate-900 dark:text-blue-400"
+                            className="brand-grad flex h-11 w-11 items-center justify-center rounded-xl text-white shadow-lg shadow-violet-500/25"
                           >
                             <Upload
                               size={
@@ -937,7 +933,7 @@ export default function CareersPage() {
                           disabled={
                             submitting
                           }
-                          className="rounded-lg bg-[#1a2b4a] px-5 py-2.5 text-[13px] font-semibold text-white shadow-sm transition-all hover:bg-[#111f38] hover:shadow-md disabled:cursor-not-allowed disabled:opacity-60 dark:bg-blue-600 dark:hover:bg-blue-500"
+                          className="brand-grad rounded-xl px-7 py-3.5 text-sm font-bold text-white shadow-lg shadow-violet-500/25 disabled:cursor-not-allowed disabled:opacity-60"
                         >
                           <Send
                             size={
@@ -952,7 +948,7 @@ export default function CareersPage() {
                       </div>
                     </form>
                   </div>
-                </MouseGlow>
+                </div>
               </div>
             </AnimateIn>
           </div>
@@ -980,7 +976,7 @@ export default function CareersPage() {
           transition={{
             duration: 0.3,
           }}
-          className="fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-xl bg-[#1a2b4a] px-5 py-3 text-sm font-medium text-white shadow-2xl dark:bg-blue-600"
+          className="brand-grad fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-semibold text-white shadow-2xl shadow-violet-500/30"
         >
           <CheckCircle
             size={16}

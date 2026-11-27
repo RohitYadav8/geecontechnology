@@ -12,7 +12,6 @@ import {
   StaggerItem,
 } from "../../../components/stagger-container";
 
-import { BackgroundEffects } from "../../../components/background-effects";
 import { ClientHero } from "../../../components/client-hero";
 import { ClientMarquee } from "../../../components/client-marquee";
 import ClientLogoGrid from "../../../components/client-logo-grid";
@@ -58,21 +57,19 @@ export default function ClienteleEngagementPage() {
   );
 
   return (
-    <div className="flex min-h-screen flex-col">
+    <div className="flex min-h-screen flex-col bg-slate-50 dark:bg-[#060b16]">
       {/* Navbar */}
       <Navbar />
 
       <main className="relative flex-1 overflow-hidden">
-        {/* Background Effects */}
-        <BackgroundEffects />
-
-        
         <ClientHero />
 
+        <div className="relative z-10 -mt-28 px-4 sm:-mt-32 sm:px-6 lg:px-10">
+          <div className="mx-auto max-w-7xl overflow-hidden rounded-[32px] border border-slate-100 bg-white shadow-[0_40px_100px_-40px_rgba(15,23,42,.35)] dark:border-white/[0.07] dark:bg-[#0b1220]">
         {loading ? (
           <section className="relative mx-auto flex min-h-60 max-w-7xl items-center justify-center px-6 py-16">
             <div className="text-center">
-              <div className="mx-auto h-8 w-8 animate-spin rounded-full border-2 border-slate-300 border-t-blue-600" />
+              <span className="brand-grad mx-auto block h-10 w-10 animate-spin rounded-full [mask:radial-gradient(farthest-side,transparent_calc(100%-4px),#000_0)]" />
 
               <p className="mt-4 text-sm text-slate-500 dark:text-slate-400">
                 Loading clients...
@@ -80,36 +77,54 @@ export default function ClienteleEngagementPage() {
             </div>
           </section>
         ) : clients.length > 0 ? (
-          <>
+          <div className="px-2 py-4 sm:px-4 sm:py-6">
             {/* Client Logo Marquee */}
             <ClientMarquee clients={clients} />
+          </div>
+        ) : (
+          /* Empty State */
+          <section className="mx-auto max-w-7xl px-6 py-20 text-center">
+            <h2 className="text-xl font-extrabold tracking-[-0.03em] text-slate-950 dark:text-white">
+              No clients available
+            </h2>
 
+            <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">
+              Client information will appear here once it is
+              added.
+            </p>
+          </section>
+        )}
+          </div>
+        </div>
+
+        {!loading && clients.length > 0 && (
+          <>
             {/* Featured Clients */}
             {featuredClients.length > 0 && (
               <section
                 aria-labelledby="featured-clients-heading"
-                className="relative mx-auto max-w-7xl px-6 py-16 sm:py-20"
+                className="relative mx-auto max-w-7xl px-4 py-20 sm:px-6 sm:py-24 lg:px-10"
               >
                 <div className="mx-auto max-w-2xl text-center">
-                  <span className="text-xs font-semibold uppercase tracking-[0.2em] text-[#1a2b4a] dark:text-blue-400">
+                  <span className="brand-text text-[12px] font-extrabold uppercase tracking-[0.2em]">
                     Our Clients
                   </span>
 
                   <h2
                     id="featured-clients-heading"
-                    className="mt-3 text-2xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-3xl"
+                    className="mt-4 text-3xl font-extrabold tracking-[-0.035em] text-slate-950 dark:text-white sm:text-[46px] sm:leading-[1.1]"
                   >
                     Featured Clients
                   </h2>
 
-                  <p className="mt-3 text-sm leading-6 text-slate-500 dark:text-slate-400">
+                  <p className="mt-4 text-[15px] leading-8 text-slate-500 dark:text-slate-400">
                     We are proud to work with organizations that
                     trust Geecon for technology, consulting, and
                     digital solutions.
                   </p>
                 </div>
 
-                <StaggerContainer className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+                <StaggerContainer className="mt-12 grid gap-5 sm:grid-cols-2 sm:gap-6 lg:grid-cols-4">
                   {featuredClients.map((client) => (
                     <StaggerItem key={client.id}>
                       <ClientCard
@@ -126,21 +141,24 @@ export default function ClienteleEngagementPage() {
             {otherClients.length > 0 && (
               <section
                 aria-labelledby="all-engagements-heading"
-                className="relative mx-auto max-w-7xl px-6 pb-20 sm:pb-24"
+                className={`relative mx-auto max-w-7xl px-4 pb-20 sm:px-6 sm:pb-24 lg:px-10 ${
+                  featuredClients.length > 0 ? "" : "pt-20 sm:pt-24"
+                }`}
               >
+                <div className="rounded-[32px] border border-slate-100 bg-white px-4 py-12 shadow-[0_40px_100px_-40px_rgba(15,23,42,.35)] dark:border-white/[0.07] dark:bg-[#0b1220] sm:px-8 sm:py-16 lg:px-12">
                 <div className="mb-10 text-center">
-                  <span className="text-xs font-semibold uppercase tracking-[0.2em] text-[#1a2b4a] dark:text-blue-400">
+                  <span className="brand-text text-[12px] font-extrabold uppercase tracking-[0.2em]">
                     Our Work
                   </span>
 
                   <h2
                     id="all-engagements-heading"
-                    className="mt-3 text-2xl font-bold tracking-tight text-slate-900 dark:text-white sm:text-3xl"
+                    className="mt-4 text-3xl font-extrabold tracking-[-0.035em] text-slate-950 dark:text-white sm:text-[46px] sm:leading-[1.1]"
                   >
                     All Engagements
                   </h2>
 
-                  <p className="mx-auto mt-3 max-w-2xl text-sm leading-6 text-slate-500 dark:text-slate-400">
+                  <p className="mx-auto mt-4 max-w-2xl text-[15px] leading-8 text-slate-500 dark:text-slate-400">
                     Explore some of the organizations and
                     businesses we have supported through our
                     technology and consulting services.
@@ -149,22 +167,13 @@ export default function ClienteleEngagementPage() {
 
                 {/* Client Logo Grid */}
                 <ClientLogoGrid clients={otherClients} />
+                </div>
               </section>
             )}
           </>
-        ) : (
-          /* Empty State */
-          <section className="mx-auto max-w-7xl px-6 py-20 text-center">
-            <h2 className="text-xl font-semibold text-slate-900 dark:text-white">
-              No clients available
-            </h2>
-
-            <p className="mt-2 text-sm text-slate-500 dark:text-slate-400">
-              Client information will appear here once it is
-              added.
-            </p>
-          </section>
         )}
+
+        {(loading || clients.length === 0) && <div className="pb-20 sm:pb-24" />}
       </main>
 
       {/* CTA */}

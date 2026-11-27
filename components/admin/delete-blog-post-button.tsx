@@ -72,9 +72,9 @@ export function DeleteBlogPostButton({
         type="button"
         onClick={handleDelete}
         disabled={deleting}
-        className="inline-flex items-center gap-1.5 text-red-500 transition-colors hover:text-red-600 disabled:cursor-not-allowed disabled:opacity-50 dark:text-red-400 dark:hover:text-red-300"
+        className="inline-flex items-center gap-1 rounded-lg border border-red-200 bg-red-50 px-3 py-1.5 text-xs font-bold text-red-600 transition-colors hover:bg-red-100 disabled:cursor-not-allowed disabled:opacity-50 dark:border-red-500/20 dark:bg-red-500/10 dark:text-red-400 dark:hover:bg-red-500/20"
       >
-        <Trash2 size={14} />
+        <Trash2 size={13} />
 
         {deleting ? "Deleting..." : "Delete"}
       </button>

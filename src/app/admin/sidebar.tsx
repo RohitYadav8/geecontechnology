@@ -205,7 +205,7 @@ export function AdminSidebar({
               width={44}
               height={40}
               priority
-              className="h-10 w-auto shrink-0 object-contain transition-transform duration-300 group-hover:scale-105"
+              className="h-10 w-auto shrink-0 rounded-xl bg-white object-contain p-1 shadow-md shadow-violet-500/15 transition-transform duration-300 group-hover:scale-105"
             />
 
             <div className="min-w-0 leading-tight">
@@ -249,9 +249,9 @@ export function AdminSidebar({
                           (value) => !value
                         )
                       }
-                      className={`flex w-full items-center justify-between rounded-lg px-3 py-2.5 text-sm font-medium transition-all ${
+                      className={`flex w-full items-center justify-between rounded-xl px-3 py-2.5 text-sm font-semibold transition-all ${
                         isActive
-                          ? "bg-violet-600 text-white shadow-sm"
+                          ? "brand-grad text-white shadow-lg shadow-violet-500/25"
                           : "text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-white/5 dark:hover:text-white"
                       }`}
                     >
@@ -294,7 +294,7 @@ export function AdminSidebar({
                                 }
                                 className={`rounded-md px-3 py-2 text-sm transition-all ${
                                   childActive
-                                    ? "bg-violet-50 font-medium text-violet-600 dark:bg-violet-500/10 dark:text-violet-400"
+                                    ? "bg-violet-50 font-semibold text-violet-600 dark:bg-violet-500/10 dark:text-violet-300"
                                     : "text-slate-500 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-500 dark:hover:bg-white/5 dark:hover:text-white"
                                 }`}
                               >
@@ -315,9 +315,9 @@ export function AdminSidebar({
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`group flex items-center gap-3 rounded-lg px-3 py-2.5 text-sm font-medium transition-all ${
+                  className={`group flex items-center gap-3 rounded-xl px-3 py-2.5 text-sm font-semibold transition-all ${
                     isActive
-                      ? "bg-violet-600 text-white shadow-sm"
+                      ? "brand-grad text-white shadow-lg shadow-violet-500/25"
                       : "text-slate-600 hover:bg-slate-100 hover:text-slate-900 dark:text-slate-400 dark:hover:bg-white/5 dark:hover:text-white"
                   }`}
                 >

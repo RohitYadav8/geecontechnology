@@ -7,6 +7,7 @@ import { Navbar } from "../../../../components/navbar";
 import { Footer } from "../../../../components/footer";
 import { AnimateIn } from "../../../../components/animate-in";
 import { ScrollProgress } from "../../../../components/scroll-progress";
+import { FloatingBlob } from "../../../../components/floating-blob";
 
 const HERO_SRC = "/benefits.png";
 
@@ -44,7 +45,7 @@ function PremiumCard({
   const spotlight = useMotionTemplate`
     radial-gradient(
       500px circle at ${mouseX}% ${mouseY}%,
-      rgba(37, 99, 235, 0.12),
+      rgba(124, 58, 237, 0.08),
       transparent 65%
     )
   `;
@@ -52,7 +53,7 @@ function PremiumCard({
   const darkSpotlight = useMotionTemplate`
     radial-gradient(
       500px circle at ${mouseX}% ${mouseY}%,
-      rgba(34, 211, 238, 0.10),
+      rgba(139, 92, 246, 0.10),
       transparent 65%
     )
   `;
@@ -96,11 +97,9 @@ function PremiumCard({
             ease: "easeOut",
           },
         }}
-        className="group relative overflow-hidden rounded-[32px] border border-slate-200 bg-white shadow-[0_15px_50px_-25px_rgba(15,23,42,0.25)] transition-all duration-500 hover:border-blue-300 hover:shadow-[0_30px_90px_-30px_rgba(37,99,235,0.28)] dark:border-slate-800 dark:bg-slate-900/80 dark:hover:border-cyan-400/50 dark:hover:shadow-[0_30px_90px_-30px_rgba(34,211,238,0.18)]"
+        className="group relative overflow-hidden rounded-[26px] border border-slate-200/80 bg-white shadow-[0_20px_60px_-40px_rgba(15,23,42,.25)] transition-[border-color,box-shadow] duration-500 hover:border-violet-200 hover:shadow-[0_30px_70px_-35px_rgba(91,33,182,.35)] dark:border-white/[0.07] dark:bg-[#0b1220]"
       >
-        {/* =====================================================
-            MOUSE SPOTLIGHT
-        ===================================================== */}
+        {/* Mouse spotlight */}
         <motion.div
           aria-hidden="true"
           className="pointer-events-none absolute inset-0 hidden opacity-0 transition-opacity duration-500 group-hover:opacity-100 dark:hidden sm:block"
@@ -117,79 +116,28 @@ function PremiumCard({
           }}
         />
 
-        {/* =====================================================
-            PREMIUM GRADIENT BORDER
-        ===================================================== */}
-        <div className="pointer-events-none absolute inset-0 rounded-[32px] bg-gradient-to-br from-blue-500 via-cyan-400 to-blue-600 opacity-0 transition-opacity duration-500 group-hover:opacity-100" />
+        {/* Left accent */}
+        <div className="pointer-events-none absolute bottom-0 left-0 top-0 z-20 w-[3px] origin-bottom scale-y-0 bg-gradient-to-b from-blue-600 via-violet-500 to-cyan-400 transition-transform duration-700 group-hover:scale-y-100" />
 
-        <div className="pointer-events-none absolute inset-[1px] rounded-[31px] bg-white dark:bg-slate-900/95" />
-
-        {/* =====================================================
-            TOP RIGHT LIGHT
-        ===================================================== */}
-        <motion.div
-          aria-hidden="true"
-          className="pointer-events-none absolute -right-32 -top-32 h-80 w-80 rounded-full bg-blue-500/0 blur-3xl transition-all duration-700 group-hover:bg-blue-500/15 dark:group-hover:bg-cyan-400/10"
-        />
-
-        {/* =====================================================
-            BOTTOM LEFT LIGHT
-        ===================================================== */}
-        <motion.div
-          aria-hidden="true"
-          className="pointer-events-none absolute -bottom-32 -left-32 h-80 w-80 rounded-full bg-cyan-400/0 blur-3xl transition-all duration-700 group-hover:bg-cyan-400/10"
-        />
-
-        {/* =====================================================
-            LEFT ACCENT
-        ===================================================== */}
-        <div className="pointer-events-none absolute bottom-0 left-0 top-0 z-20 w-1 origin-bottom scale-y-0 bg-gradient-to-b from-blue-600 via-cyan-400 to-blue-600 transition-transform duration-700 group-hover:scale-y-100" />
-
-        {/* =====================================================
-            CONTENT
-        ===================================================== */}
-        <div className="relative z-30 p-7 sm:p-10 lg:p-12">
-          {/* Small decorative mark */}
-          <div className="mb-7 flex items-center">
-            <motion.div
-              className="h-[3px] w-8 rounded-full bg-gradient-to-r from-blue-600 to-cyan-400"
-              initial={{ width: 32 }}
-              whileInView={{ width: 32 }}
-              whileHover={{ width: 70 }}
-              transition={{ duration: 0.4 }}
-            />
-
-            <div className="ml-2 h-[3px] w-2 rounded-full bg-cyan-400/30 transition-all duration-500 group-hover:w-5 group-hover:bg-cyan-400" />
+        {/* Card content */}
+        <div className="relative z-30 flex flex-col gap-6 p-7 sm:flex-row sm:gap-8 sm:p-10">
+          <div className="brand-grad flex h-12 w-12 shrink-0 items-center justify-center rounded-[14px] text-[15px] font-extrabold text-white shadow-lg shadow-violet-500/25 transition-transform duration-500 group-hover:scale-105 group-hover:rotate-3">
+            {String(index + 1).padStart(2, "0")}
           </div>
 
-          {/* Heading */}
-          <h2 className="text-2xl font-semibold tracking-tight text-slate-900 transition-all duration-300 group-hover:translate-x-1 group-hover:text-blue-700 sm:text-3xl dark:text-white dark:group-hover:text-cyan-300">
-            {title}
-          </h2>
+          <div className="min-w-0 flex-1">
+            {/* Heading */}
+            <h2 className="text-2xl font-extrabold tracking-[-0.035em] text-slate-950 transition-colors duration-300 group-hover:text-violet-700 sm:text-[30px] sm:leading-tight dark:text-white dark:group-hover:text-violet-300">
+              {title}
+            </h2>
 
-          {/* Animated underline */}
-          <div className="mt-5 flex items-center gap-2">
-            <div className="h-px w-12 bg-gradient-to-r from-blue-600 to-cyan-400 transition-all duration-500 group-hover:w-28" />
+            <div className="brand-grad mt-4 h-[3px] w-12 rounded-full transition-all duration-500 group-hover:w-24" />
 
-            <div className="h-px w-3 bg-cyan-400/40 transition-all duration-500 group-hover:w-6 group-hover:bg-cyan-400" />
+            {/* Body */}
+            <p className="mt-5 text-[15px] leading-8 text-slate-600 sm:text-base dark:text-slate-400">
+              {body}
+            </p>
           </div>
-
-          {/* Body */}
-          <p className="mt-7 max-w-5xl text-[15px] leading-8 text-slate-600 transition-colors duration-300 group-hover:text-slate-700 sm:text-base dark:text-slate-400 dark:group-hover:text-slate-300">
-            {body}
-          </p>
-
-          {/* Bottom line */}
-          <div className="mt-9 h-px w-16 bg-gradient-to-r from-blue-500 to-transparent transition-all duration-700 group-hover:w-40" />
-        </div>
-
-        {/* =====================================================
-            CORNER DETAIL
-        ===================================================== */}
-        <div className="pointer-events-none absolute bottom-5 right-6 z-30 flex items-center gap-1 opacity-40 transition-all duration-500 group-hover:translate-x-1 group-hover:opacity-100">
-          <span className="h-1 w-1 rounded-full bg-blue-500" />
-          <span className="h-1 w-1 rounded-full bg-cyan-400" />
-          <span className="h-1 w-1 rounded-full bg-blue-500/40" />
         </div>
       </motion.article>
     </AnimateIn>
@@ -198,75 +146,81 @@ function PremiumCard({
 
 export default function BenefitsPage() {
   return (
-    <div className="min-h-screen overflow-hidden bg-white text-slate-900 dark:bg-slate-950 dark:text-white">
+    <div className="relative min-h-screen overflow-hidden bg-slate-50 text-slate-900 dark:bg-[#060b16] dark:text-white">
       <ScrollProgress />
 
       <Navbar />
 
-      <main>
+      <main className="relative">
         {/* =========================================================
-            HERO IMAGE
+            HERO
         ========================================================= */}
-        <section className="relative w-full overflow-hidden">
+        <section className="brand-grad relative overflow-hidden px-4 pb-40 pt-12 text-white sm:px-8 sm:pb-44 sm:pt-16 lg:px-10">
+          <FloatingBlob
+            className="-left-40 top-24 h-[460px] w-[460px]"
+            color="bg-cyan-300/35"
+            duration={18}
+          />
+
+          <FloatingBlob
+            className="-right-28 -top-24 h-[420px] w-[420px]"
+            color="bg-violet-300/40"
+            duration={16}
+          />
+
+          <div
+            className="pointer-events-none absolute inset-0 opacity-[0.07]"
+            style={{
+              backgroundImage:
+                "linear-gradient(rgba(255,255,255,.6) 1px, transparent 1px), linear-gradient(90deg,rgba(255,255,255,.6) 1px,transparent 1px)",
+              backgroundSize: "56px 56px",
+            }}
+          />
+
           <motion.div
             initial={{
-              scale: 1.08,
-              opacity: 0.7,
+              scale: 0.97,
+              opacity: 0,
             }}
             animate={{
               scale: 1,
               opacity: 1,
             }}
             transition={{
-              duration: 1.4,
+              duration: 1.1,
               ease: [0.22, 1, 0.36, 1],
             }}
-            className="relative h-[300px] w-full sm:h-[380px] lg:h-[440px]"
+            className="relative mx-auto max-w-6xl rounded-[28px] border border-white/30 bg-white/15 p-2 shadow-[0_30px_80px_-30px_rgba(15,23,42,.55)] backdrop-blur-xl"
           >
-            <Image
-              src={HERO_SRC}
-              alt="Geecon Benefits"
-              fill
-              priority
-              quality={100}
-              sizes="100vw"
-              className="object-cover object-center"
-            />
+            <div className="relative h-[220px] w-full overflow-hidden rounded-[22px] sm:h-[320px] lg:h-[400px]">
+              <Image
+                src={HERO_SRC}
+                alt="Geecon Benefits"
+                fill
+                priority
+                quality={100}
+                sizes="(max-width: 1200px) 100vw, 1150px"
+                className="object-cover object-center"
+              />
 
-            {/* Cinematic overlay */}
-            <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/5 via-transparent to-black/40" />
-
-            <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-blue-950/15 via-transparent to-cyan-950/15" />
-
-            {/* Soft glow */}
-            <div className="pointer-events-none absolute bottom-0 left-1/2 h-40 w-[75%] -translate-x-1/2 rounded-full bg-cyan-400/10 blur-3xl" />
-
-            {/* Subtle bottom line */}
-            <div className="pointer-events-none absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-cyan-400/60 to-transparent" />
+              <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-violet-950/30 via-transparent to-transparent" />
+            </div>
           </motion.div>
         </section>
 
         {/* =========================================================
-            BENEFITS
+            CARDS
         ========================================================= */}
-        <section className="relative overflow-hidden bg-white px-6 py-20 sm:px-10 sm:py-24 lg:px-12 lg:py-28 dark:bg-slate-950">
-          {/* Large background glow */}
-          <div className="pointer-events-none absolute left-1/2 top-0 h-[600px] w-[900px] -translate-x-1/2 rounded-full bg-blue-500/[0.035] blur-3xl dark:bg-cyan-500/[0.035]" />
-
-          {/* Secondary glow */}
-          <div className="pointer-events-none absolute bottom-0 right-0 h-[400px] w-[400px] rounded-full bg-cyan-400/[0.025] blur-3xl" />
-
-          <div className="relative mx-auto max-w-5xl">
-            <div className="space-y-8 sm:space-y-10">
-              {sections.map((section, index) => (
-                <PremiumCard
-                  key={section.title}
-                  title={section.title}
-                  body={section.body}
-                  index={index}
-                />
-              ))}
-            </div>
+        <section className="relative z-10 mx-auto -mt-28 max-w-5xl px-4 pb-24 sm:-mt-32 sm:px-6 lg:px-8 lg:pb-28">
+          <div className="space-y-6 sm:space-y-8">
+            {sections.map((section, index) => (
+              <PremiumCard
+                key={section.title}
+                title={section.title}
+                body={section.body}
+                index={index}
+              />
+            ))}
           </div>
         </section>
       </main>

@@ -81,18 +81,28 @@ export default async function AdminDashboardPage() {
 
   return (
     <div className="w-full min-w-0">
-      {/* ================= HEADER ================= */}
+      {/* ================= WELCOME BANNER ================= */}
 
       <AnimateIn>
-        <div className="flex min-w-0 items-start gap-3">
-          <div className="mt-1 h-8 w-1 shrink-0 rounded-full bg-gradient-to-b from-blue-600 to-cyan-400" />
+        <div className="brand-grad relative overflow-hidden rounded-[28px] px-6 pb-24 pt-8 text-white sm:px-8 sm:pb-28 sm:pt-10 lg:px-10">
+          <div className="pointer-events-none absolute -right-20 -top-24 h-72 w-72 rounded-full bg-violet-300/40 blur-3xl" />
+          <div className="pointer-events-none absolute -bottom-28 -left-16 h-72 w-72 rounded-full bg-cyan-300/30 blur-3xl" />
 
-          <div className="min-w-0">
-            <h1 className="text-xl font-semibold tracking-tight text-slate-900 sm:text-2xl lg:text-3xl dark:text-white">
+          <div
+            className="pointer-events-none absolute inset-0 opacity-[0.07]"
+            style={{
+              backgroundImage:
+                "linear-gradient(rgba(255,255,255,.6) 1px, transparent 1px), linear-gradient(90deg,rgba(255,255,255,.6) 1px,transparent 1px)",
+              backgroundSize: "44px 44px",
+            }}
+          />
+
+          <div className="relative min-w-0">
+            <h1 className="text-2xl font-extrabold tracking-[-0.03em] sm:text-3xl lg:text-[40px]">
               Welcome back, Admin
             </h1>
 
-            <p className="mt-1 max-w-2xl text-xs leading-5 text-slate-500 sm:text-sm dark:text-slate-400">
+            <p className="mt-2 max-w-2xl text-sm leading-6 text-indigo-50/90 sm:text-base">
               Here&apos;s an overview of your admin panel.
             </p>
           </div>
@@ -101,81 +111,25 @@ export default async function AdminDashboardPage() {
 
       {/* ================= STATS ================= */}
 
-      <StaggerContainer className="mt-5 grid grid-cols-1 gap-4 sm:mt-7 sm:grid-cols-2 sm:gap-5 lg:grid-cols-3 xl:grid-cols-5">
+      <StaggerContainer className="relative z-10 -mt-16 grid grid-cols-1 gap-4 px-3 sm:-mt-20 sm:grid-cols-2 sm:gap-5 sm:px-5 lg:grid-cols-3 xl:grid-cols-5">
         {stats.map((stat) => {
           const Icon = stat.icon;
 
           return (
             <StaggerItem key={stat.label}>
-              <div
-                className="
-                  group
-                  relative
-                  h-full
-                  overflow-hidden
-                  rounded-xl
-                  border
-                  border-slate-200/80
-                  bg-white
-                  p-4
-                  shadow-sm
-                  transition-all
-                  duration-300
-                  hover:-translate-y-1
-                  hover:shadow-lg
-                  sm:rounded-2xl
-                  sm:p-5
-                  dark:border-slate-800
-                  dark:bg-slate-900
-                  dark:hover:shadow-black/20
-                "
-              >
-                {/* Top gradient */}
-
-                <div className="absolute left-0 top-0 h-[2px] w-full bg-gradient-to-r from-blue-600 via-cyan-400 to-transparent" />
-
+              <div className="group h-full rounded-[22px] border border-slate-100 bg-white p-5 shadow-[0_30px_70px_-40px_rgba(15,23,42,.45)] transition-all duration-300 hover:-translate-y-1 hover:border-violet-200 hover:shadow-[0_30px_70px_-35px_rgba(91,33,182,.4)] dark:border-white/[0.07] dark:bg-[#0b1220] dark:hover:border-violet-400/25">
                 <div className="flex items-start justify-between gap-3">
-                  {/* Content */}
-
                   <div className="min-w-0">
-                    <p className="truncate text-xs font-medium text-slate-500 sm:text-sm dark:text-slate-400">
+                    <p className="truncate text-xs font-bold uppercase tracking-[0.12em] text-slate-500 dark:text-slate-400">
                       {stat.label}
                     </p>
 
-                    <p className="mt-2 text-2xl font-bold tracking-tight text-slate-900 sm:mt-3 sm:text-3xl dark:text-white">
+                    <p className="brand-text mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl">
                       {stat.value}
                     </p>
                   </div>
 
-                  {/* Icon */}
-
-                  <div
-                    className="
-                      flex
-                      h-10
-                      w-10
-                      shrink-0
-                      items-center
-                      justify-center
-                      rounded-xl
-                      border
-                      border-blue-100
-                      bg-blue-50
-                      text-blue-600
-                      transition-all
-                      duration-300
-                      group-hover:scale-105
-                      group-hover:bg-blue-600
-                      group-hover:text-white
-                      sm:h-11
-                      sm:w-11
-                      dark:border-blue-500/10
-                      dark:bg-blue-500/10
-                      dark:text-blue-400
-                      dark:group-hover:bg-blue-500
-                      dark:group-hover:text-white
-                    "
-                  >
+                  <div className="brand-grad flex h-11 w-11 shrink-0 items-center justify-center rounded-[14px] text-white shadow-lg shadow-violet-500/25 transition-transform duration-300 group-hover:-rotate-6">
                     <Icon size={19} />
                   </div>
                 </div>
@@ -185,31 +139,11 @@ export default async function AdminDashboardPage() {
         })}
       </StaggerContainer>
 
-      {/* ================= CHARTS ================= */}
+      {/* ================= CHART ================= */}
 
       <AnimateIn delay={0.25}>
-        <div
-          className="
-            mt-5
-            min-w-0
-            overflow-hidden
-            rounded-xl
-            border
-            border-slate-200/80
-            bg-white
-            p-3
-            shadow-sm
-            sm:mt-8
-            sm:rounded-2xl
-            sm:p-5
-            lg:p-6
-            dark:border-slate-800
-            dark:bg-slate-900
-          "
-        >
-          <div className="w-full min-w-0 overflow-x-auto">
-            <AdminDashboardCharts data={chartData} />
-          </div>
+        <div className="mt-6 min-w-0 sm:mt-8">
+          <AdminDashboardCharts data={chartData} />
         </div>
       </AnimateIn>
     </div>

@@ -3,7 +3,6 @@
 import {
   useCallback,
   useEffect,
-  useRef,
   useState,
 } from "react";
 
@@ -13,9 +12,6 @@ import Link from "next/link";
 import {
   AnimatePresence,
   motion,
-  useMotionValue,
-  useSpring,
-  useTransform,
 } from "motion/react";
 
 import {
@@ -30,81 +26,15 @@ import { FloatingBlob } from "../floating-blob";
 
 const SLIDE_DURATION = 6000;
 
+/** Highlight roughly the last 40% of the title words (min 1). */
+function highlightStart(title: string) {
+  const count = title.split(" ").length;
+
+  return count - Math.max(1, Math.floor(count * 0.4));
+}
+
 export function HeroSlider() {
   const [current, setCurrent] = useState(0);
-  const [mounted, setMounted] = useState(false);
-
-  const sectionRef = useRef<HTMLElement | null>(null);
-
-  const mouseX = useMotionValue(0);
-  const mouseY = useMotionValue(0);
-
-  const smoothX = useSpring(mouseX, {
-    stiffness: 120,
-    damping: 28,
-  });
-
-  const smoothY = useSpring(mouseY, {
-    stiffness: 120,
-    damping: 28,
-  });
-
-  const backgroundX = useTransform(
-    smoothX,
-    (value) => value * 0.018
-  );
-
-  const backgroundY = useTransform(
-    smoothY,
-    (value) => value * 0.018
-  );
-
-  const imageX = useTransform(
-    smoothX,
-    (value) => value * -0.012
-  );
-
-  const imageY = useTransform(
-    smoothY,
-    (value) => value * -0.012
-  );
-
-  const spotlight = useTransform(
-    [smoothX, smoothY],
-    ([x, y]: number[]) =>
-      `radial-gradient(500px circle at calc(50% + ${x}px) calc(50% + ${y}px), rgba(59,130,246,.22), transparent 70%)`
-  );
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  const handleMouseMove = (
-    event: React.MouseEvent<HTMLElement>
-  ) => {
-    if (!sectionRef.current) return;
-
-    const rect =
-      sectionRef.current.getBoundingClientRect();
-
-    mouseX.set(
-      event.clientX -
-        rect.left -
-        rect.width / 2
-    );
-
-    mouseY.set(
-      event.clientY -
-        rect.top -
-        rect.height / 2
-    );
-  };
-
-  const handleMouseLeave = () => {
-    mouseX.set(0);
-    mouseY.set(0);
-  };
-
   const goTo = useCallback((index: number) => {
     if (!heroSlides.length) return;
 
@@ -128,21 +58,16 @@ export function HeroSlider() {
   }, []);
 
   useEffect(() => {
-    if (!mounted || heroSlides.length <= 1) {
+    if (heroSlides.length <= 1) {
       return;
     }
 
-    const timer = window.setInterval(() => {
-      setCurrent(
-        (prev) =>
-          (prev + 1) % heroSlides.length
-      );
-    }, SLIDE_DURATION);
+    const timer = window.setInterval(next, SLIDE_DURATION);
 
     return () => {
       window.clearInterval(timer);
     };
-  }, [mounted]);
+  }, [current, next]);
 
   if (!heroSlides.length) {
     return null;
@@ -151,313 +76,185 @@ export function HeroSlider() {
   const slide = heroSlides[current];
 
   return (
-    <section
-      ref={sectionRef}
-      onMouseMove={handleMouseMove}
-      onMouseLeave={handleMouseLeave}
-      className="relative min-h-[650px] overflow-hidden bg-[#050914] sm:min-h-[700px] lg:min-h-[760px]"
-    >
-      {/* Background Gradient */}
-      <motion.div
-        initial={false}
-        animate={{
-          backgroundPosition: [
-            "0% 0%",
-            "100% 100%",
-            "0% 0%",
-          ],
-        }}
-        transition={{
-          duration: 22,
-          repeat: Infinity,
-          ease: "linear",
-        }}
-        style={{
-          backgroundImage:
-            "radial-gradient(at 15% 20%, rgba(37,99,235,.22), transparent 45%), radial-gradient(at 85% 25%, rgba(6,182,212,.16), transparent 42%), radial-gradient(at 50% 85%, rgba(29,78,216,.20), transparent 50%)",
-          backgroundSize: "180% 180%",
-        }}
-        className="pointer-events-none absolute inset-0"
-      />
-
-      {/* Background Grid */}
-      <div
-        className="pointer-events-none absolute inset-0 opacity-[0.08]"
-        style={{
-          backgroundImage:
-            "linear-gradient(rgba(255,255,255,.08) 1px, transparent 1px), linear-gradient(90deg,rgba(255,255,255,.08) 1px,transparent 1px)",
-          backgroundSize: "52px 52px",
-        }}
-      />
-
-      {/* Floating Background */}
-      <motion.div
-        style={{
-          x: backgroundX,
-          y: backgroundY,
-        }}
-        className="pointer-events-none absolute inset-0"
-      >
-        <FloatingBlob
-          className="-right-20 top-10 h-80 w-80"
-          color="bg-blue-500/20"
-          duration={14}
-        />
-
-        <FloatingBlob
-          className="-bottom-32 left-[24%] h-96 w-96"
-          color="bg-cyan-400/15"
-          duration={18}
-        />
-
-        <FloatingBlob
-          className="left-[58%] top-[28%] h-64 w-64"
-          color="bg-indigo-500/10"
-          duration={12}
-        />
-      </motion.div>
-
-      {/* Mouse Spotlight */}
-      <motion.div
-        style={{
-          background: spotlight,
-        }}
-        className="pointer-events-none absolute inset-0 z-[3] opacity-60 mix-blend-screen"
-      />
-
-      {/* Slides */}
-      <AnimatePresence mode="wait">
+    <section className="brand-grad relative overflow-hidden pb-40 text-white sm:pb-48">
+      {/* Slide image, blended into the gradient */}
+      <AnimatePresence mode="sync">
         <motion.div
           key={slide.id}
-          initial={{
-            opacity: 0,
-            scale: 1.025,
-          }}
-          animate={{
-            opacity: 1,
-            scale: 1,
-          }}
-          exit={{
-            opacity: 0,
-            scale: 1.015,
-          }}
-          transition={{
-            duration: 0.8,
-            ease: [0.21, 0.47, 0.32, 0.98],
-          }}
-          className="absolute inset-0"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: 0.9 }}
+          className="pointer-events-none absolute inset-0"
         >
-          {/* Background Image */}
-          <motion.div
-            style={{
-              x: imageX,
-              y: imageY,
-            }}
-            className="absolute -inset-5"
-          >
-            <motion.div
-              initial={false}
-              animate={{
-                scale: [1, 1.035, 1],
-              }}
-              transition={{
-                duration: 18,
-                repeat: Infinity,
-                ease: "easeInOut",
-              }}
-              className="relative h-full w-full"
-            >
-              <Image
-                src={slide.image}
-                alt={slide.title}
-                fill
-                priority={current === 0}
-                sizes="100vw"
-                className="object-cover opacity-60"
-              />
-            </motion.div>
-          </motion.div>
-
-          {/* Image Overlays */}
-          <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-[#050914] via-[#050914]/90 to-[#050914]/30" />
-
-          <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-[#050914] via-transparent to-[#050914]/20" />
-
-          {/* Content */}
-          <div className="relative z-10 mx-auto flex h-full max-w-7xl items-center px-6 sm:px-8 lg:px-10">
-            <div className="max-w-[850px]">
-              {/* Badge */}
-              <motion.div
-                initial={{
-                  opacity: 0,
-                  y: 15,
-                }}
-                animate={{
-                  opacity: 1,
-                  y: 0,
-                }}
-                transition={{
-                  delay: 0.12,
-                  duration: 0.55,
-                }}
-                className="mb-6 inline-flex items-center gap-2 rounded-full border border-blue-400/20 bg-blue-400/[0.08] px-3.5 py-1.5 backdrop-blur-xl"
-              >
-                <span className="relative flex h-2 w-2">
-                  <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-cyan-400 opacity-60" />
-                  <span className="relative inline-flex h-2 w-2 rounded-full bg-cyan-400" />
-                </span>
-
-                <span className="text-[11px] font-semibold uppercase tracking-[0.2em] text-blue-200">
-                  Geecon Technology
-                </span>
-              </motion.div>
-
-              {/* Heading */}
-              <AnimatedHeading
-                text={slide.title}
-                delay={0.2}
-                className="max-w-4xl text-4xl font-semibold leading-[1.03] tracking-[-0.045em] text-white sm:text-5xl md:text-6xl lg:text-[68px]"
-              />
-
-              {/* Decorative Line */}
-              <motion.div
-                initial={{
-                  scaleX: 0,
-                }}
-                animate={{
-                  scaleX: 1,
-                }}
-                transition={{
-                  delay: 0.45,
-                  duration: 0.7,
-                }}
-                className="mt-7 h-[3px] w-20 origin-left rounded-full bg-gradient-to-r from-blue-500 to-cyan-300"
-              />
-
-              {/* Description */}
-              <motion.p
-                initial={{
-                  opacity: 0,
-                  y: 20,
-                }}
-                animate={{
-                  opacity: 1,
-                  y: 0,
-                }}
-                transition={{
-                  delay: 0.55,
-                  duration: 0.65,
-                }}
-                className="mt-6 max-w-2xl text-sm leading-7 text-slate-300 sm:text-base sm:leading-8 lg:text-[17px]"
-              >
-                {slide.description}
-              </motion.p>
-
-              {/* CTA Buttons */}
-              <motion.div
-                initial={{
-                  opacity: 0,
-                  y: 15,
-                }}
-                animate={{
-                  opacity: 1,
-                  y: 0,
-                }}
-                transition={{
-                  delay: 0.75,
-                  duration: 0.6,
-                }}
-                className="mt-8 flex flex-wrap gap-3"
-              >
-                <Link
-                  href="/services"
-                  className="group inline-flex items-center gap-2 rounded-xl bg-gradient-to-r from-blue-600 to-cyan-500 px-6 py-3.5 text-sm font-semibold text-white shadow-[0_15px_40px_-15px_rgba(37,99,235,.8)] transition-all duration-300 hover:-translate-y-1 hover:shadow-[0_20px_50px_-15px_rgba(37,99,235,.9)]"
-                >
-                  Explore Our Services
-
-                  <ArrowRight
-                    size={16}
-                    className="transition-transform group-hover:translate-x-1"
-                  />
-                </Link>
-
-                <Link
-                  href="/contact"
-                  className="group inline-flex items-center gap-2 rounded-xl border border-white/15 bg-white/[0.06] px-6 py-3.5 text-sm font-semibold text-white backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:border-white/30 hover:bg-white/10"
-                >
-                  Get in Touch
-
-                  <ArrowRight
-                    size={16}
-                    className="transition-transform group-hover:translate-x-1"
-                  />
-                </Link>
-              </motion.div>
-            </div>
-          </div>
+          <Image
+            src={slide.image}
+            alt=""
+            fill
+            priority={current === 0}
+            sizes="100vw"
+            className="object-cover opacity-25 mix-blend-overlay"
+          />
         </motion.div>
       </AnimatePresence>
 
-      {/* Previous / Next */}
-      {heroSlides.length > 1 && (
-        <>
-          <button
-            type="button"
-            onClick={previous}
-            aria-label="Previous slide"
-            className="absolute left-4 top-1/2 z-30 hidden h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/10 bg-black/10 text-white backdrop-blur-xl transition-all hover:border-white/25 hover:bg-white/10 sm:flex"
+      {/* Soft glow blobs */}
+      <div className="pointer-events-none absolute inset-0">
+        <FloatingBlob
+          className="-left-40 top-56 h-[500px] w-[500px]"
+          color="bg-cyan-300/40"
+          duration={16}
+        />
+
+        <FloatingBlob
+          className="-right-28 -top-24 h-[420px] w-[420px]"
+          color="bg-violet-300/40"
+          duration={14}
+        />
+      </div>
+
+      {/* Fine grid */}
+      <div
+        className="pointer-events-none absolute inset-0 opacity-[0.07]"
+        style={{
+          backgroundImage:
+            "linear-gradient(rgba(255,255,255,.6) 1px, transparent 1px), linear-gradient(90deg,rgba(255,255,255,.6) 1px,transparent 1px)",
+          backgroundSize: "56px 56px",
+        }}
+      />
+
+      <div className="relative z-10 mx-auto max-w-7xl px-6 pt-16 text-center sm:px-8 sm:pt-20 lg:px-10">
+        {/* Badge */}
+        <motion.div
+          initial={{ opacity: 0, y: 12 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/[0.14] px-4 py-2 backdrop-blur-xl"
+        >
+          <span className="relative flex h-2 w-2">
+            <span className="absolute inline-flex h-full w-full animate-ping rounded-full bg-cyan-300 opacity-70" />
+            <span className="relative inline-flex h-2 w-2 rounded-full bg-cyan-300" />
+          </span>
+
+          <span className="text-[11px] font-bold uppercase tracking-[0.2em]">
+            Geecon Technology
+          </span>
+        </motion.div>
+
+        {/* Heading + description (per slide) */}
+        <AnimatePresence mode="wait">
+          <motion.div
+            key={slide.id}
+            initial={{ opacity: 0, y: 18 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -12 }}
+            transition={{
+              duration: 0.55,
+              ease: [0.21, 0.47, 0.32, 0.98],
+            }}
           >
-            <ChevronLeft size={20} />
-          </button>
+            <AnimatedHeading
+              text={slide.title}
+              delay={0.05}
+              highlightFrom={highlightStart(slide.title)}
+              highlightClassName="brand-text-light"
+              className="mx-auto mt-7 max-w-5xl text-[42px] font-extrabold leading-[1.04] tracking-[-0.045em] sm:text-6xl lg:text-[80px]"
+            />
 
-          <button
-            type="button"
-            onClick={next}
-            aria-label="Next slide"
-            className="absolute right-4 top-1/2 z-30 hidden h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-white/10 bg-black/10 text-white backdrop-blur-xl transition-all hover:border-white/25 hover:bg-white/10 sm:flex"
+            <p className="mx-auto mt-5 max-w-2xl text-base leading-8 text-indigo-50/90 sm:text-lg">
+              {slide.description}
+            </p>
+          </motion.div>
+        </AnimatePresence>
+
+        {/* CTA Buttons */}
+        <div className="mt-9 flex flex-wrap justify-center gap-3">
+          <Link
+            href="/services"
+            className="group inline-flex items-center gap-2 rounded-2xl bg-white px-6 py-3.5 text-sm font-bold text-blue-600 shadow-[0_18px_40px_-18px_rgba(15,23,42,.6)] transition-all duration-300 hover:-translate-y-1"
           >
-            <ChevronRight size={20} />
-          </button>
-        </>
-      )}
+            Explore Our Services
+            <ArrowRight
+              size={16}
+              className="transition-transform group-hover:translate-x-1"
+            />
+          </Link>
 
-      {/* Slider Progress */}
-      <div className="absolute bottom-7 left-1/2 z-30 flex -translate-x-1/2 items-center gap-2">
-        {heroSlides.map((item, index) => {
-          const active = index === current;
+          <Link
+            href="/contact"
+            className="group inline-flex items-center gap-2 rounded-2xl border border-white/35 bg-white/[0.14] px-6 py-3.5 text-sm font-bold text-white backdrop-blur-xl transition-all duration-300 hover:-translate-y-1 hover:bg-white/25"
+          >
+            Get in Touch
+            <ArrowRight
+              size={16}
+              className="transition-transform group-hover:translate-x-1"
+            />
+          </Link>
+        </div>
 
-          return (
+        {/* Slide tabs */}
+        {heroSlides.length > 1 && (
+          <div className="mx-auto mt-14 flex max-w-4xl items-stretch justify-center gap-3">
             <button
               type="button"
-              key={item.id}
-              onClick={() => goTo(index)}
-              aria-label={`Go to slide ${index + 1}`}
-              className={`relative h-1.5 overflow-hidden rounded-full bg-white/20 transition-all duration-300 ${
-                active
-                  ? "w-12"
-                  : "w-5 hover:bg-white/40"
-              }`}
+              onClick={previous}
+              aria-label="Previous slide"
+              className="hidden w-11 shrink-0 items-center justify-center rounded-2xl border border-white/25 bg-white/10 backdrop-blur-xl transition hover:bg-white/20 sm:flex"
             >
-              {active && (
-                <motion.span
-                  key={`progress-${current}`}
-                  initial={{
-                    width: "0%",
-                  }}
-                  animate={{
-                    width: "100%",
-                  }}
-                  transition={{
-                    duration:
-                      SLIDE_DURATION / 1000,
-                    ease: "linear",
-                  }}
-                  className="absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-blue-400 to-cyan-300"
-                />
-              )}
+              <ChevronLeft size={18} />
             </button>
-          );
-        })}
+
+            <div className="grid flex-1 grid-cols-3 gap-3">
+              {heroSlides.map((item, index) => {
+                const active = index === current;
+
+                return (
+                  <button
+                    type="button"
+                    key={item.id}
+                    onClick={() => goTo(index)}
+                    aria-label={`Go to slide ${index + 1}`}
+                    className={`relative overflow-hidden rounded-2xl border px-4 py-3.5 text-left text-[12px] font-bold leading-snug transition-all duration-300 sm:text-[13.5px] ${
+                      active
+                        ? "border-white bg-white text-slate-900 shadow-[0_18px_40px_-20px_rgba(15,23,42,.6)]"
+                        : "border-white/25 bg-white/10 text-white backdrop-blur-xl hover:bg-white/20"
+                    }`}
+                  >
+                    <span className="line-clamp-2">{item.title}</span>
+
+                    <span
+                      className={`absolute inset-x-0 bottom-0 h-[3px] ${
+                        active ? "bg-slate-100" : "bg-transparent"
+                      }`}
+                    >
+                      {active && (
+                        <motion.span
+                          key={`progress-${current}`}
+                          initial={{ width: "0%" }}
+                          animate={{ width: "100%" }}
+                          transition={{
+                            duration: SLIDE_DURATION / 1000,
+                            ease: "linear",
+                          }}
+                          className="block h-full bg-gradient-to-r from-blue-600 via-violet-500 to-cyan-400"
+                        />
+                      )}
+                    </span>
+                  </button>
+                );
+              })}
+            </div>
+
+            <button
+              type="button"
+              onClick={next}
+              aria-label="Next slide"
+              className="hidden w-11 shrink-0 items-center justify-center rounded-2xl border border-white/25 bg-white/10 backdrop-blur-xl transition hover:bg-white/20 sm:flex"
+            >
+              <ChevronRight size={18} />
+            </button>
+          </div>
+        )}
       </div>
     </section>
   );

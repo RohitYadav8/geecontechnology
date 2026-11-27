@@ -121,41 +121,43 @@ export default function CareerOpeningsPage() {
     fetchOpenings();
   }, []);
 
+
   return (
-    <div className="relative min-h-screen bg-white dark:bg-slate-950">
+    <div className="relative min-h-screen bg-slate-50 dark:bg-[#060b16]">
       <Navbar />
 
       <main className="relative min-h-[70vh] flex-1 overflow-hidden">
-        {/* ================================================= */}
-        {/* BACKGROUND */}
-        {/* ================================================= */}
-
-        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,#e5e7eb_1px,transparent_1px),linear-gradient(to_bottom,#e5e7eb_1px,transparent_1px)] bg-[size:48px_48px] opacity-[0.12] dark:opacity-[0.05]" />
-
-        <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_50%_0%,rgba(59,130,246,.12),transparent_38%),radial-gradient(circle_at_90%_45%,rgba(6,182,212,.06),transparent_30%)]" />
-
-        <FloatingBlob
-          className="-right-24 top-10 h-72 w-72"
-          color="bg-blue-400/10"
-          duration={17}
-        />
-
-        <FloatingBlob
-          className="-left-20 top-[460px] h-64 w-64"
-          color="bg-cyan-300/10"
-          duration={21}
-        />
-
         {/* =========================================================
             HEADER
         ========================================================= */}
 
-        <section className="relative border-b border-slate-100 dark:border-slate-800">
-          <div className="mx-auto max-w-6xl px-6 pb-10 pt-12 sm:pb-12 sm:pt-14">
+        <section className="brand-grad relative overflow-hidden px-6 pb-40 pt-16 text-center text-white sm:px-8 sm:pb-44 sm:pt-20 lg:px-10">
+          <FloatingBlob
+            className="-left-40 top-24 h-[460px] w-[460px]"
+            color="bg-cyan-300/35"
+            duration={18}
+          />
+
+          <FloatingBlob
+            className="-right-28 -top-24 h-[420px] w-[420px]"
+            color="bg-violet-300/40"
+            duration={16}
+          />
+
+          <div
+            className="pointer-events-none absolute inset-0 opacity-[0.07]"
+            style={{
+              backgroundImage:
+                "linear-gradient(rgba(255,255,255,.6) 1px, transparent 1px), linear-gradient(90deg,rgba(255,255,255,.6) 1px,transparent 1px)",
+              backgroundSize: "56px 56px",
+            }}
+          />
+
+          <div className="relative mx-auto max-w-4xl">
             <AnimateIn>
               <Link
                 href="/careers"
-                className="group inline-flex items-center gap-2 text-[13px] font-medium text-slate-500 transition-colors hover:text-blue-600 dark:text-slate-400 dark:hover:text-blue-400"
+                className="group inline-flex items-center gap-2 text-[13px] font-semibold text-white/80 transition-colors hover:text-white"
               >
                 <ArrowLeft
                   size={
@@ -168,29 +170,31 @@ export default function CareerOpeningsPage() {
               </Link>
             </AnimateIn>
 
-            <div className="mt-7 max-w-3xl">
+            <div className="mt-7">
               <AnimateIn delay={0.05}>
-                <div className="inline-flex items-center gap-2 rounded-full border border-blue-100 bg-blue-50 px-3 py-1 text-[11px] font-semibold uppercase tracking-[0.15em] text-blue-600 dark:border-blue-500/20 dark:bg-blue-500/10 dark:text-blue-400">
+                <div className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/[0.14] px-4 py-2 text-[11px] font-bold uppercase tracking-[0.2em] backdrop-blur-xl">
                   <BriefcaseBusiness
                     size={
-                      13
+                      14
                     }
+                    className="text-cyan-200"
                   />
 
                   Opportunities
                 </div>
               </AnimateIn>
 
-              <AnimateIn delay={0.1}>
-                <AnimatedHeading
-                  text="Current Openings"
-                  as="h1"
-                  className="mt-4 text-3xl font-semibold tracking-tight text-slate-950 dark:text-white sm:text-4xl"
-                />
-              </AnimateIn>
+              <AnimatedHeading
+                text="Current Openings"
+                as="h1"
+                delay={0.08}
+                highlightFrom={1}
+                highlightClassName="brand-text-light"
+                className="mt-7 text-[40px] font-extrabold leading-[1.05] tracking-[-0.045em] sm:text-6xl lg:text-[72px]"
+              />
 
               <AnimateIn delay={0.15}>
-                <p className="mt-4 max-w-2xl text-sm leading-6 text-slate-600 dark:text-slate-400">
+                <p className="mx-auto mt-6 max-w-2xl text-base leading-8 text-indigo-50/90 sm:text-lg">
                   Explore our current career opportunities and find a role that matches your skills and experience.
                 </p>
               </AnimateIn>
@@ -202,13 +206,14 @@ export default function CareerOpeningsPage() {
             OPENINGS
         ========================================================= */}
 
-        <section className="relative mx-auto max-w-6xl px-6 py-12 sm:py-14">
+        <section className="relative z-10 mx-auto -mt-28 max-w-7xl px-4 pb-20 sm:-mt-32 sm:px-6 lg:px-10 lg:pb-24">
+          <div className="rounded-[32px] border border-slate-100 bg-white p-5 shadow-[0_40px_100px_-40px_rgba(15,23,42,.35)] sm:p-8 lg:p-10 dark:border-white/[0.07] dark:bg-[#0b1220]">
           {/* ================================================= */}
           {/* LOADING */}
           {/* ================================================= */}
 
           {loadingOpenings && (
-            <div className="grid gap-4 md:grid-cols-2">
+            <div className="grid gap-5 md:grid-cols-2">
               {[
                 1,
                 2,
@@ -222,21 +227,23 @@ export default function CareerOpeningsPage() {
                     key={
                       item
                     }
-                    className="animate-pulse rounded-2xl border border-slate-200 bg-white p-5 dark:border-slate-800 dark:bg-slate-900"
+                    className="animate-pulse rounded-[26px] border border-slate-200/80 bg-white p-6 dark:border-white/[0.07] dark:bg-white/[0.03]"
                   >
-                    <div className="h-4 w-2/5 rounded bg-slate-200 dark:bg-slate-800" />
+                    <div className="h-12 w-12 rounded-[14px] bg-slate-200 dark:bg-white/[0.08]" />
+
+                    <div className="mt-4 h-4 w-2/5 rounded bg-slate-200 dark:bg-white/[0.08]" />
 
                     <div className="mt-3 flex gap-2">
-                      <div className="h-5 w-20 rounded-full bg-slate-100 dark:bg-slate-800" />
+                      <div className="h-5 w-20 rounded-full bg-slate-100 dark:bg-white/[0.06]" />
 
-                      <div className="h-5 w-16 rounded-full bg-slate-100 dark:bg-slate-800" />
+                      <div className="h-5 w-16 rounded-full bg-slate-100 dark:bg-white/[0.06]" />
                     </div>
 
-                    <div className="mt-5 h-2.5 w-full rounded bg-slate-100 dark:bg-slate-800" />
+                    <div className="mt-5 h-2.5 w-full rounded bg-slate-100 dark:bg-white/[0.06]" />
 
-                    <div className="mt-2 h-2.5 w-11/12 rounded bg-slate-100 dark:bg-slate-800" />
+                    <div className="mt-2 h-2.5 w-11/12 rounded bg-slate-100 dark:bg-white/[0.06]" />
 
-                    <div className="mt-2 h-2.5 w-3/4 rounded bg-slate-100 dark:bg-slate-800" />
+                    <div className="mt-2 h-2.5 w-3/4 rounded bg-slate-100 dark:bg-white/[0.06]" />
                   </div>
                 )
               )}
@@ -251,34 +258,34 @@ export default function CareerOpeningsPage() {
             openings.length ===
               0 && (
               <AnimateIn>
-                <div className="mx-auto max-w-xl rounded-2xl border border-slate-200 bg-white px-6 py-10 text-center shadow-sm dark:border-slate-800 dark:bg-slate-900 sm:px-8">
-                  <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-500/10 dark:text-blue-400">
+                <div className="mx-auto max-w-xl px-2 py-8 text-center sm:px-8 sm:py-10">
+                  <div className="brand-grad mx-auto flex h-14 w-14 items-center justify-center rounded-[16px] text-white shadow-lg shadow-violet-500/25">
                     <Search
                       size={
-                        20
+                        22
                       }
                     />
                   </div>
 
-                  <h2 className="mt-4 text-lg font-semibold text-slate-900 dark:text-white">
+                  <h2 className="mt-5 text-2xl font-extrabold tracking-[-0.035em] text-slate-950 sm:text-3xl dark:text-white">
                     No current
                     openings
                   </h2>
 
-                  <p className="mx-auto mt-2 max-w-md text-[13px] leading-6 text-slate-500 dark:text-slate-400">
+                  <p className="mx-auto mt-3 max-w-md text-[15px] leading-7 text-slate-600 dark:text-slate-400">
                     No current openings listed right now. Please check back soon, or submit your details and we&apos;ll reach out when a suitable role opens up.
                   </p>
 
                   <Link
                     href="/careers#application-form"
-                    className="group mt-6 inline-flex items-center gap-2 rounded-lg bg-[#1a2b4a] px-5 py-2.5 text-[13px] font-semibold text-white transition-all hover:bg-[#111f38] hover:shadow-md dark:bg-blue-600 dark:hover:bg-blue-500"
+                    className="brand-grad group mt-7 inline-flex items-center gap-2 rounded-xl px-6 py-3.5 text-sm font-bold text-white shadow-lg shadow-violet-500/25 transition-all duration-300 hover:-translate-y-0.5"
                   >
                     Submit Your
                     Details
 
                     <ArrowRight
                       size={
-                        14
+                        16
                       }
                       className="transition-transform duration-300 group-hover:translate-x-1"
                     />
@@ -296,8 +303,8 @@ export default function CareerOpeningsPage() {
               0 && (
               <>
                 <AnimateIn>
-                  <div className="mb-5 flex items-center justify-between gap-4">
-                    <p className="text-[13px] font-medium text-slate-500 dark:text-slate-400">
+                  <div className="mb-6 flex items-center justify-between gap-4">
+                    <p className="brand-text text-[12px] font-extrabold uppercase tracking-[0.2em]">
                       {
                         openings.length
                       }{" "}
@@ -309,7 +316,7 @@ export default function CareerOpeningsPage() {
                   </div>
                 </AnimateIn>
 
-                <div className="grid gap-4 md:grid-cols-2">
+                <div className="grid gap-5 md:grid-cols-2">
                   {openings.map(
                     (
                       opening,
@@ -342,23 +349,23 @@ export default function CareerOpeningsPage() {
                               0.25
                             ),
                         }}
-                        className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white p-5 shadow-sm transition-all duration-300 hover:-translate-y-1 hover:border-blue-200 hover:shadow-[0_16px_38px_-24px_rgba(37,99,235,.28)] dark:border-slate-800 dark:bg-slate-900 dark:hover:border-blue-500/30"
+                        className="group relative flex h-full flex-col overflow-hidden rounded-[26px] border border-slate-200/80 bg-white p-6 transition-all duration-300 hover:-translate-y-1 hover:border-violet-200 hover:shadow-[0_30px_70px_-35px_rgba(91,33,182,.35)] sm:p-7 dark:border-white/[0.07] dark:bg-white/[0.03] dark:hover:border-violet-400/30"
                       >
                         {/* TOP ACCENT */}
 
-                        <div className="absolute inset-x-0 top-0 h-[2px] bg-gradient-to-r from-blue-600 via-cyan-400 to-transparent opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
+                        <div className="brand-grad absolute inset-x-0 top-0 h-[3px] opacity-0 transition-opacity duration-300 group-hover:opacity-100" />
 
                         <div className="flex items-start justify-between gap-4">
                           <div className="min-w-0">
-                            <div className="mb-3 flex h-9 w-9 items-center justify-center rounded-lg bg-blue-50 text-blue-600 transition-colors duration-300 group-hover:bg-blue-600 group-hover:text-white dark:bg-blue-500/10 dark:text-blue-400 dark:group-hover:bg-blue-600 dark:group-hover:text-white">
+                            <div className="brand-grad mb-4 flex h-12 w-12 items-center justify-center rounded-[14px] text-white shadow-lg shadow-violet-500/25">
                               <BriefcaseBusiness
                                 size={
-                                  16
+                                  18
                                 }
                               />
                             </div>
 
-                            <h2 className="text-lg font-semibold tracking-tight text-slate-900 dark:text-white">
+                            <h2 className="text-xl font-extrabold tracking-[-0.03em] text-slate-950 dark:text-white">
                               {
                                 opening.title
                               }
@@ -370,7 +377,7 @@ export default function CareerOpeningsPage() {
 
                         <div className="mt-3 flex flex-wrap gap-1.5">
                           {opening.department && (
-                            <span className="inline-flex items-center gap-1.5 rounded-full border border-blue-100 bg-blue-50 px-2.5 py-1 text-[11px] font-medium text-blue-700 dark:border-blue-500/20 dark:bg-blue-500/10 dark:text-blue-400">
+                            <span className="inline-flex items-center gap-1.5 rounded-full border border-violet-100 bg-violet-50 px-2.5 py-1 text-[11px] font-semibold text-violet-700 dark:border-violet-500/20 dark:bg-violet-500/10 dark:text-violet-300">
                               <Building2
                                 size={
                                   11
@@ -384,7 +391,7 @@ export default function CareerOpeningsPage() {
                           )}
 
                           {opening.location && (
-                            <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 text-[11px] font-medium text-slate-600 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-300">
+                            <span className="inline-flex items-center gap-1.5 rounded-full border border-slate-200 bg-slate-50 px-2.5 py-1 text-[11px] font-semibold text-slate-600 dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-slate-300">
                               <MapPin
                                 size={
                                   11
@@ -398,7 +405,7 @@ export default function CareerOpeningsPage() {
                           )}
 
                           {opening.type && (
-                            <span className="inline-flex items-center gap-1.5 rounded-full border border-cyan-100 bg-cyan-50 px-2.5 py-1 text-[11px] font-medium text-cyan-700 dark:border-cyan-500/20 dark:bg-cyan-500/10 dark:text-cyan-400">
+                            <span className="inline-flex items-center gap-1.5 rounded-full border border-indigo-100 bg-indigo-50 px-2.5 py-1 text-[11px] font-semibold text-indigo-700 dark:border-indigo-500/20 dark:bg-indigo-500/10 dark:text-indigo-300">
                               <Clock3
                                 size={
                                   11
@@ -414,7 +421,7 @@ export default function CareerOpeningsPage() {
 
                         {/* DESCRIPTION */}
 
-                        <p className="mt-4 line-clamp-4 whitespace-pre-line text-[13px] leading-6 text-slate-600 dark:text-slate-400">
+                        <p className="mt-4 line-clamp-4 whitespace-pre-line text-[14px] leading-7 text-slate-600 dark:text-slate-400">
                           {
                             opening.description
                           }
@@ -422,10 +429,10 @@ export default function CareerOpeningsPage() {
 
                         {/* APPLY */}
 
-                        <div className="mt-auto pt-5">
+                        <div className="mt-auto pt-6">
                           <Link
                             href="/careers#application-form"
-                            className="group/button inline-flex items-center gap-2 rounded-lg bg-[#1a2b4a] px-4 py-2.5 text-[13px] font-semibold text-white transition-all duration-300 hover:bg-[#111f38] hover:shadow-md dark:bg-blue-600 dark:hover:bg-blue-500"
+                            className="brand-grad group/button inline-flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-bold text-white shadow-lg shadow-violet-500/25 transition-all duration-300 hover:-translate-y-0.5"
                           >
                             Apply Now
 
@@ -443,6 +450,7 @@ export default function CareerOpeningsPage() {
                 </div>
               </>
             )}
+          </div>
         </section>
       </main>
 

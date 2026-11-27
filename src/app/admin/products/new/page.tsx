@@ -475,49 +475,63 @@ export default function NewProductPage() {
   ===================================================== */
 
   const inputClass =
-    "w-full rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:border-slate-700 dark:bg-slate-950 dark:text-white";
+    "w-full rounded-xl border border-slate-200 bg-slate-50/70 px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 transition focus:border-violet-400 focus:bg-white focus:outline-none focus:ring-4 focus:ring-violet-500/10 dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-white dark:placeholder:text-slate-500";
 
   const textareaClass =
-    "w-full resize-y rounded-lg border border-slate-300 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:border-slate-700 dark:bg-slate-950 dark:text-white";
+    "w-full resize-y rounded-xl border border-slate-200 bg-slate-50/70 px-4 py-3 text-sm leading-6 text-slate-900 placeholder:text-slate-400 transition focus:border-violet-400 focus:bg-white focus:outline-none focus:ring-4 focus:ring-violet-500/10 dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-white dark:placeholder:text-slate-500";
 
   const jsonTextareaClass =
-    "w-full resize-y rounded-lg border border-slate-300 bg-slate-950 px-4 py-3 font-mono text-xs text-white outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 dark:border-slate-700";
+    "w-full resize-y rounded-xl border border-slate-800 bg-[#0b1220] px-4 py-3 font-mono text-xs leading-6 text-slate-200 placeholder:text-slate-500 transition focus:border-violet-400 focus:outline-none focus:ring-4 focus:ring-violet-500/15 dark:border-white/[0.08] dark:bg-[#060b16]";
 
   return (
-    <div className="min-h-screen bg-slate-50 p-6 dark:bg-slate-950">
+    <div className="w-full min-w-0">
       <div className="mx-auto max-w-5xl">
         {/* =================================================
             HEADER
         ================================================= */}
 
-        <div className="mb-8 flex flex-col justify-between gap-4 sm:flex-row sm:items-center">
-          <div>
-            <p className="text-sm font-medium text-blue-600">
-              Admin / Products
-            </p>
+        <div className="brand-grad relative mb-6 overflow-hidden rounded-[28px] px-6 py-7 text-white sm:px-8 sm:py-8">
+          <div className="pointer-events-none absolute -right-20 -top-24 h-72 w-72 rounded-full bg-violet-300/40 blur-3xl" />
+          <div className="pointer-events-none absolute -bottom-28 -left-16 h-72 w-72 rounded-full bg-cyan-300/30 blur-3xl" />
 
-            <h1 className="mt-2 text-2xl font-bold text-slate-900 dark:text-white">
-              Add Product
-            </h1>
+          <div
+            className="pointer-events-none absolute inset-0 opacity-[0.07]"
+            style={{
+              backgroundImage:
+                "linear-gradient(rgba(255,255,255,.6) 1px, transparent 1px), linear-gradient(90deg,rgba(255,255,255,.6) 1px,transparent 1px)",
+              backgroundSize: "44px 44px",
+            }}
+          />
 
-            <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-              Add product card content and complete
-              product detail information.
-            </p>
+          <div className="relative flex flex-col justify-between gap-5 sm:flex-row sm:items-center">
+            <div className="min-w-0">
+              <p className="inline-flex rounded-full border border-white/30 bg-white/[0.14] px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-[0.2em] backdrop-blur-xl">
+                Admin / Products
+              </p>
+
+              <h1 className="mt-3 text-2xl font-extrabold tracking-[-0.03em] sm:text-3xl">
+                Add Product
+              </h1>
+
+              <p className="mt-2 max-w-xl text-sm text-indigo-50/90">
+                Add product card content and complete
+                product detail information.
+              </p>
+            </div>
+
+            <Link
+              href="/admin/products"
+              className="inline-flex shrink-0 items-center justify-center rounded-xl bg-white px-5 py-3 text-sm font-bold text-violet-700 shadow-lg transition hover:-translate-y-0.5"
+            >
+              ← Back to Products
+            </Link>
           </div>
-
-          <Link
-            href="/admin/products"
-            className="inline-flex items-center justify-center rounded-lg border border-slate-200 bg-white px-5 py-2.5 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300"
-          >
-            ← Back to Products
-          </Link>
         </div>
 
         {/* ERROR */}
 
         {error && (
-          <div className="mb-6 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600 dark:border-red-900/50 dark:bg-red-950/30 dark:text-red-400">
+          <div className="mb-6 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-600 dark:border-red-500/20 dark:bg-red-500/10 dark:text-red-400">
             {error}
           </div>
         )}
@@ -530,15 +544,15 @@ export default function NewProductPage() {
               BULK PRODUCT JSON IMPORT
           =============================================== */}
 
-          <section className="overflow-hidden rounded-2xl border border-violet-200 bg-white shadow-sm dark:border-violet-900/50 dark:bg-slate-900">
-            <div className="border-b border-violet-100 bg-gradient-to-r from-violet-50 via-blue-50 to-cyan-50 px-6 py-5 dark:border-violet-900/40 dark:from-violet-950/30 dark:via-blue-950/20 dark:to-cyan-950/20">
+          <section className="overflow-hidden rounded-[24px] border border-violet-200/80 bg-white shadow-[0_30px_70px_-45px_rgba(91,33,182,.45)] dark:border-violet-400/20 dark:bg-[#0b1220]">
+            <div className="border-b border-violet-100 bg-gradient-to-r from-violet-50 via-indigo-50 to-cyan-50 px-5 py-5 sm:px-7 dark:border-white/[0.06] dark:from-violet-500/10 dark:via-indigo-500/[0.06] dark:to-cyan-500/[0.06]">
               <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
                 <div>
-                  <p className="text-xs font-semibold uppercase tracking-[0.18em] text-violet-600 dark:text-violet-400">
+                  <p className="brand-text text-[11px] font-extrabold uppercase tracking-[0.2em]">
                     Quick Product Entry
                   </p>
 
-                  <h2 className="mt-2 text-lg font-semibold text-slate-900 dark:text-white">
+                  <h2 className="mt-2 text-lg font-extrabold tracking-[-0.03em] text-slate-950 dark:text-white">
                     Bulk Product JSON Import
                   </h2>
 
@@ -549,14 +563,14 @@ export default function NewProductPage() {
                   </p>
                 </div>
 
-                <span className="inline-flex w-fit rounded-full border border-violet-200 bg-white px-3 py-1 text-xs font-semibold text-violet-600 shadow-sm dark:border-violet-900 dark:bg-slate-950 dark:text-violet-400">
+                <span className="inline-flex w-fit rounded-full border border-violet-200 bg-white px-3 py-1 text-[11px] font-bold text-violet-700 shadow-sm dark:border-violet-400/20 dark:bg-white/[0.04] dark:text-violet-300">
                   One JSON = One Product
                 </span>
               </div>
             </div>
 
-            <div className="p-6">
-              <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+            <div className="p-5 sm:p-7">
+              <label className="mb-2 block text-[13px] font-semibold text-slate-700 dark:text-slate-300">
                 Product JSON
               </label>
 
@@ -594,7 +608,7 @@ export default function NewProductPage() {
   "order": 1,
   "isActive": true
 }`}
-                className="w-full resize-y rounded-xl border border-slate-300 bg-slate-950 px-4 py-4 font-mono text-xs leading-6 text-slate-100 outline-none transition placeholder:text-slate-600 focus:border-violet-500 focus:ring-4 focus:ring-violet-500/10 dark:border-slate-700"
+                className="w-full resize-y rounded-xl border border-slate-800 bg-[#0b1220] px-4 py-4 font-mono text-xs leading-6 text-slate-100 transition placeholder:text-slate-500 focus:border-violet-400 focus:outline-none focus:ring-4 focus:ring-violet-500/15 dark:border-white/[0.08] dark:bg-[#060b16]"
               />
 
               <p className="mt-2 text-xs leading-5 text-slate-400">
@@ -604,7 +618,7 @@ export default function NewProductPage() {
               </p>
 
               {importMessage && (
-                <div className="mt-4 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-700 dark:border-emerald-900/50 dark:bg-emerald-950/20 dark:text-emerald-400">
+                <div className="mt-4 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-700 dark:border-emerald-500/20 dark:bg-emerald-500/10 dark:text-emerald-400">
                   ✓ {importMessage}
                 </div>
               )}
@@ -613,7 +627,7 @@ export default function NewProductPage() {
                 <button
                   type="button"
                   onClick={handleBulkImport}
-                  className="inline-flex items-center justify-center rounded-lg bg-violet-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-violet-700 focus:outline-none focus:ring-4 focus:ring-violet-500/20"
+                  className="brand-grad inline-flex items-center justify-center rounded-xl px-5 py-3 text-sm font-bold text-white shadow-lg shadow-violet-500/25 transition hover:-translate-y-0.5 focus:outline-none focus:ring-4 focus:ring-violet-500/20"
                 >
                   Import & Fill All Fields
                 </button>
@@ -624,7 +638,7 @@ export default function NewProductPage() {
                   disabled={
                     !bulkJson && !importMessage
                   }
-                  className="inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white px-5 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-700 dark:bg-slate-950 dark:text-slate-300 dark:hover:bg-slate-800"
+                  className="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-5 py-3 text-sm font-bold text-slate-700 transition hover:border-violet-300 hover:text-violet-600 disabled:cursor-not-allowed disabled:opacity-50 dark:border-white/[0.1] dark:bg-white/[0.04] dark:text-slate-200"
                 >
                   Clear JSON
                 </button>
@@ -636,9 +650,9 @@ export default function NewProductPage() {
               BASIC INFORMATION
           =============================================== */}
 
-          <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+          <section className="rounded-[24px] border border-slate-200/80 bg-white p-5 shadow-[0_30px_70px_-45px_rgba(15,23,42,.45)] dark:border-white/[0.07] dark:bg-[#0b1220] sm:p-7">
             <div>
-              <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
+              <h2 className="text-lg font-extrabold tracking-[-0.03em] text-slate-950 dark:text-white">
                 Basic Information
               </h2>
 
@@ -652,7 +666,7 @@ export default function NewProductPage() {
               {/* TITLE */}
 
               <div>
-                <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                <label className="mb-2 block text-[13px] font-semibold text-slate-700 dark:text-slate-300">
                   Product Title *
                 </label>
 
@@ -673,7 +687,7 @@ export default function NewProductPage() {
               {/* SLUG */}
 
               <div>
-                <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                <label className="mb-2 block text-[13px] font-semibold text-slate-700 dark:text-slate-300">
                   Slug *
                 </label>
 
@@ -691,7 +705,7 @@ export default function NewProductPage() {
                   className={inputClass}
                 />
 
-                <p className="mt-1 text-xs text-slate-400">
+                <p className="mt-2 text-[11px] text-slate-400">
                   Product URL: /products/
                   {form.slug || "product-slug"}
                 </p>
@@ -700,7 +714,7 @@ export default function NewProductPage() {
               {/* SHORT DESCRIPTION */}
 
               <div className="sm:col-span-2">
-                <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                <label className="mb-2 block text-[13px] font-semibold text-slate-700 dark:text-slate-300">
                   Short Description
                 </label>
 
@@ -721,7 +735,7 @@ export default function NewProductPage() {
               {/* DESCRIPTION */}
 
               <div className="sm:col-span-2">
-                <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                <label className="mb-2 block text-[13px] font-semibold text-slate-700 dark:text-slate-300">
                   Full Description
                 </label>
 
@@ -745,9 +759,9 @@ export default function NewProductPage() {
               PRODUCT MEDIA
           =============================================== */}
 
-          <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+          <section className="rounded-[24px] border border-slate-200/80 bg-white p-5 shadow-[0_30px_70px_-45px_rgba(15,23,42,.45)] dark:border-white/[0.07] dark:bg-[#0b1220] sm:p-7">
             <div>
-              <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
+              <h2 className="text-lg font-extrabold tracking-[-0.03em] text-slate-950 dark:text-white">
                 Product Media
               </h2>
 
@@ -761,7 +775,7 @@ export default function NewProductPage() {
               {/* BANNER */}
 
               <div>
-                <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                <label className="mb-2 block text-[13px] font-semibold text-slate-700 dark:text-slate-300">
                   Banner Image URL
                 </label>
 
@@ -779,7 +793,7 @@ export default function NewProductPage() {
                 />
 
                 {form.bannerImage && (
-                  <div className="mt-4 h-44 overflow-hidden rounded-xl border border-slate-200 bg-slate-50 dark:border-slate-700 dark:bg-slate-950">
+                  <div className="mt-4 h-44 overflow-hidden rounded-[16px] border border-dashed border-violet-200 bg-slate-50/60 dark:border-white/[0.1] dark:bg-[#060b16]">
                     <img
                       src={form.bannerImage}
                       alt="Banner preview"
@@ -792,7 +806,7 @@ export default function NewProductPage() {
               {/* LOGO */}
 
               <div>
-                <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                <label className="mb-2 block text-[13px] font-semibold text-slate-700 dark:text-slate-300">
                   Logo Image URL
                 </label>
 
@@ -809,13 +823,13 @@ export default function NewProductPage() {
                   className={inputClass}
                 />
 
-                <p className="mt-1 text-xs text-slate-400">
+                <p className="mt-2 text-[11px] text-slate-400">
                   Later this field can receive the
                   selected Media Library URL.
                 </p>
 
                 {form.logoImage && (
-                  <div className="mt-4 flex h-44 items-center justify-center overflow-hidden rounded-xl border border-slate-200 bg-slate-50 dark:border-slate-700 dark:bg-slate-950">
+                  <div className="mt-4 flex h-44 items-center justify-center overflow-hidden rounded-[16px] border border-dashed border-violet-200 bg-slate-50/60 dark:border-white/[0.1] dark:bg-[#060b16]">
                     <img
                       src={form.logoImage}
                       alt="Logo preview"
@@ -831,13 +845,13 @@ export default function NewProductPage() {
               FRONT CARD
           =============================================== */}
 
-          <section className="rounded-2xl border border-blue-200 bg-blue-50/40 p-6 shadow-sm dark:border-blue-900/40 dark:bg-blue-950/10">
+          <section className="rounded-[24px] border border-slate-200/80 bg-white p-5 shadow-[0_30px_70px_-45px_rgba(15,23,42,.45)] dark:border-white/[0.07] dark:bg-[#0b1220] sm:p-7">
             <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-blue-600 dark:text-blue-400">
+              <p className="brand-text text-[11px] font-extrabold uppercase tracking-[0.2em]">
                 Product Listing
               </p>
 
-              <h2 className="mt-2 text-lg font-semibold text-slate-900 dark:text-white">
+              <h2 className="mt-2 text-lg font-extrabold tracking-[-0.03em] text-slate-950 dark:text-white">
                 Front Card Content
               </h2>
 
@@ -851,7 +865,7 @@ export default function NewProductPage() {
               {/* TAGLINE */}
 
               <div>
-                <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                <label className="mb-2 block text-[13px] font-semibold text-slate-700 dark:text-slate-300">
                   Card Tagline
                 </label>
 
@@ -872,7 +886,7 @@ export default function NewProductPage() {
               {/* SECONDARY TEXT */}
 
               <div>
-                <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                <label className="mb-2 block text-[13px] font-semibold text-slate-700 dark:text-slate-300">
                   Card Secondary Text
                 </label>
 
@@ -896,13 +910,13 @@ export default function NewProductPage() {
               FLIP CARD
           =============================================== */}
 
-          <section className="rounded-2xl border border-indigo-200 bg-indigo-50/40 p-6 shadow-sm dark:border-indigo-900/40 dark:bg-indigo-950/10">
+          <section className="rounded-[24px] border border-slate-200/80 bg-white p-5 shadow-[0_30px_70px_-45px_rgba(15,23,42,.45)] dark:border-white/[0.07] dark:bg-[#0b1220] sm:p-7">
             <div>
-              <p className="text-xs font-semibold uppercase tracking-[0.18em] text-indigo-600 dark:text-indigo-400">
+              <p className="brand-text text-[11px] font-extrabold uppercase tracking-[0.2em]">
                 Hover Content
               </p>
 
-              <h2 className="mt-2 text-lg font-semibold text-slate-900 dark:text-white">
+              <h2 className="mt-2 text-lg font-extrabold tracking-[-0.03em] text-slate-950 dark:text-white">
                 Flip Card Content
               </h2>
 
@@ -916,7 +930,7 @@ export default function NewProductPage() {
               {/* EYEBROW */}
 
               <div>
-                <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                <label className="mb-2 block text-[13px] font-semibold text-slate-700 dark:text-slate-300">
                   Flip Eyebrow
                 </label>
 
@@ -937,7 +951,7 @@ export default function NewProductPage() {
               {/* TITLE */}
 
               <div>
-                <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                <label className="mb-2 block text-[13px] font-semibold text-slate-700 dark:text-slate-300">
                   Flip Title
                 </label>
 
@@ -958,7 +972,7 @@ export default function NewProductPage() {
               {/* DESCRIPTION */}
 
               <div>
-                <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                <label className="mb-2 block text-[13px] font-semibold text-slate-700 dark:text-slate-300">
                   Flip Description
                 </label>
 
@@ -982,8 +996,8 @@ export default function NewProductPage() {
               DETAIL PAGE CONTENT
           =============================================== */}
 
-          <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-            <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
+          <section className="rounded-[24px] border border-slate-200/80 bg-white p-5 shadow-[0_30px_70px_-45px_rgba(15,23,42,.45)] dark:border-white/[0.07] dark:bg-[#0b1220] sm:p-7">
+            <h2 className="text-lg font-extrabold tracking-[-0.03em] text-slate-950 dark:text-white">
               Product Detail Page Content
             </h2>
 
@@ -1001,7 +1015,7 @@ export default function NewProductPage() {
               {/* FEATURES */}
 
               <div>
-                <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                <label className="mb-2 block text-[13px] font-semibold text-slate-700 dark:text-slate-300">
                   Features
                 </label>
 
@@ -1026,7 +1040,7 @@ export default function NewProductPage() {
               {/* BENEFITS */}
 
               <div>
-                <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                <label className="mb-2 block text-[13px] font-semibold text-slate-700 dark:text-slate-300">
                   Benefits
                 </label>
 
@@ -1051,7 +1065,7 @@ export default function NewProductPage() {
               {/* SECTIONS */}
 
               <div>
-                <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                <label className="mb-2 block text-[13px] font-semibold text-slate-700 dark:text-slate-300">
                   Sections
                 </label>
 
@@ -1077,7 +1091,7 @@ export default function NewProductPage() {
               {/* FAQS */}
 
               <div>
-                <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                <label className="mb-2 block text-[13px] font-semibold text-slate-700 dark:text-slate-300">
                   FAQs
                 </label>
 
@@ -1106,8 +1120,8 @@ export default function NewProductPage() {
               SETTINGS
           =============================================== */}
 
-          <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-            <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
+          <section className="rounded-[24px] border border-slate-200/80 bg-white p-5 shadow-[0_30px_70px_-45px_rgba(15,23,42,.45)] dark:border-white/[0.07] dark:bg-[#0b1220] sm:p-7">
+            <h2 className="text-lg font-extrabold tracking-[-0.03em] text-slate-950 dark:text-white">
               Settings
             </h2>
 
@@ -1115,7 +1129,7 @@ export default function NewProductPage() {
               {/* BROCHURE */}
 
               <div className="md:col-span-2">
-                <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                <label className="mb-2 block text-[13px] font-semibold text-slate-700 dark:text-slate-300">
                   Brochure URL
                 </label>
 
@@ -1136,13 +1150,13 @@ export default function NewProductPage() {
               {/* BROCHURE GRADIENT */}
 
               <div className="md:col-span-2">
-                <div className="rounded-2xl border border-violet-200 bg-violet-50/40 p-5 dark:border-violet-900/40 dark:bg-violet-950/10">
+                <div className="rounded-[20px] border border-violet-200/80 bg-violet-50/40 p-5 dark:border-violet-400/15 dark:bg-violet-500/[0.05]">
                   <div>
-                    <p className="text-xs font-semibold uppercase tracking-[0.18em] text-violet-600 dark:text-violet-400">
+                    <p className="brand-text text-[11px] font-extrabold uppercase tracking-[0.2em]">
                       Brochure Appearance
                     </p>
 
-                    <h3 className="mt-2 text-base font-semibold text-slate-900 dark:text-white">
+                    <h3 className="mt-2 text-base font-extrabold tracking-[-0.02em] text-slate-950 dark:text-white">
                       Brochure Gradient
                     </h3>
 
@@ -1153,7 +1167,7 @@ export default function NewProductPage() {
 
                   <div className="mt-5 grid gap-4 sm:grid-cols-3">
                     <div>
-                      <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                      <label className="mb-2 block text-[13px] font-semibold text-slate-700 dark:text-slate-300">
                         Start Color
                       </label>
 
@@ -1167,7 +1181,7 @@ export default function NewProductPage() {
                               event.target.value
                             )
                           }
-                          className="h-12 w-14 shrink-0 cursor-pointer rounded-lg border border-slate-300 bg-white p-1 dark:border-slate-700 dark:bg-slate-950"
+                          className="h-[46px] w-12 shrink-0 cursor-pointer rounded-xl border border-slate-200 bg-white p-1 dark:border-white/[0.08] dark:bg-white/[0.04]"
                         />
 
                         <input
@@ -1186,7 +1200,7 @@ export default function NewProductPage() {
                     </div>
 
                     <div>
-                      <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                      <label className="mb-2 block text-[13px] font-semibold text-slate-700 dark:text-slate-300">
                         Middle Color
                       </label>
 
@@ -1200,7 +1214,7 @@ export default function NewProductPage() {
                               event.target.value
                             )
                           }
-                          className="h-12 w-14 shrink-0 cursor-pointer rounded-lg border border-slate-300 bg-white p-1 dark:border-slate-700 dark:bg-slate-950"
+                          className="h-[46px] w-12 shrink-0 cursor-pointer rounded-xl border border-slate-200 bg-white p-1 dark:border-white/[0.08] dark:bg-white/[0.04]"
                         />
 
                         <input
@@ -1219,7 +1233,7 @@ export default function NewProductPage() {
                     </div>
 
                     <div>
-                      <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                      <label className="mb-2 block text-[13px] font-semibold text-slate-700 dark:text-slate-300">
                         End Color
                       </label>
 
@@ -1233,7 +1247,7 @@ export default function NewProductPage() {
                               event.target.value
                             )
                           }
-                          className="h-12 w-14 shrink-0 cursor-pointer rounded-lg border border-slate-300 bg-white p-1 dark:border-slate-700 dark:bg-slate-950"
+                          className="h-[46px] w-12 shrink-0 cursor-pointer rounded-xl border border-slate-200 bg-white p-1 dark:border-white/[0.08] dark:bg-white/[0.04]"
                         />
 
                         <input
@@ -1253,12 +1267,12 @@ export default function NewProductPage() {
                   </div>
 
                   <div className="mt-5">
-                    <p className="mb-2 text-xs font-semibold uppercase tracking-[0.16em] text-slate-500 dark:text-slate-400">
+                    <p className="brand-text mb-2 text-[11px] font-extrabold uppercase tracking-[0.2em]">
                       Live Preview
                     </p>
 
                     <div
-                      className="relative min-h-[190px] overflow-hidden rounded-2xl p-6 text-white shadow-lg"
+                      className="relative min-h-[190px] overflow-hidden rounded-[22px] p-6 text-white shadow-[0_30px_70px_-35px_rgba(91,33,182,.45)]"
                       style={{
                         background: `linear-gradient(135deg, ${form.brochureGradientFrom}, ${form.brochureGradientVia}, ${form.brochureGradientTo})`,
                       }}
@@ -1279,7 +1293,7 @@ export default function NewProductPage() {
                           This is how the brochure request section gradient will appear on the product page.
                         </p>
 
-                        <div className="mt-5 inline-flex rounded-xl bg-white px-4 py-2 text-sm font-semibold text-slate-900 shadow-lg">
+                        <div className="mt-5 inline-flex rounded-xl bg-white px-4 py-2 text-sm font-bold text-slate-900 shadow-lg">
                           Request Brochure
                         </div>
                       </div>
@@ -1291,7 +1305,7 @@ export default function NewProductPage() {
               {/* ORDER */}
 
               <div>
-                <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                <label className="mb-2 block text-[13px] font-semibold text-slate-700 dark:text-slate-300">
                   Display Order
                 </label>
 
@@ -1322,10 +1336,10 @@ export default function NewProductPage() {
                         event.target.checked
                       )
                     }
-                    className="h-5 w-5 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
+                    className="h-5 w-5 rounded border-slate-300 accent-violet-600 text-violet-600 focus:ring-violet-500"
                   />
 
-                  <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
+                  <span className="text-sm font-semibold text-slate-700 dark:text-slate-300">
                     Product is active
                   </span>
                 </label>
@@ -1337,10 +1351,10 @@ export default function NewProductPage() {
               BUTTONS
           =============================================== */}
 
-          <div className="flex flex-col-reverse justify-end gap-3 sm:flex-row">
+          <div className="flex flex-col-reverse justify-end gap-3 rounded-[24px] border border-slate-200/80 bg-white p-4 shadow-[0_30px_70px_-45px_rgba(15,23,42,.45)] dark:border-white/[0.07] dark:bg-[#0b1220] sm:flex-row">
             <Link
               href="/admin/products"
-              className="inline-flex items-center justify-center rounded-lg border border-slate-300 bg-white px-6 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300"
+              className="inline-flex items-center justify-center rounded-xl border border-slate-200 bg-white px-6 py-3 text-sm font-bold text-slate-700 transition hover:border-violet-300 hover:text-violet-600 dark:border-white/[0.1] dark:bg-white/[0.04] dark:text-slate-200"
             >
               Cancel
             </Link>
@@ -1348,7 +1362,7 @@ export default function NewProductPage() {
             <button
               type="submit"
               disabled={loading}
-              className="inline-flex items-center justify-center rounded-lg bg-blue-600 px-6 py-3 text-sm font-semibold text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
+              className="brand-grad inline-flex items-center justify-center rounded-xl px-6 py-3 text-sm font-bold text-white shadow-lg shadow-violet-500/25 transition hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-60"
             >
               {loading
                 ? "Creating..."

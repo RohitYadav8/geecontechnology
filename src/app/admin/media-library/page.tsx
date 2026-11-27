@@ -27,26 +27,34 @@ export default async function MediaLibraryPage() {
   });
 
   return (
-    <div className="w-full">
+    <div className="w-full min-w-0">
       {/* Page Header */}
-      <div className="flex items-center justify-between gap-4">
-        <div>
-          <h1 className="text-2xl font-semibold text-slate-900 dark:text-white">
+      <div className="brand-grad relative overflow-hidden rounded-[28px] px-6 py-7 text-white sm:px-8 sm:py-8">
+        <div className="pointer-events-none absolute -right-20 -top-24 h-64 w-64 rounded-full bg-violet-300/40 blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-28 -left-16 h-64 w-64 rounded-full bg-cyan-300/30 blur-3xl" />
+        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(255,255,255,.6)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.6)_1px,transparent_1px)] bg-[size:44px_44px] opacity-[0.07]" />
+      <div className="relative flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+        <div className="min-w-0">
+          <h1 className="text-2xl font-extrabold tracking-[-0.03em] sm:text-3xl">
             Media Library
           </h1>
 
-          <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+          <p className="mt-1 text-sm text-indigo-50/90">
             Upload once, reuse everywhere — Products, Services, Clients, etc.
           </p>
         </div>
 
         <MediaUploadButton />
       </div>
+      </div>
 
       {/* Empty State */}
       {files.length === 0 ? (
-        <div className="mt-10 rounded-2xl border border-dashed border-slate-300 bg-white p-12 text-center text-slate-400 dark:border-slate-700 dark:bg-slate-900">
-          <p>No files uploaded yet.</p>
+        <div className="mt-6 rounded-[24px] border-2 border-dashed border-violet-200 bg-white p-12 text-center text-slate-500 shadow-[0_30px_70px_-45px_rgba(15,23,42,.45)] dark:border-violet-400/20 dark:bg-[#0b1220] dark:text-slate-400">
+          <div className="brand-grad mx-auto mb-4 flex h-14 w-14 items-center justify-center rounded-[16px] text-white shadow-lg shadow-violet-500/25">
+            <FileText size={24} />
+          </div>
+          <p className="text-base font-bold text-slate-900 dark:text-white">No files uploaded yet.</p>
 
           <p className="mt-1 text-sm">
             Click &ldquo;Upload New File&rdquo; to add your first one.
@@ -54,14 +62,14 @@ export default async function MediaLibraryPage() {
         </div>
       ) : (
         /* Media Grid */
-        <div className="mt-8 grid grid-cols-2 gap-5 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
+        <div className="mt-6 grid grid-cols-2 gap-4 sm:gap-5 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5">
           {files.map((file) => (
             <div
               key={file.id}
-              className="group overflow-hidden rounded-xl border border-slate-200 bg-white shadow-sm transition hover:shadow-md dark:border-slate-800 dark:bg-slate-900"
+              className="group overflow-hidden rounded-[22px] border border-slate-200/80 bg-white p-2 shadow-[0_20px_50px_-40px_rgba(15,23,42,.45)] transition duration-300 hover:-translate-y-1 hover:border-violet-200 hover:shadow-[0_30px_70px_-35px_rgba(91,33,182,.35)] dark:border-white/[0.07] dark:bg-[#0b1220] dark:hover:border-violet-400/25"
             >
               {/* Preview */}
-              <div className="relative flex h-32 items-center justify-center overflow-hidden bg-slate-100 dark:bg-slate-800">
+              <div className="relative flex h-32 items-center justify-center overflow-hidden rounded-[16px] bg-slate-50 dark:bg-white/[0.04]">
                 {file.type === "IMAGE" ? (
                   <Image
                     src={file.url}
@@ -73,12 +81,12 @@ export default async function MediaLibraryPage() {
                 ) : (
                   <FileText
                     size={32}
-                    className="text-slate-400"
+                    className="text-violet-400"
                   />
                 )}
 
                 {/* Actions */}
-                <div className="absolute inset-0 flex items-end justify-center bg-black/0 p-2 opacity-0 transition-all duration-200 group-hover:bg-black/30 group-hover:opacity-100">
+                <div className="absolute inset-0 flex items-end justify-center bg-violet-950/0 p-2 opacity-0 transition-all duration-200 group-hover:bg-violet-950/40 group-hover:opacity-100 group-focus-within:bg-violet-950/40 group-focus-within:opacity-100">
                   <MediaCardActions
                     id={file.id}
                     url={file.url}
@@ -87,8 +95,8 @@ export default async function MediaLibraryPage() {
               </div>
 
               {/* File Information */}
-              <div className="p-2.5">
-                <p className="truncate text-xs font-medium text-slate-700 dark:text-slate-300">
+              <div className="px-1.5 pb-1 pt-2.5">
+                <p className="truncate text-xs font-bold text-slate-800 dark:text-slate-200">
                   {file.fileName}
                 </p>
 

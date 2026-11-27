@@ -11,6 +11,7 @@ import { Navbar } from "../../../../components/navbar";
 import { Footer } from "../../../../components/footer";
 import { AnimateIn } from "../../../../components/animate-in";
 import { AnimatedHeading } from "../../../../components/animated-heading";
+import { FloatingBlob } from "../../../../components/floating-blob";
 import {
   StaggerContainer,
   StaggerItem,
@@ -312,84 +313,45 @@ export default async function ProductPage({
   const softProductGradient =
     `linear-gradient(135deg, ${gradientFrom}12, ${gradientVia}0d, ${gradientTo}12)`;
 
+
   return (
-    <div className="flex min-h-screen flex-col bg-white dark:bg-[#020817]">
+    <div className="flex min-h-screen flex-col bg-slate-50 dark:bg-[#060b16]">
       <Navbar />
 
-      <main className="flex-1">
+      <main className="flex-1 overflow-x-clip">
         {/* =====================================================
-            PRODUCT BANNER
+            HERO / PRODUCT INTRO
         ===================================================== */}
 
-        {product.bannerImage && (
-          <section className="relative overflow-hidden border-b border-slate-100 bg-white dark:border-slate-800/70 dark:bg-[#07101f]">
-            {/* SUBTLE DYNAMIC GLOW */}
+        <section className="brand-grad relative overflow-hidden px-6 pb-40 pt-12 text-center text-white sm:px-8 sm:pb-44 sm:pt-16 lg:px-10">
+          <FloatingBlob
+            className="-left-40 top-24 h-[460px] w-[460px]"
+            color="bg-cyan-300/35"
+            duration={18}
+          />
 
-            <div
-              className="pointer-events-none absolute -left-20 top-0 h-64 w-64 rounded-full opacity-[0.08] blur-[100px]"
-              style={{
-                background: gradientFrom,
-              }}
-            />
-
-            <div
-              className="pointer-events-none absolute -right-20 bottom-0 h-64 w-64 rounded-full opacity-[0.08] blur-[100px]"
-              style={{
-                background: gradientTo,
-              }}
-            />
-
-            {/* =================================================
-                FULL WIDTH RESPONSIVE BANNER
-            ================================================= */}
-
-            <AnimateIn delay={0.05}>
-              <div className="relative w-full overflow-hidden bg-white dark:bg-[#07101f]">
-                <div className="relative aspect-[91/20] w-full">
-                  <Image
-                    src={product.bannerImage}
-                    alt={product.title}
-                    fill
-                    priority
-                    sizes="100vw"
-                    className="object-cover object-center"
-                  />
-                </div>
-
-                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-slate-950/[0.02] via-transparent to-transparent dark:from-black/[0.10]" />
-              </div>
-            </AnimateIn>
-          </section>
-        )}
-
-        {/* =====================================================
-            PRODUCT INTRO
-        ===================================================== */}
-
-        <section className="relative overflow-hidden bg-white dark:bg-[#020817]">
-          {/* DYNAMIC BACKGROUND */}
-
-          <div
-            className="pointer-events-none absolute inset-0 opacity-70 dark:opacity-20"
-            style={{
-              background: softProductGradient,
-            }}
+          <FloatingBlob
+            className="-right-28 -top-24 h-[420px] w-[420px]"
+            color="bg-violet-300/40"
+            duration={16}
           />
 
           <div
-            className="pointer-events-none absolute -left-28 top-10 h-72 w-72 rounded-full opacity-[0.08] blur-[110px]"
+            className="pointer-events-none absolute inset-0 opacity-[0.07]"
             style={{
-              background: gradientFrom,
+              backgroundImage:
+                "linear-gradient(rgba(255,255,255,.6) 1px, transparent 1px), linear-gradient(90deg,rgba(255,255,255,.6) 1px,transparent 1px)",
+              backgroundSize: "56px 56px",
             }}
           />
 
-          <div className="relative mx-auto max-w-7xl px-5 pb-11 pt-7 sm:px-8 lg:px-10">
+          <div className="relative mx-auto max-w-5xl">
             {/* BACK */}
 
             <AnimateIn>
               <Link
                 href="/products"
-                className="group inline-flex items-center gap-2 text-xs font-medium text-slate-500 transition-colors hover:text-slate-950 dark:text-slate-400 dark:hover:text-white"
+                className="group inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/[0.14] px-4 py-2 text-[11px] font-bold uppercase tracking-[0.2em] text-white backdrop-blur-xl transition-colors duration-300 hover:bg-white/[0.22]"
               >
                 <ArrowLeft
                   size={14}
@@ -402,13 +364,13 @@ export default async function ProductPage({
 
             {/* TITLE */}
 
-            <div className="mt-7 flex items-center gap-4 sm:gap-5">
+            <div className="mt-8 flex flex-col items-center gap-6">
               {productLogo && (
                 <AnimateIn>
                   <div
-                    className="relative flex h-[72px] w-[72px] shrink-0 items-center justify-center overflow-hidden rounded-[22px] border bg-white p-2 shadow-[0_15px_40px_rgba(15,23,42,0.08)] dark:bg-slate-900 sm:h-[82px] sm:w-[82px]"
+                    className="relative flex h-[84px] w-[84px] shrink-0 items-center justify-center overflow-hidden rounded-[24px] border-[3px] bg-white p-2 shadow-[0_20px_50px_-15px_rgba(30,27,75,0.55)] sm:h-[96px] sm:w-[96px]"
                     style={{
-                      borderColor: `${gradientFrom}28`,
+                      borderColor: "rgba(255,255,255,0.6)",
                     }}
                   >
                     <div
@@ -422,7 +384,7 @@ export default async function ProductPage({
                       src={productLogo}
                       alt={`${product.title} logo`}
                       fill
-                      sizes="82px"
+                      sizes="96px"
                       className="relative object-contain p-3"
                     />
                   </div>
@@ -433,7 +395,7 @@ export default async function ProductPage({
                 text={product.title}
                 as="h1"
                 delay={0.05}
-                className="text-3xl font-bold tracking-[-0.035em] text-slate-950 dark:text-white sm:text-4xl lg:text-[42px]"
+                className="mx-auto max-w-5xl text-[40px] font-extrabold leading-[1.05] tracking-[-0.045em] sm:text-6xl lg:text-[72px]"
               />
             </div>
 
@@ -441,7 +403,7 @@ export default async function ProductPage({
 
             {product.shortDescription && (
               <AnimateIn delay={0.1}>
-                <p className="mt-7 max-w-4xl text-sm leading-7 text-slate-500 dark:text-slate-400 sm:text-[15px]">
+                <p className="mx-auto mt-6 max-w-3xl text-base leading-8 text-indigo-50/90 sm:text-lg">
                   {product.shortDescription}
                 </p>
               </AnimateIn>
@@ -450,88 +412,207 @@ export default async function ProductPage({
         </section>
 
         {/* =====================================================
-            CONTENT + BROCHURE
+            BANNER + CONTENT + BROCHURE
         ===================================================== */}
 
-        <section className="relative bg-white pb-20 dark:bg-[#020817]">
-          <div className="mx-auto grid max-w-7xl items-start gap-8 px-5 sm:px-8 lg:grid-cols-[minmax(0,1fr)_350px] lg:px-10 xl:grid-cols-[minmax(0,1fr)_370px]">
+        <section className="relative z-10 mx-auto -mt-28 max-w-7xl px-4 pb-20 sm:-mt-32 sm:px-6 lg:px-10 lg:pb-24">
+          <div className="rounded-[32px] border border-slate-100 bg-white p-3 shadow-[0_40px_100px_-40px_rgba(15,23,42,.35)] sm:p-4 dark:border-white/[0.07] dark:bg-[#0b1220]">
             {/* =================================================
-                LEFT CONTENT
+                PRODUCT BANNER
             ================================================= */}
 
-            <div className="min-w-0 space-y-6">
+            {product.bannerImage && (
+              <AnimateIn delay={0.05}>
+                <div className="relative w-full overflow-hidden rounded-[24px] bg-white dark:bg-[#07101f]">
+                  <div className="relative aspect-[91/20] w-full">
+                    <Image
+                      src={product.bannerImage}
+                      alt={product.title}
+                      fill
+                      priority
+                      sizes="(max-width: 1280px) 100vw, 1240px"
+                      className="object-cover object-center"
+                    />
+                  </div>
+
+                  <div className="pointer-events-none absolute inset-0 rounded-[24px] ring-1 ring-inset ring-slate-900/[0.05] dark:ring-white/[0.06]" />
+                </div>
+              </AnimateIn>
+            )}
+
+            <div className="grid items-start gap-8 px-1 pb-3 pt-6 sm:px-3 sm:pb-5 sm:pt-8 lg:grid-cols-[minmax(0,1fr)_350px] lg:gap-10 lg:px-5 xl:grid-cols-[minmax(0,1fr)_370px]">
               {/* =================================================
-                  OVERVIEW
+                  LEFT CONTENT
               ================================================= */}
 
-              {(product.description ||
-                sections.length > 0) && (
-                <AnimateIn>
-                  <div className="relative overflow-hidden rounded-[28px] border border-slate-200/80 bg-white p-6 shadow-[0_18px_60px_-40px_rgba(15,23,42,0.22)] dark:border-slate-800 dark:bg-slate-900/60 sm:p-8">
-                    {/* dynamic accent */}
+              <div className="min-w-0 space-y-6">
+                {/* =================================================
+                    OVERVIEW
+                ================================================= */}
 
-                    <div
-                      className="absolute inset-x-0 top-0 h-[3px]"
-                      style={{
-                        background: productGradient,
-                      }}
-                    />
+                {(product.description ||
+                  sections.length > 0) && (
+                  <AnimateIn>
+                    <div className="relative overflow-hidden rounded-[26px] border border-slate-200/80 bg-white p-6 sm:p-8 dark:border-white/[0.07] dark:bg-white/[0.02]">
+                      <div className="brand-grad absolute inset-x-0 top-0 h-[3px]" />
 
-                    <div
-                      className="pointer-events-none absolute -right-28 -top-28 h-72 w-72 rounded-full opacity-[0.07] blur-[100px]"
-                      style={{
-                        background: gradientVia,
-                      }}
-                    />
+                      <div className="pointer-events-none absolute -right-28 -top-28 h-72 w-72 rounded-full bg-violet-400/[0.08] blur-[100px]" />
 
-                    <div className="relative">
-                      {/* HEADING */}
+                      <div className="relative">
+                        {/* HEADING */}
 
-                      <div className="flex items-center gap-3">
-                        <div
-                          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl text-white shadow-sm"
-                          style={{
-                            background:
-                              productGradient,
-                          }}
-                        >
-                          <CheckCircle2
-                            size={17}
-                          />
+                        <div className="flex items-center gap-4">
+                          <div className="brand-grad flex h-12 w-12 shrink-0 items-center justify-center rounded-[14px] text-white shadow-lg shadow-violet-500/25">
+                            <CheckCircle2
+                              size={20}
+                            />
+                          </div>
+
+                          <h2 className="text-2xl font-extrabold tracking-[-0.035em] text-slate-950 sm:text-[28px] dark:text-white">
+                            Overview
+                          </h2>
                         </div>
 
-                        <h2 className="text-[16px] font-semibold text-slate-950 dark:text-white">
-                          Overview
-                        </h2>
+                        {/* DESCRIPTION */}
+
+                        {product.description && (
+                          <p className="mt-6 whitespace-pre-line text-[15px] leading-8 text-slate-600 dark:text-slate-300">
+                            {product.description}
+                          </p>
+                        )}
+
+                        {/* SECTIONS */}
+
+                        {sections.length > 0 && (
+                          <StaggerContainer className="mt-8 space-y-7">
+                            {sections.map(
+                              (
+                                section,
+                                index
+                              ) => {
+                                const item =
+                                  getSectionItem(
+                                    section
+                                  );
+
+                                if (
+                                  !item.title &&
+                                  !item.description &&
+                                  item.features
+                                    .length === 0
+                                ) {
+                                  return null;
+                                }
+
+                                return (
+                                  <StaggerItem
+                                    key={index}
+                                  >
+                                    <div className="border-l-[3px] border-violet-300 pl-5 dark:border-violet-400/40">
+                                      {item.title && (
+                                        <h3 className="text-lg font-extrabold tracking-[-0.02em] text-slate-950 dark:text-white">
+                                          {
+                                            item.title
+                                          }
+                                        </h3>
+                                      )}
+
+                                      {item.description && (
+                                        <p
+                                          className={`whitespace-pre-line text-sm leading-7 text-slate-600 sm:text-[15px] dark:text-slate-300 ${
+                                            item.title
+                                              ? "mt-2"
+                                              : ""
+                                          }`}
+                                        >
+                                          {
+                                            item.description
+                                          }
+                                        </p>
+                                      )}
+
+                                      {item.features
+                                        .length >
+                                        0 && (
+                                        <ul className="mt-4 space-y-2.5">
+                                          {item.features.map(
+                                            (
+                                              feature,
+                                              featureIndex
+                                            ) => (
+                                              <li
+                                                key={
+                                                  featureIndex
+                                                }
+                                                className="flex items-start gap-3 text-sm leading-6 text-slate-600 dark:text-slate-300"
+                                              >
+                                                <span className="brand-grad mt-[3px] flex h-[18px] w-[18px] shrink-0 items-center justify-center rounded-full text-white">
+                                                  <CheckCircle2
+                                                    size={11}
+                                                    strokeWidth={2.5}
+                                                  />
+                                                </span>
+
+                                                <span>
+                                                  {
+                                                    feature
+                                                  }
+                                                </span>
+                                              </li>
+                                            )
+                                          )}
+                                        </ul>
+                                      )}
+                                    </div>
+                                  </StaggerItem>
+                                );
+                              }
+                            )}
+                          </StaggerContainer>
+                        )}
                       </div>
+                    </div>
+                  </AnimateIn>
+                )}
 
-                      {/* DESCRIPTION */}
+                {/* =================================================
+                    FEATURES
+                ================================================= */}
 
-                      {product.description && (
-                        <p className="mt-6 whitespace-pre-line text-sm leading-7 text-slate-600 dark:text-slate-300 sm:text-[15px]">
-                          {product.description}
-                        </p>
-                      )}
+                {features.length > 0 && (
+                  <AnimateIn>
+                    <div className="relative overflow-hidden rounded-[26px] border border-slate-200/80 bg-white p-6 sm:p-8 dark:border-white/[0.07] dark:bg-white/[0.02]">
+                      <div className="brand-grad absolute inset-x-0 top-0 h-[3px]" />
 
-                      {/* SECTIONS */}
+                      <div className="pointer-events-none absolute -right-28 -top-28 h-72 w-72 rounded-full bg-cyan-400/[0.08] blur-[100px]" />
 
-                      {sections.length > 0 && (
-                        <StaggerContainer className="mt-7 space-y-7">
-                          {sections.map(
+                      <div className="relative">
+                        <div className="flex items-center gap-4">
+                          <div className="brand-grad flex h-12 w-12 shrink-0 items-center justify-center rounded-[14px] text-white shadow-lg shadow-violet-500/25">
+                            <ListChecks
+                              size={20}
+                            />
+                          </div>
+
+                          <h2 className="text-2xl font-extrabold tracking-[-0.035em] text-slate-950 sm:text-[28px] dark:text-white">
+                            Key features
+                          </h2>
+                        </div>
+
+                        <StaggerContainer className="mt-7 grid gap-4 sm:grid-cols-2">
+                          {features.map(
                             (
-                              section,
+                              feature,
                               index
                             ) => {
                               const item =
-                                getSectionItem(
-                                  section
+                                getTextItem(
+                                  feature
                                 );
 
                               if (
                                 !item.title &&
-                                !item.description &&
-                                item.features
-                                  .length === 0
+                                !item.description
                               ) {
                                 return null;
                               }
@@ -540,61 +621,37 @@ export default async function ProductPage({
                                 <StaggerItem
                                   key={index}
                                 >
-                                  <div>
+                                  <div className="h-full rounded-[20px] border border-slate-200/80 bg-slate-50/70 p-5 text-sm leading-6 text-slate-600 transition-all duration-300 hover:-translate-y-1 hover:border-violet-200 hover:bg-white hover:shadow-[0_30px_70px_-35px_rgba(91,33,182,.35)] dark:border-white/[0.07] dark:bg-white/[0.03] dark:text-slate-300 dark:hover:border-violet-400/30">
                                     {item.title && (
-                                      <h3 className="text-[15px] font-semibold text-slate-900 dark:text-white">
-                                        {
-                                          item.title
-                                        }
-                                      </h3>
+                                      <div className="flex items-start gap-3">
+                                        <span
+                                          className="mt-[7px] h-2 w-2 shrink-0 rounded-full"
+                                          style={{
+                                            background:
+                                              productGradient,
+                                          }}
+                                        />
+
+                                        <h3 className="font-bold text-slate-950 dark:text-white">
+                                          {
+                                            item.title
+                                          }
+                                        </h3>
+                                      </div>
                                     )}
 
                                     {item.description && (
                                       <p
-                                        className={`whitespace-pre-line text-sm leading-7 text-slate-600 dark:text-slate-300 ${
+                                        className={
                                           item.title
                                             ? "mt-2"
                                             : ""
-                                        }`}
+                                        }
                                       >
                                         {
                                           item.description
                                         }
                                       </p>
-                                    )}
-
-                                    {item.features
-                                      .length >
-                                      0 && (
-                                      <ul className="mt-4 space-y-2">
-                                        {item.features.map(
-                                          (
-                                            feature,
-                                            featureIndex
-                                          ) => (
-                                            <li
-                                              key={
-                                                featureIndex
-                                              }
-                                              className="flex items-start gap-3 text-sm leading-6 text-slate-600 dark:text-slate-300"
-                                            >
-                                              <span
-                                                className="mt-[8px] h-1.5 w-1.5 shrink-0 rounded-full"
-                                                style={{
-                                                  background:
-                                                    gradientVia,
-                                                }}
-                                              />
-
-                                              <span>
-                                                {
-                                                  feature
-                                                }
-                                              </span>
-                                            </li>
-                                          )
-                                        )}
-                                      </ul>
                                     )}
                                   </div>
                                 </StaggerItem>
@@ -602,61 +659,41 @@ export default async function ProductPage({
                             }
                           )}
                         </StaggerContainer>
-                      )}
+                      </div>
                     </div>
-                  </div>
-                </AnimateIn>
-              )}
+                  </AnimateIn>
+                )}
 
-              {/* =================================================
-                  FEATURES
-              ================================================= */}
+                {/* =================================================
+                    BENEFITS
+                ================================================= */}
 
-              {features.length > 0 && (
-                <AnimateIn>
-                  <div className="relative overflow-hidden rounded-[28px] border border-slate-200/80 bg-white p-6 shadow-[0_18px_60px_-40px_rgba(15,23,42,0.22)] dark:border-slate-800 dark:bg-slate-900/60 sm:p-8">
-                    <div
-                      className="absolute inset-x-0 top-0 h-[3px]"
-                      style={{
-                        background: productGradient,
-                      }}
-                    />
+                {benefits.length > 0 && (
+                  <AnimateIn>
+                    <div className="relative overflow-hidden rounded-[26px] border border-slate-200/80 bg-white p-6 sm:p-8 dark:border-white/[0.07] dark:bg-white/[0.02]">
+                      <div className="brand-grad absolute inset-x-0 top-0 h-[3px]" />
 
-                    <div
-                      className="pointer-events-none absolute -right-28 -top-28 h-72 w-72 rounded-full opacity-[0.06] blur-[100px]"
-                      style={{
-                        background: gradientTo,
-                      }}
-                    />
-
-                    <div className="relative">
-                      <div className="flex items-center gap-3">
-                        <div
-                          className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl text-white shadow-sm"
-                          style={{
-                            background:
-                              productGradient,
-                          }}
-                        >
-                          <ListChecks
-                            size={17}
+                      <div className="flex items-center gap-4">
+                        <div className="brand-grad flex h-12 w-12 shrink-0 items-center justify-center rounded-[14px] text-white shadow-lg shadow-violet-500/25">
+                          <CheckCircle2
+                            size={20}
                           />
                         </div>
 
-                        <h2 className="text-[16px] font-semibold text-slate-950 dark:text-white">
-                          Key features
+                        <h2 className="text-2xl font-extrabold tracking-[-0.035em] text-slate-950 sm:text-[28px] dark:text-white">
+                          Benefits
                         </h2>
                       </div>
 
-                      <StaggerContainer className="mt-6 grid gap-4 sm:grid-cols-2">
-                        {features.map(
+                      <StaggerContainer className="mt-7 grid gap-4 sm:grid-cols-2">
+                        {benefits.map(
                           (
-                            feature,
+                            benefit,
                             index
                           ) => {
                             const item =
                               getTextItem(
-                                feature
+                                benefit
                               );
 
                             if (
@@ -670,18 +707,24 @@ export default async function ProductPage({
                               <StaggerItem
                                 key={index}
                               >
-                                <div className="h-full rounded-2xl border border-slate-100 bg-slate-50/70 p-4 text-sm leading-6 text-slate-600 dark:border-slate-800 dark:bg-slate-950/40 dark:text-slate-300">
+                                <div
+                                  className="h-full rounded-[20px] border border-slate-200/80 p-5 text-sm leading-6 text-slate-600 transition-all duration-300 hover:-translate-y-1 hover:border-violet-200 hover:shadow-[0_30px_70px_-35px_rgba(91,33,182,.35)] dark:border-white/[0.07] dark:text-slate-300 dark:hover:border-violet-400/30"
+                                  style={{
+                                    background:
+                                      softProductGradient,
+                                  }}
+                                >
                                   {item.title && (
-                                    <div className="flex items-start gap-2.5">
+                                    <div className="flex items-start gap-3">
                                       <span
-                                        className="mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full"
+                                        className="mt-[7px] h-2 w-2 shrink-0 rounded-full"
                                         style={{
                                           background:
                                             gradientVia,
                                         }}
                                       />
 
-                                      <h3 className="font-semibold text-slate-900 dark:text-white">
+                                      <h3 className="font-bold text-slate-950 dark:text-white">
                                         {
                                           item.title
                                         }
@@ -709,188 +752,85 @@ export default async function ProductPage({
                         )}
                       </StaggerContainer>
                     </div>
-                  </div>
-                </AnimateIn>
-              )}
+                  </AnimateIn>
+                )}
 
-              {/* =================================================
-                  BENEFITS
-              ================================================= */}
+                {/* =================================================
+                    FAQ
+                ================================================= */}
 
-              {benefits.length > 0 && (
-                <AnimateIn>
-                  <div className="relative overflow-hidden rounded-[28px] border border-slate-200/80 bg-white p-6 shadow-[0_18px_60px_-40px_rgba(15,23,42,0.22)] dark:border-slate-800 dark:bg-slate-900/60 sm:p-8">
-                    <div
-                      className="absolute inset-x-0 top-0 h-[3px]"
-                      style={{
-                        background:
-                          productGradient,
-                      }}
-                    />
+                {faqs.length > 0 && (
+                  <AnimateIn>
+                    <div className="relative overflow-hidden rounded-[26px] border border-slate-200/80 bg-white p-6 sm:p-8 dark:border-white/[0.07] dark:bg-white/[0.02]">
+                      <div className="brand-grad absolute inset-x-0 top-0 h-[3px]" />
 
-                    <div className="flex items-center gap-3">
-                      <div
-                        className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl text-white shadow-sm"
-                        style={{
-                          background:
-                            productGradient,
-                        }}
-                      >
-                        <CheckCircle2
-                          size={17}
-                        />
-                      </div>
+                      <StaggerContainer className="divide-y divide-slate-100 dark:divide-white/[0.07]">
+                        {faqs.map(
+                          (faq, index) => {
+                            const item =
+                              getFaqItem(faq);
 
-                      <h2 className="text-[16px] font-semibold text-slate-950 dark:text-white">
-                        Benefits
-                      </h2>
-                    </div>
+                            if (
+                              !item.question &&
+                              !item.answer
+                            ) {
+                              return null;
+                            }
 
-                    <StaggerContainer className="mt-6 grid gap-4 sm:grid-cols-2">
-                      {benefits.map(
-                        (
-                          benefit,
-                          index
-                        ) => {
-                          const item =
-                            getTextItem(
-                              benefit
-                            );
-
-                          if (
-                            !item.title &&
-                            !item.description
-                          ) {
-                            return null;
-                          }
-
-                          return (
-                            <StaggerItem
-                              key={index}
-                            >
-                              <div className="h-full rounded-2xl border border-slate-100 bg-slate-50/70 p-4 text-sm leading-6 text-slate-600 dark:border-slate-800 dark:bg-slate-950/40 dark:text-slate-300">
-                                {item.title && (
-                                  <div className="flex items-start gap-2.5">
-                                    <span
-                                      className="mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full"
-                                      style={{
-                                        background:
-                                          gradientVia,
-                                      }}
-                                    />
-
-                                    <h3 className="font-semibold text-slate-900 dark:text-white">
+                            return (
+                              <StaggerItem
+                                key={index}
+                              >
+                                <div className="py-5 first:pt-0 last:pb-0">
+                                  {item.question && (
+                                    <h3 className="text-base font-bold tracking-[-0.01em] text-slate-950 dark:text-white">
                                       {
-                                        item.title
+                                        item.question
                                       }
                                     </h3>
-                                  </div>
-                                )}
+                                  )}
 
-                                {item.description && (
-                                  <p
-                                    className={
-                                      item.title
-                                        ? "mt-2"
-                                        : ""
-                                    }
-                                  >
-                                    {
-                                      item.description
-                                    }
-                                  </p>
-                                )}
-                              </div>
-                            </StaggerItem>
-                          );
-                        }
-                      )}
-                    </StaggerContainer>
-                  </div>
-                </AnimateIn>
-              )}
+                                  {item.answer && (
+                                    <p className="mt-2 whitespace-pre-line text-sm leading-7 text-slate-600 dark:text-slate-300">
+                                      {
+                                        item.answer
+                                      }
+                                    </p>
+                                  )}
+                                </div>
+                              </StaggerItem>
+                            );
+                          }
+                        )}
+                      </StaggerContainer>
+                    </div>
+                  </AnimateIn>
+                )}
+              </div>
 
               {/* =================================================
-                  FAQ
+                  BROCHURE FORM
               ================================================= */}
 
-              {faqs.length > 0 && (
-                <AnimateIn>
-                  <div className="relative overflow-hidden rounded-[28px] border border-slate-200/80 bg-white p-6 shadow-[0_18px_60px_-40px_rgba(15,23,42,0.22)] dark:border-slate-800 dark:bg-slate-900/60 sm:p-8">
-                    <div
-                      className="absolute inset-x-0 top-0 h-[3px]"
-                      style={{
-                        background:
-                          productGradient,
-                      }}
-                    />
-
-                    <StaggerContainer className="divide-y divide-slate-100 dark:divide-slate-800">
-                      {faqs.map(
-                        (faq, index) => {
-                          const item =
-                            getFaqItem(faq);
-
-                          if (
-                            !item.question &&
-                            !item.answer
-                          ) {
-                            return null;
-                          }
-
-                          return (
-                            <StaggerItem
-                              key={index}
-                            >
-                              <div className="py-5 first:pt-0 last:pb-0">
-                                {item.question && (
-                                  <h3 className="text-sm font-semibold text-slate-950 dark:text-white">
-                                    {
-                                      item.question
-                                    }
-                                  </h3>
-                                )}
-
-                                {item.answer && (
-                                  <p className="mt-2 whitespace-pre-line text-sm leading-7 text-slate-600 dark:text-slate-300">
-                                    {
-                                      item.answer
-                                    }
-                                  </p>
-                                )}
-                              </div>
-                            </StaggerItem>
-                          );
-                        }
-                      )}
-                    </StaggerContainer>
-                  </div>
-                </AnimateIn>
-              )}
+              <AnimateIn
+                delay={0.15}
+                direction="left"
+                className="lg:sticky lg:top-24"
+              >
+                <BrochureForm
+                  productId={product.id}
+                  gradientFrom={
+                    product.brochureGradientFrom
+                  }
+                  gradientVia={
+                    product.brochureGradientVia
+                  }
+                  gradientTo={
+                    product.brochureGradientTo
+                  }
+                />
+              </AnimateIn>
             </div>
-
-            {/* =================================================
-                BROCHURE FORM
-            ================================================= */}
-
-            <AnimateIn
-              delay={0.15}
-              direction="left"
-              className="lg:sticky lg:top-24"
-            >
-              <BrochureForm
-                productId={product.id}
-                gradientFrom={
-                  product.brochureGradientFrom
-                }
-                gradientVia={
-                  product.brochureGradientVia
-                }
-                gradientTo={
-                  product.brochureGradientTo
-                }
-              />
-            </AnimateIn>
           </div>
         </section>
       </main>

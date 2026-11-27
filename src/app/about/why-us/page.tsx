@@ -6,6 +6,7 @@ import { Navbar } from "../../../../components/navbar";
 import { Footer } from "../../../../components/footer";
 import { AnimateIn } from "../../../../components/animate-in";
 import { ScrollProgress } from "../../../../components/scroll-progress";
+import { FloatingBlob } from "../../../../components/floating-blob";
 
 const HERO_SRC = "/core.png";
 
@@ -42,88 +43,88 @@ const reasons = [
 
 export default function WhyUsPage() {
   return (
-    <div className="min-h-screen overflow-hidden bg-white text-slate-900 dark:bg-slate-950 dark:text-white">
+    <div className="relative min-h-screen overflow-hidden bg-slate-50 text-slate-900 dark:bg-[#060b16] dark:text-white">
       <ScrollProgress />
 
       <Navbar />
 
-      <main>
+      <main className="relative">
         {/* =========================================================
-            HERO IMAGE
+            HERO
         ========================================================= */}
-        <section className="relative w-full overflow-hidden bg-slate-950">
-          <div className="group relative h-[300px] w-full overflow-hidden sm:h-[380px] lg:h-[460px]">
-            <Image
-              src={HERO_SRC}
-              alt="Why Choose Geecon"
-              fill
-              priority
-              quality={100}
-              sizes="100vw"
-              className="object-cover object-center transition-transform duration-[1800ms] ease-out group-hover:scale-[1.03]"
-            />
+        <section className="brand-grad relative overflow-hidden px-4 pb-40 pt-12 text-white sm:px-8 sm:pb-44 sm:pt-16 lg:px-10">
+          <FloatingBlob
+            className="-left-40 top-24 h-[460px] w-[460px]"
+            color="bg-cyan-300/35"
+            duration={18}
+          />
 
-            {/* Hero overlay */}
-            <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-slate-950/5 via-transparent to-slate-950/40" />
+          <FloatingBlob
+            className="-right-28 -top-24 h-[420px] w-[420px]"
+            color="bg-violet-300/40"
+            duration={16}
+          />
 
-            <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-slate-950/15 via-transparent to-slate-950/10" />
+          <div
+            className="pointer-events-none absolute inset-0 opacity-[0.07]"
+            style={{
+              backgroundImage:
+                "linear-gradient(rgba(255,255,255,.6) 1px, transparent 1px), linear-gradient(90deg,rgba(255,255,255,.6) 1px,transparent 1px)",
+              backgroundSize: "56px 56px",
+            }}
+          />
 
-            {/* Subtle hero glow */}
-            <div className="pointer-events-none absolute -bottom-32 left-1/2 h-64 w-[70%] -translate-x-1/2 rounded-full bg-cyan-400/10 blur-3xl" />
-          </div>
+          <AnimateIn>
+            <div className="relative mx-auto max-w-6xl rounded-[28px] border border-white/30 bg-white/15 p-2 shadow-[0_30px_80px_-30px_rgba(15,23,42,.55)] backdrop-blur-xl">
+              <div className="group relative h-[220px] w-full overflow-hidden rounded-[22px] sm:h-[320px] lg:h-[400px]">
+                <Image
+                  src={HERO_SRC}
+                  alt="Why Choose Geecon"
+                  fill
+                  priority
+                  quality={100}
+                  sizes="(max-width: 1200px) 100vw, 1150px"
+                  className="object-cover object-center transition-transform duration-[1800ms] ease-out group-hover:scale-[1.03]"
+                />
+
+                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-violet-950/30 via-transparent to-transparent" />
+              </div>
+            </div>
+          </AnimateIn>
         </section>
 
         {/* =========================================================
             REASONS
         ========================================================= */}
-        <section className="relative overflow-hidden bg-slate-50 px-5 py-20 sm:px-8 sm:py-24 lg:px-12 lg:py-32 dark:bg-slate-950">
-          {/* Background glow */}
-          <div className="pointer-events-none absolute left-1/2 top-0 h-[600px] w-[900px] -translate-x-1/2 rounded-full bg-blue-500/[0.035] blur-3xl dark:bg-cyan-400/[0.035]" />
+        <section className="relative z-10 mx-auto -mt-28 max-w-5xl px-4 pb-24 sm:-mt-32 sm:px-6 lg:px-8 lg:pb-28">
+          <div className="space-y-6 sm:space-y-8">
+            {reasons.map((reason, index) => (
+              <AnimateIn key={reason.title} delay={Math.min(index * 0.07, 0.3)}>
+                <article className={`group relative overflow-hidden rounded-[26px] border border-slate-200/80 bg-white p-7 transition-all duration-500 hover:-translate-y-1 hover:border-violet-200 hover:shadow-[0_30px_70px_-35px_rgba(91,33,182,.35)] sm:p-10 dark:border-white/[0.07] dark:bg-[#0b1220] ${index === 0 ? "shadow-[0_40px_100px_-40px_rgba(15,23,42,.35)]" : "shadow-[0_20px_60px_-40px_rgba(15,23,42,.25)]"}`}>
+                  <div className="pointer-events-none absolute -right-24 -top-24 h-64 w-64 rounded-full bg-violet-400/0 blur-3xl transition-all duration-700 group-hover:bg-violet-400/15" />
 
-          <div className="pointer-events-none absolute -left-48 top-[20%] h-96 w-96 rounded-full bg-blue-500/[0.025] blur-3xl dark:bg-blue-500/[0.04]" />
+                  <div className="pointer-events-none absolute bottom-0 left-0 top-0 w-[3px] origin-bottom scale-y-0 bg-gradient-to-b from-blue-600 via-violet-500 to-cyan-400 transition-transform duration-700 ease-out group-hover:scale-y-100" />
 
-          <div className="pointer-events-none absolute -right-48 top-[55%] h-96 w-96 rounded-full bg-cyan-400/[0.025] blur-3xl dark:bg-cyan-400/[0.04]" />
+                  <div className="relative z-10 flex flex-col gap-6 sm:flex-row sm:gap-8">
+                    <div className="brand-grad flex h-12 w-12 shrink-0 items-center justify-center rounded-[14px] text-[15px] font-extrabold text-white shadow-lg shadow-violet-500/25 transition-transform duration-500 group-hover:scale-105 group-hover:rotate-3">
+                      {String(index + 1).padStart(2, "0")}
+                    </div>
 
-          <div className="relative mx-auto max-w-5xl">
-            <div className="space-y-8 sm:space-y-10">
-              {reasons.map((reason, index) => (
-                <AnimateIn key={reason.title} delay={index * 0.07}>
-                  <article className="group relative overflow-hidden rounded-[30px] border border-slate-200/80 bg-white/95 p-7 shadow-[0_10px_40px_rgba(15,23,42,0.05)] backdrop-blur-sm transition-all duration-700 ease-out hover:-translate-y-2 hover:border-blue-300 hover:shadow-[0_25px_70px_rgba(37,99,235,0.14)] sm:p-10 lg:p-12 dark:border-slate-800/80 dark:bg-slate-900/80 dark:shadow-[0_10px_40px_rgba(0,0,0,0.2)] dark:hover:border-cyan-400/40 dark:hover:shadow-[0_25px_80px_rgba(34,211,238,0.1)]">
-                    {/* Top-right glow */}
-                    <div className="pointer-events-none absolute -right-32 -top-32 h-80 w-80 rounded-full bg-blue-500/0 blur-3xl transition-all duration-1000 ease-out group-hover:bg-blue-500/15 dark:group-hover:bg-cyan-400/10" />
-
-                    {/* Bottom-left glow */}
-                    <div className="pointer-events-none absolute -bottom-32 -left-32 h-80 w-80 rounded-full bg-cyan-400/0 blur-3xl transition-all duration-1000 ease-out group-hover:bg-cyan-400/10" />
-
-                    {/* Left animated accent */}
-                    <div className="pointer-events-none absolute bottom-0 left-0 top-0 w-[3px] origin-bottom scale-y-0 bg-gradient-to-b from-blue-600 via-cyan-400 to-blue-600 transition-transform duration-700 ease-out group-hover:scale-y-100" />
-
-                    {/* Top animated accent */}
-                    <div className="pointer-events-none absolute left-0 right-0 top-0 h-px origin-left scale-x-0 bg-gradient-to-r from-blue-600 via-cyan-400 to-blue-600 transition-transform duration-700 ease-out group-hover:scale-x-100" />
-
-                    <div className="relative z-10">
-                      {/* Title */}
-                      <h2 className="text-2xl font-semibold tracking-tight text-slate-900 transition-all duration-500 ease-out group-hover:translate-x-1 group-hover:text-blue-700 sm:text-3xl dark:text-white dark:group-hover:text-cyan-300">
+                    <div className="min-w-0">
+                      <h2 className="text-2xl font-extrabold tracking-[-0.035em] text-slate-950 transition-colors duration-300 group-hover:text-violet-700 sm:text-[30px] sm:leading-tight dark:text-white dark:group-hover:text-violet-300">
                         {reason.title}
                       </h2>
 
-                      {/* Animated underline */}
-                      <div className="relative mt-5 h-px w-12 overflow-hidden bg-slate-200 dark:bg-slate-800">
-                        <div className="absolute inset-y-0 left-0 w-full origin-left scale-x-0 bg-gradient-to-r from-blue-600 via-cyan-400 to-blue-600 transition-transform duration-700 ease-out group-hover:scale-x-100" />
-                      </div>
+                      <div className="brand-grad mt-4 h-[3px] w-12 rounded-full transition-all duration-500 group-hover:w-24" />
 
-                      {/* Body */}
-                      <p className="mt-6 max-w-5xl text-[15px] leading-8 text-slate-500 transition-colors duration-500 group-hover:text-slate-700 sm:text-base dark:text-slate-400 dark:group-hover:text-slate-300">
+                      <p className="mt-5 text-[15px] leading-8 text-slate-600 sm:text-base dark:text-slate-400">
                         {reason.body}
                       </p>
                     </div>
-
-                    {/* Soft hover highlight */}
-                    <div className="pointer-events-none absolute inset-0 rounded-[30px] bg-gradient-to-br from-blue-500/[0.00] via-transparent to-cyan-400/[0.00] transition-all duration-700 group-hover:from-blue-500/[0.025] group-hover:to-cyan-400/[0.035]" />
-                  </article>
-                </AnimateIn>
-              ))}
-            </div>
+                  </div>
+                </article>
+              </AnimateIn>
+            ))}
           </div>
         </section>
       </main>
@@ -131,4 +132,4 @@ export default function WhyUsPage() {
       <Footer />
     </div>
   );
-}1
+}

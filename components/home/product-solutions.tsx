@@ -17,11 +17,8 @@ import {
   ArrowUpRight,
   Check,
   Loader2,
-  Sparkles,
 } from "lucide-react";
 
-import { BackgroundEffects } from "../background-effects";
-import { MouseGlow } from "../mouse-glow";
 
 type ProductSolution = {
   id: string;
@@ -157,63 +154,33 @@ export function ProductSolutions() {
     solutions[activeIndex];
 
   return (
-    <section
-      className="
-        relative
-        overflow-hidden
-        border-y
-        border-slate-100
-        bg-slate-50/70
-        py-20
-        sm:py-24
-        dark:border-white/[0.05]
-        dark:bg-[#080e1a]
-      "
-    >
-      <BackgroundEffects />
+    <section className="relative pb-24 sm:pb-28">
+      <div className="relative mx-auto max-w-7xl px-4 sm:px-6 lg:px-10">
+        <div className="brand-grad relative overflow-hidden rounded-[36px] p-6 text-white sm:p-10 lg:p-14">
+          {/* Glow blobs */}
+          <div className="pointer-events-none absolute -right-24 -top-24 h-80 w-80 rounded-full bg-violet-300/40 blur-3xl" />
+          <div className="pointer-events-none absolute -bottom-32 -left-20 h-80 w-80 rounded-full bg-cyan-300/30 blur-3xl" />
 
-      <div className="relative mx-auto max-w-7xl px-6 sm:px-8 lg:px-10">
         {/* ===================================================
             SECTION HEADER
         =================================================== */}
 
-        <div className="mb-12 grid gap-7 lg:grid-cols-[1fr_0.8fr] lg:items-end">
+        <div className="relative mb-10 grid gap-6 lg:grid-cols-[1fr_0.8fr] lg:items-end">
           <div>
-            <div
-              className="
-                inline-flex
-                items-center
-                gap-2
-                rounded-full
-                border
-                border-blue-200
-                bg-blue-50
-                px-3
-                py-1.5
-                text-[11px]
-                font-semibold
-                uppercase
-                tracking-[0.2em]
-                text-blue-600
-                dark:border-blue-500/20
-                dark:bg-blue-500/[0.08]
-                dark:text-blue-400
-              "
-            >
-              <Sparkles size={13} />
+            <div className="text-[12px] font-extrabold uppercase tracking-[0.2em] text-cyan-100">
               Products & Solutions
             </div>
 
-            <h2 className="mt-5 max-w-2xl text-3xl font-semibold leading-[1.08] tracking-[-0.04em] text-slate-950 sm:text-4xl lg:text-[44px] dark:text-white">
+            <h2 className="mt-4 max-w-2xl text-3xl font-extrabold leading-[1.08] tracking-[-0.035em] sm:text-4xl lg:text-[46px]">
               Technology built for{" "}
-              <span className="text-blue-600 dark:text-blue-400">
+              <span className="brand-text-light">
                 growing businesses
               </span>
             </h2>
           </div>
 
           <div className="lg:flex lg:justify-end">
-            <p className="max-w-lg text-sm leading-7 text-slate-500 dark:text-slate-400">
+            <p className="max-w-lg text-[15px] leading-8 text-indigo-50/90">
               Practical digital solutions designed
               to simplify operations, improve
               performance and help your business
@@ -226,37 +193,16 @@ export function ProductSolutions() {
             MAIN CARD
         =================================================== */}
 
-        <MouseGlow>
+        <div className="relative rounded-[30px] border border-white/30 bg-white/15 p-2 backdrop-blur-xl sm:p-3">
           <div
-            className="
-              grid
-              overflow-hidden
-              rounded-[30px]
-              border
-              border-slate-200
-              bg-white/90
-              shadow-[0_30px_100px_-45px_rgba(15,23,42,.45)]
-              backdrop-blur-xl
-              dark:border-white/[0.07]
-              dark:bg-white/[0.035]
-              lg:grid-cols-[340px_minmax(0,1fr)]
-            "
+            className="grid overflow-hidden rounded-[24px] bg-white text-slate-900 shadow-[0_30px_80px_-40px_rgba(15,23,42,.6)] dark:bg-[#0b1220] dark:text-white lg:grid-cols-[320px_minmax(0,1fr)]"
           >
             {/* =================================================
                 LEFT NAVIGATION
             ================================================= */}
 
             <div
-              className="
-                border-b
-                border-slate-200
-                bg-slate-50/80
-                p-3
-                dark:border-white/[0.07]
-                dark:bg-black/10
-                lg:border-b-0
-                lg:border-r
-              "
+              className="border-b border-slate-200 bg-slate-50/80 p-3 dark:border-white/[0.07] dark:bg-black/10 lg:border-b-0 lg:border-r"
             >
               <div className="px-3 pb-3 pt-3">
                 <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-slate-400">
@@ -319,7 +265,7 @@ export function ProductSolutions() {
                             rounded-full
                             bg-gradient-to-b
                             from-blue-600
-                            to-cyan-400
+                            to-violet-500
                             transition-all
                             ${
                               isActive
@@ -344,7 +290,7 @@ export function ProductSolutions() {
                             transition-all
                             ${
                               isActive
-                                ? "bg-gradient-to-br from-blue-600 to-cyan-500 text-white shadow-md shadow-blue-500/20"
+                                ? "brand-grad text-white shadow-md shadow-violet-500/25"
                                 : "bg-slate-100 text-slate-400 dark:bg-white/[0.05]"
                             }
                           `}
@@ -431,45 +377,18 @@ export function ProductSolutions() {
                   transition={{
                     duration: 0.4,
                   }}
-                  className="
-                    grid
-                    gap-8
-                    xl:grid-cols-[1.15fr_.85fr]
-                    xl:items-center
-                  "
+                  className="grid gap-8 xl:grid-cols-[1.15fr_.85fr] xl:items-center"
                 >
                   {/* =========================================
                       FULL IMAGE - NO CROP
                   ========================================= */}
 
                   <div
-                    className="
-                      relative
-                      overflow-hidden
-                      rounded-[24px]
-                      border
-                      border-slate-200
-                      bg-white
-                      shadow-sm
-                      dark:border-white/[0.08]
-                      dark:bg-white
-                    "
+                    className="relative overflow-hidden rounded-[24px] border border-slate-200 bg-white shadow-sm dark:border-white/[0.08] dark:bg-white"
                   >
                     {activeSolution.bannerImage ? (
                       <div
-                        className="
-                          flex
-                          min-h-[300px]
-                          w-full
-                          items-center
-                          justify-center
-                          bg-white
-                          p-4
-                          sm:min-h-[340px]
-                          sm:p-5
-                          lg:min-h-[380px]
-                          lg:p-6
-                        "
+                        className="flex min-h-[300px] w-full items-center justify-center bg-white p-4 sm:min-h-[340px] sm:p-5 lg:min-h-[380px] lg:p-6"
                       >
                         <Image
                           src={
@@ -481,14 +400,7 @@ export function ProductSolutions() {
                           width={1200}
                           height={800}
                           sizes="(max-width: 1280px) 100vw, 52vw"
-                          className="
-                            h-auto
-                            max-h-[340px]
-                            w-auto
-                            max-w-full
-                            object-contain
-                            object-center
-                          "
+                          className="h-auto max-h-[340px] w-auto max-w-full object-contain object-center"
                         />
                       </div>
                     ) : (
@@ -503,23 +415,7 @@ export function ProductSolutions() {
 
                     {activeSolution.projectTag && (
                       <div
-                        className="
-                          absolute
-                          left-4
-                          top-4
-                          z-20
-                          rounded-full
-                          border
-                          border-slate-200
-                          bg-white/95
-                          px-3.5
-                          py-1.5
-                          text-[11px]
-                          font-semibold
-                          text-slate-700
-                          shadow-md
-                          backdrop-blur-xl
-                        "
+                        className="absolute left-4 top-4 z-20 rounded-full border border-slate-200 bg-white/95 px-3.5 py-1.5 text-[11px] font-semibold text-slate-700 shadow-md backdrop-blur-xl"
                       >
                         {
                           activeSolution.projectTag
@@ -547,7 +443,7 @@ export function ProductSolutions() {
                       </div>
                     )}
 
-                    <p className="text-[11px] font-semibold uppercase tracking-[0.2em] text-blue-600 dark:text-blue-400">
+                    <p className="brand-text text-[11px] font-extrabold uppercase tracking-[0.2em]">
                       Product Solution
                     </p>
 
@@ -567,29 +463,7 @@ export function ProductSolutions() {
 
                     <Link
                       href={`/${activeSolution.slug}`}
-                      className="
-                        group
-                        mt-6
-                        inline-flex
-                        items-center
-                        gap-2
-                        rounded-xl
-                        bg-[#1a2b4a]
-                        px-5
-                        py-3
-                        text-sm
-                        font-semibold
-                        text-white
-                        transition-all
-                        hover:-translate-y-0.5
-                        hover:bg-blue-600
-                        hover:shadow-lg
-                        hover:shadow-blue-500/20
-                        dark:bg-white
-                        dark:text-slate-950
-                        dark:hover:bg-blue-500
-                        dark:hover:text-white
-                      "
+                      className="brand-grad group mt-6 inline-flex items-center gap-2 rounded-xl px-5 py-3 text-sm font-bold text-white shadow-lg shadow-violet-500/25 transition-all hover:-translate-y-0.5"
                     >
                       {activeSolution.cardBackTitle ||
                         `Explore ${activeSolution.name}`}
@@ -625,7 +499,7 @@ export function ProductSolutions() {
                               100
                             }%`,
                           }}
-                          className="h-full rounded-full bg-gradient-to-r from-blue-600 to-cyan-400"
+                          className="h-full rounded-full bg-gradient-to-r from-blue-600 via-violet-500 to-cyan-400"
                         />
                       </div>
 
@@ -640,7 +514,8 @@ export function ProductSolutions() {
               </AnimatePresence>
             </div>
           </div>
-        </MouseGlow>
+        </div>
+        </div>
       </div>
     </section>
   );

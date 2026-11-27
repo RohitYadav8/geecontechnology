@@ -7,7 +7,6 @@ import { Footer } from "../../../components/footer";
 import { AnimateIn } from "../../../components/animate-in";
 import { AnimatedHeading } from "../../../components/animated-heading";
 import { FloatingBlob } from "../../../components/floating-blob";
-import { MouseGlow } from "../../../components/mouse-glow";
 import { RippleButton } from "../../../components/ripple-button";
 
 type FieldType =
@@ -407,48 +406,46 @@ export default function CandidateScreeningPage() {
     };
 
     return (
-        <div className="flex min-h-screen flex-col bg-white dark:bg-slate-950">
+        <div className="flex min-h-screen flex-col bg-slate-50 dark:bg-[#060b16]">
             <Navbar />
 
             <main className="relative flex-1 overflow-hidden">
-                {/* Grid Background */}
+                {/* Hero */}
 
-                <div
-                    className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,#e5e7eb_1px,transparent_1px),linear-gradient(to_bottom,#e5e7eb_1px,transparent_1px)] bg-[size:48px_48px] opacity-20 dark:opacity-10"
-                />
+                <section className="brand-grad relative overflow-hidden px-6 pb-40 pt-16 text-center text-white sm:px-8 sm:pb-44 sm:pt-20 lg:px-10">
+                    <FloatingBlob
+                        className="-left-40 top-24 h-[460px] w-[460px]"
+                        color="bg-cyan-300/35"
+                        duration={18}
+                    />
 
-                {/* Radial Background */}
+                    <FloatingBlob
+                        className="-right-28 -top-24 h-[420px] w-[420px]"
+                        color="bg-violet-300/40"
+                        duration={16}
+                    />
 
-                <div
-                    className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(59,130,246,.15),transparent_60%)]"
-                />
+                    <div
+                        className="pointer-events-none absolute inset-0 opacity-[0.07]"
+                        style={{
+                            backgroundImage:
+                                "linear-gradient(rgba(255,255,255,.6) 1px, transparent 1px), linear-gradient(90deg,rgba(255,255,255,.6) 1px,transparent 1px)",
+                            backgroundSize: "56px 56px",
+                        }}
+                    />
 
-                {/* Floating Blobs */}
+                    <div className="relative mx-auto max-w-4xl">
+                        <AnimatedHeading
+                            text="Candidate Screening"
+                            as="h1"
+                            delay={0.05}
+                            highlightFrom={1}
+                            highlightClassName="brand-text-light"
+                            className="text-[40px] font-extrabold leading-[1.05] tracking-[-0.045em] sm:text-6xl lg:text-[72px]"
+                        />
 
-                <FloatingBlob
-                    className="-right-20 top-10 h-72 w-72"
-                    color="bg-blue-400/10"
-                    duration={16}
-                />
-
-                <FloatingBlob
-                    className="-left-16 top-96 h-64 w-64"
-                    color="bg-cyan-300/10"
-                    duration={20}
-                />
-
-                <section className="relative mx-auto max-w-3xl px-6 pb-20 pt-16 sm:pt-20">
-                    {/* Heading */}
-
-                    <AnimateIn>
-                        <div className="text-center">
-                            <AnimatedHeading
-                                text="Candidate Screening"
-                                as="h1"
-                                className="text-3xl font-bold text-slate-900 dark:text-white sm:text-4xl"
-                            />
-
-                            <p className="mx-auto mt-4 max-w-xl text-sm leading-6 text-slate-500 dark:text-slate-400">
+                        <AnimateIn delay={0.1}>
+                            <p className="mx-auto mt-6 max-w-2xl text-base leading-8 text-indigo-50/90 sm:text-lg">
                                 Please complete the
                                 following information
                                 carefully. Our recruitment
@@ -457,18 +454,20 @@ export default function CandidateScreeningPage() {
                                 if your profile matches our
                                 requirements.
                             </p>
-                        </div>
-                    </AnimateIn>
+                        </AnimateIn>
+                    </div>
+                </section>
 
+                <section className="relative z-10 mx-auto -mt-28 max-w-4xl px-4 pb-20 sm:-mt-32 sm:px-6 lg:pb-24">
                     {/* Form */}
 
                     <AnimateIn
                         delay={0.1}
-                        className="mt-10"
                     >
-                        <div className="rounded-2xl bg-gradient-to-br from-blue-400/30 via-cyan-300/20 to-blue-600/30 p-[1px]">
-                            <MouseGlow className="rounded-2xl">
-                                <div className="rounded-2xl border border-slate-200/60 bg-white/80 p-6 shadow-xl shadow-slate-900/5 backdrop-blur-xl dark:border-slate-800/60 dark:bg-slate-900/80 dark:shadow-black/20 sm:p-8">
+                        <div>
+                            <div>
+                                <div className="rounded-[32px] border border-slate-100 bg-white p-6 shadow-[0_40px_100px_-40px_rgba(15,23,42,.35)] sm:p-10 lg:p-12 dark:border-white/[0.07] dark:bg-[#0b1220]">
+                                    <div className="brand-grad mb-8 h-1.5 w-16 rounded-full" />
                                     <form
                                         onSubmit={
                                             handleSubmit
@@ -486,7 +485,7 @@ export default function CandidateScreeningPage() {
                                                         htmlFor={
                                                             field.name
                                                         }
-                                                        className="mb-1.5 block text-sm font-medium text-[#1a2b4a] dark:text-blue-400"
+                                                        className="mb-2 block text-[13px] font-semibold text-slate-800 dark:text-slate-200"
                                                     >
                                                         {
                                                             field.label
@@ -524,7 +523,7 @@ export default function CandidateScreeningPage() {
                                                                 field.required
                                                             }
                                                             placeholder="Enter your answer..."
-                                                            className="w-full resize-y rounded-lg border border-slate-200 bg-white px-3.5 py-3 text-sm text-slate-900 outline-none transition-all placeholder:text-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 dark:border-slate-700 dark:bg-slate-900 dark:text-white dark:placeholder:text-slate-500"
+                                                            className="w-full resize-y rounded-xl border border-slate-200 bg-slate-50/70 px-4 py-3 text-sm text-slate-900 outline-none transition-all placeholder:text-slate-400 focus:border-violet-400 focus:bg-white focus:outline-none focus:ring-4 focus:ring-violet-500/10 dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-white dark:placeholder:text-slate-500"
                                                         />
                                                     ) : field.type ===
                                                       "select" ? (
@@ -547,7 +546,7 @@ export default function CandidateScreeningPage() {
                                                             required={
                                                                 field.required
                                                             }
-                                                            className="w-full rounded-lg border border-slate-200 bg-white px-3.5 py-3 text-sm text-slate-700 outline-none transition-all focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300"
+                                                            className="w-full rounded-xl border border-slate-200 bg-slate-50/70 px-4 py-3 text-sm text-slate-700 outline-none transition-all focus:border-violet-400 focus:bg-white focus:outline-none focus:ring-4 focus:ring-violet-500/10 dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-slate-300"
                                                         >
                                                             <option value="">
                                                                 Select
@@ -592,7 +591,7 @@ export default function CandidateScreeningPage() {
                                                                     ? undefined
                                                                     : "Enter your answer..."
                                                             }
-                                                            className="w-full rounded-lg border border-slate-200 bg-white px-3.5 py-3 text-sm text-slate-900 outline-none transition-all placeholder:text-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 dark:border-slate-700 dark:bg-slate-900 dark:text-white dark:placeholder:text-slate-500"
+                                                            className="w-full rounded-xl border border-slate-200 bg-slate-50/70 px-4 py-3 text-sm text-slate-900 outline-none transition-all placeholder:text-slate-400 focus:border-violet-400 focus:bg-white focus:outline-none focus:ring-4 focus:ring-violet-500/10 dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-white dark:placeholder:text-slate-500"
                                                         />
                                                     )}
                                                 </div>
@@ -602,7 +601,7 @@ export default function CandidateScreeningPage() {
                                         {/* Resume Upload */}
 
                                         <div>
-                                            <label className="mb-1.5 block text-sm font-medium text-[#1a2b4a] dark:text-blue-400">
+                                            <label className="mb-2 block text-[13px] font-semibold text-slate-800 dark:text-slate-200">
                                                 Upload Resume
 
                                                 <span className="ml-1 text-red-500">
@@ -628,13 +627,13 @@ export default function CandidateScreeningPage() {
                                                     onDrop={
                                                         handleDrop
                                                     }
-                                                    className={`flex w-full cursor-pointer flex-col items-center justify-center gap-3 rounded-xl border-2 border-dashed px-4 py-10 text-center transition-all ${
+                                                    className={`flex w-full cursor-pointer flex-col items-center justify-center gap-3 rounded-2xl border-2 border-dashed px-4 py-10 text-center transition-all ${
                                                         isDragging
-                                                            ? "border-blue-500 bg-blue-50 text-blue-600 dark:bg-blue-500/10 dark:text-blue-400"
-                                                            : "border-slate-300 text-slate-500 hover:border-blue-500 hover:bg-slate-50 hover:text-blue-600 dark:border-slate-700 dark:text-slate-400 dark:hover:border-blue-400 dark:hover:bg-slate-900"
+                                                            ? "border-violet-500 bg-violet-50 text-violet-600 dark:bg-violet-500/10 dark:text-violet-300"
+                                                            : "border-slate-300 bg-slate-50/60 text-slate-600 hover:border-violet-400 hover:bg-violet-50/60 hover:text-violet-600 dark:border-white/[0.12] dark:bg-white/[0.03] dark:text-slate-300 dark:hover:border-violet-400 dark:hover:bg-violet-500/5"
                                                     }`}
                                                 >
-                                                    <div className="flex h-12 w-12 items-center justify-center rounded-full bg-blue-500/10 text-blue-600 dark:text-blue-400">
+                                                    <div className="brand-grad flex h-12 w-12 items-center justify-center rounded-[14px] text-white shadow-lg shadow-violet-500/25">
                                                         <Upload
                                                             size={
                                                                 22
@@ -675,9 +674,9 @@ export default function CandidateScreeningPage() {
                                                     />
                                                 </label>
                                             ) : (
-                                                <div className="flex items-center justify-between rounded-xl border border-blue-200 bg-blue-50/60 px-4 py-4 dark:border-blue-500/30 dark:bg-blue-500/10">
+                                                <div className="flex items-center justify-between rounded-2xl border border-violet-200 bg-violet-50/60 px-4 py-4 dark:border-violet-500/30 dark:bg-violet-500/10">
                                                     <div className="flex min-w-0 items-center gap-3">
-                                                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-blue-500/10 text-blue-600 dark:text-blue-400">
+                                                        <div className="brand-grad flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-white shadow-lg shadow-violet-500/25">
                                                             <FileText
                                                                 size={
                                                                     20
@@ -728,7 +727,7 @@ export default function CandidateScreeningPage() {
                                         {errorMessage && (
                                             <div
                                                 role="alert"
-                                                className="rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600 dark:border-red-500/20 dark:bg-red-500/10 dark:text-red-400"
+                                                className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600 dark:border-red-500/20 dark:bg-red-500/10 dark:text-red-400"
                                             >
                                                 {
                                                     errorMessage
@@ -738,7 +737,7 @@ export default function CandidateScreeningPage() {
 
                                         {/* Captcha */}
 
-                                        <label className="flex w-fit cursor-pointer items-center gap-3 rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm text-slate-700 transition-colors hover:border-blue-300 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300">
+                                        <label className="flex w-fit cursor-pointer items-center gap-3 rounded-xl border border-slate-200 bg-slate-50/70 px-4 py-3 text-sm font-medium text-slate-700 transition-colors hover:border-violet-300 dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-slate-300">
                                             <input
                                                 type="checkbox"
                                                 checked={
@@ -753,7 +752,7 @@ export default function CandidateScreeningPage() {
                                                             .checked
                                                     )
                                                 }
-                                                className="h-4 w-4 cursor-pointer accent-blue-600"
+                                                className="h-4 w-4 cursor-pointer accent-violet-600"
                                             />
 
                                             <span>
@@ -770,7 +769,7 @@ export default function CandidateScreeningPage() {
                                                 disabled={
                                                     isSubmitting
                                                 }
-                                                className="flex w-full items-center justify-center gap-2 rounded-full bg-[#1a2b4a] px-8 py-3.5 text-sm font-semibold text-white transition-all hover:bg-[#0d1830] disabled:cursor-not-allowed disabled:opacity-60 dark:bg-blue-600 dark:hover:bg-blue-500"
+                                                className="brand-grad flex w-full items-center justify-center gap-2 rounded-xl px-8 py-4 text-sm font-bold text-white shadow-lg shadow-violet-500/25 transition-all hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-60"
                                             >
                                                 {isSubmitting ? (
                                                     <>
@@ -805,7 +804,7 @@ export default function CandidateScreeningPage() {
                                         </p>
                                     </form>
                                 </div>
-                            </MouseGlow>
+                            </div>
                         </div>
                     </AnimateIn>
                 </section>
@@ -818,13 +817,13 @@ export default function CandidateScreeningPage() {
             {showToast && (
                 <div
                     role="status"
-                    className="fixed bottom-6 right-6 z-50 flex max-w-sm items-center gap-3 rounded-xl border border-emerald-200 bg-white px-5 py-4 text-sm font-medium text-slate-800 shadow-2xl dark:border-emerald-500/20 dark:bg-slate-900 dark:text-white"
+                    className="fixed bottom-6 right-6 z-50 flex max-w-sm items-center gap-3 rounded-2xl border border-violet-200 bg-white px-5 py-4 text-sm font-medium text-slate-800 shadow-2xl dark:border-violet-500/20 dark:bg-[#0b1220] dark:text-white"
                     style={{
                         animation:
                             "candidate-toast-in 0.3s ease-out",
                     }}
                 >
-                    <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-emerald-500/10 text-emerald-600 dark:text-emerald-400">
+                    <div className="brand-grad flex h-9 w-9 shrink-0 items-center justify-center rounded-xl text-white shadow-lg shadow-violet-500/25">
                         <CheckCircle size={18} />
                     </div>
 

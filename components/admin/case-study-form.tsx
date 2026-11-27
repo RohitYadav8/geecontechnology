@@ -2,6 +2,12 @@
 
 import { FormEvent, useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
+import {
+  FileText,
+  BookOpen,
+  Image as ImageIcon,
+  Settings,
+} from "lucide-react";
 
 type CaseStudyFormData = {
   title: string;
@@ -308,7 +314,7 @@ export function CaseStudyForm({
   };
 
   const inputClass =
-    "mt-2 w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition focus:border-violet-500 focus:ring-2 focus:ring-violet-500/10 dark:border-slate-700 dark:bg-slate-950 dark:text-white";
+    "mt-2 w-full rounded-xl border border-slate-200 bg-slate-50/70 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-violet-400 focus:bg-white focus:outline-none focus:ring-4 focus:ring-violet-500/10 dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-white dark:focus:bg-white/[0.06]";
 
   /* =========================================================
      LOADING
@@ -316,8 +322,8 @@ export function CaseStudyForm({
 
   if (loading) {
     return (
-      <div className="rounded-2xl border border-slate-200 bg-white p-12 text-center shadow-sm dark:border-slate-800 dark:bg-slate-900">
-        <div className="mx-auto h-9 w-9 animate-spin rounded-full border-4 border-slate-200 border-t-violet-600" />
+      <div className="rounded-[24px] border border-slate-200/80 bg-white p-12 text-center shadow-[0_30px_70px_-45px_rgba(15,23,42,.45)] dark:border-white/[0.07] dark:bg-[#0b1220]">
+        <div className="mx-auto h-9 w-9 animate-spin rounded-full border-4 border-violet-100 border-t-violet-600 dark:border-white/[0.08] dark:border-t-violet-400" />
 
         <p className="mt-4 text-sm text-slate-500 dark:text-slate-400">
           Loading case study...
@@ -333,7 +339,7 @@ export function CaseStudyForm({
     >
       {/* Error */}
       {error && (
-        <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600 dark:border-red-900/40 dark:bg-red-950/20 dark:text-red-400">
+        <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-600 dark:border-red-500/20 dark:bg-red-500/10 dark:text-red-400">
           {error}
         </div>
       )}
@@ -342,15 +348,21 @@ export function CaseStudyForm({
           BASIC INFORMATION
       ====================================================== */}
 
-      <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-        <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
-          Basic Information
-        </h2>
+      <section className="rounded-[24px] border border-slate-200/80 bg-white p-6 shadow-[0_30px_70px_-45px_rgba(15,23,42,.45)] sm:p-7 dark:border-white/[0.07] dark:bg-[#0b1220]">
+        <div className="flex items-center gap-3 border-b border-slate-100 pb-5 dark:border-white/[0.06]">
+          <div className="brand-grad flex h-11 w-11 shrink-0 items-center justify-center rounded-[14px] text-white shadow-lg shadow-violet-500/25">
+            <FileText size={18} />
+          </div>
+
+          <h2 className="text-lg font-extrabold tracking-[-0.02em] text-slate-900 dark:text-white">
+            Basic Information
+          </h2>
+        </div>
 
         <div className="mt-6 grid gap-5 md:grid-cols-2">
           {/* Title */}
           <div>
-            <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
+            <label className="text-[13px] font-semibold text-slate-700 dark:text-slate-300">
               Title *
             </label>
 
@@ -370,7 +382,7 @@ export function CaseStudyForm({
 
           {/* Slug */}
           <div>
-            <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
+            <label className="text-[13px] font-semibold text-slate-700 dark:text-slate-300">
               Slug *
             </label>
 
@@ -393,7 +405,7 @@ export function CaseStudyForm({
 
           {/* Client */}
           <div>
-            <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
+            <label className="text-[13px] font-semibold text-slate-700 dark:text-slate-300">
               Client Name
             </label>
 
@@ -413,7 +425,7 @@ export function CaseStudyForm({
 
           {/* Industry */}
           <div>
-            <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
+            <label className="text-[13px] font-semibold text-slate-700 dark:text-slate-300">
               Industry
             </label>
 
@@ -437,15 +449,21 @@ export function CaseStudyForm({
           CONTENT
       ====================================================== */}
 
-      <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-        <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
-          Project Content
-        </h2>
+      <section className="rounded-[24px] border border-slate-200/80 bg-white p-6 shadow-[0_30px_70px_-45px_rgba(15,23,42,.45)] sm:p-7 dark:border-white/[0.07] dark:bg-[#0b1220]">
+        <div className="flex items-center gap-3 border-b border-slate-100 pb-5 dark:border-white/[0.06]">
+          <div className="brand-grad flex h-11 w-11 shrink-0 items-center justify-center rounded-[14px] text-white shadow-lg shadow-violet-500/25">
+            <BookOpen size={18} />
+          </div>
+
+          <h2 className="text-lg font-extrabold tracking-[-0.02em] text-slate-900 dark:text-white">
+            Project Content
+          </h2>
+        </div>
 
         <div className="mt-6 space-y-5">
           {/* Short Description */}
           <div>
-            <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
+            <label className="text-[13px] font-semibold text-slate-700 dark:text-slate-300">
               Short Description *
             </label>
 
@@ -467,7 +485,7 @@ export function CaseStudyForm({
 
           {/* Full Description */}
           <div>
-            <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
+            <label className="text-[13px] font-semibold text-slate-700 dark:text-slate-300">
               Full Description
             </label>
 
@@ -488,7 +506,7 @@ export function CaseStudyForm({
 
           {/* Challenge */}
           <div>
-            <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
+            <label className="text-[13px] font-semibold text-slate-700 dark:text-slate-300">
               Challenge
             </label>
 
@@ -509,7 +527,7 @@ export function CaseStudyForm({
 
           {/* Solution */}
           <div>
-            <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
+            <label className="text-[13px] font-semibold text-slate-700 dark:text-slate-300">
               Solution
             </label>
 
@@ -530,7 +548,7 @@ export function CaseStudyForm({
 
           {/* Results */}
           <div>
-            <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
+            <label className="text-[13px] font-semibold text-slate-700 dark:text-slate-300">
               Results
             </label>
 
@@ -555,15 +573,21 @@ export function CaseStudyForm({
           MEDIA
       ====================================================== */}
 
-      <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-        <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
-          Media & Technology
-        </h2>
+      <section className="rounded-[24px] border border-slate-200/80 bg-white p-6 shadow-[0_30px_70px_-45px_rgba(15,23,42,.45)] sm:p-7 dark:border-white/[0.07] dark:bg-[#0b1220]">
+        <div className="flex items-center gap-3 border-b border-slate-100 pb-5 dark:border-white/[0.06]">
+          <div className="brand-grad flex h-11 w-11 shrink-0 items-center justify-center rounded-[14px] text-white shadow-lg shadow-violet-500/25">
+            <ImageIcon size={18} />
+          </div>
+
+          <h2 className="text-lg font-extrabold tracking-[-0.02em] text-slate-900 dark:text-white">
+            Media & Technology
+          </h2>
+        </div>
 
         <div className="mt-6 space-y-5">
           {/* Image */}
           <div>
-            <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
+            <label className="text-[13px] font-semibold text-slate-700 dark:text-slate-300">
               Image URL
             </label>
 
@@ -583,7 +607,7 @@ export function CaseStudyForm({
 
           {/* Technologies */}
           <div>
-            <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
+            <label className="text-[13px] font-semibold text-slate-700 dark:text-slate-300">
               Technologies
             </label>
 
@@ -602,7 +626,7 @@ export function CaseStudyForm({
               className={inputClass}
             />
 
-            <p className="mt-2 text-xs text-slate-400">
+            <p className="mt-2 text-xs text-slate-400 dark:text-slate-500">
               Technologies ko comma se
               separate karo.
             </p>
@@ -610,7 +634,7 @@ export function CaseStudyForm({
 
           {/* Project URL */}
           <div>
-            <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
+            <label className="text-[13px] font-semibold text-slate-700 dark:text-slate-300">
               Project URL
             </label>
 
@@ -636,15 +660,21 @@ export function CaseStudyForm({
           SETTINGS
       ====================================================== */}
 
-      <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-        <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
-          Settings
-        </h2>
+      <section className="rounded-[24px] border border-slate-200/80 bg-white p-6 shadow-[0_30px_70px_-45px_rgba(15,23,42,.45)] sm:p-7 dark:border-white/[0.07] dark:bg-[#0b1220]">
+        <div className="flex items-center gap-3 border-b border-slate-100 pb-5 dark:border-white/[0.06]">
+          <div className="brand-grad flex h-11 w-11 shrink-0 items-center justify-center rounded-[14px] text-white shadow-lg shadow-violet-500/25">
+            <Settings size={18} />
+          </div>
+
+          <h2 className="text-lg font-extrabold tracking-[-0.02em] text-slate-900 dark:text-white">
+            Settings
+          </h2>
+        </div>
 
         <div className="mt-6 grid gap-5 md:grid-cols-2">
           {/* Order */}
           <div>
-            <label className="text-sm font-medium text-slate-700 dark:text-slate-300">
+            <label className="text-[13px] font-semibold text-slate-700 dark:text-slate-300">
               Display Order
             </label>
 
@@ -666,7 +696,7 @@ export function CaseStudyForm({
 
           {/* Active */}
           <div className="flex items-center pt-7">
-            <label className="flex cursor-pointer items-center gap-3">
+            <label className="flex w-full cursor-pointer items-center gap-3 rounded-2xl border border-slate-200 bg-slate-50/60 p-4 transition-colors hover:border-violet-300 hover:bg-violet-50/40 dark:border-white/[0.08] dark:bg-white/[0.03] dark:hover:border-violet-400/30">
               <input
                 type="checkbox"
                 checked={
@@ -678,10 +708,10 @@ export function CaseStudyForm({
                     e.target.checked
                   )
                 }
-                className="h-5 w-5 rounded border-slate-300 text-violet-600 focus:ring-violet-500"
+                className="h-5 w-5 shrink-0 rounded border-slate-300 accent-violet-600 focus:ring-violet-500"
               />
 
-              <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
+              <span className="text-sm font-bold text-slate-800 dark:text-slate-200">
                 Case study is active
               </span>
             </label>
@@ -693,7 +723,7 @@ export function CaseStudyForm({
           ACTIONS
       ====================================================== */}
 
-      <div className="flex justify-end gap-3">
+      <div className="flex flex-wrap justify-end gap-3 rounded-[24px] border border-slate-200/80 bg-white p-4 shadow-[0_30px_70px_-45px_rgba(15,23,42,.45)] sm:p-5 dark:border-white/[0.07] dark:bg-[#0b1220]">
         <button
           type="button"
           onClick={() =>
@@ -701,7 +731,7 @@ export function CaseStudyForm({
               "/admin/case-studies"
             )
           }
-          className="rounded-xl border border-slate-300 bg-white px-6 py-3 text-sm font-semibold text-slate-700 transition hover:bg-slate-100 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300"
+          className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-6 py-3 text-sm font-bold text-slate-700 transition-colors hover:border-violet-300 hover:text-violet-600 disabled:cursor-not-allowed disabled:opacity-60 dark:border-white/[0.1] dark:bg-white/[0.04] dark:text-slate-200 dark:hover:text-violet-300"
         >
           Cancel
         </button>
@@ -709,7 +739,7 @@ export function CaseStudyForm({
         <button
           type="submit"
           disabled={saving}
-          className="rounded-xl bg-violet-600 px-6 py-3 text-sm font-semibold text-white transition hover:bg-violet-500 disabled:cursor-not-allowed disabled:opacity-50"
+          className="brand-grad inline-flex items-center justify-center gap-2 rounded-xl px-6 py-3 text-sm font-bold text-white shadow-lg shadow-violet-500/25 transition-all duration-300 hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0"
         >
           {saving
             ? "Saving..."

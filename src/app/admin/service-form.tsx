@@ -1036,13 +1036,13 @@ export function ServiceForm({
   // =========================================================
 
   const inputClass =
-    "w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-900 focus:border-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500/10 dark:border-slate-700 dark:bg-slate-900 dark:text-white";
+    "w-full rounded-xl border border-slate-200 bg-slate-50/70 px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 transition focus:border-violet-400 focus:bg-white focus:outline-none focus:ring-4 focus:ring-violet-500/10 dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-white dark:focus:bg-white/[0.06]";
 
   const labelClass =
-    "mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300";
+    "mb-1.5 block text-[13px] font-semibold text-slate-700 dark:text-slate-300";
 
   const helpClass =
-    "mt-1 text-xs text-slate-400";
+    "mt-1.5 text-xs text-slate-400 dark:text-slate-500";
 
   // =========================================================
   // UI
@@ -1053,22 +1053,25 @@ export function ServiceForm({
       onSubmit={
         handleSubmit
       }
-      className="max-w-4xl space-y-8"
+      className="w-full max-w-4xl space-y-6 sm:space-y-8"
     >
       {/* ========================================
           BULK JSON IMPORT
       ======================================== */}
 
-      <div className="overflow-hidden rounded-2xl border border-violet-200 bg-white dark:border-violet-900/60 dark:bg-slate-900">
-        <div className="border-b border-violet-100 bg-gradient-to-r from-violet-50 via-purple-50 to-indigo-50 px-6 py-5 dark:border-violet-900/40 dark:from-violet-950/40 dark:via-purple-950/30 dark:to-indigo-950/30">
-          <div className="flex flex-col justify-between gap-3 sm:flex-row sm:items-center">
+      <div className="overflow-hidden rounded-[24px] border border-violet-200/70 bg-white shadow-[0_30px_70px_-45px_rgba(91,33,182,.45)] dark:border-violet-400/15 dark:bg-[#0b1220]">
+        <div className="brand-grad relative overflow-hidden px-6 py-6 text-white sm:px-7">
+          <div className="pointer-events-none absolute -right-16 -top-20 h-52 w-52 rounded-full bg-violet-300/40 blur-3xl" />
+          <div className="pointer-events-none absolute -bottom-24 -left-12 h-52 w-52 rounded-full bg-cyan-300/30 blur-3xl" />
+
+          <div className="relative flex flex-col justify-between gap-3 sm:flex-row sm:items-center">
             <div>
-              <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
+              <h2 className="text-lg font-extrabold tracking-[-0.02em] text-white sm:text-xl">
                 Bulk Service
                 Import
               </h2>
 
-              <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+              <p className="mt-1 text-sm text-indigo-50/90">
                 Paste complete
                 service JSON and
                 automatically fill
@@ -1076,13 +1079,13 @@ export function ServiceForm({
               </p>
             </div>
 
-            <div className="w-fit rounded-full border border-violet-200 bg-white px-3 py-1 text-xs font-semibold text-violet-600 shadow-sm dark:border-violet-800 dark:bg-violet-950/60 dark:text-violet-300">
+            <div className="w-fit rounded-full border border-white/30 bg-white/[0.14] px-3.5 py-1.5 text-[11px] font-bold uppercase tracking-[0.16em] text-white backdrop-blur-xl">
               Quick Import
             </div>
           </div>
         </div>
 
-        <div className="p-6">
+        <div className="p-6 sm:p-7">
           <label
             className={
               labelClass
@@ -1162,7 +1165,7 @@ export function ServiceForm({
               onClick={
                 handleBulkImport
               }
-              className="rounded-lg bg-violet-600 px-5 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-violet-500 focus:outline-none focus:ring-2 focus:ring-violet-500 focus:ring-offset-2 dark:focus:ring-offset-slate-900"
+              className="brand-grad rounded-xl px-5 py-3 text-sm font-bold text-white shadow-lg shadow-violet-500/25 transition hover:-translate-y-0.5 focus:outline-none focus:ring-4 focus:ring-violet-500/20"
             >
               Import & Fill
               All Fields
@@ -1184,7 +1187,7 @@ export function ServiceForm({
                     ""
                   );
                 }}
-                className="rounded-lg border border-slate-200 bg-white px-5 py-2.5 text-sm font-medium text-slate-600 transition hover:bg-slate-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:bg-slate-800"
+                className="rounded-xl border border-slate-200 bg-white px-5 py-3 text-sm font-bold text-slate-700 transition hover:border-violet-300 hover:text-violet-600 dark:border-white/[0.1] dark:bg-white/[0.04] dark:text-slate-200 dark:hover:border-violet-400/40 dark:hover:text-violet-300"
               >
                 Clear JSON
               </button>
@@ -1192,7 +1195,7 @@ export function ServiceForm({
           </div>
 
           {importMessage && (
-            <div className="mt-5 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-700 dark:border-emerald-900 dark:bg-emerald-950/30 dark:text-emerald-400">
+            <div className="mt-5 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-semibold text-emerald-700 dark:border-emerald-500/20 dark:bg-emerald-500/10 dark:text-emerald-300">
               {
                 importMessage
               }
@@ -1205,8 +1208,9 @@ export function ServiceForm({
           BASIC INFORMATION
       ======================================== */}
 
-      <div className="rounded-2xl border border-slate-200 bg-white p-6 dark:border-slate-800 dark:bg-slate-900">
-        <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
+      <div className="rounded-[24px] border border-slate-200/80 bg-white p-6 shadow-[0_30px_70px_-45px_rgba(15,23,42,.45)] sm:p-7 dark:border-white/[0.07] dark:bg-[#0b1220]">
+        <h2 className="flex items-center gap-3 text-lg font-extrabold tracking-[-0.02em] text-slate-950 dark:text-white">
+          <span className="brand-grad h-6 w-1.5 shrink-0 rounded-full" />
           Basic Information
         </h2>
 
@@ -1350,8 +1354,9 @@ export function ServiceForm({
           MEDIA & URL
       ======================================== */}
 
-      <div className="rounded-2xl border border-slate-200 bg-white p-6 dark:border-slate-800 dark:bg-slate-900">
-        <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
+      <div className="rounded-[24px] border border-slate-200/80 bg-white p-6 shadow-[0_30px_70px_-45px_rgba(15,23,42,.45)] sm:p-7 dark:border-white/[0.07] dark:bg-[#0b1220]">
+        <h2 className="flex items-center gap-3 text-lg font-extrabold tracking-[-0.02em] text-slate-950 dark:text-white">
+          <span className="brand-grad h-6 w-1.5 shrink-0 rounded-full" />
           Media & URL
         </h2>
 
@@ -1414,9 +1419,9 @@ export function ServiceForm({
               Image
             </label>
 
-            <div className="rounded-xl border border-slate-200 p-4 dark:border-slate-700">
+            <div className="rounded-[18px] border border-slate-200/80 bg-slate-50/50 p-4 dark:border-white/[0.07] dark:bg-white/[0.02]">
               {lightBannerPreview ? (
-                <div className="mb-4 overflow-hidden rounded-xl border border-slate-200 bg-slate-50 dark:border-slate-700 dark:bg-slate-950">
+                <div className="mb-4 overflow-hidden rounded-[14px] border border-slate-200 bg-white dark:border-white/[0.07] dark:bg-[#060b16]">
                   <img
                     src={
                       lightBannerPreview
@@ -1426,7 +1431,7 @@ export function ServiceForm({
                   />
                 </div>
               ) : (
-                <div className="mb-4 flex h-40 items-center justify-center rounded-xl border border-dashed border-slate-300 bg-slate-50 px-4 text-center text-sm text-slate-400 dark:border-slate-700 dark:bg-slate-950">
+                <div className="mb-4 flex h-40 items-center justify-center rounded-[14px] border border-dashed border-violet-200 bg-white px-4 text-center text-sm text-slate-400 dark:border-white/[0.1] dark:bg-[#060b16]">
                   No light
                   banner selected
                 </div>
@@ -1438,7 +1443,7 @@ export function ServiceForm({
                 onChange={
                   handleLightBannerChange
                 }
-                className="block w-full cursor-pointer rounded-lg border border-slate-200 bg-white text-sm text-slate-500 file:mr-4 file:cursor-pointer file:border-0 file:bg-violet-50 file:px-4 file:py-2.5 file:text-sm file:font-semibold file:text-violet-600 hover:file:bg-violet-100 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-400 dark:file:bg-violet-500/10 dark:file:text-violet-400"
+                className="block w-full cursor-pointer rounded-xl border border-slate-200 bg-white text-sm text-slate-500 file:mr-4 file:cursor-pointer file:border-0 file:bg-violet-50 file:px-4 file:py-2.5 file:text-sm file:font-bold file:text-violet-700 hover:file:bg-violet-100 dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-slate-400 dark:file:bg-violet-500/15 dark:file:text-violet-300"
               />
             </div>
 
@@ -1467,9 +1472,9 @@ export function ServiceForm({
               Dark Banner Image
             </label>
 
-            <div className="rounded-xl border border-slate-200 p-4 dark:border-slate-700">
+            <div className="rounded-[18px] border border-slate-200/80 bg-slate-50/50 p-4 dark:border-white/[0.07] dark:bg-white/[0.02]">
               {darkBannerPreview ? (
-                <div className="mb-4 overflow-hidden rounded-xl border border-slate-700 bg-slate-950">
+                <div className="mb-4 overflow-hidden rounded-[14px] border border-slate-700 bg-slate-950">
                   <img
                     src={
                       darkBannerPreview
@@ -1479,7 +1484,7 @@ export function ServiceForm({
                   />
                 </div>
               ) : (
-                <div className="mb-4 flex h-40 items-center justify-center rounded-xl border border-dashed border-slate-700 bg-slate-950 px-4 text-center text-sm text-slate-500">
+                <div className="mb-4 flex h-40 items-center justify-center rounded-[14px] border border-dashed border-slate-700 bg-slate-950 px-4 text-center text-sm text-slate-500">
                   No dark
                   banner selected
                 </div>
@@ -1491,7 +1496,7 @@ export function ServiceForm({
                 onChange={
                   handleDarkBannerChange
                 }
-                className="block w-full cursor-pointer rounded-lg border border-slate-200 bg-white text-sm text-slate-500 file:mr-4 file:cursor-pointer file:border-0 file:bg-violet-50 file:px-4 file:py-2.5 file:text-sm file:font-semibold file:text-violet-600 hover:file:bg-violet-100 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-400 dark:file:bg-violet-500/10 dark:file:text-violet-400"
+                className="block w-full cursor-pointer rounded-xl border border-slate-200 bg-white text-sm text-slate-500 file:mr-4 file:cursor-pointer file:border-0 file:bg-violet-50 file:px-4 file:py-2.5 file:text-sm file:font-bold file:text-violet-700 hover:file:bg-violet-100 dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-slate-400 dark:file:bg-violet-500/15 dark:file:text-violet-300"
               />
             </div>
 
@@ -1586,8 +1591,9 @@ export function ServiceForm({
           DETAIL PAGE CONTENT
       ======================================== */}
 
-      <div className="rounded-2xl border border-slate-200 bg-white p-6 dark:border-slate-800 dark:bg-slate-900">
-        <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
+      <div className="rounded-[24px] border border-slate-200/80 bg-white p-6 shadow-[0_30px_70px_-45px_rgba(15,23,42,.45)] sm:p-7 dark:border-white/[0.07] dark:bg-[#0b1220]">
+        <h2 className="flex items-center gap-3 text-lg font-extrabold tracking-[-0.02em] text-slate-950 dark:text-white">
+          <span className="brand-grad h-6 w-1.5 shrink-0 rounded-full" />
           Detail Page Content
         </h2>
 
@@ -1826,10 +1832,11 @@ export function ServiceForm({
           CUSTOM SECTIONS
       ======================================== */}
 
-      <div className="rounded-2xl border border-slate-200 bg-white p-6 dark:border-slate-800 dark:bg-slate-900">
-        <div className="flex items-center justify-between gap-4">
+      <div className="rounded-[24px] border border-slate-200/80 bg-white p-6 shadow-[0_30px_70px_-45px_rgba(15,23,42,.45)] sm:p-7 dark:border-white/[0.07] dark:bg-[#0b1220]">
+        <div className="flex flex-wrap items-center justify-between gap-4">
           <div>
-            <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
+            <h2 className="flex items-center gap-3 text-lg font-extrabold tracking-[-0.02em] text-slate-950 dark:text-white">
+              <span className="brand-grad h-6 w-1.5 shrink-0 rounded-full" />
               Custom Sections
             </h2>
 
@@ -1845,7 +1852,7 @@ export function ServiceForm({
             onClick={
               addSection
             }
-            className="rounded-lg bg-violet-50 px-4 py-2 text-sm font-semibold text-violet-600 transition hover:bg-violet-100 dark:bg-violet-500/10 dark:text-violet-400 dark:hover:bg-violet-500/20"
+            className="brand-grad rounded-xl px-4 py-2.5 text-sm font-bold text-white shadow-lg shadow-violet-500/25 transition hover:-translate-y-0.5"
           >
             + Add Section
           </button>
@@ -1853,7 +1860,7 @@ export function ServiceForm({
 
         {form.sections
           .length === 0 ? (
-          <div className="mt-6 rounded-xl border border-dashed border-slate-300 p-8 text-center text-sm text-slate-400 dark:border-slate-700">
+          <div className="mt-6 rounded-[18px] border border-dashed border-violet-200 bg-violet-50/30 p-8 text-center text-sm text-slate-400 dark:border-white/[0.1] dark:bg-white/[0.02]">
             No custom sections
             added.
           </div>
@@ -1868,10 +1875,10 @@ export function ServiceForm({
                   key={
                     index
                   }
-                  className="rounded-xl border border-slate-200 p-5 dark:border-slate-700"
+                  className="rounded-[18px] border border-slate-200/80 bg-slate-50/50 p-5 transition hover:border-violet-200 dark:border-white/[0.07] dark:bg-white/[0.02] dark:hover:border-violet-400/25"
                 >
                   <div className="flex items-center justify-between">
-                    <p className="text-sm font-semibold text-slate-700 dark:text-slate-300">
+                    <p className="brand-text text-[12px] font-extrabold uppercase tracking-[0.16em]">
                       Section{" "}
                       {index +
                         1}
@@ -1884,7 +1891,7 @@ export function ServiceForm({
                           index
                         )
                       }
-                      className="text-sm font-medium text-red-500 hover:text-red-600"
+                      className="rounded-xl border border-red-200 bg-red-50 px-3 py-1.5 text-xs font-bold text-red-600 transition hover:bg-red-100 dark:border-red-500/20 dark:bg-red-500/10 dark:text-red-400 dark:hover:bg-red-500/20"
                     >
                       Remove
                     </button>
@@ -1942,8 +1949,9 @@ export function ServiceForm({
           DISPLAY SETTINGS
       ======================================== */}
 
-      <div className="rounded-2xl border border-slate-200 bg-white p-6 dark:border-slate-800 dark:bg-slate-900">
-        <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
+      <div className="rounded-[24px] border border-slate-200/80 bg-white p-6 shadow-[0_30px_70px_-45px_rgba(15,23,42,.45)] sm:p-7 dark:border-white/[0.07] dark:bg-[#0b1220]">
+        <h2 className="flex items-center gap-3 text-lg font-extrabold tracking-[-0.02em] text-slate-950 dark:text-white">
+          <span className="brand-grad h-6 w-1.5 shrink-0 rounded-full" />
           Display Settings
         </h2>
 
@@ -1987,10 +1995,10 @@ export function ServiceForm({
 
         {/* Active */}
 
-        <div className="mt-6 rounded-xl border border-slate-200 p-4 dark:border-slate-700">
+        <div className="mt-6 rounded-[18px] border border-slate-200/80 bg-slate-50/50 p-4 dark:border-white/[0.07] dark:bg-white/[0.02]">
           <div className="flex items-center justify-between gap-4">
             <div>
-              <p className="text-sm font-medium text-slate-700 dark:text-slate-300">
+              <p className="text-sm font-bold text-slate-800 dark:text-slate-200">
                 Active Service
               </p>
 
@@ -2019,9 +2027,9 @@ export function ServiceForm({
               aria-pressed={
                 form.isActive
               }
-              className={`relative h-7 w-12 rounded-full transition-colors ${
+              className={`relative h-7 w-12 shrink-0 rounded-full transition-colors ${
                 form.isActive
-                  ? "bg-violet-600"
+                  ? "brand-grad shadow-lg shadow-violet-500/25"
                   : "bg-slate-300 dark:bg-slate-700"
               }`}
             >
@@ -2042,7 +2050,7 @@ export function ServiceForm({
       ======================================== */}
 
       {error && (
-        <p className="rounded-md border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600 dark:border-red-900 dark:bg-red-950 dark:text-red-400">
+        <p className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-600 dark:border-red-500/20 dark:bg-red-500/10 dark:text-red-400">
           {error}
         </p>
       )}
@@ -2057,7 +2065,7 @@ export function ServiceForm({
           disabled={
             saving
           }
-          className="rounded-lg bg-violet-600 px-6 py-2.5 text-sm font-semibold text-white hover:bg-violet-500 disabled:cursor-not-allowed disabled:opacity-60"
+          className="brand-grad rounded-xl px-6 py-3 text-sm font-bold text-white shadow-lg shadow-violet-500/25 transition hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0"
         >
           {saving
             ? "Saving..."
@@ -2076,7 +2084,7 @@ export function ServiceForm({
           disabled={
             saving
           }
-          className="rounded-lg border border-slate-200 px-6 py-2.5 text-sm font-medium text-slate-600 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-60 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
+          className="rounded-xl border border-slate-200 bg-white px-6 py-3 text-sm font-bold text-slate-700 transition hover:border-violet-300 hover:text-violet-600 disabled:cursor-not-allowed disabled:opacity-60 dark:border-white/[0.1] dark:bg-white/[0.04] dark:text-slate-200 dark:hover:border-violet-400/40 dark:hover:text-violet-300"
         >
           Cancel
         </button>

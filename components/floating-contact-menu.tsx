@@ -182,16 +182,7 @@ export function FloatingContactMenu() {
 
   return (
     <div
-      className="
-        fixed
-        right-8
-        top-[55%]
-        z-[9999]
-
-        -translate-y-1/2
-
-        sm:right-12
-      "
+      className="fixed right-8 top-[55%] z-[9999] -translate-y-1/2 sm:right-12"
     >
       {/* =================================================
           RADIAL MENU
@@ -200,16 +191,7 @@ export function FloatingContactMenu() {
       <AnimatePresence>
         {open && (
           <div
-            className="
-              absolute
-              right-8
-              top-8
-
-              h-0
-              w-0
-
-              overflow-visible
-            "
+            className="absolute right-8 top-8 h-0 w-0 overflow-visible"
           >
             {menuItems.map((item, index) => {
               const position = positions[index];
@@ -246,38 +228,7 @@ export function FloatingContactMenu() {
                   whileHover={{
                     scale: 1.12,
                   }}
-                  className="
-                    group
-
-                    absolute
-                    left-0
-                    top-0
-
-                    flex
-                    h-12
-                    w-12
-                    items-center
-                    justify-center
-
-                    rounded-full
-
-                    border
-                    border-white/30
-
-                    bg-gradient-to-br
-                    from-violet-600
-                    via-violet-500
-                    to-blue-500
-
-                    text-white
-
-                    shadow-[0_12px_32px_rgba(124,58,237,0.42)]
-
-                    transition-shadow
-                    duration-300
-
-                    hover:shadow-[0_14px_38px_rgba(124,58,237,0.55)]
-                  "
+                  className="group absolute left-0 top-0 flex h-12 w-12 items-center justify-center rounded-full border border-white/30 bg-gradient-to-br from-violet-600 via-violet-500 to-blue-500 text-white shadow-[0_12px_32px_rgba(124,58,237,0.42)] transition-shadow duration-300 hover:shadow-[0_14px_38px_rgba(124,58,237,0.55)]"
                 >
                   {/* LUCIDE ICON */}
 
@@ -299,38 +250,7 @@ export function FloatingContactMenu() {
                   ========================================= */}
 
                   <span
-                    className="
-                      pointer-events-none
-
-                      absolute
-                      right-[58px]
-                      top-1/2
-
-                      -translate-y-1/2
-
-                      whitespace-nowrap
-
-                      rounded-lg
-
-                      bg-slate-950/95
-
-                      px-2.5
-                      py-1.5
-
-                      text-[11px]
-                      font-medium
-                      text-white
-
-                      opacity-0
-
-                      shadow-lg
-
-                      transition-all
-                      duration-200
-
-                      group-hover:-translate-x-1
-                      group-hover:opacity-100
-                    "
+                    className="pointer-events-none absolute right-[58px] top-1/2 -translate-y-1/2 whitespace-nowrap rounded-lg bg-slate-950/95 px-2.5 py-1.5 text-[11px] font-medium text-white opacity-0 shadow-lg transition-all duration-200 group-hover:-translate-x-1 group-hover:opacity-100"
                   >
                     {item.label}
                   </span>
@@ -349,11 +269,7 @@ export function FloatingContactMenu() {
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={item.label}
-                    className="
-                      absolute
-                      left-0
-                      top-0
-                    "
+                    className="absolute left-0 top-0"
                   >
                     {button}
                   </a>
@@ -370,11 +286,7 @@ export function FloatingContactMenu() {
                   href={item.href}
                   aria-label={item.label}
                   onClick={() => setOpen(false)}
-                  className="
-                    absolute
-                    left-0
-                    top-0
-                  "
+                  className="absolute left-0 top-0"
                 >
                   {button}
                 </Link>
@@ -402,55 +314,14 @@ export function FloatingContactMenu() {
             ? "Close contact menu"
             : "Open contact menu"
         }
-        className="
-          relative
-          z-20
-
-          flex
-          h-16
-          w-16
-          items-center
-          justify-center
-
-          rounded-full
-
-          border
-          border-white/30
-
-          bg-gradient-to-br
-          from-violet-600
-          via-violet-500
-          to-sky-400
-
-          text-white
-
-          shadow-[0_15px_40px_rgba(124,58,237,0.48)]
-
-          transition-shadow
-          duration-300
-
-          hover:shadow-[0_18px_48px_rgba(124,58,237,0.58)]
-        "
+        className="relative z-20 flex h-16 w-16 items-center justify-center rounded-full border border-white/30 bg-gradient-to-br from-violet-600 via-violet-500 to-sky-400 text-white shadow-[0_15px_40px_rgba(124,58,237,0.48)] transition-shadow duration-300 hover:shadow-[0_18px_48px_rgba(124,58,237,0.58)]"
       >
         {/* ===============================================
             OUTER GLOW
         =============================================== */}
 
         <span
-          className="
-            pointer-events-none
-
-            absolute
-            inset-[-10px]
-
-            -z-10
-
-            rounded-full
-
-            bg-violet-500/15
-
-            blur-md
-          "
+          className="pointer-events-none absolute inset-[-10px] -z-10 rounded-full bg-violet-500/15 blur-md"
         />
 
         {/* ===============================================
