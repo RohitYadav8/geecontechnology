@@ -1,11 +1,13 @@
 "use client";
 
 import Image from "next/image";
+import { Check } from "lucide-react";
 
 import { Navbar } from "../../../../components/navbar";
 import { Footer } from "../../../../components/footer";
 import { AnimateIn } from "../../../../components/animate-in";
 import { ScrollProgress } from "../../../../components/scroll-progress";
+import { FloatingBlob } from "../../../../components/floating-blob";
 
 const HERO_SRC = "/core.png";
 
@@ -63,118 +65,122 @@ const principles = [
 
 export default function CorePractisePage() {
   return (
-    <div className="min-h-screen overflow-hidden bg-white text-slate-900 dark:bg-slate-950 dark:text-white">
+    <div className="relative min-h-screen overflow-hidden bg-slate-50 text-slate-900 dark:bg-[#060b16] dark:text-white">
       <ScrollProgress />
 
       <Navbar />
 
-      <main>
+      <main className="relative">
         {/* =====================================================
             HERO
         ===================================================== */}
-        <section className="relative w-full overflow-hidden">
-          <div className="relative h-[300px] w-full sm:h-[380px] lg:h-[440px]">
-            <Image
-              src={HERO_SRC}
-              alt="Geecon Core Practise"
-              fill
-              priority
-              quality={100}
-              sizes="100vw"
-              className="object-cover object-center"
-            />
+        <section className="brand-grad relative overflow-hidden px-4 pb-40 pt-12 text-white sm:px-8 sm:pb-44 sm:pt-16 lg:px-10">
+          <FloatingBlob
+            className="-left-40 top-24 h-[460px] w-[460px]"
+            color="bg-cyan-300/35"
+            duration={18}
+          />
 
-            {/* Image overlay */}
-            <div className="pointer-events-none absolute inset-0 bg-gradient-to-b from-black/5 via-transparent to-black/35" />
+          <FloatingBlob
+            className="-right-28 -top-24 h-[420px] w-[420px]"
+            color="bg-violet-300/40"
+            duration={16}
+          />
 
-            <div className="pointer-events-none absolute inset-0 bg-gradient-to-r from-blue-950/10 via-transparent to-cyan-950/10" />
+          <div
+            className="pointer-events-none absolute inset-0 opacity-[0.07]"
+            style={{
+              backgroundImage:
+                "linear-gradient(rgba(255,255,255,.6) 1px, transparent 1px), linear-gradient(90deg,rgba(255,255,255,.6) 1px,transparent 1px)",
+              backgroundSize: "56px 56px",
+            }}
+          />
 
-            {/* Bottom glow */}
-            <div className="pointer-events-none absolute bottom-0 left-1/2 h-32 w-[70%] -translate-x-1/2 rounded-full bg-cyan-400/10 blur-3xl" />
-          </div>
+          <AnimateIn>
+            <div className="relative mx-auto max-w-6xl rounded-[28px] border border-white/30 bg-white/15 p-2 shadow-[0_30px_80px_-30px_rgba(15,23,42,.55)] backdrop-blur-xl">
+              <div className="relative h-[220px] w-full overflow-hidden rounded-[22px] sm:h-[320px] lg:h-[400px]">
+                <Image
+                  src={HERO_SRC}
+                  alt="Geecon Core Practise"
+                  fill
+                  priority
+                  quality={100}
+                  sizes="(max-width: 1200px) 100vw, 1150px"
+                  className="object-cover object-center"
+                />
+
+                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-violet-950/30 via-transparent to-transparent" />
+              </div>
+            </div>
+          </AnimateIn>
         </section>
 
         {/* =====================================================
             CONTENT
         ===================================================== */}
-        <section className="relative overflow-hidden bg-white px-6 py-20 sm:px-10 sm:py-24 lg:px-12 lg:py-28 dark:bg-slate-950">
-          {/* Background glow */}
-          <div className="pointer-events-none absolute left-1/2 top-0 h-[500px] w-[800px] -translate-x-1/2 rounded-full bg-blue-500/[0.035] blur-3xl dark:bg-cyan-500/[0.035]" />
+        <section className="relative z-10 mx-auto -mt-28 max-w-5xl px-4 pb-24 sm:-mt-32 sm:px-6 lg:px-8 lg:pb-28">
+          {/* =====================================================
+              INTRO CARD
+          ===================================================== */}
+          <AnimateIn>
+            <div className="relative mb-8 overflow-hidden rounded-[32px] border border-slate-100 bg-white p-7 shadow-[0_40px_100px_-40px_rgba(15,23,42,.35)] sm:mb-10 sm:p-10 lg:p-12 dark:border-white/[0.07] dark:bg-[#0b1220]">
+              <div className="pointer-events-none absolute -right-24 -top-24 h-64 w-64 rounded-full bg-violet-400/10 blur-3xl" />
 
-          <div className="relative mx-auto max-w-5xl">
-            {/* =====================================================
-                INTRO CARD
-            ===================================================== */}
-            <AnimateIn>
-              <div className="group relative mb-16 overflow-hidden rounded-[30px] border border-slate-200 bg-white p-7 shadow-[0_15px_60px_-25px_rgba(15,23,42,0.18)] transition-all duration-500 hover:-translate-y-1 hover:border-blue-300 hover:shadow-[0_25px_80px_-25px_rgba(37,99,235,0.18)] sm:p-10 lg:p-12 dark:border-slate-800 dark:bg-slate-900/70 dark:shadow-[0_15px_60px_-25px_rgba(0,0,0,0.3)] dark:hover:border-cyan-400/40 dark:hover:shadow-[0_25px_80px_-25px_rgba(34,211,238,0.12)]">
-                {/* Hover glow */}
-                <div className="pointer-events-none absolute -right-32 -top-32 h-72 w-72 rounded-full bg-blue-500/0 blur-3xl transition-all duration-700 group-hover:bg-blue-500/10 dark:group-hover:bg-cyan-400/10" />
+              <div className="brand-grad absolute bottom-0 left-0 top-0 w-1" />
 
-                <div className="pointer-events-none absolute -bottom-32 -left-32 h-72 w-72 rounded-full bg-cyan-400/0 blur-3xl transition-all duration-700 group-hover:bg-cyan-400/10" />
+              <p className="relative z-10 text-base leading-8 text-slate-700 sm:text-lg sm:leading-9 dark:text-slate-300">
+                {intro}
+              </p>
+            </div>
+          </AnimateIn>
 
-                {/* Accent line */}
-                <div className="absolute bottom-0 left-0 top-0 w-1 origin-bottom scale-y-0 bg-gradient-to-b from-blue-600 via-cyan-400 to-blue-600 transition-transform duration-500 group-hover:scale-y-100" />
+          {/* =====================================================
+              PRINCIPLES
+          ===================================================== */}
+          <div className="space-y-6 sm:space-y-8">
+            {principles.map((principle, index) => (
+              <AnimateIn
+                key={principle.title}
+                delay={Math.min(index * 0.05, 0.3)}
+              >
+                <article className="group relative overflow-hidden rounded-[26px] border border-slate-200/80 bg-white p-7 shadow-[0_20px_60px_-40px_rgba(15,23,42,.25)] transition-all duration-500 hover:-translate-y-1 hover:border-violet-200 hover:shadow-[0_30px_70px_-35px_rgba(91,33,182,.35)] sm:p-10 dark:border-white/[0.07] dark:bg-[#0b1220]">
+                  <div className="pointer-events-none absolute -right-24 -top-24 h-64 w-64 rounded-full bg-violet-400/0 blur-3xl transition-all duration-700 group-hover:bg-violet-400/15" />
 
-                <div className="relative z-10">
-                  <p className="max-w-6xl text-[15px] leading-8 text-slate-600 transition-colors duration-300 group-hover:text-slate-700 sm:text-base dark:text-slate-400 dark:group-hover:text-slate-300">
-                    {intro}
-                  </p>
-                </div>
-              </div>
-            </AnimateIn>
+                  <div className="pointer-events-none absolute bottom-0 left-0 top-0 w-[3px] origin-bottom scale-y-0 bg-gradient-to-b from-blue-600 via-violet-500 to-cyan-400 transition-transform duration-700 ease-out group-hover:scale-y-100" />
 
-            {/* =====================================================
-                PRINCIPLES
-            ===================================================== */}
-            <div className="space-y-8 sm:space-y-10">
-              {principles.map((principle, index) => (
-                <AnimateIn
-                  key={principle.title}
-                  delay={Math.min(index * 0.05, 0.3)}
-                >
-                  <article className="group relative overflow-hidden rounded-[30px] border border-slate-200 bg-white p-7 shadow-[0_12px_45px_-25px_rgba(15,23,42,0.18)] transition-all duration-500 ease-out hover:-translate-y-2 hover:border-blue-300 hover:shadow-[0_25px_75px_-25px_rgba(37,99,235,0.18)] sm:p-10 lg:p-12 dark:border-slate-800 dark:bg-slate-900/70 dark:shadow-[0_12px_45px_-25px_rgba(0,0,0,0.3)] dark:hover:border-cyan-400/50 dark:hover:shadow-[0_25px_75px_-25px_rgba(34,211,238,0.12)]">
-                    {/* Top glow */}
-                    <div className="pointer-events-none absolute -right-28 -top-28 h-64 w-64 rounded-full bg-blue-500/0 blur-3xl transition-all duration-700 group-hover:bg-blue-500/10 dark:group-hover:bg-cyan-400/10" />
+                  <div className="relative z-10 flex flex-col gap-6 sm:flex-row sm:gap-8">
+                    <div className="brand-grad flex h-12 w-12 shrink-0 items-center justify-center rounded-[14px] text-[15px] font-extrabold text-white shadow-lg shadow-violet-500/25 transition-transform duration-500 group-hover:scale-105 group-hover:rotate-3">
+                      {String(index + 1).padStart(2, "0")}
+                    </div>
 
-                    {/* Bottom glow */}
-                    <div className="pointer-events-none absolute -bottom-28 -left-28 h-64 w-64 rounded-full bg-cyan-400/0 blur-3xl transition-all duration-700 group-hover:bg-cyan-400/10" />
-
-                    {/* Left hover accent */}
-                    <div className="pointer-events-none absolute bottom-0 left-0 top-0 w-1 origin-bottom scale-y-0 bg-gradient-to-b from-blue-600 via-cyan-400 to-blue-600 transition-transform duration-500 group-hover:scale-y-100" />
-
-                    <div className="relative z-10">
-                      {/* Heading */}
-                      <h2 className="text-2xl font-semibold tracking-tight text-slate-900 transition-colors duration-300 group-hover:text-blue-700 sm:text-3xl dark:text-white dark:group-hover:text-cyan-300">
+                    <div className="min-w-0 flex-1">
+                      <h2 className="text-2xl font-extrabold tracking-[-0.035em] text-slate-950 transition-colors duration-300 group-hover:text-violet-700 sm:text-[30px] sm:leading-tight dark:text-white dark:group-hover:text-violet-300">
                         {principle.title}
                       </h2>
 
-                      {/* Animated underline */}
-                      <div className="mt-5 h-px w-12 bg-gradient-to-r from-blue-600 to-cyan-400 transition-all duration-500 group-hover:w-28" />
+                      <div className="brand-grad mt-4 h-[3px] w-12 rounded-full transition-all duration-500 group-hover:w-24" />
 
-                      {/* Points */}
-                      <div className="mt-7 space-y-4">
+                      <div className="mt-6 space-y-3">
                         {principle.points.map((point) => (
                           <div
                             key={point}
-                            className="group/point flex gap-4"
+                            className="flex gap-4"
                           >
-                            {/* Bullet */}
-                            <span className="mt-[10px] h-2 w-2 shrink-0 rounded-full bg-blue-500 shadow-[0_0_0_4px_rgba(59,130,246,0.08)] transition-all duration-300 group-hover:bg-cyan-400 group-hover/point:scale-125 dark:bg-cyan-400 dark:shadow-[0_0_0_4px_rgba(34,211,238,0.08)]" />
+                            <span className="mt-1.5 flex h-5 w-5 shrink-0 items-center justify-center rounded-full bg-violet-100 text-violet-600 dark:bg-violet-500/15 dark:text-violet-300">
+                              <Check size={11} strokeWidth={2.75} />
+                            </span>
 
-                            <p className="text-[15px] leading-8 text-slate-600 transition-colors duration-300 group-hover:text-slate-700 sm:text-base dark:text-slate-400 dark:group-hover:text-slate-300">
+                            <p className="text-[15px] leading-8 text-slate-600 sm:text-base dark:text-slate-400">
                               {point}
                             </p>
                           </div>
                         ))}
                       </div>
-
-                      {/* Bottom accent */}
-                      <div className="mt-8 h-px w-16 bg-gradient-to-r from-blue-500 to-transparent transition-all duration-500 group-hover:w-32" />
                     </div>
-                  </article>
-                </AnimateIn>
-              ))}
-            </div>
+                  </div>
+                </article>
+              </AnimateIn>
+            ))}
           </div>
         </section>
       </main>

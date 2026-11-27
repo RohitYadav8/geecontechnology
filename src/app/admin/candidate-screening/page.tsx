@@ -381,13 +381,25 @@ export default function CandidateScreeningAdminPage() {
       {/* HEADER */}
       {/* ================================================= */}
 
-      <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+      <div className="brand-grad relative mb-6 overflow-hidden rounded-[28px] px-6 py-7 text-white sm:px-8 sm:py-8">
+        <div className="pointer-events-none absolute -right-20 -top-24 h-72 w-72 rounded-full bg-violet-300/40 blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-28 -left-16 h-72 w-72 rounded-full bg-cyan-300/30 blur-3xl" />
+        <div
+          className="pointer-events-none absolute inset-0 opacity-[0.07]"
+          style={{
+            backgroundImage:
+              "linear-gradient(rgba(255,255,255,.6) 1px, transparent 1px), linear-gradient(90deg,rgba(255,255,255,.6) 1px,transparent 1px)",
+            backgroundSize: "44px 44px",
+          }}
+        />
+
+        <div className="relative flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div className="min-w-0">
-          <h1 className="text-xl font-bold tracking-tight text-slate-900 sm:text-2xl lg:text-3xl dark:text-white">
+          <h1 className="text-2xl font-extrabold tracking-[-0.03em] sm:text-3xl">
             Candidate Screening
           </h1>
 
-          <p className="mt-1 max-w-2xl text-xs leading-5 text-slate-500 sm:text-sm dark:text-slate-400">
+          <p className="mt-2 max-w-2xl text-sm leading-6 text-indigo-50/90">
             Manage candidate applications submitted
             through the website.
           </p>
@@ -397,7 +409,7 @@ export default function CandidateScreeningAdminPage() {
           type="button"
           onClick={fetchCandidates}
           disabled={loading}
-          className="inline-flex w-full shrink-0 items-center justify-center gap-2 rounded-lg border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
+          className="inline-flex w-full shrink-0 items-center justify-center gap-2 rounded-xl bg-white px-5 py-3 text-sm font-bold text-violet-700 shadow-lg transition hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
         >
           <RefreshCw
             size={16}
@@ -408,6 +420,7 @@ export default function CandidateScreeningAdminPage() {
 
           Refresh
         </button>
+        </div>
       </div>
 
       {/* ================================================= */}
@@ -415,7 +428,7 @@ export default function CandidateScreeningAdminPage() {
       {/* ================================================= */}
 
       {error && (
-        <div className="mb-5 flex min-w-0 items-start justify-between gap-3 rounded-lg border border-red-200 bg-red-50 px-3 py-3 text-sm text-red-700 sm:px-4 dark:border-red-900/50 dark:bg-red-950/30 dark:text-red-400">
+        <div className="mb-5 flex min-w-0 items-start justify-between gap-3 rounded-2xl border border-red-200 bg-red-50 px-3 py-3 text-sm font-medium text-red-700 sm:px-4 dark:border-red-500/20 dark:bg-red-500/10 dark:text-red-400">
           <span className="min-w-0 break-words">
             {error}
           </span>
@@ -423,7 +436,7 @@ export default function CandidateScreeningAdminPage() {
           <button
             type="button"
             onClick={() => setError("")}
-            className="shrink-0 rounded-md p-1 transition hover:bg-red-100 dark:hover:bg-red-950"
+            className="shrink-0 rounded-lg p-1 transition hover:bg-red-100 dark:hover:bg-red-500/20"
             aria-label="Close error"
           >
             <X size={16} />
@@ -432,7 +445,7 @@ export default function CandidateScreeningAdminPage() {
       )}
 
       {success && (
-        <div className="mb-5 break-words rounded-lg border border-emerald-200 bg-emerald-50 px-3 py-3 text-sm text-emerald-700 sm:px-4 dark:border-emerald-900/50 dark:bg-emerald-950/30 dark:text-emerald-400">
+        <div className="mb-5 break-words rounded-2xl border border-emerald-200 bg-emerald-50 px-3 py-3 text-sm font-medium text-emerald-700 sm:px-4 dark:border-emerald-500/20 dark:bg-emerald-500/10 dark:text-emerald-400">
           {success}
         </div>
       )}
@@ -444,19 +457,19 @@ export default function CandidateScreeningAdminPage() {
       <div className="mb-5 grid grid-cols-1 gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-3">
         {/* Total Applications */}
 
-        <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5 dark:border-slate-800 dark:bg-slate-900">
+        <div className="group rounded-[22px] border border-slate-100 bg-white p-4 shadow-[0_30px_70px_-40px_rgba(15,23,42,.45)] transition-all duration-300 hover:-translate-y-1 hover:border-violet-200 sm:p-5 dark:border-white/[0.07] dark:bg-[#0b1220] dark:hover:border-violet-400/25">
           <div className="flex items-center justify-between gap-4">
             <div className="min-w-0">
-              <p className="text-xs text-slate-500 sm:text-sm dark:text-slate-400">
+              <p className="truncate text-xs font-bold uppercase tracking-[0.12em] text-slate-500 dark:text-slate-400">
                 Total Applications
               </p>
 
-              <p className="mt-2 text-2xl font-bold text-slate-900 sm:text-3xl dark:text-white">
+              <p className="brand-text mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl">
                 {candidates.length}
               </p>
             </div>
 
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-blue-50 text-blue-600 sm:h-12 sm:w-12 dark:bg-blue-950/40 dark:text-blue-400">
+            <div className="brand-grad flex h-10 w-10 shrink-0 items-center justify-center rounded-[14px] text-white shadow-lg shadow-violet-500/25 transition-transform duration-300 group-hover:-rotate-6 sm:h-12 sm:w-12">
               <User size={22} />
             </div>
           </div>
@@ -464,19 +477,19 @@ export default function CandidateScreeningAdminPage() {
 
         {/* Search Results */}
 
-        <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:p-5 dark:border-slate-800 dark:bg-slate-900">
+        <div className="group rounded-[22px] border border-slate-100 bg-white p-4 shadow-[0_30px_70px_-40px_rgba(15,23,42,.45)] transition-all duration-300 hover:-translate-y-1 hover:border-violet-200 sm:p-5 dark:border-white/[0.07] dark:bg-[#0b1220] dark:hover:border-violet-400/25">
           <div className="flex items-center justify-between gap-4">
             <div className="min-w-0">
-              <p className="text-xs text-slate-500 sm:text-sm dark:text-slate-400">
+              <p className="truncate text-xs font-bold uppercase tracking-[0.12em] text-slate-500 dark:text-slate-400">
                 Search Results
               </p>
 
-              <p className="mt-2 text-2xl font-bold text-slate-900 sm:text-3xl dark:text-white">
+              <p className="brand-text mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl">
                 {filteredCandidates.length}
               </p>
             </div>
 
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-cyan-50 text-cyan-600 sm:h-12 sm:w-12 dark:bg-cyan-950/40 dark:text-cyan-400">
+            <div className="brand-grad flex h-10 w-10 shrink-0 items-center justify-center rounded-[14px] text-white shadow-lg shadow-violet-500/25 transition-transform duration-300 group-hover:-rotate-6 sm:h-12 sm:w-12">
               <Search size={22} />
             </div>
           </div>
@@ -484,14 +497,14 @@ export default function CandidateScreeningAdminPage() {
 
         {/* Latest Application */}
 
-        <div className="rounded-2xl border border-slate-200 bg-white p-4 shadow-sm sm:col-span-2 sm:p-5 lg:col-span-1 dark:border-slate-800 dark:bg-slate-900">
+        <div className="group rounded-[22px] border border-slate-100 bg-white p-4 shadow-[0_30px_70px_-40px_rgba(15,23,42,.45)] transition-all duration-300 hover:-translate-y-1 hover:border-violet-200 sm:p-5 dark:border-white/[0.07] dark:bg-[#0b1220] dark:hover:border-violet-400/25 sm:col-span-2 lg:col-span-1">
           <div className="flex items-center justify-between gap-4">
             <div className="min-w-0">
-              <p className="text-xs text-slate-500 sm:text-sm dark:text-slate-400">
+              <p className="truncate text-xs font-bold uppercase tracking-[0.12em] text-slate-500 dark:text-slate-400">
                 Latest Application
               </p>
 
-              <p className="mt-2 break-words text-sm font-semibold text-slate-900 dark:text-white">
+              <p className="mt-3 break-words text-sm font-bold text-slate-900 dark:text-white">
                 {candidates.length > 0
                   ? formatDate(
                       candidates[0].createdAt
@@ -500,7 +513,7 @@ export default function CandidateScreeningAdminPage() {
               </p>
             </div>
 
-            <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 sm:h-12 sm:w-12 dark:bg-emerald-950/40 dark:text-emerald-400">
+            <div className="brand-grad flex h-10 w-10 shrink-0 items-center justify-center rounded-[14px] text-white shadow-lg shadow-violet-500/25 transition-transform duration-300 group-hover:-rotate-6 sm:h-12 sm:w-12">
               <Calendar size={22} />
             </div>
           </div>
@@ -511,7 +524,7 @@ export default function CandidateScreeningAdminPage() {
       {/* SEARCH */}
       {/* ================================================= */}
 
-      <div className="mb-5 rounded-2xl border border-slate-200 bg-white p-3 shadow-sm sm:p-4 dark:border-slate-800 dark:bg-slate-900">
+      <div className="mb-5 p-3 sm:p-4 rounded-[24px] border border-slate-200/80 bg-white shadow-[0_30px_70px_-45px_rgba(15,23,42,.45)] dark:border-white/[0.07] dark:bg-[#0b1220]">
         <div className="relative w-full sm:max-w-xl">
           <Search
             size={18}
@@ -525,7 +538,7 @@ export default function CandidateScreeningAdminPage() {
               setSearch(event.target.value)
             }
             placeholder="Search by name, email, phone, position..."
-            className="w-full rounded-lg border border-slate-200 bg-white py-2.5 pl-10 pr-4 text-sm text-slate-900 outline-none transition placeholder:text-xs focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 sm:placeholder:text-sm dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+            className="w-full rounded-xl border border-slate-200 bg-slate-50/70 py-3 pl-10 pr-4 text-sm text-slate-900 outline-none transition placeholder:text-xs placeholder:text-slate-400 focus:border-violet-400 focus:bg-white focus:ring-4 focus:ring-violet-500/10 sm:placeholder:text-sm dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-white"
           />
         </div>
       </div>
@@ -534,13 +547,13 @@ export default function CandidateScreeningAdminPage() {
       {/* APPLICATION LIST */}
       {/* ================================================= */}
 
-      <div className="min-w-0 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
+      <div className="min-w-0 overflow-hidden rounded-[24px] border border-slate-200/80 bg-white shadow-[0_30px_70px_-45px_rgba(15,23,42,.45)] dark:border-white/[0.07] dark:bg-[#0b1220]">
         {/* List Header */}
 
-        <div className="border-b border-slate-200 px-4 py-4 sm:px-5 lg:px-6 dark:border-slate-800">
+        <div className="border-b border-slate-100 bg-slate-50/80 px-4 py-4 sm:px-5 lg:px-6 dark:border-white/[0.06] dark:bg-white/[0.03]">
           <div className="flex items-center justify-between">
             <div>
-              <h2 className="font-semibold text-slate-900 dark:text-white">
+              <h2 className="text-[11px] font-bold uppercase tracking-[0.12em] text-slate-500 dark:text-slate-400">
                 Applications
               </h2>
 
@@ -573,11 +586,11 @@ export default function CandidateScreeningAdminPage() {
           /* EMPTY */
 
           <div className="flex min-h-60 flex-col items-center justify-center px-4 text-center sm:px-6">
-            <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-blue-50 text-blue-600 dark:bg-blue-950/40 dark:text-blue-400">
+            <div className="brand-grad mb-4 flex h-14 w-14 items-center justify-center rounded-[16px] text-white shadow-lg shadow-violet-500/25">
               <User size={25} />
             </div>
 
-            <h3 className="text-base font-semibold text-slate-900 dark:text-white">
+            <h3 className="text-base font-extrabold text-slate-950 dark:text-white">
               No applications found
             </h3>
 
@@ -589,12 +602,12 @@ export default function CandidateScreeningAdminPage() {
         ) : (
           /* CANDIDATES */
 
-          <div className="divide-y divide-slate-200 dark:divide-slate-800">
+          <div className="divide-y divide-slate-100 dark:divide-white/[0.06]">
             {filteredCandidates.map(
               (candidate) => (
                 <div
                   key={candidate.id}
-                  className="min-w-0 p-4 transition hover:bg-slate-50/70 sm:p-5 lg:p-6 dark:hover:bg-slate-800/30"
+                  className="min-w-0 p-4 transition hover:bg-violet-50/40 sm:p-5 lg:p-6 dark:hover:bg-white/[0.03]"
                 >
                   <div className="flex min-w-0 flex-col gap-4 lg:flex-row lg:items-center lg:justify-between lg:gap-6">
                     {/* Candidate Info */}
@@ -603,7 +616,7 @@ export default function CandidateScreeningAdminPage() {
                       <div className="flex min-w-0 items-start gap-3 sm:gap-4">
                         {/* Avatar */}
 
-                        <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-[#1a2b4a] to-blue-600 text-xs font-bold text-white sm:h-12 sm:w-12 sm:text-sm">
+                        <div className="brand-grad flex h-10 w-10 shrink-0 items-center justify-center rounded-[14px] text-xs font-extrabold text-white shadow-lg shadow-violet-500/25 sm:h-12 sm:w-12 sm:text-sm">
                           {candidate.fullName
                             ?.trim()
                             .split(/\s+/)
@@ -616,7 +629,7 @@ export default function CandidateScreeningAdminPage() {
                         </div>
 
                         <div className="min-w-0 flex-1">
-                          <h3 className="break-words text-sm font-semibold text-slate-900 sm:text-base dark:text-white">
+                          <h3 className="break-words text-sm font-bold text-slate-950 sm:text-base dark:text-white">
                             {candidate.fullName}
                           </h3>
 
@@ -650,7 +663,7 @@ export default function CandidateScreeningAdminPage() {
 
                           <div className="mt-3 flex min-w-0 flex-wrap gap-2">
                             {candidate.position && (
-                              <span className="max-w-full break-words rounded-full bg-blue-50 px-2.5 py-1 text-xs font-medium text-blue-700 dark:bg-blue-950/40 dark:text-blue-400">
+                              <span className="max-w-full break-words rounded-full bg-violet-50 px-2.5 py-1 text-[11px] font-bold text-violet-700 dark:bg-violet-500/10 dark:text-violet-300">
                                 {
                                   candidate.position
                                 }
@@ -658,7 +671,7 @@ export default function CandidateScreeningAdminPage() {
                             )}
 
                             {candidate.totalExperience && (
-                              <span className="max-w-full break-words rounded-full bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-600 dark:bg-slate-800 dark:text-slate-300">
+                              <span className="max-w-full break-words rounded-full bg-slate-100 px-2.5 py-1 text-[11px] font-bold text-slate-600 dark:bg-white/[0.06] dark:text-slate-300">
                                 {
                                   candidate.totalExperience
                                 }{" "}
@@ -667,7 +680,7 @@ export default function CandidateScreeningAdminPage() {
                             )}
 
                             {candidate.currentLocation && (
-                              <span className="max-w-full break-words rounded-full bg-slate-100 px-2.5 py-1 text-xs font-medium text-slate-600 dark:bg-slate-800 dark:text-slate-300">
+                              <span className="max-w-full break-words rounded-full bg-slate-100 px-2.5 py-1 text-[11px] font-bold text-slate-600 dark:bg-white/[0.06] dark:text-slate-300">
                                 {
                                   candidate.currentLocation
                                 }
@@ -695,7 +708,7 @@ export default function CandidateScreeningAdminPage() {
                             candidate
                           )
                         }
-                        className="inline-flex w-full items-center justify-center gap-2 rounded-lg border border-slate-200 px-3 py-2.5 text-xs font-medium text-slate-600 transition hover:border-blue-300 hover:bg-blue-50 hover:text-blue-600 sm:w-auto sm:py-2 dark:border-slate-700 dark:text-slate-300 dark:hover:border-blue-500/50 dark:hover:bg-blue-950/30 dark:hover:text-blue-400"
+                        className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2.5 text-xs font-bold text-slate-700 transition hover:border-violet-300 hover:text-violet-600 sm:w-auto sm:py-2 dark:border-white/[0.1] dark:bg-white/[0.04] dark:text-slate-200"
                       >
                         <Eye size={14} />
 
@@ -713,7 +726,7 @@ export default function CandidateScreeningAdminPage() {
                           deletingId ===
                           candidate.id
                         }
-                        className="inline-flex w-full items-center justify-center gap-2 rounded-lg border border-red-200 px-3 py-2.5 text-xs font-medium text-red-500 transition hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto sm:py-2 dark:border-red-900/50 dark:hover:bg-red-950/30"
+                        className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-red-200 bg-red-50 px-3 py-2.5 text-xs font-bold text-red-600 transition hover:bg-red-100 disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto sm:py-2 dark:border-red-500/20 dark:bg-red-500/10 dark:text-red-400 dark:hover:bg-red-500/20"
                       >
                         <Trash2 size={14} />
 
@@ -737,7 +750,7 @@ export default function CandidateScreeningAdminPage() {
 
       {selectedCandidate && (
         <div
-          className="fixed inset-0 z-50 flex items-end justify-center bg-slate-950/60 p-0 backdrop-blur-sm sm:items-center sm:p-4"
+          className="fixed inset-0 z-50 flex items-end justify-center bg-slate-950/50 p-0 backdrop-blur-sm sm:items-center sm:p-4"
           onMouseDown={(event) => {
             if (
               event.target ===
@@ -747,12 +760,12 @@ export default function CandidateScreeningAdminPage() {
             }
           }}
         >
-          <div className="flex max-h-[95dvh] w-full min-w-0 flex-col overflow-hidden rounded-t-2xl border border-slate-200 bg-white shadow-2xl sm:max-h-[90dvh] sm:max-w-4xl sm:rounded-2xl dark:border-slate-800 dark:bg-slate-900">
+          <div className="flex max-h-[95dvh] w-full min-w-0 flex-col overflow-hidden rounded-t-[24px] border border-slate-200/80 bg-white shadow-2xl sm:max-h-[90dvh] sm:max-w-4xl sm:rounded-[24px] dark:border-white/[0.07] dark:bg-[#0b1220]">
             {/* MODAL HEADER */}
 
-            <div className="flex shrink-0 items-center justify-between gap-3 border-b border-slate-200 px-4 py-4 sm:px-6 sm:py-5 dark:border-slate-800">
+            <div className="flex shrink-0 items-center justify-between gap-3 border-b border-slate-100 px-4 py-4 sm:px-6 sm:py-5 dark:border-white/[0.06]">
               <div className="min-w-0">
-                <h2 className="text-lg font-bold text-slate-900 sm:text-xl dark:text-white">
+                <h2 className="text-lg font-extrabold tracking-[-0.02em] text-slate-950 sm:text-xl dark:text-white">
                   Candidate Details
                 </h2>
 
@@ -768,7 +781,7 @@ export default function CandidateScreeningAdminPage() {
                 onClick={() =>
                   setSelectedCandidate(null)
                 }
-                className="shrink-0 rounded-lg p-2 text-slate-500 transition hover:bg-slate-100 hover:text-slate-700 dark:hover:bg-slate-800 dark:hover:text-white"
+                className="shrink-0 rounded-xl p-2 text-slate-500 transition hover:bg-violet-50 hover:text-violet-600 dark:hover:bg-white/[0.06] dark:hover:text-white"
                 aria-label="Close candidate details"
               >
                 <X size={20} />
@@ -1020,7 +1033,7 @@ export default function CandidateScreeningAdminPage() {
                     title="Reason for Change"
                   />
 
-                  <div className="break-words rounded-xl border border-slate-200 bg-slate-50 p-3.5 text-sm leading-6 text-slate-600 sm:p-4 sm:leading-7 dark:border-slate-800 dark:bg-slate-950 dark:text-slate-300">
+                  <div className="break-words rounded-2xl border border-slate-200/80 bg-slate-50/70 p-3.5 text-sm leading-6 text-slate-600 sm:p-4 sm:leading-7 dark:border-white/[0.07] dark:bg-white/[0.03] dark:text-slate-300">
                     {
                       selectedCandidate.reasonForChange
                     }
@@ -1050,7 +1063,7 @@ export default function CandidateScreeningAdminPage() {
                       openingResumeId ===
                       selectedCandidate.id
                     }
-                    className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
+                    className="brand-grad inline-flex w-full items-center justify-center gap-2 rounded-xl px-5 py-3 text-sm font-bold text-white shadow-lg shadow-violet-500/25 transition hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
                   >
                     {openingResumeId ===
                     selectedCandidate.id ? (
@@ -1101,7 +1114,7 @@ export default function CandidateScreeningAdminPage() {
 
               {/* DELETE FROM MODAL */}
 
-              <section className="mt-7 border-t border-slate-200 pt-5 sm:mt-8 sm:pt-6 dark:border-slate-800">
+              <section className="mt-7 border-t border-slate-100 pt-5 sm:mt-8 sm:pt-6 dark:border-white/[0.06]">
                 <button
                   type="button"
                   onClick={() =>
@@ -1113,7 +1126,7 @@ export default function CandidateScreeningAdminPage() {
                     deletingId ===
                     selectedCandidate.id
                   }
-                  className="inline-flex w-full items-center justify-center gap-2 rounded-lg bg-red-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-red-700 disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto"
+                  className="inline-flex w-full items-center justify-center gap-2 rounded-xl border border-red-200 bg-red-50 px-5 py-3 text-sm font-bold text-red-600 transition hover:bg-red-100 disabled:cursor-not-allowed disabled:opacity-50 sm:w-auto dark:border-red-500/20 dark:bg-red-500/10 dark:text-red-400 dark:hover:bg-red-500/20"
                 >
                   <Trash2 size={16} />
 
@@ -1144,11 +1157,11 @@ function SectionTitle({
 }) {
   return (
     <div className="mb-3 flex items-center gap-2 sm:mb-4">
-      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-blue-50 text-blue-600 dark:bg-blue-950/40 dark:text-blue-400">
+      <div className="brand-grad flex h-8 w-8 shrink-0 items-center justify-center rounded-[10px] text-white shadow-md shadow-violet-500/25">
         {icon}
       </div>
 
-      <h3 className="min-w-0 break-words text-sm font-semibold text-slate-900 dark:text-white">
+      <h3 className="min-w-0 break-words text-sm font-extrabold tracking-[-0.01em] text-slate-950 dark:text-white">
         {title}
       </h3>
     </div>
@@ -1170,12 +1183,12 @@ function InfoItem({
     | undefined;
 }) {
   return (
-    <div className="min-w-0 rounded-xl border border-slate-200 bg-slate-50/70 p-3 sm:p-3.5 dark:border-slate-800 dark:bg-slate-950/50">
-      <p className="text-xs font-medium text-slate-400 dark:text-slate-500">
+    <div className="min-w-0 rounded-2xl border border-slate-200/80 bg-slate-50/70 p-3 sm:p-3.5 dark:border-white/[0.07] dark:bg-white/[0.03]">
+      <p className="text-[11px] font-bold uppercase tracking-[0.1em] text-slate-400 dark:text-slate-500">
         {label}
       </p>
 
-      <p className="mt-1 min-w-0 break-words text-sm font-medium text-slate-700 dark:text-slate-200">
+      <p className="mt-1 min-w-0 break-words text-sm font-semibold text-slate-800 dark:text-slate-200">
         {value || "Not provided"}
       </p>
     </div>

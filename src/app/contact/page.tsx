@@ -19,8 +19,6 @@ import { Footer } from "../../../components/footer";
 import { AnimateIn } from "../../../components/animate-in";
 import { AnimatedHeading } from "../../../components/animated-heading";
 import { FloatingBlob } from "../../../components/floating-blob";
-import { MouseGlow } from "../../../components/mouse-glow";
-import { TiltCard } from "../../../components/tilt-card";
 import { RippleButton } from "../../../components/ripple-button";
 
 import {
@@ -201,76 +199,49 @@ export default function ContactUsPage() {
     }
   };
 
+  const fieldClass =
+    "w-full rounded-xl border border-slate-200 bg-slate-50/70 px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 transition-all focus:border-violet-400 focus:bg-white focus:outline-none focus:ring-4 focus:ring-violet-500/10 disabled:cursor-not-allowed disabled:opacity-60 dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-white dark:focus:bg-white/[0.06]";
+
   return (
-    <div className="flex min-h-screen flex-col overflow-hidden bg-white dark:bg-slate-950">
+    <div className="flex min-h-screen flex-col overflow-hidden bg-slate-50 dark:bg-[#060b16]">
       <Navbar />
 
       <main className="relative flex-1">
-        {/* ================= BACKGROUND ================= */}
+        {/* ================= HERO ================= */}
 
-        <div className="pointer-events-none absolute inset-0 overflow-hidden">
-          <div
-            className="
-              absolute inset-0
-              bg-[linear-gradient(to_right,#e5e7eb_1px,transparent_1px),linear-gradient(to_bottom,#e5e7eb_1px,transparent_1px)]
-              bg-[size:48px_48px]
-              opacity-20
-              dark:opacity-[0.06]
-            "
-          />
-
-          <div
-            className="
-              absolute inset-0
-              bg-[radial-gradient(circle_at_50%_0%,rgba(59,130,246,0.16),transparent_55%)]
-              dark:bg-[radial-gradient(circle_at_50%_0%,rgba(37,99,235,0.12),transparent_55%)]
-            "
-          />
-
-          <div
-            className="
-              absolute bottom-0 left-1/2
-              h-[420px] w-[620px]
-              -translate-x-1/2
-              rounded-full
-              bg-blue-500/5
-              blur-[110px]
-            "
+        <section className="brand-grad relative overflow-hidden px-6 pb-40 pt-16 text-center text-white sm:px-8 sm:pb-44 sm:pt-20 lg:px-10">
+          <FloatingBlob
+            className="-left-40 top-24 h-[460px] w-[460px]"
+            color="bg-cyan-300/35"
+            duration={18}
           />
 
           <FloatingBlob
-            className="-right-16 top-8 h-64 w-64"
-            color="bg-blue-400/10"
+            className="-right-28 -top-24 h-[420px] w-[420px]"
+            color="bg-violet-300/40"
             duration={16}
           />
 
-          <FloatingBlob
-            className="-left-16 top-[430px] h-64 w-64"
-            color="bg-cyan-400/10"
-            duration={20}
+          <div
+            className="pointer-events-none absolute inset-0 opacity-[0.07]"
+            style={{
+              backgroundImage:
+                "linear-gradient(rgba(255,255,255,.6) 1px, transparent 1px), linear-gradient(90deg,rgba(255,255,255,.6) 1px,transparent 1px)",
+              backgroundSize: "56px 56px",
+            }}
           />
-        </div>
 
-        {/* ================= CONTENT ================= */}
+          <div className="relative mx-auto max-w-3xl">
+            <AnimatedHeading
+              text="Contact Us"
+              as="h1"
+              highlightFrom={1}
+              highlightClassName="brand-text-light"
+              className="text-[44px] font-extrabold leading-[1.04] tracking-[-0.045em] sm:text-6xl lg:text-[76px]"
+            />
 
-        <section className="relative mx-auto max-w-6xl px-6 pb-14 pt-10 sm:pt-12">
-          {/* ================= HEADING ================= */}
-
-          <AnimateIn>
-            <div className="text-center">
-              <AnimatedHeading
-                text="Contact Us"
-                as="h1"
-                className="
-                  text-3xl font-bold
-                  tracking-tight
-                  text-slate-900
-                  dark:text-white
-                  sm:text-4xl
-                "
-              />
-
-              <p className="mx-auto mt-3 max-w-2xl text-sm leading-6 text-slate-500 dark:text-slate-400">
+            <AnimateIn delay={0.15}>
+              <p className="mx-auto mt-5 max-w-2xl text-base leading-8 text-indigo-50/90 sm:text-lg">
                 Have a project
                 in mind, or
                 just want to
@@ -279,669 +250,217 @@ export default function ContactUsPage() {
                 to hear from
                 you.
               </p>
+            </AnimateIn>
+          </div>
+        </section>
 
-              <div className="mx-auto mt-4 h-px w-16 bg-blue-600 dark:bg-blue-400" />
-            </div>
-          </AnimateIn>
+        {/* ================= OFFICE CARDS ================= */}
 
-          {/* ================= OFFICE CARDS ================= */}
+        <section className="relative z-10 -mt-28 px-4 sm:-mt-32 sm:px-6 lg:px-10">
+          <StaggerContainer className="mx-auto grid max-w-7xl items-stretch gap-5 sm:grid-cols-2 lg:grid-cols-3 [&>*]:h-full">
+            {offices.map((office) => (
+              <StaggerItem key={office.title}>
+                <div className="group flex h-full min-h-[240px] flex-col rounded-[26px] border border-slate-100 bg-white p-7 shadow-[0_40px_90px_-45px_rgba(15,23,42,.45)] transition-all duration-500 hover:-translate-y-1.5 hover:border-violet-200 hover:shadow-[0_40px_90px_-40px_rgba(91,33,182,.4)] dark:border-white/[0.07] dark:bg-[#0b1220] dark:hover:border-violet-400/25">
+                  <div className="brand-grad flex h-12 w-12 items-center justify-center rounded-[14px] text-white shadow-lg shadow-violet-500/25 transition-transform duration-300 group-hover:-rotate-6">
+                    <office.icon size={21} strokeWidth={1.9} />
+                  </div>
 
-          <StaggerContainer
-            className="
-              mt-8 grid
-              items-stretch
-              gap-4
-              sm:grid-cols-2
-              lg:auto-rows-fr
-              lg:grid-cols-3
-              [&>*]:h-full
-            "
-          >
-            {offices.map(
-              (office) => (
-                <StaggerItem
-                  key={
-                    office.title
-                  }
-                >
-                  <MouseGlow className="h-full rounded-2xl">
-                    <TiltCard className="h-full">
-                      <div
-                        className="
-                          group
-                          relative
-                          flex
-                          h-full
-                          min-h-[225px]
-                          flex-col
-                          overflow-hidden
-                          rounded-2xl
-                          border
-                          border-slate-200/70
-                          bg-white/70
-                          p-5
-                          shadow-md
-                          shadow-slate-900/5
-                          backdrop-blur-xl
-                          transition-all
-                          duration-500
-                          hover:shadow-xl
-                          hover:shadow-blue-900/10
-                          dark:border-slate-800/70
-                          dark:bg-slate-900/70
-                        "
-                      >
-                        {/* Shine */}
+                  <h3 className="mt-5 text-[15px] font-extrabold uppercase tracking-wide text-slate-950 dark:text-white">
+                    {office.title}
+                  </h3>
 
-                        <div
-                          className="
-                            pointer-events-none
-                            absolute
-                            -left-[100%]
-                            top-0
-                            h-full
-                            w-1/2
-                            skew-x-[-20deg]
-                            bg-gradient-to-r
-                            from-transparent
-                            via-white/20
-                            to-transparent
-                            transition-all
-                            duration-1000
-                            group-hover:left-[150%]
-                          "
-                        />
+                  <div className="mt-3 space-y-0.5 text-[14px] leading-6 text-slate-500 dark:text-slate-400">
+                    {office.lines.map((line, i) => (
+                      <p key={i}>{line}</p>
+                    ))}
+                  </div>
 
-                        {/* Card Header */}
+                  {office.email && (
+                    <a
+                      href={`mailto:${office.email}`}
+                      className="mt-auto inline-flex w-fit items-center gap-2 pt-5 text-[14px] font-bold"
+                    >
+                      <Mail
+                        size={15}
+                        className="text-violet-500"
+                      />
 
-                        <div className="relative flex items-center gap-2.5">
-                          <div
-                            className="
-                              flex
-                              h-9
-                              w-9
-                              shrink-0
-                              items-center
-                              justify-center
-                              rounded-xl
-                              bg-blue-500/10
-                              text-blue-600
-                              transition-all
-                              duration-500
-                              group-hover:scale-105
-                              group-hover:rotate-3
-                              dark:bg-blue-400/10
-                              dark:text-blue-400
-                            "
-                          >
-                            <office.icon
-                              size={
-                                17
-                              }
-                            />
-                          </div>
-
-                          <h3
-                            className="
-                              text-[13px]
-                              font-bold
-                              uppercase
-                              tracking-wide
-                              text-slate-900
-                              dark:text-white
-                            "
-                          >
-                            {
-                              office.title
-                            }
-                          </h3>
-                        </div>
-
-                        {/* Address */}
-
-                        <div
-                          className="
-                            relative
-                            mt-4
-                            space-y-0.5
-                            text-[13px]
-                            leading-5
-                            text-slate-500
-                            dark:text-slate-400
-                          "
-                        >
-                          {office.lines.map(
-                            (
-                              line,
-                              i
-                            ) => (
-                              <p
-                                key={
-                                  i
-                                }
-                              >
-                                {
-                                  line
-                                }
-                              </p>
-                            )
-                          )}
-                        </div>
-
-                        {/* Email */}
-
-                        {office.email && (
-                          <a
-                            href={`mailto:${office.email}`}
-                            className="
-                              relative
-                              mt-2.5
-                              flex
-                              items-center
-                              gap-1.5
-                              text-[13px]
-                              text-slate-500
-                              transition-colors
-                              hover:text-blue-600
-                              dark:text-slate-400
-                              dark:hover:text-blue-400
-                            "
-                          >
-                            <Mail
-                              size={
-                                12
-                              }
-                            />
-
-                            {
-                              office.email
-                            }
-                          </a>
-                        )}
-                      </div>
-                    </TiltCard>
-                  </MouseGlow>
-                </StaggerItem>
-              )
-            )}
+                      <span className="brand-text">
+                        {office.email}
+                      </span>
+                    </a>
+                  )}
+                </div>
+              </StaggerItem>
+            ))}
           </StaggerContainer>
+        </section>
 
-          {/* ================= FORM ================= */}
+        {/* ================= FORM ================= */}
 
-          <AnimateIn
-            delay={0.2}
-          >
-            <div className="mx-auto mt-10 max-w-3xl text-center">
-              <h2 className="text-base font-semibold text-blue-600 dark:text-blue-400">
-                If you&apos;d
-                like us to
-                contact you,
-                please fill out
-                the form.
-              </h2>
-            </div>
+        <section className="relative px-4 pb-24 pt-16 sm:px-6 sm:pb-28 sm:pt-20 lg:px-10">
+          <AnimateIn className="mx-auto max-w-7xl">
+            <div className="grid overflow-hidden rounded-[32px] border border-slate-200/80 bg-white p-3 shadow-[0_40px_100px_-45px_rgba(15,23,42,.45)] dark:border-white/[0.07] dark:bg-[#0b1220] lg:grid-cols-[0.85fr_1.15fr]">
+              {/* Left gradient panel */}
 
-            <div className="mx-auto mt-5 max-w-3xl">
-              <MouseGlow className="rounded-2xl">
-                <TiltCard>
-                  <div
-                    className="
-                      relative
-                      overflow-hidden
-                      rounded-2xl
-                      border
-                      border-slate-200/60
-                      bg-white/70
-                      p-5
-                      shadow-lg
-                      shadow-blue-900/5
-                      backdrop-blur-xl
-                      dark:border-slate-800/60
-                      dark:bg-slate-900/70
-                      sm:p-6
-                    "
-                  >
-                    {/* Gradient */}
+              <div className="brand-grad relative flex flex-col justify-between overflow-hidden rounded-[24px] p-8 text-white sm:p-10">
+                <div className="pointer-events-none absolute -right-20 -top-20 h-64 w-64 rounded-full bg-violet-300/40 blur-3xl" />
+                <div className="pointer-events-none absolute -bottom-24 -left-16 h-64 w-64 rounded-full bg-cyan-300/30 blur-3xl" />
 
-                    <div
-                      className="
-                        pointer-events-none
-                        absolute
-                        inset-0
-                        rounded-2xl
-                        bg-gradient-to-r
-                        from-blue-500/10
-                        via-cyan-400/10
-                        to-purple-500/10
-                        opacity-0
-                        transition-opacity
-                        duration-500
-                        hover:opacity-100
-                      "
+                <h2 className="relative text-2xl font-extrabold leading-snug tracking-[-0.02em] sm:text-[30px]">
+                  If you&apos;d
+                  like us to
+                  contact you,
+                  please fill out
+                  the form.
+                </h2>
+
+                <div className="relative mt-10 rounded-2xl border border-white/25 bg-white/[0.12] p-5 backdrop-blur-xl">
+                  <h2 className="text-lg font-extrabold">
+                    We usually
+                    reply within
+                    24 hours
+                  </h2>
+
+                  <p className="mt-1.5 text-[14px] leading-6 text-indigo-50/90">
+                    Whether
+                    it&apos;s a
+                    quick question
+                    or a full
+                    project brief,
+                    our team is
+                    ready to help.
+                  </p>
+                </div>
+              </div>
+
+              {/* Form */}
+
+              <form
+                onSubmit={handleSubmit}
+                className="grid content-start gap-4 p-5 sm:grid-cols-2 sm:p-8 lg:p-10"
+              >
+                <input
+                  type="text"
+                  required
+                  placeholder="*Name"
+                  value={form.name}
+                  onChange={handleChange("name")}
+                  disabled={isSubmitting}
+                  className={fieldClass}
+                />
+
+                <input
+                  type="email"
+                  required
+                  placeholder="*Email"
+                  value={form.email}
+                  onChange={handleChange("email")}
+                  disabled={isSubmitting}
+                  className={fieldClass}
+                />
+
+                <input
+                  type="tel"
+                  required
+                  placeholder="*Phone"
+                  value={form.phone}
+                  onChange={handleChange("phone")}
+                  disabled={isSubmitting}
+                  className={fieldClass}
+                />
+
+                <select
+                  value={form.source}
+                  onChange={handleChange("source")}
+                  disabled={isSubmitting}
+                  className={`${fieldClass} text-slate-600 dark:text-slate-300`}
+                >
+                  <option value="">
+                    How Did
+                    You Come
+                    To Know
+                    About
+                    Us?
+                  </option>
+
+                  {sourceOptions.map((opt) => (
+                    <option key={opt} value={opt}>
+                      {opt}
+                    </option>
+                  ))}
+                </select>
+
+                <textarea
+                  required
+                  placeholder="*Address"
+                  value={form.address}
+                  onChange={handleChange("address")}
+                  disabled={isSubmitting}
+                  rows={3}
+                  className={`${fieldClass} resize-y sm:col-span-2`}
+                />
+
+                <textarea
+                  placeholder="Requirements"
+                  value={form.requirements}
+                  onChange={handleChange("requirements")}
+                  disabled={isSubmitting}
+                  rows={4}
+                  className={`${fieldClass} resize-y sm:col-span-2`}
+                />
+
+                {/* Error */}
+
+                {errorMessage && (
+                  <div className="flex items-start gap-2 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600 dark:border-red-900/50 dark:bg-red-950/30 dark:text-red-400 sm:col-span-2">
+                    <AlertCircle
+                      size={16}
+                      className="mt-0.5 shrink-0"
                     />
 
-                    <form
-                      onSubmit={
-                        handleSubmit
-                      }
-                      className="relative grid gap-3 sm:grid-cols-2"
-                    >
-                      {/* Name */}
-
-                      <input
-                        type="text"
-                        required
-                        placeholder="*Name"
-                        value={
-                          form.name
-                        }
-                        onChange={handleChange(
-                          "name"
-                        )}
-                        disabled={
-                          isSubmitting
-                        }
-                        className="
-                          w-full
-                          rounded-md
-                          border
-                          border-slate-200
-                          bg-white/80
-                          px-3
-                          py-2
-                          text-[13px]
-                          text-slate-900
-                          placeholder:text-slate-400
-                          focus:border-[#1a2b4a]
-                          focus:outline-none
-                          disabled:cursor-not-allowed
-                          disabled:opacity-60
-                          dark:border-slate-700
-                          dark:bg-slate-900/80
-                          dark:text-white
-                        "
-                      />
-
-                      {/* Source */}
-
-                      <select
-                        value={
-                          form.source
-                        }
-                        onChange={handleChange(
-                          "source"
-                        )}
-                        disabled={
-                          isSubmitting
-                        }
-                        className="
-                          w-full
-                          rounded-md
-                          border
-                          border-slate-200
-                          bg-white/80
-                          px-3
-                          py-2
-                          text-[13px]
-                          text-slate-600
-                          focus:border-[#1a2b4a]
-                          focus:outline-none
-                          disabled:cursor-not-allowed
-                          disabled:opacity-60
-                          dark:border-slate-700
-                          dark:bg-slate-900/80
-                          dark:text-slate-300
-                        "
-                      >
-                        <option value="">
-                          How Did
-                          You Come
-                          To Know
-                          About
-                          Us?
-                        </option>
-
-                        {sourceOptions.map(
-                          (
-                            opt
-                          ) => (
-                            <option
-                              key={
-                                opt
-                              }
-                              value={
-                                opt
-                              }
-                            >
-                              {
-                                opt
-                              }
-                            </option>
-                          )
-                        )}
-                      </select>
-
-                      {/* Email */}
-
-                      <input
-                        type="email"
-                        required
-                        placeholder="*Email"
-                        value={
-                          form.email
-                        }
-                        onChange={handleChange(
-                          "email"
-                        )}
-                        disabled={
-                          isSubmitting
-                        }
-                        className="
-                          w-full
-                          rounded-md
-                          border
-                          border-slate-200
-                          bg-white/80
-                          px-3
-                          py-2
-                          text-[13px]
-                          text-slate-900
-                          placeholder:text-slate-400
-                          focus:border-[#1a2b4a]
-                          focus:outline-none
-                          disabled:cursor-not-allowed
-                          disabled:opacity-60
-                          dark:border-slate-700
-                          dark:bg-slate-900/80
-                          dark:text-white
-                        "
-                      />
-
-                      {/* Requirements */}
-
-                      <textarea
-                        placeholder="Requirements"
-                        value={
-                          form.requirements
-                        }
-                        onChange={handleChange(
-                          "requirements"
-                        )}
-                        disabled={
-                          isSubmitting
-                        }
-                        rows={1}
-                        className="
-                          w-full
-                          resize-none
-                          rounded-md
-                          border
-                          border-slate-200
-                          bg-white/80
-                          px-3
-                          py-2
-                          text-[13px]
-                          text-slate-900
-                          placeholder:text-slate-400
-                          focus:border-[#1a2b4a]
-                          focus:outline-none
-                          disabled:cursor-not-allowed
-                          disabled:opacity-60
-                          dark:border-slate-700
-                          dark:bg-slate-900/80
-                          dark:text-white
-                          sm:row-span-2
-                          sm:h-full
-                          sm:resize-y
-                        "
-                      />
-
-                      {/* Phone */}
-
-                      <input
-                        type="tel"
-                        required
-                        placeholder="*Phone"
-                        value={
-                          form.phone
-                        }
-                        onChange={handleChange(
-                          "phone"
-                        )}
-                        disabled={
-                          isSubmitting
-                        }
-                        className="
-                          w-full
-                          rounded-md
-                          border
-                          border-slate-200
-                          bg-white/80
-                          px-3
-                          py-2
-                          text-[13px]
-                          text-slate-900
-                          placeholder:text-slate-400
-                          focus:border-[#1a2b4a]
-                          focus:outline-none
-                          disabled:cursor-not-allowed
-                          disabled:opacity-60
-                          dark:border-slate-700
-                          dark:bg-slate-900/80
-                          dark:text-white
-                        "
-                      />
-
-                      {/* Address */}
-
-                      <textarea
-                        required
-                        placeholder="*Address"
-                        value={
-                          form.address
-                        }
-                        onChange={handleChange(
-                          "address"
-                        )}
-                        disabled={
-                          isSubmitting
-                        }
-                        rows={2}
-                        className="
-                          w-full
-                          resize-y
-                          rounded-md
-                          border
-                          border-slate-200
-                          bg-white/80
-                          px-3
-                          py-2
-                          text-[13px]
-                          text-slate-900
-                          placeholder:text-slate-400
-                          focus:border-[#1a2b4a]
-                          focus:outline-none
-                          disabled:cursor-not-allowed
-                          disabled:opacity-60
-                          dark:border-slate-700
-                          dark:bg-slate-900/80
-                          dark:text-white
-                          sm:col-start-1
-                        "
-                      />
-
-                      {/* Error */}
-
-                      {errorMessage && (
-                        <div
-                          className="
-                            flex
-                            items-start
-                            gap-2
-                            rounded-md
-                            border
-                            border-red-200
-                            bg-red-50
-                            px-3
-                            py-2
-                            text-[13px]
-                            text-red-600
-                            dark:border-red-900/50
-                            dark:bg-red-950/30
-                            dark:text-red-400
-                            sm:col-span-2
-                          "
-                        >
-                          <AlertCircle
-                            size={
-                              15
-                            }
-                            className="mt-0.5 shrink-0"
-                          />
-
-                          <span>
-                            {
-                              errorMessage
-                            }
-                          </span>
-                        </div>
-                      )}
-
-                      {/* Buttons */}
-
-                      <div className="flex items-start gap-2 pt-1 sm:col-span-2">
-                        <RippleButton
-                          type="submit"
-                          disabled={
-                            isSubmitting
-                          }
-                          className="
-                            rounded-full
-                            bg-[#1a2b4a]
-                            px-6
-                            py-2.5
-                            text-[13px]
-                            font-semibold
-                            text-white
-                            disabled:cursor-not-allowed
-                            disabled:opacity-60
-                            dark:bg-blue-600
-                          "
-                        >
-                          {isSubmitting ? (
-                            <>
-                              <Loader2
-                                size={
-                                  14
-                                }
-                                className="animate-spin"
-                              />
-
-                              Sending...
-                            </>
-                          ) : (
-                            <>
-                              <Send
-                                size={
-                                  14
-                                }
-                              />
-
-                              Submit
-                            </>
-                          )}
-                        </RippleButton>
-
-                        <RippleButton
-                          type="button"
-                          onClick={
-                            handleClear
-                          }
-                          disabled={
-                            isSubmitting
-                          }
-                          className="
-                            rounded-full
-                            bg-[#1a2b4a]
-                            px-6
-                            py-2.5
-                            text-[13px]
-                            font-semibold
-                            text-white
-                            disabled:cursor-not-allowed
-                            disabled:opacity-60
-                            dark:bg-blue-600
-                          "
-                        >
-                          <RotateCcw
-                            size={
-                              14
-                            }
-                          />
-
-                          Clear
-                        </RippleButton>
-                      </div>
-                    </form>
+                    <span>{errorMessage}</span>
                   </div>
-                </TiltCard>
-              </MouseGlow>
-            </div>
-          </AnimateIn>
+                )}
 
-          {/* ================= BOTTOM CTA ================= */}
+                {/* Buttons */}
 
-          <AnimateIn
-            delay={0.3}
-          >
-            <div
-              className="
-                relative
-                mt-10
-                overflow-hidden
-                rounded-2xl
-                border
-                border-blue-200/50
-                bg-gradient-to-r
-                from-blue-600/10
-                via-cyan-500/10
-                to-purple-500/10
-                p-5
-                text-center
-                backdrop-blur-xl
-                dark:border-blue-900/40
-              "
-            >
-              <div
-                className="
-                  pointer-events-none
-                  absolute
-                  left-1/2
-                  top-0
-                  h-24
-                  w-56
-                  -translate-x-1/2
-                  rounded-full
-                  bg-blue-500/10
-                  blur-3xl
-                "
-              />
+                <div className="flex flex-wrap items-center gap-3 pt-2 sm:col-span-2">
+                  <RippleButton
+                    type="submit"
+                    disabled={isSubmitting}
+                    className="brand-grad rounded-xl px-7 py-3.5 text-sm font-bold text-white shadow-lg shadow-violet-500/25 disabled:cursor-not-allowed disabled:opacity-60"
+                  >
+                    {isSubmitting ? (
+                      <>
+                        <Loader2
+                          size={15}
+                          className="animate-spin"
+                        />
 
-              <h2 className="relative text-lg font-bold text-slate-900 dark:text-white">
-                We usually
-                reply within
-                24 hours
-              </h2>
+                        Sending...
+                      </>
+                    ) : (
+                      <>
+                        <Send size={15} />
 
-              <p className="relative mx-auto mt-1.5 max-w-xl text-[13px] leading-5 text-slate-500 dark:text-slate-400">
-                Whether
-                it&apos;s a
-                quick question
-                or a full
-                project brief,
-                our team is
-                ready to help.
-              </p>
+                        Submit
+                      </>
+                    )}
+                  </RippleButton>
+
+                  <RippleButton
+                    type="button"
+                    onClick={handleClear}
+                    disabled={isSubmitting}
+                    className="rounded-xl border border-slate-200 bg-white px-7 py-3.5 text-sm font-bold text-slate-700 hover:border-violet-300 hover:text-violet-600 disabled:cursor-not-allowed disabled:opacity-60 dark:border-white/[0.1] dark:bg-white/[0.04] dark:text-slate-200"
+                  >
+                    <RotateCcw size={15} />
+
+                    Clear
+                  </RippleButton>
+                </div>
+              </form>
             </div>
           </AnimateIn>
         </section>
@@ -953,24 +472,7 @@ export default function ContactUsPage() {
 
       {showToast && (
         <div
-          className="
-            fixed
-            bottom-6
-            right-6
-            z-50
-            flex
-            items-center
-            gap-2
-            rounded-lg
-            bg-[#1a2b4a]
-            px-4
-            py-2.5
-            text-[13px]
-            font-medium
-            text-white
-            shadow-xl
-            dark:bg-blue-600
-          "
+          className="brand-grad fixed bottom-6 right-6 z-50 flex items-center gap-2 rounded-xl px-4 py-3 text-[13px] font-semibold text-white shadow-xl shadow-violet-500/30"
           style={{
             animation:
               "geecon-toast-in 0.3s ease-out",

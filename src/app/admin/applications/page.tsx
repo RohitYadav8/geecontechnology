@@ -157,165 +157,182 @@ export default async function AdminApplicationsPage() {
   ===================================================== */
 
   return (
-    <div className="w-full">
+    <div className="w-full min-w-0">
       {/* HEADER */}
 
-      <div>
-        <h1 className="text-2xl font-semibold text-slate-900 dark:text-white">
-          Applications
-        </h1>
+      <div className="brand-grad relative overflow-hidden rounded-[28px] px-6 pb-20 pt-7 text-white sm:px-8 sm:pb-24 sm:pt-8">
+        <div className="pointer-events-none absolute -right-20 -top-24 h-72 w-72 rounded-full bg-violet-300/40 blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-28 -left-16 h-72 w-72 rounded-full bg-cyan-300/30 blur-3xl" />
+        <div
+          className="pointer-events-none absolute inset-0 opacity-[0.07]"
+          style={{
+            backgroundImage:
+              "linear-gradient(rgba(255,255,255,.6) 1px, transparent 1px), linear-gradient(90deg,rgba(255,255,255,.6) 1px,transparent 1px)",
+            backgroundSize: "44px 44px",
+          }}
+        />
 
-        <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-          Submissions from the Careers
-          page &ldquo;Submit Your
-          Details&rdquo; form.
-        </p>
+        <div className="relative min-w-0">
+          <h1 className="text-2xl font-extrabold tracking-[-0.03em] sm:text-3xl">
+            Applications
+          </h1>
+
+          <p className="mt-2 max-w-2xl text-sm leading-6 text-indigo-50/90">
+            Submissions from the Careers
+            page &ldquo;Submit Your
+            Details&rdquo; form.
+          </p>
+        </div>
       </div>
 
       {/* TABLE */}
 
-      <div className="mt-6 overflow-hidden rounded-2xl border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900">
-        <div className="overflow-x-auto">
-          <table className="w-full min-w-[950px] text-left text-sm">
-            <thead className="border-b border-slate-100 bg-slate-50/70 text-xs uppercase tracking-wide text-slate-400 dark:border-slate-800 dark:bg-slate-950/40">
-              <tr>
-                <th className="px-6 py-4">
-                  Name
-                </th>
-
-                <th className="px-6 py-4">
-                  Email
-                </th>
-
-                <th className="px-6 py-4">
-                  Phone
-                </th>
-
-                <th className="px-6 py-4">
-                  Resume
-                </th>
-
-                <th className="px-6 py-4">
-                  Submitted
-                </th>
-
-                <th className="px-6 py-4 text-right">
-                  Actions
-                </th>
-              </tr>
-            </thead>
-
-            <tbody>
-              {applicationsWithResume.length ===
-              0 ? (
+      <div className="relative z-10 -mt-12 px-3 sm:-mt-14 sm:px-5">
+        <div className="overflow-hidden rounded-[24px] border border-slate-200/80 bg-white shadow-[0_30px_70px_-45px_rgba(15,23,42,.45)] dark:border-white/[0.07] dark:bg-[#0b1220]">
+          <div className="overflow-x-auto">
+            <table className="w-full min-w-[950px] text-left text-sm">
+              <thead className="border-b border-slate-100 bg-slate-50/80 text-[11px] font-bold uppercase tracking-[0.12em] text-slate-500 dark:border-white/[0.06] dark:bg-white/[0.03] dark:text-slate-400">
                 <tr>
-                  <td
-                    colSpan={6}
-                    className="px-6 py-12 text-center text-slate-400"
-                  >
-                    No applications yet.
-                  </td>
+                  <th className="px-6 py-4">
+                    Name
+                  </th>
+
+                  <th className="px-6 py-4">
+                    Email
+                  </th>
+
+                  <th className="px-6 py-4">
+                    Phone
+                  </th>
+
+                  <th className="px-6 py-4">
+                    Resume
+                  </th>
+
+                  <th className="px-6 py-4">
+                    Submitted
+                  </th>
+
+                  <th className="px-6 py-4 text-right">
+                    Actions
+                  </th>
                 </tr>
-              ) : (
-                applicationsWithResume.map(
-                  (app) => (
-                    <tr
-                      key={app.id}
-                      className="border-b border-slate-100 transition-colors last:border-0 hover:bg-slate-50/60 dark:border-slate-800 dark:hover:bg-slate-800/30"
+              </thead>
+
+              <tbody className="divide-y divide-slate-100 dark:divide-white/[0.06]">
+                {applicationsWithResume.length ===
+                0 ? (
+                  <tr>
+                    <td
+                      colSpan={6}
+                      className="px-6 py-14 text-center font-medium text-slate-400"
                     >
-                      {/* NAME */}
+                      No applications yet.
+                    </td>
+                  </tr>
+                ) : (
+                  applicationsWithResume.map(
+                    (app) => (
+                      <tr
+                        key={app.id}
+                        className="transition-colors hover:bg-violet-50/40 dark:hover:bg-white/[0.03]"
+                      >
+                        {/* NAME */}
 
-                      <td className="px-6 py-4">
-                        <div className="font-medium text-slate-900 dark:text-white">
-                          {
-                            app.firstName
-                          }{" "}
-                          {
-                            app.lastName
-                          }
-                        </div>
-                      </td>
-
-                      {/* EMAIL */}
-
-                      <td className="px-6 py-4 text-slate-500 dark:text-slate-400">
-                        {app.email}
-                      </td>
-
-                      {/* PHONE */}
-
-                      <td className="px-6 py-4 text-slate-500 dark:text-slate-400">
-                        {app.phone}
-                      </td>
-
-                      {/* RESUME */}
-
-                      <td className="px-6 py-4">
-                        {app.secureResumeUrl ? (
-                          <a
-                            href={
-                              app.secureResumeUrl
+                        <td className="px-6 py-4">
+                          <div className="font-bold text-slate-900 dark:text-white">
+                            {
+                              app.firstName
+                            }{" "}
+                            {
+                              app.lastName
                             }
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="group inline-flex items-center gap-2 rounded-lg border border-blue-200 bg-blue-50 px-3 py-2 text-xs font-semibold text-blue-700 transition hover:border-blue-300 hover:bg-blue-100 dark:border-blue-500/20 dark:bg-blue-500/10 dark:text-blue-400 dark:hover:bg-blue-500/20"
-                          >
-                            <FileText
-                              size={
-                                15
-                              }
-                            />
+                          </div>
+                        </td>
 
-                            <span>
-                              View
+                        {/* EMAIL */}
+
+                        <td className="px-6 py-4 text-slate-500 dark:text-slate-400">
+                          {app.email}
+                        </td>
+
+                        {/* PHONE */}
+
+                        <td className="px-6 py-4 text-slate-500 dark:text-slate-400">
+                          {app.phone}
+                        </td>
+
+                        {/* RESUME */}
+
+                        <td className="px-6 py-4">
+                          {app.secureResumeUrl ? (
+                            <a
+                              href={
+                                app.secureResumeUrl
+                              }
+                              target="_blank"
+                              rel="noopener noreferrer"
+                              className="group inline-flex items-center gap-2 rounded-xl border border-violet-200 bg-violet-50 px-3 py-2 text-xs font-bold text-violet-700 transition hover:border-violet-300 hover:bg-violet-100 dark:border-violet-400/20 dark:bg-violet-500/10 dark:text-violet-300 dark:hover:bg-violet-500/20"
+                            >
+                              <FileText
+                                size={
+                                  15
+                                }
+                              />
+
+                              <span>
+                                View
+                                Resume
+                              </span>
+
+                              <Download
+                                size={
+                                  13
+                                }
+                                className="transition-transform group-hover:translate-y-0.5"
+                              />
+                            </a>
+                          ) : app.resumeUrl ? (
+                            <span className="inline-flex rounded-full bg-red-50 px-2.5 py-1 text-[11px] font-bold text-red-600 dark:bg-red-500/10 dark:text-red-400">
                               Resume
+                              unavailable
                             </span>
+                          ) : (
+                            <span className="text-slate-400">
+                              —
+                            </span>
+                          )}
+                        </td>
 
-                            <Download
-                              size={
-                                13
-                              }
-                              className="transition-transform group-hover:translate-y-0.5"
+                        {/* CREATED */}
+
+                        <td className="whitespace-nowrap px-6 py-4 text-slate-500 dark:text-slate-400">
+                          {app.createdAt.toLocaleDateString(
+                            "en-IN",
+                            {
+                              day: "2-digit",
+                              month: "short",
+                              year: "numeric",
+                            }
+                          )}
+                        </td>
+
+                        {/* ACTIONS */}
+
+                        <td className="px-6 py-4 text-right">
+                          <div className="flex justify-end">
+                            <DeleteApplicationButton
+                              id={app.id}
                             />
-                          </a>
-                        ) : app.resumeUrl ? (
-                          <span className="text-xs text-red-500">
-                            Resume
-                            unavailable
-                          </span>
-                        ) : (
-                          <span className="text-slate-400">
-                            —
-                          </span>
-                        )}
-                      </td>
-
-                      {/* CREATED */}
-
-                      <td className="px-6 py-4 text-slate-500 dark:text-slate-400">
-                        {app.createdAt.toLocaleDateString(
-                          "en-IN",
-                          {
-                            day: "2-digit",
-                            month: "short",
-                            year: "numeric",
-                          }
-                        )}
-                      </td>
-
-                      {/* ACTIONS */}
-
-                      <td className="px-6 py-4 text-right">
-                        <DeleteApplicationButton
-                          id={app.id}
-                        />
-                      </td>
-                    </tr>
+                          </div>
+                        </td>
+                      </tr>
+                    )
                   )
-                )
-              )}
-            </tbody>
-          </table>
+                )}
+              </tbody>
+            </table>
+          </div>
         </div>
       </div>
     </div>

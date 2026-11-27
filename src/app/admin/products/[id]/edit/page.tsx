@@ -143,19 +143,19 @@ function SectionHeader({
 }) {
   return (
     <div className="flex items-start gap-4">
-      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl border border-slate-200 bg-slate-50 text-slate-600 dark:border-slate-700 dark:bg-slate-800/80 dark:text-slate-300">
+      <div className="brand-grad flex h-11 w-11 shrink-0 items-center justify-center rounded-[14px] text-white shadow-lg shadow-violet-500/25">
         {icon}
       </div>
 
       <div className="min-w-0">
         {eyebrow && (
-          <p className="text-[10px] font-bold uppercase tracking-[0.18em] text-blue-600 dark:text-blue-400">
+          <p className="brand-text text-[11px] font-extrabold uppercase tracking-[0.2em]">
             {eyebrow}
           </p>
         )}
 
         <h2
-          className={`text-[17px] font-semibold tracking-tight text-slate-950 dark:text-white ${
+          className={`text-lg font-extrabold tracking-[-0.03em] text-slate-950 dark:text-white ${
             eyebrow ? "mt-1" : ""
           }`}
         >
@@ -184,7 +184,7 @@ function FieldLabel({
   required?: boolean;
 }) {
   return (
-    <label className="mb-2 block text-xs font-semibold text-slate-700 dark:text-slate-300">
+    <label className="mb-2 block text-[13px] font-semibold text-slate-700 dark:text-slate-300">
       {children}
 
       {required && (
@@ -577,16 +577,16 @@ export default function EditProductPage() {
   ========================================================= */
 
   const inputClass =
-    "w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 hover:border-slate-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 dark:border-slate-700 dark:bg-slate-950/70 dark:text-white dark:placeholder:text-slate-600 dark:hover:border-slate-600";
+    "w-full rounded-xl border border-slate-200 bg-slate-50/70 px-4 py-3 text-sm text-slate-900 placeholder:text-slate-400 transition focus:border-violet-400 focus:bg-white focus:outline-none focus:ring-4 focus:ring-violet-500/10 dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-white dark:placeholder:text-slate-500";
 
   const textareaClass =
-    "w-full resize-y rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm leading-6 text-slate-900 outline-none transition placeholder:text-slate-400 hover:border-slate-300 focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10 dark:border-slate-700 dark:bg-slate-950/70 dark:text-white dark:placeholder:text-slate-600 dark:hover:border-slate-600";
+    "w-full resize-y rounded-xl border border-slate-200 bg-slate-50/70 px-4 py-3 text-sm leading-6 text-slate-900 placeholder:text-slate-400 transition focus:border-violet-400 focus:bg-white focus:outline-none focus:ring-4 focus:ring-violet-500/10 dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-white dark:placeholder:text-slate-500";
 
   const jsonTextareaClass =
-    "w-full resize-y rounded-xl border border-slate-800 bg-[#07101f] px-4 py-3 font-mono text-xs leading-6 text-slate-200 outline-none transition focus:border-blue-500 focus:ring-4 focus:ring-blue-500/10";
+    "w-full resize-y rounded-xl border border-slate-800 bg-[#0b1220] px-4 py-3 font-mono text-xs leading-6 text-slate-200 placeholder:text-slate-500 transition focus:border-violet-400 focus:outline-none focus:ring-4 focus:ring-violet-500/15 dark:border-white/[0.08] dark:bg-[#060b16]";
 
   const sectionClass =
-    "rounded-[22px] border border-slate-200/80 bg-white p-5 shadow-[0_10px_35px_-25px_rgba(15,23,42,0.20)] dark:border-slate-800 dark:bg-slate-900/70 sm:p-6";
+    "rounded-[24px] border border-slate-200/80 bg-white p-5 shadow-[0_30px_70px_-45px_rgba(15,23,42,.45)] dark:border-white/[0.07] dark:bg-[#0b1220] sm:p-7";
 
   /* =========================================================
      GRADIENT
@@ -609,11 +609,11 @@ export default function EditProductPage() {
 
   if (loading) {
     return (
-      <div className="min-h-screen bg-[#f7f9fc] p-5 dark:bg-[#020817] sm:p-7">
+      <div className="w-full min-w-0">
         <div className="mx-auto max-w-6xl">
-          <div className="flex min-h-[420px] items-center justify-center rounded-[24px] border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900">
+          <div className="flex min-h-[420px] items-center justify-center rounded-[24px] border border-slate-200/80 bg-white shadow-[0_30px_70px_-45px_rgba(15,23,42,.45)] dark:border-white/[0.07] dark:bg-[#0b1220]">
             <div className="text-center">
-              <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-2xl bg-blue-50 text-blue-600 dark:bg-blue-500/10 dark:text-blue-400">
+              <div className="brand-grad mx-auto flex h-12 w-12 items-center justify-center rounded-[14px] text-white shadow-lg shadow-violet-500/25">
                 <Loader2 className="h-5 w-5 animate-spin" />
               </div>
 
@@ -632,7 +632,7 @@ export default function EditProductPage() {
   ========================================================= */
 
   return (
-    <div className="min-h-screen bg-[#f7f9fc] dark:bg-[#020817]">
+    <div className="w-full min-w-0">
       <form
         onSubmit={handleSubmit}
       >
@@ -640,14 +640,26 @@ export default function EditProductPage() {
             PAGE HEADER
         ===================================================== */}
 
-        <div className="border-b border-slate-200/80 bg-white dark:border-slate-800 dark:bg-[#08101f]">
-          <div className="mx-auto max-w-6xl px-5 py-6 sm:px-7 lg:px-8">
+        <div className="brand-grad relative mx-auto max-w-6xl overflow-hidden rounded-[28px] px-6 py-7 text-white sm:px-8 sm:py-8">
+          <div className="pointer-events-none absolute -right-20 -top-24 h-72 w-72 rounded-full bg-violet-300/40 blur-3xl" />
+          <div className="pointer-events-none absolute -bottom-28 -left-16 h-72 w-72 rounded-full bg-cyan-300/30 blur-3xl" />
+
+          <div
+            className="pointer-events-none absolute inset-0 opacity-[0.07]"
+            style={{
+              backgroundImage:
+                "linear-gradient(rgba(255,255,255,.6) 1px, transparent 1px), linear-gradient(90deg,rgba(255,255,255,.6) 1px,transparent 1px)",
+              backgroundSize: "44px 44px",
+            }}
+          />
+
+          <div className="relative">
             {/* BREADCRUMB */}
 
-            <div className="flex flex-wrap items-center gap-2 text-xs text-slate-400">
+            <div className="flex flex-wrap items-center gap-2 text-xs font-semibold text-indigo-50/75">
               <Link
                 href="/admin/products"
-                className="transition hover:text-blue-600 dark:hover:text-blue-400"
+                className="transition hover:text-white"
               >
                 Products
               </Link>
@@ -656,7 +668,7 @@ export default function EditProductPage() {
                 size={13}
               />
 
-              <span className="truncate text-slate-600 dark:text-slate-300">
+              <span className="truncate text-white">
                 {form.title ||
                   "Edit Product"}
               </span>
@@ -667,7 +679,7 @@ export default function EditProductPage() {
                 <Link
                   href="/admin/products"
                   aria-label="Back to products"
-                  className="mt-1 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-500 transition hover:border-slate-300 hover:bg-slate-50 hover:text-slate-900 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-400 dark:hover:text-white"
+                  className="mt-1 flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-white/30 bg-white/[0.14] text-white backdrop-blur-xl transition hover:bg-white/25"
                 >
                   <ArrowLeft
                     size={17}
@@ -676,22 +688,22 @@ export default function EditProductPage() {
 
                 <div>
                   <div className="flex flex-wrap items-center gap-3">
-                    <h1 className="text-2xl font-bold tracking-[-0.035em] text-slate-950 dark:text-white sm:text-[28px]">
+                    <h1 className="text-2xl font-extrabold tracking-[-0.03em] sm:text-3xl">
                       Edit Product
                     </h1>
 
                     <span
-                      className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[10px] font-bold uppercase tracking-[0.1em] ${
+                      className={`inline-flex items-center gap-1.5 rounded-full border px-2.5 py-1 text-[11px] font-bold uppercase tracking-[0.1em] backdrop-blur-xl ${
                         form.isActive
-                          ? "border-emerald-200 bg-emerald-50 text-emerald-700 dark:border-emerald-500/20 dark:bg-emerald-500/10 dark:text-emerald-400"
-                          : "border-slate-200 bg-slate-100 text-slate-500 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-400"
+                          ? "border-white/30 bg-white/[0.14] text-white"
+                          : "border-white/20 bg-slate-950/20 text-white/80"
                       }`}
                     >
                       <span
                         className={`h-1.5 w-1.5 rounded-full ${
                           form.isActive
-                            ? "bg-emerald-500"
-                            : "bg-slate-400"
+                            ? "bg-emerald-300"
+                            : "bg-white/50"
                         }`}
                       />
 
@@ -701,7 +713,7 @@ export default function EditProductPage() {
                     </span>
                   </div>
 
-                  <p className="mt-1.5 max-w-xl text-xs leading-5 text-slate-500 dark:text-slate-400">
+                  <p className="mt-2 max-w-xl text-sm text-indigo-50/90">
                     Manage product card,
                     detail page, media and
                     brochure appearance.
@@ -712,7 +724,7 @@ export default function EditProductPage() {
               <button
                 type="submit"
                 disabled={saving}
-                className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-blue-600 px-5 text-sm font-semibold text-white shadow-[0_8px_25px_-12px_rgba(37,99,235,0.8)] transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
+                className="inline-flex items-center justify-center gap-2 rounded-xl bg-white px-5 py-3 text-sm font-bold text-violet-700 shadow-lg transition hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-60"
               >
                 {saving ? (
                   <Loader2
@@ -735,17 +747,17 @@ export default function EditProductPage() {
             CONTENT
         ===================================================== */}
 
-        <div className="mx-auto max-w-6xl px-5 py-7 sm:px-7 lg:px-8">
+        <div className="mx-auto max-w-6xl py-6 sm:py-7">
           {/* ALERTS */}
 
           {error && (
-            <div className="mb-6 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600 dark:border-red-900/50 dark:bg-red-950/30 dark:text-red-400">
+            <div className="mb-6 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-600 dark:border-red-500/20 dark:bg-red-500/10 dark:text-red-400">
               {error}
             </div>
           )}
 
           {success && (
-            <div className="mb-6 flex items-center gap-2 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700 dark:border-emerald-900/50 dark:bg-emerald-950/30 dark:text-emerald-400">
+            <div className="mb-6 flex items-center gap-2 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-700 dark:border-emerald-500/20 dark:bg-emerald-500/10 dark:text-emerald-400">
               <Check size={16} />
 
               {success}
@@ -885,7 +897,7 @@ export default function EditProductPage() {
               <div className="mt-6 grid gap-5 lg:grid-cols-2">
                 {/* BANNER */}
 
-                <div className="rounded-2xl border border-slate-200 bg-slate-50/60 p-4 dark:border-slate-800 dark:bg-slate-950/30">
+                <div className="rounded-[20px] border border-slate-200/80 bg-slate-50/60 p-4 dark:border-white/[0.07] dark:bg-white/[0.02]">
                   <FieldLabel>
                     Banner Image URL
                   </FieldLabel>
@@ -907,7 +919,7 @@ export default function EditProductPage() {
                     }
                   />
 
-                  <div className="mt-4 flex h-[180px] items-center justify-center overflow-hidden rounded-xl border border-dashed border-slate-300 bg-white dark:border-slate-700 dark:bg-slate-950">
+                  <div className="mt-4 flex h-[180px] items-center justify-center overflow-hidden rounded-[16px] border border-dashed border-violet-200 bg-white dark:border-white/[0.1] dark:bg-[#060b16]">
                     {form.bannerImage ? (
                       <img
                         src={
@@ -918,7 +930,7 @@ export default function EditProductPage() {
                       />
                     ) : (
                       <div className="text-center">
-                        <ImageIcon className="mx-auto h-6 w-6 text-slate-300 dark:text-slate-600" />
+                        <ImageIcon className="mx-auto h-6 w-6 text-violet-300 dark:text-violet-400/50" />
 
                         <p className="mt-2 text-xs text-slate-400">
                           No banner selected
@@ -930,7 +942,7 @@ export default function EditProductPage() {
 
                 {/* LOGO */}
 
-                <div className="rounded-2xl border border-slate-200 bg-slate-50/60 p-4 dark:border-slate-800 dark:bg-slate-950/30">
+                <div className="rounded-[20px] border border-slate-200/80 bg-slate-50/60 p-4 dark:border-white/[0.07] dark:bg-white/[0.02]">
                   <FieldLabel>
                     Logo Image URL
                   </FieldLabel>
@@ -952,7 +964,7 @@ export default function EditProductPage() {
                     }
                   />
 
-                  <div className="mt-4 flex h-[180px] items-center justify-center overflow-hidden rounded-xl border border-dashed border-slate-300 bg-white dark:border-slate-700 dark:bg-slate-950">
+                  <div className="mt-4 flex h-[180px] items-center justify-center overflow-hidden rounded-[16px] border border-dashed border-violet-200 bg-white dark:border-white/[0.1] dark:bg-[#060b16]">
                     {form.logoImage ? (
                       <img
                         src={
@@ -963,7 +975,7 @@ export default function EditProductPage() {
                       />
                     ) : (
                       <div className="text-center">
-                        <ImageIcon className="mx-auto h-6 w-6 text-slate-300 dark:text-slate-600" />
+                        <ImageIcon className="mx-auto h-6 w-6 text-violet-300 dark:text-violet-400/50" />
 
                         <p className="mt-2 text-xs text-slate-400">
                           No logo selected
@@ -1244,8 +1256,8 @@ export default function EditProductPage() {
                 BROCHURE APPEARANCE
             ================================================= */}
 
-            <section className="overflow-hidden rounded-[22px] border border-slate-200/80 bg-white shadow-[0_10px_35px_-25px_rgba(15,23,42,0.20)] dark:border-slate-800 dark:bg-slate-900/70">
-              <div className="p-5 sm:p-6">
+            <section className="overflow-hidden rounded-[24px] border border-slate-200/80 bg-white shadow-[0_30px_70px_-45px_rgba(15,23,42,.45)] dark:border-white/[0.07] dark:bg-[#0b1220]">
+              <div className="p-5 sm:p-7">
                 <SectionHeader
                   icon={
                     <Palette
@@ -1283,7 +1295,7 @@ export default function EditProductPage() {
                                 .value
                             )
                           }
-                          className="h-11 w-12 shrink-0 cursor-pointer rounded-xl border border-slate-200 bg-white p-1 dark:border-slate-700 dark:bg-slate-950"
+                          className="h-[46px] w-12 shrink-0 cursor-pointer rounded-xl border border-slate-200 bg-white p-1 dark:border-white/[0.08] dark:bg-white/[0.04]"
                         />
 
                         <input
@@ -1329,7 +1341,7 @@ export default function EditProductPage() {
                                 .value
                             )
                           }
-                          className="h-11 w-12 shrink-0 cursor-pointer rounded-xl border border-slate-200 bg-white p-1 dark:border-slate-700 dark:bg-slate-950"
+                          className="h-[46px] w-12 shrink-0 cursor-pointer rounded-xl border border-slate-200 bg-white p-1 dark:border-white/[0.08] dark:bg-white/[0.04]"
                         />
 
                         <input
@@ -1375,7 +1387,7 @@ export default function EditProductPage() {
                                 .value
                             )
                           }
-                          className="h-11 w-12 shrink-0 cursor-pointer rounded-xl border border-slate-200 bg-white p-1 dark:border-slate-700 dark:bg-slate-950"
+                          className="h-[46px] w-12 shrink-0 cursor-pointer rounded-xl border border-slate-200 bg-white p-1 dark:border-white/[0.08] dark:bg-white/[0.04]"
                         />
 
                         <input
@@ -1403,12 +1415,12 @@ export default function EditProductPage() {
                   {/* PREVIEW */}
 
                   <div>
-                    <p className="mb-2 text-[10px] font-bold uppercase tracking-[0.16em] text-slate-400">
+                    <p className="brand-text mb-2 text-[11px] font-extrabold uppercase tracking-[0.2em]">
                       Live Preview
                     </p>
 
                     <div
-                      className="relative min-h-[245px] overflow-hidden rounded-[20px] p-6 text-white shadow-xl"
+                      className="relative min-h-[245px] overflow-hidden rounded-[22px] p-6 text-white shadow-[0_30px_70px_-35px_rgba(91,33,182,.45)]"
                       style={{
                         background:
                           brochureGradient,
@@ -1436,7 +1448,7 @@ export default function EditProductPage() {
                           </p>
                         )}
 
-                        <div className="mt-5 inline-flex rounded-lg bg-white px-3.5 py-2 text-xs font-semibold text-slate-900 shadow-lg">
+                        <div className="mt-5 inline-flex rounded-xl bg-white px-3.5 py-2 text-xs font-bold text-slate-900 shadow-lg">
                           Request Brochure
                         </div>
                       </div>
@@ -1529,7 +1541,7 @@ export default function EditProductPage() {
                     className={`flex min-h-[46px] w-full items-center justify-between rounded-xl border px-4 transition ${
                       form.isActive
                         ? "border-emerald-200 bg-emerald-50/70 dark:border-emerald-500/20 dark:bg-emerald-500/10"
-                        : "border-slate-200 bg-slate-50 dark:border-slate-700 dark:bg-slate-950/60"
+                        : "border-slate-200 bg-slate-50/70 dark:border-white/[0.08] dark:bg-white/[0.04]"
                     }`}
                   >
                     <div className="flex items-center gap-3">
@@ -1537,7 +1549,7 @@ export default function EditProductPage() {
                         className={`flex h-8 w-8 items-center justify-center rounded-lg ${
                           form.isActive
                             ? "bg-emerald-100 text-emerald-600 dark:bg-emerald-500/15 dark:text-emerald-400"
-                            : "bg-slate-200 text-slate-500 dark:bg-slate-800 dark:text-slate-400"
+                            : "bg-slate-200 text-slate-500 dark:bg-white/[0.08] dark:text-slate-400"
                         }`}
                       >
                         <MonitorUp
@@ -1546,7 +1558,7 @@ export default function EditProductPage() {
                       </div>
 
                       <div className="text-left">
-                        <p className="text-xs font-semibold text-slate-800 dark:text-slate-200">
+                        <p className="text-xs font-bold text-slate-800 dark:text-slate-200">
                           {form.isActive
                             ? "Active"
                             : "Inactive"}
@@ -1564,7 +1576,7 @@ export default function EditProductPage() {
                       className={`relative h-6 w-11 rounded-full transition ${
                         form.isActive
                           ? "bg-emerald-500"
-                          : "bg-slate-300 dark:bg-slate-700"
+                          : "bg-slate-300 dark:bg-white/[0.12]"
                       }`}
                     >
                       <span
@@ -1584,10 +1596,10 @@ export default function EditProductPage() {
                 BOTTOM ACTIONS
             ================================================= */}
 
-            <div className="flex flex-col-reverse items-stretch justify-between gap-3 rounded-[20px] border border-slate-200 bg-white p-4 shadow-sm dark:border-slate-800 dark:bg-slate-900/70 sm:flex-row sm:items-center">
+            <div className="flex flex-col-reverse items-stretch justify-between gap-3 rounded-[24px] border border-slate-200/80 bg-white p-4 shadow-[0_30px_70px_-45px_rgba(15,23,42,.45)] dark:border-white/[0.07] dark:bg-[#0b1220] sm:flex-row sm:items-center">
               <Link
                 href="/admin/products"
-                className="inline-flex h-11 items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-5 text-sm font-semibold text-slate-600 transition hover:bg-slate-50 hover:text-slate-950 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-300 dark:hover:bg-slate-800 dark:hover:text-white"
+                className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-200 bg-white px-5 py-3 text-sm font-bold text-slate-700 transition hover:border-violet-300 hover:text-violet-600 dark:border-white/[0.1] dark:bg-white/[0.04] dark:text-slate-200"
               >
                 <ArrowLeft
                   size={15}
@@ -1599,7 +1611,7 @@ export default function EditProductPage() {
               <button
                 type="submit"
                 disabled={saving}
-                className="inline-flex h-11 items-center justify-center gap-2 rounded-xl bg-blue-600 px-6 text-sm font-semibold text-white shadow-[0_8px_25px_-12px_rgba(37,99,235,0.8)] transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
+                className="brand-grad inline-flex items-center justify-center gap-2 rounded-xl px-6 py-3 text-sm font-bold text-white shadow-lg shadow-violet-500/25 transition hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-60"
               >
                 {saving ? (
                   <Loader2

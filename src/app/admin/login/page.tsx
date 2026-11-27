@@ -88,12 +88,12 @@ export default function AdminLoginPage() {
   ];
 
   return (
-    <main className="relative min-h-screen overflow-hidden bg-[#f8fafc] text-slate-900 transition-colors duration-500 dark:bg-[#050812] dark:text-white">
+    <main className="relative min-h-screen overflow-hidden bg-slate-50 text-slate-900 transition-colors duration-500 dark:bg-[#060b16] dark:text-white">
       {/* ======================================================
           GLOBAL BACKGROUND
       ====================================================== */}
 
-      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,rgba(15,23,42,0.035)_1px,transparent_1px),linear-gradient(to_bottom,rgba(15,23,42,0.035)_1px,transparent_1px)] bg-[size:42px_42px] dark:bg-[linear-gradient(to_right,rgba(255,255,255,0.025)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.025)_1px,transparent_1px)] dark:bg-[size:42px_42px]" />
+      <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(to_right,rgba(124,58,237,0.04)_1px,transparent_1px),linear-gradient(to_bottom,rgba(124,58,237,0.04)_1px,transparent_1px)] bg-[size:44px_44px] dark:bg-[linear-gradient(to_right,rgba(255,255,255,0.025)_1px,transparent_1px),linear-gradient(to_bottom,rgba(255,255,255,0.025)_1px,transparent_1px)] dark:bg-[size:44px_44px]" />
 
       {/* Top blue glow */}
 
@@ -107,7 +107,7 @@ export default function AdminLoginPage() {
           repeat: Infinity,
           ease: "easeInOut",
         }}
-        className="pointer-events-none absolute -left-40 -top-40 h-[520px] w-[520px] rounded-full bg-blue-500/15 blur-[130px] dark:bg-blue-500/10"
+        className="pointer-events-none absolute -left-40 -top-40 h-[520px] w-[520px] rounded-full bg-violet-400/20 blur-[130px] dark:bg-violet-500/10"
       />
 
       {/* Cyan glow */}
@@ -122,7 +122,7 @@ export default function AdminLoginPage() {
           repeat: Infinity,
           ease: "easeInOut",
         }}
-        className="pointer-events-none absolute -bottom-48 right-[5%] h-[500px] w-[500px] rounded-full bg-cyan-400/15 blur-[140px] dark:bg-cyan-400/[0.06]"
+        className="pointer-events-none absolute -bottom-48 right-[5%] h-[500px] w-[500px] rounded-full bg-cyan-300/25 blur-[140px] dark:bg-cyan-400/[0.06]"
       />
 
       {/* ======================================================
@@ -130,7 +130,7 @@ export default function AdminLoginPage() {
       ====================================================== */}
 
       <div className="absolute right-5 top-5 z-50 sm:right-8 sm:top-8">
-        <div className="rounded-full border border-slate-200/80 bg-white/70 p-1 shadow-sm backdrop-blur-xl dark:border-white/10 dark:bg-white/[0.04]">
+        <div className="rounded-full border border-slate-200/80 bg-white/80 p-1 shadow-lg shadow-violet-500/10 backdrop-blur-xl dark:border-white/10 dark:bg-white/[0.04]">
           <ThemeToggle />
         </div>
       </div>
@@ -144,14 +144,14 @@ export default function AdminLoginPage() {
             LEFT HERO
         ==================================================== */}
 
-        <section className="relative hidden overflow-hidden px-10 py-10 lg:flex lg:flex-col lg:justify-between xl:px-16 xl:py-12">
+        <section className="relative m-4 hidden overflow-hidden rounded-[32px] px-10 py-10 shadow-[0_40px_100px_-40px_rgba(91,33,182,.55)] lg:flex lg:flex-col lg:justify-between xl:px-16 xl:py-12">
           {/* Premium dark panel */}
 
-          <div className="absolute inset-0 bg-gradient-to-br from-[#14213d] via-[#0b1427] to-[#08101e]" />
+          <div className="brand-grad absolute inset-0" />
 
           {/* Dotted background */}
 
-          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle,rgba(96,165,250,0.22)_1px,transparent_1px)] bg-[size:32px_32px] opacity-40" />
+          <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(255,255,255,.6)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.6)_1px,transparent_1px)] bg-[size:56px_56px] opacity-[0.07]" />
 
           {/* Glow 1 */}
 
@@ -165,7 +165,7 @@ export default function AdminLoginPage() {
               repeat: Infinity,
               ease: "easeInOut",
             }}
-            className="pointer-events-none absolute left-[12%] top-[28%] h-72 w-72 rounded-full bg-blue-500/15 blur-[110px]"
+            className="pointer-events-none absolute left-[12%] top-[28%] h-72 w-72 rounded-full bg-cyan-300/35 blur-[110px]"
           />
 
           {/* Glow 2 */}
@@ -180,7 +180,7 @@ export default function AdminLoginPage() {
               repeat: Infinity,
               ease: "easeInOut",
             }}
-            className="pointer-events-none absolute bottom-[8%] right-[8%] h-72 w-72 rounded-full bg-cyan-400/10 blur-[120px]"
+            className="pointer-events-none absolute bottom-[8%] right-[8%] h-72 w-72 rounded-full bg-violet-300/40 blur-[120px]"
           />
 
           {/* ==================================================
@@ -212,11 +212,11 @@ export default function AdminLoginPage() {
               />
 
               <div>
-                <h2 className="text-xl font-semibold text-white">
+                <h2 className="text-xl font-extrabold tracking-[-0.02em] text-white">
                   Geecon Technology
                 </h2>
 
-                <p className="mt-0.5 text-[10px] font-medium uppercase tracking-[0.26em] text-slate-400">
+                <p className="mt-0.5 text-[10px] font-medium uppercase tracking-[0.26em] text-indigo-100/80">
                   Digital Control Center
                 </p>
               </div>
@@ -241,7 +241,7 @@ export default function AdminLoginPage() {
                 duration: 0.7,
                 delay: 0.1,
               }}
-              className="inline-flex items-center gap-2 rounded-full border border-cyan-300/10 bg-cyan-400/[0.07] px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.22em] text-cyan-300"
+              className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/[0.14] px-4 py-2 text-[11px] font-bold uppercase tracking-[0.2em] text-white backdrop-blur-xl"
             >
               <Sparkles size={13} />
               Admin workspace
@@ -251,7 +251,9 @@ export default function AdminLoginPage() {
               <AnimatedHeading
                 text="Manage. Monitor. Move your business forward."
                 as="h1"
-                className="max-w-3xl text-4xl font-semibold leading-[1.08] tracking-[-0.04em] text-white xl:text-5xl 2xl:text-[58px]"
+                className="max-w-3xl text-4xl font-extrabold leading-[1.05] tracking-[-0.045em] text-white xl:text-5xl 2xl:text-[58px]"
+                highlightFrom={2}
+                highlightClassName="brand-text-light"
               />
             </div>
 
@@ -268,7 +270,7 @@ export default function AdminLoginPage() {
                 duration: 0.7,
                 delay: 0.3,
               }}
-              className="mt-6 max-w-2xl text-sm leading-7 text-slate-400 xl:text-[15px]"
+              className="mt-6 max-w-2xl text-sm leading-7 text-indigo-50/90 xl:text-base xl:leading-8"
             >
               One secure workspace to manage everything behind Geecon
               Technology — services, products, content, careers and customer
@@ -295,17 +297,17 @@ export default function AdminLoginPage() {
                         stiffness: 260,
                         damping: 20,
                       }}
-                      className="group h-full rounded-2xl border border-white/[0.08] bg-white/[0.045] p-5 backdrop-blur-xl transition-colors duration-300 hover:border-cyan-300/20 hover:bg-white/[0.065]"
+                      className="group h-full rounded-[22px] border border-white/25 bg-white/[0.12] p-5 backdrop-blur-xl transition-colors duration-300 hover:border-white/40 hover:bg-white/[0.18]"
                     >
-                      <div className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/10 bg-white/[0.06] text-cyan-300 transition-all duration-300 group-hover:scale-110 group-hover:bg-cyan-400/10">
+                      <div className="flex h-10 w-10 items-center justify-center rounded-[12px] bg-white text-violet-600 shadow-lg shadow-violet-900/20 transition-all duration-300 group-hover:-rotate-6 group-hover:scale-110">
                         <Icon size={18} />
                       </div>
 
-                      <h3 className="mt-4 text-sm font-semibold text-white">
+                      <h3 className="mt-4 text-sm font-bold text-white">
                         {card.title}
                       </h3>
 
-                      <p className="mt-2 text-xs leading-5 text-slate-400">
+                      <p className="mt-2 text-xs leading-5 text-indigo-50/85">
                         {card.text}
                       </p>
                     </motion.div>
@@ -329,18 +331,18 @@ export default function AdminLoginPage() {
                 duration: 0.7,
                 delay: 0.55,
               }}
-              className="mt-5 flex items-center gap-5 rounded-2xl border border-white/[0.07] bg-white/[0.035] px-5 py-4 backdrop-blur-xl"
+              className="mt-5 flex items-center gap-5 rounded-[22px] border border-white/25 bg-white/[0.12] px-5 py-4 backdrop-blur-xl"
             >
-              <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-500/10 text-blue-300">
+              <div className="flex h-10 w-10 items-center justify-center rounded-[12px] bg-white text-violet-600 shadow-lg shadow-violet-900/20">
                 <BarChart3 size={18} />
               </div>
 
               <div>
-                <p className="text-xs text-slate-500">
+                <p className="text-xs text-indigo-100/80">
                   Centralized administration
                 </p>
 
-                <p className="mt-0.5 text-sm font-medium text-slate-200">
+                <p className="mt-0.5 text-sm font-bold text-white">
                   Everything under one dashboard
                 </p>
               </div>
@@ -352,7 +354,7 @@ export default function AdminLoginPage() {
                   <span className="relative inline-flex h-2 w-2 rounded-full bg-emerald-400" />
                 </span>
 
-                <span className="text-[10px] font-medium text-emerald-300">
+                <span className="rounded-full bg-emerald-400/20 px-2 py-0.5 text-[10px] font-bold text-emerald-100">
                   Secure
                 </span>
               </div>
@@ -363,7 +365,7 @@ export default function AdminLoginPage() {
               LEFT FOOTER
           ================================================== */}
 
-          <div className="relative z-10 flex items-center justify-between text-[11px] text-slate-500">
+          <div className="relative z-10 flex items-center justify-between text-[11px] text-indigo-100/80">
             <span>© 2026 Geecon Technology</span>
 
             <div className="flex items-center gap-2">
@@ -399,7 +401,7 @@ export default function AdminLoginPage() {
               className="h-9 w-auto"
             />
 
-            <span className="text-sm font-semibold text-slate-900 dark:text-white">
+            <span className="text-sm font-extrabold text-slate-900 dark:text-white">
               Geecon Technology
             </span>
           </motion.div>
@@ -425,12 +427,12 @@ export default function AdminLoginPage() {
             }}
             className="w-full max-w-[470px]"
           >
-            <div className="inline-flex items-center gap-2 rounded-full border border-blue-200 bg-blue-50 px-3 py-1.5 text-[10px] font-semibold uppercase tracking-[0.22em] text-blue-600 dark:border-cyan-400/10 dark:bg-cyan-400/[0.06] dark:text-cyan-300">
+            <div className="inline-flex items-center gap-2 rounded-full border border-violet-200 bg-violet-50 px-4 py-2 text-[11px] font-bold uppercase tracking-[0.2em] text-violet-700 dark:border-violet-400/20 dark:bg-violet-500/10 dark:text-violet-300">
               <ShieldCheck size={13} />
               Secure admin access
             </div>
 
-            <h1 className="mt-6 text-3xl font-semibold tracking-[-0.04em] text-slate-950 sm:text-[40px] dark:text-white">
+            <h1 className="mt-6 text-3xl font-extrabold tracking-[-0.045em] text-slate-950 sm:text-[40px] dark:text-white">
               Welcome back
             </h1>
 
@@ -441,10 +443,10 @@ export default function AdminLoginPage() {
 
             {/* FORM CARD */}
 
-            <div className="relative mt-8 overflow-hidden rounded-[28px] border border-slate-200/80 bg-white/80 p-6 shadow-[0_25px_80px_-30px_rgba(15,23,42,0.3)] backdrop-blur-2xl sm:p-8 dark:border-white/[0.07] dark:bg-white/[0.035] dark:shadow-[0_30px_100px_-30px_rgba(0,0,0,0.7)]">
+            <div className="relative mt-8 overflow-hidden rounded-[28px] border border-slate-100 bg-white p-6 shadow-[0_40px_100px_-40px_rgba(15,23,42,.35)] sm:p-8 dark:border-white/[0.07] dark:bg-[#0b1220] dark:shadow-[0_30px_100px_-30px_rgba(0,0,0,0.7)]">
               {/* Card top gradient */}
 
-              <div className="absolute left-0 top-0 h-[2px] w-full bg-gradient-to-r from-blue-500 via-cyan-400 to-indigo-500" />
+              <div className="brand-grad absolute left-0 top-0 h-1 w-full" />
 
               <form onSubmit={handleSubmit} className="space-y-5">
                 {/* EMAIL */}
@@ -452,7 +454,7 @@ export default function AdminLoginPage() {
                 <div>
                   <label
                     htmlFor="email"
-                    className="mb-2 block text-xs font-semibold text-slate-700 dark:text-slate-300"
+                    className="mb-2 block text-[13px] font-semibold text-slate-700 dark:text-slate-300"
                   >
                     Email address
                   </label>
@@ -460,7 +462,7 @@ export default function AdminLoginPage() {
                   <div className="group relative">
                     <Mail
                       size={17}
-                      className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 transition-colors duration-300 group-focus-within:text-blue-500 dark:text-slate-500 dark:group-focus-within:text-cyan-300"
+                      className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 transition-colors duration-300 group-focus-within:text-violet-500 dark:text-slate-500 dark:group-focus-within:text-violet-300"
                     />
 
                     <input
@@ -471,7 +473,7 @@ export default function AdminLoginPage() {
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="admin@geecontechnology.com"
-                      className="w-full rounded-xl border border-slate-200 bg-slate-50/80 py-3.5 pl-11 pr-4 text-sm text-slate-900 outline-none transition-all duration-300 placeholder:text-slate-400 hover:border-slate-300 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-500/10 dark:border-white/[0.08] dark:bg-white/[0.035] dark:text-white dark:placeholder:text-slate-600 dark:hover:border-white/[0.15] dark:focus:border-cyan-400/60 dark:focus:bg-white/[0.05] dark:focus:ring-cyan-400/10"
+                      className="w-full rounded-xl border border-slate-200 bg-slate-50/70 py-3.5 pl-11 pr-4 text-sm text-slate-900 outline-none transition-all duration-300 placeholder:text-slate-400 hover:border-slate-300 focus:border-violet-400 focus:bg-white focus:ring-4 focus:ring-violet-500/10 dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-white dark:placeholder:text-slate-600 dark:hover:border-white/[0.15] dark:focus:border-violet-400/60 dark:focus:bg-white/[0.06] dark:focus:ring-violet-400/10"
                     />
                   </div>
                 </div>
@@ -481,7 +483,7 @@ export default function AdminLoginPage() {
                 <div>
                   <label
                     htmlFor="password"
-                    className="mb-2 block text-xs font-semibold text-slate-700 dark:text-slate-300"
+                    className="mb-2 block text-[13px] font-semibold text-slate-700 dark:text-slate-300"
                   >
                     Password
                   </label>
@@ -489,7 +491,7 @@ export default function AdminLoginPage() {
                   <div className="group relative">
                     <LockKeyhole
                       size={17}
-                      className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 transition-colors duration-300 group-focus-within:text-blue-500 dark:text-slate-500 dark:group-focus-within:text-cyan-300"
+                      className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 transition-colors duration-300 group-focus-within:text-violet-500 dark:text-slate-500 dark:group-focus-within:text-violet-300"
                     />
 
                     <input
@@ -500,7 +502,7 @@ export default function AdminLoginPage() {
                       value={password}
                       onChange={(e) => setPassword(e.target.value)}
                       placeholder="Enter your password"
-                      className="w-full rounded-xl border border-slate-200 bg-slate-50/80 py-3.5 pl-11 pr-12 text-sm text-slate-900 outline-none transition-all duration-300 placeholder:text-slate-400 hover:border-slate-300 focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-500/10 dark:border-white/[0.08] dark:bg-white/[0.035] dark:text-white dark:placeholder:text-slate-600 dark:hover:border-white/[0.15] dark:focus:border-cyan-400/60 dark:focus:bg-white/[0.05] dark:focus:ring-cyan-400/10"
+                      className="w-full rounded-xl border border-slate-200 bg-slate-50/70 py-3.5 pl-11 pr-12 text-sm text-slate-900 outline-none transition-all duration-300 placeholder:text-slate-400 hover:border-slate-300 focus:border-violet-400 focus:bg-white focus:ring-4 focus:ring-violet-500/10 dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-white dark:placeholder:text-slate-600 dark:hover:border-white/[0.15] dark:focus:border-violet-400/60 dark:focus:bg-white/[0.06] dark:focus:ring-violet-400/10"
                     />
 
                     <button
@@ -543,7 +545,7 @@ export default function AdminLoginPage() {
                 <RippleButton
                   type="submit"
                   disabled={loading}
-                  className="group flex w-full items-center justify-center gap-2 rounded-xl bg-[#1a2b4a] px-5 py-3.5 text-sm font-semibold text-white shadow-lg shadow-blue-950/15 transition-all duration-300 hover:bg-[#22385f] disabled:cursor-not-allowed disabled:opacity-60 dark:bg-gradient-to-r dark:from-blue-600 dark:via-blue-500 dark:to-cyan-500 dark:shadow-cyan-500/10"
+                  className="brand-grad group flex w-full items-center justify-center gap-2 rounded-xl px-5 py-3.5 text-sm font-bold text-white shadow-lg shadow-violet-500/25 transition-all duration-300 hover:-translate-y-0.5 hover:shadow-violet-500/40 disabled:cursor-not-allowed disabled:opacity-60 disabled:hover:translate-y-0"
                 >
                   <span>{loading ? "Signing in..." : "Sign in"}</span>
 

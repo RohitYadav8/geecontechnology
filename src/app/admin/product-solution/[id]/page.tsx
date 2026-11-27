@@ -509,11 +509,11 @@ export default function EditProductSolutionPage() {
 
   if (loading) {
     return (
-      <div className="flex min-h-[400px] items-center justify-center">
-        <div className="flex items-center gap-3 text-sm text-slate-500 dark:text-slate-400">
+      <div className="flex min-h-[400px] items-center justify-center rounded-[24px] border border-slate-200/80 bg-white shadow-[0_30px_70px_-45px_rgba(15,23,42,.45)] dark:border-white/[0.07] dark:bg-[#0b1220]">
+        <div className="flex items-center gap-3 text-sm font-semibold text-slate-500 dark:text-slate-400">
           <Loader2
             size={20}
-            className="animate-spin"
+            className="animate-spin text-violet-500"
           />
 
           Loading product solution...
@@ -527,25 +527,28 @@ export default function EditProductSolutionPage() {
   // ==========================================================
 
   return (
-    <div className="w-full">
+    <div className="w-full min-w-0">
       {/* HEADER */}
 
-      <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div>
+      <div className="brand-grad relative mb-8 overflow-hidden rounded-[28px] px-6 py-7 text-white sm:px-8 sm:py-8">
+        <div className="pointer-events-none absolute -right-20 -top-24 h-72 w-72 rounded-full bg-violet-300/40 blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-28 -left-16 h-72 w-72 rounded-full bg-cyan-300/30 blur-3xl" />
+        <div className="pointer-events-none absolute inset-0 opacity-[0.07]" style={{ backgroundImage: "linear-gradient(rgba(255,255,255,.6) 1px, transparent 1px), linear-gradient(90deg,rgba(255,255,255,.6) 1px,transparent 1px)", backgroundSize: "44px 44px" }} />
+        <div className="relative">
           <Link
             href="/admin/product-solution"
-            className="mb-3 inline-flex items-center gap-2 text-sm font-medium text-slate-500 transition hover:text-violet-600 dark:text-slate-400 dark:hover:text-violet-400"
+            className="mb-4 inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/[0.14] px-3.5 py-1.5 text-xs font-bold text-white backdrop-blur-xl transition hover:bg-white/25"
           >
             <ArrowLeft size={16} />
 
             Back to Product Solutions
           </Link>
 
-          <h1 className="text-2xl font-semibold text-slate-900 dark:text-white">
+          <h1 className="text-2xl font-extrabold tracking-[-0.03em] sm:text-3xl">
             Edit Product Solution
           </h1>
 
-          <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+          <p className="mt-2 max-w-2xl text-sm leading-6 text-indigo-50/90">
             Add or update content for this
             product solution.
           </p>
@@ -559,7 +562,7 @@ export default function EditProductSolutionPage() {
         {/* ERROR */}
 
         {error && (
-          <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600 dark:border-red-900 dark:bg-red-950/40 dark:text-red-400">
+          <div className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 dark:border-red-500/20 dark:bg-red-500/10 dark:text-red-300">
             {error}
           </div>
         )}
@@ -567,7 +570,7 @@ export default function EditProductSolutionPage() {
         {/* SUCCESS */}
 
         {success && (
-          <div className="rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700 dark:border-emerald-900 dark:bg-emerald-950/40 dark:text-emerald-400">
+          <div className="rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700 dark:border-emerald-500/20 dark:bg-emerald-500/10 dark:text-emerald-300">
             {success}
           </div>
         )}
@@ -903,7 +906,7 @@ export default function EditProductSolutionPage() {
         >
           <div className="grid gap-5 md:grid-cols-2">
             <div>
-              <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+              <label className="mb-2 block text-[13px] font-semibold text-slate-700 dark:text-slate-300">
                 Display Order
               </label>
 
@@ -923,11 +926,11 @@ export default function EditProductSolutionPage() {
             </div>
 
             <div>
-              <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+              <label className="mb-2 block text-[13px] font-semibold text-slate-700 dark:text-slate-300">
                 Status
               </label>
 
-              <label className="flex min-h-[46px] cursor-pointer items-center gap-3 rounded-xl border border-slate-200 px-4 dark:border-slate-700">
+              <label className="flex min-h-[46px] cursor-pointer items-center gap-3 rounded-xl border border-slate-200 bg-slate-50/70 px-4 transition hover:border-violet-300 dark:border-white/[0.08] dark:bg-white/[0.04]">
                 <input
                   type="checkbox"
                   checked={form.isActive}
@@ -937,10 +940,10 @@ export default function EditProductSolutionPage() {
                       event.target.checked
                     )
                   }
-                  className="h-4 w-4 rounded border-slate-300"
+                  className="h-4 w-4 rounded border-slate-300 accent-violet-600"
                 />
 
-                <span className="text-sm text-slate-700 dark:text-slate-300">
+                <span className="text-sm font-semibold text-slate-700 dark:text-slate-300">
                   Active Product Solution
                 </span>
               </label>
@@ -1022,7 +1025,7 @@ export default function EditProductSolutionPage() {
           <button
             type="submit"
             disabled={saving}
-            className="inline-flex items-center gap-2 rounded-xl bg-violet-600 px-6 py-3 text-sm font-semibold text-white shadow-lg transition hover:bg-violet-500 disabled:cursor-not-allowed disabled:opacity-60"
+            className="brand-grad inline-flex items-center justify-center gap-2 rounded-xl px-6 py-3 text-sm font-bold text-white shadow-lg shadow-violet-500/25 transition hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:translate-y-0"
           >
             {saving ? (
               <>
@@ -1050,7 +1053,7 @@ export default function EditProductSolutionPage() {
 // ============================================================
 
 const inputClasses =
-  "w-full rounded-xl border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-violet-500 focus:ring-2 focus:ring-violet-500/10 dark:border-slate-700 dark:bg-slate-900 dark:text-white";
+  "w-full rounded-xl border border-slate-200 bg-slate-50/70 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-violet-400 focus:bg-white focus:ring-4 focus:ring-violet-500/10 dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-white dark:focus:bg-white/[0.06]";
 
 function Section({
   title,
@@ -1064,10 +1067,10 @@ function Section({
   children: React.ReactNode;
 }) {
   return (
-    <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+    <section className="rounded-[24px] border border-slate-200/80 bg-white p-6 shadow-[0_30px_70px_-45px_rgba(15,23,42,.45)] sm:p-7 dark:border-white/[0.07] dark:bg-[#0b1220]">
       <div className="mb-6 flex flex-wrap items-start justify-between gap-4">
         <div>
-          <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
+          <h2 className="text-lg font-extrabold tracking-[-0.02em] text-slate-950 dark:text-white">
             {title}
           </h2>
 
@@ -1103,7 +1106,7 @@ function Input({
 }) {
   return (
     <div>
-      <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+      <label className="mb-2 block text-[13px] font-semibold text-slate-700 dark:text-slate-300">
         {label}
 
         {required && (
@@ -1140,7 +1143,7 @@ function Textarea({
 }) {
   return (
     <div>
-      <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+      <label className="mb-2 block text-[13px] font-semibold text-slate-700 dark:text-slate-300">
         {label}
       </label>
 
@@ -1167,7 +1170,7 @@ function AddButton({
     <button
       type="button"
       onClick={onClick}
-      className="inline-flex items-center gap-2 rounded-lg border border-violet-200 bg-violet-50 px-3 py-2 text-xs font-semibold text-violet-600 transition hover:bg-violet-100 dark:border-violet-500/20 dark:bg-violet-500/10 dark:text-violet-400"
+      className="inline-flex items-center justify-center gap-2 rounded-xl border border-violet-200 bg-violet-50 px-4 py-2.5 text-sm font-bold text-violet-700 transition hover:border-violet-300 hover:bg-violet-100 dark:border-violet-400/20 dark:bg-violet-500/10 dark:text-violet-300"
     >
       <Plus size={14} />
       {label}
@@ -1185,16 +1188,16 @@ function RepeaterCard({
   children: React.ReactNode;
 }) {
   return (
-    <div className="rounded-xl border border-slate-200 bg-slate-50/60 p-5 dark:border-slate-700 dark:bg-slate-950/40">
+    <div className="rounded-[20px] border border-slate-200/80 bg-slate-50/60 p-4 transition hover:border-violet-200 sm:p-5 dark:border-white/[0.07] dark:bg-white/[0.02]">
       <div className="mb-5 flex items-center justify-between">
-        <h3 className="text-sm font-semibold text-slate-800 dark:text-slate-200">
+        <h3 className="text-sm font-bold text-slate-900 dark:text-white">
           {title}
         </h3>
 
         <button
           type="button"
           onClick={onRemove}
-          className="inline-flex items-center gap-1 text-xs font-medium text-red-500 hover:text-red-600"
+          className="inline-flex items-center gap-1.5 rounded-xl border border-red-200 bg-red-50 px-3 py-1.5 text-xs font-bold text-red-600 transition hover:bg-red-100 dark:border-red-500/20 dark:bg-red-500/10 dark:text-red-400 dark:hover:bg-red-500/20"
         >
           <Trash2 size={14} />
           Remove
@@ -1214,7 +1217,7 @@ function EmptyMessage({
   text: string;
 }) {
   return (
-    <div className="rounded-xl border border-dashed border-slate-300 px-5 py-8 text-center text-sm text-slate-400 dark:border-slate-700">
+    <div className="rounded-[18px] border border-dashed border-violet-200 bg-violet-50/30 dark:border-white/[0.1] dark:bg-white/[0.02] px-5 py-8 text-center text-sm text-slate-500 dark:text-slate-400">
       {text}
     </div>
   );

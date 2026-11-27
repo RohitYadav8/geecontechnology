@@ -8,7 +8,6 @@ import { ArrowUpRight } from "lucide-react";
 import { Navbar } from "../../../components/navbar";
 import { Footer } from "../../../components/footer";
 import { AnimateIn } from "../../../components/animate-in";
-import { MouseGlow } from "../../../components/mouse-glow";
 
 type Service = {
   id: string;
@@ -62,238 +61,157 @@ export default function ServicesPage() {
   }, []);
 
   return (
-    <div className="flex min-h-screen flex-col bg-white dark:bg-slate-950">
+    <div className="flex min-h-screen flex-col bg-slate-50 dark:bg-[#060b16]">
       <Navbar />
 
       <main className="flex-1">
-        <MouseGlow className="relative overflow-hidden">
-          {/* Background */}
+        {/* ================================================= */}
+        {/* HERO */}
+        {/* ================================================= */}
 
-          <div className="pointer-events-none absolute inset-0">
-            <div className="absolute inset-0 bg-[linear-gradient(to_right,#e2e8f0_1px,transparent_1px),linear-gradient(to_bottom,#e2e8f0_1px,transparent_1px)] bg-[size:52px_52px] opacity-[0.08] dark:opacity-[0.025]" />
+        <section className="brand-grad relative overflow-hidden px-6 pb-40 pt-16 text-center text-white sm:px-8 sm:pb-44 sm:pt-20 lg:px-10">
+          <div className="pointer-events-none absolute -left-40 top-24 h-[460px] w-[460px] rounded-full bg-cyan-300/35 blur-3xl" />
+          <div className="pointer-events-none absolute -right-28 -top-24 h-[420px] w-[420px] rounded-full bg-violet-300/40 blur-3xl" />
 
-            <div className="absolute right-[-180px] top-[-180px] h-[500px] w-[500px] rounded-full bg-blue-500/5 blur-[120px] dark:bg-blue-500/10" />
-          </div>
+          <div
+            className="pointer-events-none absolute inset-0 opacity-[0.07]"
+            style={{
+              backgroundImage:
+                "linear-gradient(rgba(255,255,255,.6) 1px, transparent 1px), linear-gradient(90deg,rgba(255,255,255,.6) 1px,transparent 1px)",
+              backgroundSize: "56px 56px",
+            }}
+          />
 
-          <section className="relative px-6 py-14 sm:px-8 sm:py-16 lg:px-10 lg:py-20">
-            <div className="mx-auto max-w-6xl">
-              {/* Heading */}
+          <AnimateIn className="relative mx-auto max-w-4xl">
+            <h1 className="text-[44px] font-extrabold leading-[1.04] tracking-[-0.045em] sm:text-6xl lg:text-[76px]">
+              <span className="brand-text-light">
+                IT Services
+              </span>
+            </h1>
 
-              <AnimateIn>
-                <div className="max-w-5xl">
-                  <p className="text-xs font-semibold uppercase tracking-[0.22em] text-blue-600 dark:text-blue-400">
-                    IT Services
-                  </p>
+            <p className="mx-auto mt-6 max-w-3xl text-base leading-8 text-indigo-50/90 sm:text-lg">
+              Our company develops custom Web site applications
+              and software across a wide range of technology
+              platforms to ensure successful implementation of
+              your business strategies and enhancement of your
+              operational excellence.
+            </p>
+          </AnimateIn>
+        </section>
 
-                  <div className="mt-4 h-[3px] w-12 rounded-full bg-blue-600" />
+        {/* ================================================= */}
+        {/* SERVICES */}
+        {/* ================================================= */}
 
-                  <p className="mt-6 max-w-5xl text-sm leading-7 text-slate-600 dark:text-slate-400 sm:text-[15px]">
-                    Our company develops custom Web site applications
-                    and software across a wide range of technology
-                    platforms to ensure successful implementation of
-                    your business strategies and enhancement of your
-                    operational excellence.
-                  </p>
-                </div>
-              </AnimateIn>
+        <section className="relative z-10 -mt-28 px-4 pb-24 sm:-mt-32 sm:px-6 sm:pb-28 lg:px-10">
+          <div className="mx-auto max-w-7xl">
+            {/* Loading */}
 
-              {/* Loading */}
+            {loading && (
+              <div className="rounded-[30px] border border-slate-100 bg-white px-6 py-20 text-center shadow-[0_40px_100px_-40px_rgba(15,23,42,.35)] dark:border-white/[0.07] dark:bg-[#0b1220]">
+                <span className="brand-grad mx-auto block h-10 w-10 animate-spin rounded-full [mask:radial-gradient(farthest-side,transparent_calc(100%-4px),#000_0)]" />
 
-              {loading && (
-                <div className="mt-12 rounded-2xl border border-slate-200 bg-white px-6 py-16 text-center dark:border-slate-800 dark:bg-slate-900">
+                <p className="mt-4 text-sm text-slate-500 dark:text-slate-400">
+                  Loading services...
+                </p>
+              </div>
+            )}
+
+            {/* Error */}
+
+            {!loading && error && (
+              <div className="rounded-[30px] border border-red-200 bg-red-50 px-6 py-12 text-center shadow-[0_40px_100px_-40px_rgba(15,23,42,.35)] dark:border-red-900/50 dark:bg-red-950/30">
+                <p className="text-sm text-red-600 dark:text-red-400">
+                  {error}
+                </p>
+              </div>
+            )}
+
+            {/* No Services */}
+
+            {!loading &&
+              !error &&
+              services.length === 0 && (
+                <div className="rounded-[30px] border border-slate-100 bg-white px-6 py-20 text-center shadow-[0_40px_100px_-40px_rgba(15,23,42,.35)] dark:border-white/[0.07] dark:bg-[#0b1220]">
                   <p className="text-sm text-slate-500 dark:text-slate-400">
-                    Loading services...
+                    No services available.
                   </p>
                 </div>
               )}
 
-              {/* Error */}
+            {/* Services */}
 
-              {!loading && error && (
-                <div className="mt-12 rounded-2xl border border-red-200 bg-red-50 px-6 py-10 text-center dark:border-red-900/50 dark:bg-red-950/20">
-                  <p className="text-sm text-red-600 dark:text-red-400">
-                    {error}
-                  </p>
-                </div>
-              )}
+            {!loading &&
+              !error &&
+              services.length > 0 && (
+                <div className="space-y-6 sm:space-y-8">
+                  {services.map((service, index) => {
+                    const imageLeft = index % 2 === 0;
 
-              {/* No Services */}
+                    return (
+                      <AnimateIn
+                        key={service.id}
+                        delay={Math.min(index * 0.04, 0.2)}
+                      >
+                        <article className="group grid overflow-hidden rounded-[30px] border border-slate-200/80 bg-white p-3 shadow-[0_30px_80px_-45px_rgba(15,23,42,.45)] transition-all duration-500 hover:border-violet-200 hover:shadow-[0_40px_90px_-40px_rgba(91,33,182,.35)] dark:border-white/[0.07] dark:bg-[#0b1220] dark:hover:border-violet-400/25 lg:grid-cols-2">
+                          {/* Image */}
 
-              {!loading &&
-                !error &&
-                services.length === 0 && (
-                  <div className="mt-12 rounded-2xl border border-slate-200 bg-white px-6 py-16 text-center dark:border-slate-800 dark:bg-slate-900">
-                    <p className="text-sm text-slate-500 dark:text-slate-400">
-                      No services available.
-                    </p>
-                  </div>
-                )}
-
-              {/* Services */}
-
-              {!loading &&
-                !error &&
-                services.length > 0 && (
-                  <div className="mt-12 overflow-hidden rounded-2xl border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900">
-                    {services.map(
-                      (service, index) => {
-                        const imageLeft =
-                          index % 2 === 0;
-
-                        return (
-                          <AnimateIn
-                            key={service.id}
-                            delay={Math.min(
-                              index * 0.04,
-                              0.2
-                            )}
+                          <div
+                            className={`relative min-h-[240px] overflow-hidden rounded-[22px] bg-slate-100 dark:bg-slate-900 sm:min-h-[300px] lg:min-h-[340px] ${
+                              imageLeft ? "lg:order-1" : "lg:order-2"
+                            }`}
                           >
-                            <article className="group relative grid min-h-[290px] overflow-hidden border-b border-slate-200 last:border-b-0 dark:border-slate-800 lg:grid-cols-2">
-                              {/* Image */}
+                            <Image
+                              src={service.image}
+                              alt={service.title}
+                              fill
+                              sizes="(max-width: 1024px) 100vw, 50vw"
+                              className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.05]"
+                            />
 
-                              <div
-                                className={`
-                                  relative
-                                  min-h-[260px]
-                                  overflow-hidden
-                                  bg-slate-100
-                                  dark:bg-slate-950
-                                  lg:min-h-[320px]
-                                  ${
-                                    imageLeft
-                                      ? "lg:order-1"
-                                      : "lg:order-2"
-                                  }
-                                `}
+                            <span className="brand-grad absolute bottom-4 left-4 rounded-[10px] px-3 py-1.5 font-mono text-[12px] font-bold text-white shadow-lg">
+                              {String(index + 1).padStart(2, "0")}
+                            </span>
+                          </div>
+
+                          {/* Content */}
+
+                          <div
+                            className={`flex flex-col justify-center px-5 py-8 sm:px-8 sm:py-10 lg:px-12 ${
+                              imageLeft ? "lg:order-2" : "lg:order-1"
+                            }`}
+                          >
+                            <span className="brand-grad block h-1 w-12 rounded-full transition-all duration-500 group-hover:w-20" />
+
+                            <h2 className="mt-6 text-2xl font-extrabold leading-tight tracking-[-0.03em] text-slate-950 sm:text-[30px] dark:text-white">
+                              {service.title}
+                            </h2>
+
+                            <p className="mt-4 text-[15px] leading-8 text-slate-500 dark:text-slate-400">
+                              {service.description}
+                            </p>
+
+                            <div className="mt-7">
+                              <Link
+                                href={service.href || `/${service.slug}`}
+                                className="brand-grad group/link inline-flex items-center gap-2 rounded-xl px-5 py-3 text-xs font-bold uppercase tracking-[0.14em] text-white shadow-lg shadow-violet-500/25 transition-all duration-300 hover:-translate-y-0.5"
                               >
-                                <Image
-                                  src={
-                                    service.image
-                                  }
-                                  alt={
-                                    service.title
-                                  }
-                                  fill
-                                  sizes="(max-width: 1024px) 100vw, 50vw"
-                                  className="object-cover transition-transform duration-700 ease-out group-hover:scale-[1.045]"
+                                Read More
+                                <ArrowUpRight
+                                  size={15}
+                                  className="transition-transform duration-300 group-hover/link:-translate-y-0.5 group-hover/link:translate-x-0.5"
                                 />
-
-                                <div className="pointer-events-none absolute inset-0 bg-gradient-to-t from-slate-950/25 via-transparent to-transparent" />
-
-                                <div className="pointer-events-none absolute inset-0 bg-blue-600/0 transition-colors duration-500 group-hover:bg-blue-600/[0.035]" />
-                              </div>
-
-                              {/* Content */}
-
-                              <div
-                                className={`
-                                  relative
-                                  flex
-                                  min-h-[260px]
-                                  flex-col
-                                  justify-center
-                                  overflow-hidden
-                                  bg-white
-                                  px-7
-                                  py-10
-                                  dark:bg-slate-900
-                                  sm:px-10
-                                  lg:min-h-[320px]
-                                  lg:px-12
-                                  ${
-                                    imageLeft
-                                      ? "lg:order-2"
-                                      : "lg:order-1"
-                                  }
-                                `}
-                              >
-                                {/* Accent Line */}
-
-                                <span
-                                  className={`
-                                    absolute
-                                    top-1/2
-                                    hidden
-                                    h-10
-                                    w-[3px]
-                                    -translate-y-1/2
-                                    bg-blue-600
-                                    transition-all
-                                    duration-500
-                                    ease-out
-                                    group-hover:h-24
-                                    lg:block
-                                    ${
-                                      imageLeft
-                                        ? "left-0 rounded-r-full"
-                                        : "right-0 rounded-l-full"
-                                    }
-                                  `}
-                                />
-
-                                {/* Hover Glow */}
-
-                                <div
-                                  className={`
-                                    pointer-events-none
-                                    absolute
-                                    inset-0
-                                    opacity-0
-                                    transition-opacity
-                                    duration-500
-                                    group-hover:opacity-100
-                                    ${
-                                      imageLeft
-                                        ? "bg-gradient-to-r from-blue-600/[0.035] via-transparent to-transparent dark:from-blue-500/[0.05]"
-                                        : "bg-gradient-to-l from-blue-600/[0.035] via-transparent to-transparent dark:from-blue-500/[0.05]"
-                                    }
-                                  `}
-                                />
-
-                                <div className="relative">
-                                  <h2 className="text-xl font-semibold tracking-tight text-slate-950 transition-colors duration-300 group-hover:text-blue-700 dark:text-white dark:group-hover:text-blue-400 sm:text-2xl">
-                                    {
-                                      service.title
-                                    }
-                                  </h2>
-
-                                  <p className="mt-4 text-sm leading-7 text-slate-500 dark:text-slate-400">
-                                    {
-                                      service.description
-                                    }
-                                  </p>
-
-                                  <div className="mt-6">
-                                    <Link
-                                      href={
-                                        service.href ||
-                                        `/${service.slug}`
-                                      }
-                                      className="group/link inline-flex items-center gap-2 text-xs font-semibold uppercase tracking-[0.14em] text-blue-600 transition-colors duration-300 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300"
-                                    >
-                                      Read More
-
-                                      <span className="flex h-7 w-7 items-center justify-center rounded-full border border-blue-200 bg-blue-50 transition-all duration-300 group-hover/link:translate-x-1 group-hover/link:border-blue-600 group-hover/link:bg-blue-600 group-hover/link:text-white dark:border-blue-900 dark:bg-blue-950/40">
-                                        <ArrowUpRight
-                                          size={
-                                            13
-                                          }
-                                        />
-                                      </span>
-                                    </Link>
-                                  </div>
-                                </div>
-                              </div>
-                            </article>
-                          </AnimateIn>
-                        );
-                      }
-                    )}
-                  </div>
-                )}
-            </div>
-          </section>
-        </MouseGlow>
+                              </Link>
+                            </div>
+                          </div>
+                        </article>
+                      </AnimateIn>
+                    );
+                  })}
+                </div>
+              )}
+          </div>
+        </section>
       </main>
 
       <Footer />

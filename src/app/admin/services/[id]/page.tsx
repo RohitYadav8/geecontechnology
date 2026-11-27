@@ -7,8 +7,6 @@ import {
 import { verifyAdminToken } from "../../../../../lib/auth";
 import { prisma } from "../../../../../lib/prisma";
 
-import { AdminSidebar } from "../../sidebar";
-import { AdminTopbar } from "../../topbar";
 import { ServiceForm } from "../../service-form";
 
 type EditServicePageProps = {
@@ -118,27 +116,35 @@ export default async function EditServicePage({
   // ==========================================
 
   return (
-    <div className="flex min-h-screen bg-slate-50 dark:bg-slate-950">
-      <AdminSidebar />
-
-      <div className="flex flex-1 flex-col">
-        <AdminTopbar
-          adminName={payload.email}
-        />
-
-        <main className="flex-1 overflow-y-auto p-8">
+    <div className="w-full min-w-0">
+      <div className="flex min-w-0 flex-1 flex-col">
+        <main className="min-w-0 flex-1">
           {/* Header */}
 
-          <div>
-            <h1 className="text-2xl font-semibold text-slate-900 dark:text-white">
-              Edit Service
-            </h1>
+          <div className="brand-grad relative max-w-4xl overflow-hidden rounded-[28px] px-6 py-7 text-white sm:px-8 sm:py-8">
+            <div className="pointer-events-none absolute -right-20 -top-24 h-72 w-72 rounded-full bg-violet-300/40 blur-3xl" />
+            <div className="pointer-events-none absolute -bottom-28 -left-16 h-72 w-72 rounded-full bg-cyan-300/30 blur-3xl" />
 
-            <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-              Update service information,
-              content, visibility and display
-              order.
-            </p>
+            <div
+              className="pointer-events-none absolute inset-0 opacity-[0.07]"
+              style={{
+                backgroundImage:
+                  "linear-gradient(rgba(255,255,255,.6) 1px, transparent 1px), linear-gradient(90deg,rgba(255,255,255,.6) 1px,transparent 1px)",
+                backgroundSize: "44px 44px",
+              }}
+            />
+
+            <div className="relative min-w-0">
+              <h1 className="text-2xl font-extrabold tracking-[-0.03em] sm:text-3xl">
+                Edit Service
+              </h1>
+
+              <p className="mt-1.5 text-sm text-indigo-50/90">
+                Update service information,
+                content, visibility and display
+                order.
+              </p>
+            </div>
           </div>
 
           {/* Form */}

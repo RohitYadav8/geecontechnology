@@ -7,6 +7,7 @@ import {
   ExternalLink,
   CheckCircle2,
   XCircle,
+  Layers,
 } from "lucide-react";
 
 import { verifyAdminToken } from "../../../../lib/auth";
@@ -41,114 +42,152 @@ export default async function AdminServicesPage() {
     });
 
   return (
-    <div className="w-full">
+    <div className="w-full min-w-0">
       {/* Header */}
 
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-        <div>
-          <h1 className="text-2xl font-semibold text-slate-900 dark:text-white">
-            Services
-          </h1>
+      <div className="brand-grad relative overflow-hidden rounded-[28px] px-6 py-7 text-white sm:px-8 sm:py-8">
+        <div className="pointer-events-none absolute -right-20 -top-24 h-72 w-72 rounded-full bg-violet-300/40 blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-28 -left-16 h-72 w-72 rounded-full bg-cyan-300/30 blur-3xl" />
 
-          <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-            Manage all your services from here.
-          </p>
+        <div
+          className="pointer-events-none absolute inset-0 opacity-[0.07]"
+          style={{
+            backgroundImage:
+              "linear-gradient(rgba(255,255,255,.6) 1px, transparent 1px), linear-gradient(90deg,rgba(255,255,255,.6) 1px,transparent 1px)",
+            backgroundSize: "44px 44px",
+          }}
+        />
+
+        <div className="relative flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="min-w-0">
+            <h1 className="text-2xl font-extrabold tracking-[-0.03em] sm:text-3xl">
+              Services
+            </h1>
+
+            <p className="mt-1.5 text-sm text-indigo-50/90">
+              Manage all your services from here.
+            </p>
+          </div>
+
+          <Link
+            href="/admin/services/new"
+            className="inline-flex w-fit items-center justify-center gap-2 rounded-xl bg-white px-5 py-3 text-sm font-bold text-violet-700 shadow-lg transition hover:-translate-y-0.5 hover:shadow-xl"
+          >
+            <Plus size={16} />
+            Add Service
+          </Link>
         </div>
-
-        <Link
-          href="/admin/services/new"
-          className="inline-flex items-center justify-center gap-2 rounded-lg bg-violet-600 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-violet-500"
-        >
-          <Plus size={16} />
-          Add Service
-        </Link>
       </div>
 
       {/* Stats */}
 
-      <div className="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
-        <div className="rounded-2xl border border-slate-200 bg-white p-5 dark:border-slate-800 dark:bg-slate-900">
-          <p className="text-sm text-slate-500 dark:text-slate-400">
-            Total Services
-          </p>
+      <div className="mt-6 grid gap-4 sm:grid-cols-2 sm:gap-5 xl:grid-cols-3">
+        <div className="group rounded-[22px] border border-slate-100 bg-white p-5 shadow-[0_30px_70px_-40px_rgba(15,23,42,.45)] transition-all duration-300 hover:-translate-y-1 hover:border-violet-200 dark:border-white/[0.07] dark:bg-[#0b1220] dark:hover:border-violet-400/25">
+          <div className="flex items-start justify-between gap-3">
+            <div className="min-w-0">
+              <p className="text-xs font-bold uppercase tracking-[0.12em] text-slate-500 dark:text-slate-400">
+                Total Services
+              </p>
 
-          <p className="mt-2 text-3xl font-semibold text-slate-900 dark:text-white">
-            {services.length}
-          </p>
+              <p className="brand-text mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl">
+                {services.length}
+              </p>
+            </div>
+
+            <div className="brand-grad flex h-11 w-11 shrink-0 items-center justify-center rounded-[14px] text-white shadow-lg shadow-violet-500/25 transition-transform duration-300 group-hover:-rotate-6">
+              <Layers size={19} />
+            </div>
+          </div>
         </div>
 
-        <div className="rounded-2xl border border-slate-200 bg-white p-5 dark:border-slate-800 dark:bg-slate-900">
-          <p className="text-sm text-slate-500 dark:text-slate-400">
-            Active Services
-          </p>
+        <div className="group rounded-[22px] border border-slate-100 bg-white p-5 shadow-[0_30px_70px_-40px_rgba(15,23,42,.45)] transition-all duration-300 hover:-translate-y-1 hover:border-emerald-200 dark:border-white/[0.07] dark:bg-[#0b1220] dark:hover:border-emerald-400/25">
+          <div className="flex items-start justify-between gap-3">
+            <div className="min-w-0">
+              <p className="text-xs font-bold uppercase tracking-[0.12em] text-slate-500 dark:text-slate-400">
+                Active Services
+              </p>
 
-          <p className="mt-2 text-3xl font-semibold text-emerald-600 dark:text-emerald-400">
-            {
-              services.filter(
-                (service) => service.isActive
-              ).length
-            }
-          </p>
+              <p className="mt-3 text-3xl font-extrabold tracking-tight text-emerald-600 sm:text-4xl dark:text-emerald-400">
+                {
+                  services.filter(
+                    (service) => service.isActive
+                  ).length
+                }
+              </p>
+            </div>
+
+            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[14px] bg-gradient-to-br from-emerald-500 to-teal-400 text-white shadow-lg shadow-emerald-500/25 transition-transform duration-300 group-hover:-rotate-6">
+              <CheckCircle2 size={19} />
+            </div>
+          </div>
         </div>
 
-        <div className="rounded-2xl border border-slate-200 bg-white p-5 dark:border-slate-800 dark:bg-slate-900">
-          <p className="text-sm text-slate-500 dark:text-slate-400">
-            Inactive Services
-          </p>
+        <div className="group rounded-[22px] border border-slate-100 bg-white p-5 shadow-[0_30px_70px_-40px_rgba(15,23,42,.45)] transition-all duration-300 hover:-translate-y-1 hover:border-red-200 sm:col-span-2 xl:col-span-1 dark:border-white/[0.07] dark:bg-[#0b1220] dark:hover:border-red-400/25">
+          <div className="flex items-start justify-between gap-3">
+            <div className="min-w-0">
+              <p className="text-xs font-bold uppercase tracking-[0.12em] text-slate-500 dark:text-slate-400">
+                Inactive Services
+              </p>
 
-          <p className="mt-2 text-3xl font-semibold text-red-500 dark:text-red-400">
-            {
-              services.filter(
-                (service) => !service.isActive
-              ).length
-            }
-          </p>
+              <p className="mt-3 text-3xl font-extrabold tracking-tight text-red-500 sm:text-4xl dark:text-red-400">
+                {
+                  services.filter(
+                    (service) => !service.isActive
+                  ).length
+                }
+              </p>
+            </div>
+
+            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[14px] bg-gradient-to-br from-rose-500 to-red-400 text-white shadow-lg shadow-red-500/25 transition-transform duration-300 group-hover:-rotate-6">
+              <XCircle size={19} />
+            </div>
+          </div>
         </div>
       </div>
 
       {/* Services Table */}
 
-      <div className="mt-6 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
+      <div className="mt-6 overflow-hidden rounded-[24px] border border-slate-200/80 bg-white shadow-[0_30px_70px_-45px_rgba(15,23,42,.45)] dark:border-white/[0.07] dark:bg-[#0b1220]">
         <div className="overflow-x-auto">
           <table className="w-full min-w-[1100px] text-left text-sm">
-            <thead className="border-b border-slate-100 bg-slate-50/70 text-xs uppercase tracking-wide text-slate-400 dark:border-slate-800 dark:bg-white/[0.02]">
+            <thead className="border-b border-slate-100 bg-slate-50/80 text-[11px] font-bold uppercase tracking-[0.12em] text-slate-500 dark:border-white/[0.06] dark:bg-white/[0.03] dark:text-slate-400">
               <tr>
-                <th className="px-6 py-3">
+                <th className="px-6 py-4">
                   Title
                 </th>
 
-                <th className="px-6 py-3">
+                <th className="px-6 py-4">
                   Slug
                 </th>
 
-                <th className="px-6 py-3">
+                <th className="px-6 py-4">
                   Tag
                 </th>
 
-                <th className="px-6 py-3">
+                <th className="px-6 py-4">
                   Href
                 </th>
 
-                <th className="px-6 py-3">
+                <th className="px-6 py-4">
                   Order
                 </th>
 
-                <th className="px-6 py-3">
+                <th className="px-6 py-4">
                   Status
                 </th>
 
-                <th className="px-6 py-3 text-right">
+                <th className="px-6 py-4 text-right">
                   Actions
                 </th>
               </tr>
             </thead>
 
-            <tbody>
+            <tbody className="divide-y divide-slate-100 dark:divide-white/[0.06]">
               {services.length === 0 ? (
                 <tr>
                   <td
                     colSpan={7}
-                    className="px-6 py-12 text-center text-slate-400"
+                    className="px-6 py-14 text-center text-slate-400"
                   >
                     No services yet — click
                     &ldquo;Add Service&rdquo; to create one.
@@ -158,12 +197,12 @@ export default async function AdminServicesPage() {
                 services.map((service) => (
                   <tr
                     key={service.id}
-                    className="border-b border-slate-100 transition-colors last:border-0 hover:bg-slate-50/70 dark:border-slate-800 dark:hover:bg-white/[0.02]"
+                    className="transition-colors hover:bg-violet-50/40 dark:hover:bg-white/[0.03]"
                   >
                     {/* Title */}
 
                     <td className="px-6 py-4">
-                      <div className="font-medium text-slate-900 dark:text-white">
+                      <div className="font-bold text-slate-900 dark:text-white">
                         {service.title}
                       </div>
 
@@ -177,7 +216,7 @@ export default async function AdminServicesPage() {
                     {/* Slug */}
 
                     <td className="px-6 py-4">
-                      <span className="rounded-md bg-slate-100 px-2 py-1 font-mono text-xs text-slate-600 dark:bg-slate-800 dark:text-slate-300">
+                      <span className="rounded-lg bg-violet-50 px-2 py-1 font-mono text-xs text-violet-700 dark:bg-violet-500/10 dark:text-violet-300">
                         {service.slug}
                       </span>
                     </td>
@@ -194,7 +233,7 @@ export default async function AdminServicesPage() {
                       <Link
                         href={service.href}
                         target="_blank"
-                        className="inline-flex items-center gap-1.5 text-violet-600 hover:underline dark:text-violet-400"
+                        className="inline-flex items-center gap-1.5 font-medium text-violet-600 transition hover:text-violet-800 hover:underline dark:text-violet-400 dark:hover:text-violet-300"
                       >
                         {service.href}
 
@@ -204,20 +243,22 @@ export default async function AdminServicesPage() {
 
                     {/* Order */}
 
-                    <td className="px-6 py-4 text-slate-500 dark:text-slate-400">
-                      {service.order}
+                    <td className="px-6 py-4">
+                      <span className="inline-flex h-7 min-w-7 items-center justify-center rounded-lg bg-slate-100 px-2 text-xs font-bold text-slate-600 dark:bg-white/[0.06] dark:text-slate-300">
+                        {service.order}
+                      </span>
                     </td>
 
                     {/* Status */}
 
                     <td className="px-6 py-4">
                       {service.isActive ? (
-                        <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-medium text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400">
+                        <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-[11px] font-bold text-emerald-600 ring-1 ring-emerald-200/70 dark:bg-emerald-500/10 dark:text-emerald-400 dark:ring-emerald-500/20">
                           <CheckCircle2 size={13} />
                           Active
                         </span>
                       ) : (
-                        <span className="inline-flex items-center gap-1.5 rounded-full bg-red-50 px-2.5 py-1 text-xs font-medium text-red-500 dark:bg-red-500/10 dark:text-red-400">
+                        <span className="inline-flex items-center gap-1.5 rounded-full bg-red-50 px-2.5 py-1 text-[11px] font-bold text-red-500 ring-1 ring-red-200/70 dark:bg-red-500/10 dark:text-red-400 dark:ring-red-500/20">
                           <XCircle size={13} />
                           Inactive
                         </span>
@@ -227,10 +268,10 @@ export default async function AdminServicesPage() {
                     {/* Actions */}
 
                     <td className="px-6 py-4">
-                      <div className="flex justify-end gap-3">
+                      <div className="flex items-center justify-end gap-2">
                         <Link
                           href={`/admin/services/${service.id}`}
-                          className="text-violet-600 hover:underline dark:text-violet-400"
+                          className="rounded-xl border border-slate-200 bg-white px-3.5 py-1.5 text-xs font-bold text-slate-700 transition hover:border-violet-300 hover:text-violet-600 dark:border-white/[0.1] dark:bg-white/[0.04] dark:text-slate-200 dark:hover:border-violet-400/40 dark:hover:text-violet-300"
                         >
                           Edit
                         </Link>

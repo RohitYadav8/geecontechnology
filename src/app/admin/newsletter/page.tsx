@@ -60,83 +60,96 @@ export default async function AdminNewsletterPage() {
     ).length;
 
   return (
-    <div className="w-full">
+    <div className="w-full min-w-0">
       {/* =================================================
           PAGE HEADER
       ================================================= */}
 
-      <div>
-        <h1 className="text-2xl font-semibold text-slate-900 dark:text-white">
-          Newsletter
-        </h1>
+      <div className="brand-grad relative overflow-hidden rounded-[28px] px-6 pb-20 pt-7 text-white sm:px-8 sm:pb-24 sm:pt-8">
+        <div className="pointer-events-none absolute -right-20 -top-24 h-72 w-72 rounded-full bg-violet-300/40 blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-28 -left-16 h-72 w-72 rounded-full bg-cyan-300/30 blur-3xl" />
+        <div
+          className="pointer-events-none absolute inset-0 opacity-[0.07]"
+          style={{
+            backgroundImage:
+              "linear-gradient(rgba(255,255,255,.6) 1px, transparent 1px), linear-gradient(90deg,rgba(255,255,255,.6) 1px,transparent 1px)",
+            backgroundSize: "44px 44px",
+          }}
+        />
 
-        <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-          Manage newsletter subscribers
-          from your website.
-        </p>
+        <div className="relative min-w-0">
+          <h1 className="text-2xl font-extrabold tracking-[-0.03em] sm:text-3xl">
+            Newsletter
+          </h1>
+
+          <p className="mt-2 max-w-2xl text-sm leading-6 text-indigo-50/90">
+            Manage newsletter subscribers
+            from your website.
+          </p>
+        </div>
       </div>
 
       {/* =================================================
           STATS
       ================================================= */}
 
-      <div className="mt-6 grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
+      <div className="relative z-10 -mt-12 grid gap-4 px-3 sm:-mt-14 sm:grid-cols-2 sm:px-5 xl:grid-cols-3">
         {/* TOTAL */}
 
-        <div className="rounded-2xl border border-slate-200 bg-white p-5 dark:border-slate-800 dark:bg-slate-900">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-slate-500 dark:text-slate-400">
+        <div className="group rounded-[22px] border border-slate-100 bg-white p-5 shadow-[0_30px_70px_-40px_rgba(15,23,42,.45)] transition-all duration-300 hover:-translate-y-1 hover:border-violet-200 dark:border-white/[0.07] dark:bg-[#0b1220] dark:hover:border-violet-400/25">
+          <div className="flex items-start justify-between gap-3">
+            <div className="min-w-0">
+              <p className="text-xs font-bold uppercase tracking-[0.12em] text-slate-500 dark:text-slate-400">
                 Total Subscribers
               </p>
 
-              <p className="mt-2 text-3xl font-semibold text-slate-900 dark:text-white">
+              <p className="brand-text mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl">
                 {totalSubscribers}
               </p>
             </div>
 
-            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-violet-50 text-violet-600 dark:bg-violet-500/10 dark:text-violet-400">
-              <Users size={20} />
+            <div className="brand-grad flex h-11 w-11 shrink-0 items-center justify-center rounded-[14px] text-white shadow-lg shadow-violet-500/25 transition-transform duration-300 group-hover:-rotate-6">
+              <Users size={19} />
             </div>
           </div>
         </div>
 
         {/* ACTIVE */}
 
-        <div className="rounded-2xl border border-slate-200 bg-white p-5 dark:border-slate-800 dark:bg-slate-900">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-slate-500 dark:text-slate-400">
+        <div className="group rounded-[22px] border border-slate-100 bg-white p-5 shadow-[0_30px_70px_-40px_rgba(15,23,42,.45)] transition-all duration-300 hover:-translate-y-1 hover:border-violet-200 dark:border-white/[0.07] dark:bg-[#0b1220] dark:hover:border-violet-400/25">
+          <div className="flex items-start justify-between gap-3">
+            <div className="min-w-0">
+              <p className="text-xs font-bold uppercase tracking-[0.12em] text-slate-500 dark:text-slate-400">
                 Active Subscribers
               </p>
 
-              <p className="mt-2 text-3xl font-semibold text-slate-900 dark:text-white">
+              <p className="brand-text mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl">
                 {activeSubscribers}
               </p>
             </div>
 
-            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400">
-              <UserCheck size={20} />
+            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[14px] bg-gradient-to-br from-emerald-400 to-teal-500 text-white shadow-lg shadow-emerald-500/25 transition-transform duration-300 group-hover:-rotate-6">
+              <UserCheck size={19} />
             </div>
           </div>
         </div>
 
         {/* INACTIVE */}
 
-        <div className="rounded-2xl border border-slate-200 bg-white p-5 dark:border-slate-800 dark:bg-slate-900">
-          <div className="flex items-center justify-between">
-            <div>
-              <p className="text-sm text-slate-500 dark:text-slate-400">
+        <div className="group rounded-[22px] border border-slate-100 bg-white p-5 shadow-[0_30px_70px_-40px_rgba(15,23,42,.45)] transition-all duration-300 hover:-translate-y-1 hover:border-violet-200 dark:border-white/[0.07] dark:bg-[#0b1220] dark:hover:border-violet-400/25">
+          <div className="flex items-start justify-between gap-3">
+            <div className="min-w-0">
+              <p className="text-xs font-bold uppercase tracking-[0.12em] text-slate-500 dark:text-slate-400">
                 Inactive Subscribers
               </p>
 
-              <p className="mt-2 text-3xl font-semibold text-slate-900 dark:text-white">
+              <p className="brand-text mt-3 text-3xl font-extrabold tracking-tight sm:text-4xl">
                 {inactiveSubscribers}
               </p>
             </div>
 
-            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-red-50 text-red-500 dark:bg-red-500/10 dark:text-red-400">
-              <UserX size={20} />
+            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-[14px] bg-gradient-to-br from-rose-400 to-red-500 text-white shadow-lg shadow-red-500/25 transition-transform duration-300 group-hover:-rotate-6">
+              <UserX size={19} />
             </div>
           </div>
         </div>
@@ -146,16 +159,16 @@ export default async function AdminNewsletterPage() {
           SUBSCRIBERS TABLE
       ================================================= */}
 
-      <div className="mt-6 overflow-hidden rounded-2xl border border-slate-200 bg-white dark:border-slate-800 dark:bg-slate-900">
+      <div className="mt-6 overflow-hidden rounded-[24px] border border-slate-200/80 bg-white shadow-[0_30px_70px_-45px_rgba(15,23,42,.45)] dark:border-white/[0.07] dark:bg-[#0b1220]">
         {/* TABLE HEADER */}
 
-        <div className="flex items-center gap-3 border-b border-slate-200 px-6 py-4 dark:border-slate-800">
-          <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-violet-50 text-violet-600 dark:bg-violet-500/10 dark:text-violet-400">
+        <div className="flex items-center gap-3 border-b border-slate-100 px-6 py-5 dark:border-white/[0.06]">
+          <div className="brand-grad flex h-10 w-10 shrink-0 items-center justify-center rounded-[12px] text-white shadow-lg shadow-violet-500/25">
             <Mail size={17} />
           </div>
 
-          <div>
-            <h2 className="font-semibold text-slate-900 dark:text-white">
+          <div className="min-w-0">
+            <h2 className="text-base font-extrabold tracking-[-0.02em] text-slate-900 dark:text-white">
               Subscribers
             </h2>
 
@@ -170,27 +183,27 @@ export default async function AdminNewsletterPage() {
 
         <div className="overflow-x-auto">
           <table className="w-full min-w-[750px] text-left text-sm">
-            <thead className="border-b border-slate-100 bg-slate-50/70 text-xs uppercase tracking-wide text-slate-400 dark:border-slate-800 dark:bg-white/[0.02]">
+            <thead className="border-b border-slate-100 bg-slate-50/80 text-[11px] font-bold uppercase tracking-[0.12em] text-slate-500 dark:border-white/[0.06] dark:bg-white/[0.03] dark:text-slate-400">
               <tr>
-                <th className="px-6 py-3">
+                <th className="px-6 py-4">
                   #
                 </th>
 
-                <th className="px-6 py-3">
+                <th className="px-6 py-4">
                   Email
                 </th>
 
-                <th className="px-6 py-3">
+                <th className="px-6 py-4">
                   Status
                 </th>
 
-                <th className="px-6 py-3">
+                <th className="px-6 py-4">
                   Subscribed On
                 </th>
               </tr>
             </thead>
 
-            <tbody>
+            <tbody className="divide-y divide-slate-100 dark:divide-white/[0.06]">
               {subscribers.length ===
               0 ? (
                 <tr>
@@ -198,18 +211,18 @@ export default async function AdminNewsletterPage() {
                     colSpan={4}
                     className="px-6 py-14 text-center"
                   >
-                    <div className="mx-auto flex h-12 w-12 items-center justify-center rounded-full bg-slate-100 text-slate-400 dark:bg-white/[0.05]">
+                    <div className="brand-grad mx-auto flex h-14 w-14 items-center justify-center rounded-[16px] text-white shadow-lg shadow-violet-500/25">
                       <Mail
                         size={20}
                       />
                     </div>
 
-                    <p className="mt-3 font-medium text-slate-600 dark:text-slate-300">
+                    <p className="mt-4 font-extrabold text-slate-900 dark:text-white">
                       No subscribers
                       yet.
                     </p>
 
-                    <p className="mt-1 text-xs text-slate-400">
+                    <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
                       Newsletter
                       subscribers will
                       appear here.
@@ -226,11 +239,11 @@ export default async function AdminNewsletterPage() {
                       key={
                         subscriber.id
                       }
-                      className="border-b border-slate-100 transition-colors last:border-0 hover:bg-slate-50/70 dark:border-slate-800 dark:hover:bg-white/[0.02]"
+                      className="transition-colors hover:bg-violet-50/40 dark:hover:bg-white/[0.03]"
                     >
                       {/* NUMBER */}
 
-                      <td className="px-6 py-4 text-slate-400">
+                      <td className="px-6 py-4 font-semibold tabular-nums text-slate-400">
                         {index + 1}
                       </td>
 
@@ -238,7 +251,7 @@ export default async function AdminNewsletterPage() {
 
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-3">
-                          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full bg-violet-50 text-violet-600 dark:bg-violet-500/10 dark:text-violet-400">
+                          <div className="brand-grad flex h-10 w-10 shrink-0 items-center justify-center rounded-[12px] text-white shadow-md shadow-violet-500/20">
                             <Mail
                               size={
                                 15
@@ -246,7 +259,7 @@ export default async function AdminNewsletterPage() {
                             />
                           </div>
 
-                          <span className="font-medium text-slate-900 dark:text-white">
+                          <span className="font-bold text-slate-900 dark:text-white">
                             {
                               subscriber.email
                             }
@@ -258,13 +271,13 @@ export default async function AdminNewsletterPage() {
 
                       <td className="px-6 py-4">
                         {subscriber.isActive ? (
-                          <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-medium text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400">
+                          <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-[11px] font-bold text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400">
                             <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
 
                             Active
                           </span>
                         ) : (
-                          <span className="inline-flex items-center gap-1.5 rounded-full bg-red-50 px-2.5 py-1 text-xs font-medium text-red-500 dark:bg-red-500/10 dark:text-red-400">
+                          <span className="inline-flex items-center gap-1.5 rounded-full bg-red-50 px-2.5 py-1 text-[11px] font-bold text-red-600 dark:bg-red-500/10 dark:text-red-400">
                             <span className="h-1.5 w-1.5 rounded-full bg-red-500" />
 
                             Inactive
@@ -274,7 +287,7 @@ export default async function AdminNewsletterPage() {
 
                       {/* DATE */}
 
-                      <td className="px-6 py-4 text-slate-500 dark:text-slate-400">
+                      <td className="whitespace-nowrap px-6 py-4 text-slate-500 dark:text-slate-400">
                         {subscriber.subscribedAt.toLocaleDateString(
                           "en-IN",
                           {

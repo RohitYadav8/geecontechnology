@@ -14,6 +14,8 @@ import {
 
 import { Navbar } from "../../../../components/navbar";
 import { Footer } from "../../../../components/footer";
+import { AnimateIn } from "../../../../components/animate-in";
+import { FloatingBlob } from "../../../../components/floating-blob";
 import { prisma } from "../../../../lib/prisma";
 
 export const dynamic = "force-dynamic";
@@ -58,8 +60,9 @@ export default async function CaseStudyDetailPage({
       )
     : [];
 
+
   return (
-    <div className="flex min-h-screen flex-col bg-white dark:bg-slate-950">
+    <div className="flex min-h-screen flex-col bg-slate-50 dark:bg-[#060b16]">
       <Navbar />
 
       <main className="flex-1">
@@ -67,15 +70,34 @@ export default async function CaseStudyDetailPage({
             HERO SECTION
         ====================================================== */}
 
-        <section className="relative overflow-hidden border-b border-slate-200 bg-slate-50 dark:border-slate-800 dark:bg-slate-950">
+        <section className="brand-grad relative overflow-hidden text-white">
           {/* Background */}
-          <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(59,130,246,0.12),transparent_40%)]" />
+          <FloatingBlob
+            className="-left-40 top-24 h-[460px] w-[460px]"
+            color="bg-cyan-300/35"
+            duration={18}
+          />
 
-          <div className="relative mx-auto max-w-7xl px-6 py-16 sm:py-20 lg:py-24">
+          <FloatingBlob
+            className="-right-28 -top-24 h-[420px] w-[420px]"
+            color="bg-violet-300/40"
+            duration={16}
+          />
+
+          <div
+            className="pointer-events-none absolute inset-0 opacity-[0.07]"
+            style={{
+              backgroundImage:
+                "linear-gradient(rgba(255,255,255,.6) 1px, transparent 1px), linear-gradient(90deg,rgba(255,255,255,.6) 1px,transparent 1px)",
+              backgroundSize: "56px 56px",
+            }}
+          />
+
+          <div className="relative mx-auto max-w-7xl px-6 pb-40 pt-16 sm:px-8 sm:pb-44 sm:pt-20 lg:px-10">
             {/* Back */}
             <Link
               href="/case-studies"
-              className="group inline-flex items-center gap-2 text-sm font-medium text-slate-500 transition hover:text-blue-600 dark:text-slate-400 dark:hover:text-blue-400"
+              className="group inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/[0.14] px-4 py-2 text-sm font-semibold text-white backdrop-blur-xl transition-all duration-300 hover:bg-white/[0.22]"
             >
               <ArrowLeft
                 size={16}
@@ -87,33 +109,33 @@ export default async function CaseStudyDetailPage({
 
             <div className="mt-10 grid items-center gap-12 lg:grid-cols-[1fr_0.9fr]">
               {/* LEFT */}
-              <div>
-                <span className="text-xs font-semibold uppercase tracking-[0.2em] text-blue-600 dark:text-blue-400">
+              <AnimateIn>
+                <span className="inline-flex items-center rounded-full border border-white/30 bg-white/[0.14] px-4 py-2 text-[11px] font-bold uppercase tracking-[0.2em] backdrop-blur-xl">
                   Case Study
                 </span>
 
-                <h1 className="mt-4 max-w-3xl text-3xl font-semibold leading-tight text-slate-900 dark:text-white sm:text-4xl lg:text-5xl">
+                <h1 className="mt-6 max-w-3xl break-words text-[40px] font-extrabold leading-[1.05] tracking-[-0.045em] sm:text-6xl lg:text-[64px]">
                   {caseStudy.title}
                 </h1>
 
-                <p className="mt-6 max-w-2xl text-sm leading-7 text-slate-600 dark:text-slate-400 sm:text-base">
+                <p className="mt-6 max-w-2xl text-base leading-8 text-indigo-50/90 sm:text-lg">
                   {caseStudy.shortDescription}
                 </p>
 
                 {/* Client / Industry */}
                 <div className="mt-8 flex flex-wrap gap-4">
                   {caseStudy.clientName && (
-                    <div className="flex items-center gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-                      <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-blue-50 text-blue-600 dark:bg-blue-500/10 dark:text-blue-400">
+                    <div className="flex items-center gap-3 rounded-2xl border border-white/30 bg-white/[0.14] px-4 py-3 backdrop-blur-xl">
+                      <div className="flex h-9 w-9 items-center justify-center rounded-[12px] bg-white text-violet-600 shadow-lg shadow-violet-900/20">
                         <Building2 size={17} />
                       </div>
 
                       <div>
-                        <p className="text-[11px] uppercase tracking-wide text-slate-400">
+                        <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-indigo-100/80">
                           Client
                         </p>
 
-                        <p className="mt-0.5 text-sm font-semibold text-slate-900 dark:text-white">
+                        <p className="mt-0.5 text-sm font-bold text-white">
                           {caseStudy.clientName}
                         </p>
                       </div>
@@ -121,17 +143,17 @@ export default async function CaseStudyDetailPage({
                   )}
 
                   {caseStudy.industry && (
-                    <div className="flex items-center gap-3 rounded-xl border border-slate-200 bg-white px-4 py-3 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-                      <div className="flex h-9 w-9 items-center justify-center rounded-lg bg-violet-50 text-violet-600 dark:bg-violet-500/10 dark:text-violet-400">
+                    <div className="flex items-center gap-3 rounded-2xl border border-white/30 bg-white/[0.14] px-4 py-3 backdrop-blur-xl">
+                      <div className="flex h-9 w-9 items-center justify-center rounded-[12px] bg-white text-violet-600 shadow-lg shadow-violet-900/20">
                         <BriefcaseBusiness size={17} />
                       </div>
 
                       <div>
-                        <p className="text-[11px] uppercase tracking-wide text-slate-400">
+                        <p className="text-[11px] font-bold uppercase tracking-[0.16em] text-indigo-100/80">
                           Industry
                         </p>
 
-                        <p className="mt-0.5 text-sm font-semibold text-slate-900 dark:text-white">
+                        <p className="mt-0.5 text-sm font-bold text-white">
                           {caseStudy.industry}
                         </p>
                       </div>
@@ -145,28 +167,30 @@ export default async function CaseStudyDetailPage({
                     href={caseStudy.projectUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="mt-8 inline-flex items-center gap-2 rounded-xl bg-blue-600 px-5 py-3 text-sm font-semibold text-white transition hover:bg-blue-500 hover:shadow-lg hover:shadow-blue-600/20"
+                    className="mt-8 inline-flex items-center gap-2 rounded-xl bg-white px-6 py-3.5 text-sm font-bold text-violet-700 shadow-lg shadow-violet-900/25 transition-all duration-300 hover:-translate-y-0.5"
                   >
                     Visit Project
                     <ArrowUpRight size={16} />
                   </a>
                 )}
-              </div>
+              </AnimateIn>
 
               {/* RIGHT IMAGE */}
               {caseStudy.image && (
-                <div className="relative overflow-hidden rounded-3xl border border-slate-200 bg-white p-2 shadow-2xl shadow-slate-200/50 dark:border-slate-800 dark:bg-slate-900 dark:shadow-none">
-                  <div className="relative h-[280px] overflow-hidden rounded-2xl sm:h-[360px] lg:h-[420px]">
-                    <Image
-                      src={caseStudy.image}
-                      alt={caseStudy.title}
-                      fill
-                      priority
-                      sizes="(max-width: 1024px) 100vw, 50vw"
-                      className="object-cover"
-                    />
+                <AnimateIn delay={0.1}>
+                  <div className="relative overflow-hidden rounded-[28px] border border-white/30 bg-white/15 p-2 shadow-[0_40px_100px_-40px_rgba(15,23,42,.5)] backdrop-blur-xl">
+                    <div className="relative h-[260px] overflow-hidden rounded-[22px] sm:h-[360px] lg:h-[420px]">
+                      <Image
+                        src={caseStudy.image}
+                        alt={caseStudy.title}
+                        fill
+                        priority
+                        sizes="(max-width: 1024px) 100vw, 50vw"
+                        className="object-cover"
+                      />
+                    </div>
                   </div>
-                </div>
+                </AnimateIn>
               )}
             </div>
           </div>
@@ -176,28 +200,28 @@ export default async function CaseStudyDetailPage({
             MAIN CONTENT
         ====================================================== */}
 
-        <section className="mx-auto max-w-7xl px-6 py-16 sm:py-20">
-          <div className="grid gap-12 lg:grid-cols-[1fr_300px]">
+        <section className="relative z-10 mx-auto -mt-28 w-full max-w-7xl px-4 pb-20 sm:-mt-32 sm:px-6 lg:px-10">
+          <div className="grid gap-8 lg:grid-cols-[1fr_320px]">
             {/* =================================================
                 LEFT CONTENT
             ================================================== */}
 
-            <div className="space-y-14">
+            <div className="space-y-12 rounded-[32px] border border-slate-100 bg-white p-6 shadow-[0_40px_100px_-40px_rgba(15,23,42,.35)] dark:border-white/[0.07] dark:bg-[#0b1220] sm:p-10 lg:p-12">
               {/* Overview */}
 
               {caseStudy.description && (
                 <section>
-                  <div className="flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-500/10 dark:text-blue-400">
-                      <Lightbulb size={19} />
+                  <div className="flex items-center gap-4">
+                    <div className="brand-grad flex h-12 w-12 shrink-0 items-center justify-center rounded-[14px] text-white shadow-lg shadow-violet-500/25">
+                      <Lightbulb size={20} />
                     </div>
 
-                    <h2 className="text-2xl font-semibold text-slate-900 dark:text-white">
+                    <h2 className="text-2xl font-extrabold tracking-[-0.035em] text-slate-950 dark:text-white sm:text-[30px]">
                       Project Overview
                     </h2>
                   </div>
 
-                  <p className="mt-5 whitespace-pre-line text-sm leading-8 text-slate-600 dark:text-slate-400 sm:text-base">
+                  <p className="mt-5 whitespace-pre-line text-[15px] leading-8 text-slate-600 dark:text-slate-400 sm:text-base">
                     {caseStudy.description}
                   </p>
                 </section>
@@ -207,18 +231,18 @@ export default async function CaseStudyDetailPage({
 
               {caseStudy.challenge && (
                 <section>
-                  <div className="flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-orange-50 text-orange-600 dark:bg-orange-500/10 dark:text-orange-400">
-                      <Target size={19} />
+                  <div className="flex items-center gap-4">
+                    <div className="brand-grad flex h-12 w-12 shrink-0 items-center justify-center rounded-[14px] text-white shadow-lg shadow-violet-500/25">
+                      <Target size={20} />
                     </div>
 
-                    <h2 className="text-2xl font-semibold text-slate-900 dark:text-white">
+                    <h2 className="text-2xl font-extrabold tracking-[-0.035em] text-slate-950 dark:text-white sm:text-[30px]">
                       The Challenge
                     </h2>
                   </div>
 
-                  <div className="mt-5 rounded-2xl border border-slate-200 bg-slate-50 p-6 dark:border-slate-800 dark:bg-slate-900/50">
-                    <p className="whitespace-pre-line text-sm leading-8 text-slate-600 dark:text-slate-400 sm:text-base">
+                  <div className="mt-5 rounded-[22px] border border-slate-200/80 bg-slate-50/70 p-6 dark:border-white/[0.07] dark:bg-white/[0.03]">
+                    <p className="whitespace-pre-line text-[15px] leading-8 text-slate-600 dark:text-slate-400 sm:text-base">
                       {caseStudy.challenge}
                     </p>
                   </div>
@@ -229,17 +253,17 @@ export default async function CaseStudyDetailPage({
 
               {caseStudy.solution && (
                 <section>
-                  <div className="flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-500/10 dark:text-blue-400">
-                      <CheckCircle2 size={19} />
+                  <div className="flex items-center gap-4">
+                    <div className="brand-grad flex h-12 w-12 shrink-0 items-center justify-center rounded-[14px] text-white shadow-lg shadow-violet-500/25">
+                      <CheckCircle2 size={20} />
                     </div>
 
-                    <h2 className="text-2xl font-semibold text-slate-900 dark:text-white">
+                    <h2 className="text-2xl font-extrabold tracking-[-0.035em] text-slate-950 dark:text-white sm:text-[30px]">
                       Our Solution
                     </h2>
                   </div>
 
-                  <p className="mt-5 whitespace-pre-line text-sm leading-8 text-slate-600 dark:text-slate-400 sm:text-base">
+                  <p className="mt-5 whitespace-pre-line text-[15px] leading-8 text-slate-600 dark:text-slate-400 sm:text-base">
                     {caseStudy.solution}
                   </p>
                 </section>
@@ -249,18 +273,18 @@ export default async function CaseStudyDetailPage({
 
               {caseStudy.results && (
                 <section>
-                  <div className="flex items-center gap-3">
-                    <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400">
-                      <Trophy size={19} />
+                  <div className="flex items-center gap-4">
+                    <div className="brand-grad flex h-12 w-12 shrink-0 items-center justify-center rounded-[14px] text-white shadow-lg shadow-violet-500/25">
+                      <Trophy size={20} />
                     </div>
 
-                    <h2 className="text-2xl font-semibold text-slate-900 dark:text-white">
+                    <h2 className="text-2xl font-extrabold tracking-[-0.035em] text-slate-950 dark:text-white sm:text-[30px]">
                       Results
                     </h2>
                   </div>
 
-                  <div className="mt-5 rounded-2xl border border-emerald-100 bg-emerald-50/50 p-6 dark:border-emerald-500/10 dark:bg-emerald-500/5">
-                    <p className="whitespace-pre-line text-sm leading-8 text-slate-600 dark:text-slate-400 sm:text-base">
+                  <div className="mt-5 rounded-[22px] border border-violet-100 bg-violet-50/60 p-6 dark:border-violet-400/15 dark:bg-violet-500/[0.06]">
+                    <p className="whitespace-pre-line text-[15px] leading-8 text-slate-600 dark:text-slate-300 sm:text-base">
                       {caseStudy.results}
                     </p>
                   </div>
@@ -273,31 +297,33 @@ export default async function CaseStudyDetailPage({
             ================================================== */}
 
             <aside>
-              <div className="sticky top-28 rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
-                <h3 className="text-base font-semibold text-slate-900 dark:text-white">
+              <div className="sticky top-28 rounded-[26px] border border-slate-100 bg-white p-6 shadow-[0_40px_100px_-40px_rgba(15,23,42,.35)] dark:border-white/[0.07] dark:bg-[#0b1220]">
+                <span className="brand-grad block h-1 w-12 rounded-full" />
+
+                <h3 className="mt-5 text-lg font-extrabold tracking-[-0.03em] text-slate-950 dark:text-white">
                   Project Information
                 </h3>
 
                 <div className="mt-5 space-y-5">
                   {caseStudy.clientName && (
-                    <div className="border-b border-slate-100 pb-4 dark:border-slate-800">
-                      <p className="text-xs uppercase tracking-wide text-slate-400">
+                    <div className="border-b border-slate-100 pb-4 dark:border-white/[0.07]">
+                      <p className="brand-text text-[11px] font-extrabold uppercase tracking-[0.2em]">
                         Client
                       </p>
 
-                      <p className="mt-1 text-sm font-medium text-slate-800 dark:text-slate-200">
+                      <p className="mt-1 text-sm font-semibold text-slate-800 dark:text-slate-200">
                         {caseStudy.clientName}
                       </p>
                     </div>
                   )}
 
                   {caseStudy.industry && (
-                    <div className="border-b border-slate-100 pb-4 dark:border-slate-800">
-                      <p className="text-xs uppercase tracking-wide text-slate-400">
+                    <div className="border-b border-slate-100 pb-4 dark:border-white/[0.07]">
+                      <p className="brand-text text-[11px] font-extrabold uppercase tracking-[0.2em]">
                         Industry
                       </p>
 
-                      <p className="mt-1 text-sm font-medium text-slate-800 dark:text-slate-200">
+                      <p className="mt-1 text-sm font-semibold text-slate-800 dark:text-slate-200">
                         {caseStudy.industry}
                       </p>
                     </div>
@@ -307,7 +333,7 @@ export default async function CaseStudyDetailPage({
 
                   {technologies.length > 0 && (
                     <div>
-                      <p className="text-xs uppercase tracking-wide text-slate-400">
+                      <p className="brand-text text-[11px] font-extrabold uppercase tracking-[0.2em]">
                         Technologies
                       </p>
 
@@ -315,7 +341,7 @@ export default async function CaseStudyDetailPage({
                         {technologies.map((technology) => (
                           <span
                             key={technology}
-                            className="rounded-lg bg-blue-50 px-3 py-1.5 text-xs font-medium text-blue-600 dark:bg-blue-500/10 dark:text-blue-400"
+                            className="rounded-lg border border-violet-100 bg-violet-50/70 px-3 py-1.5 text-xs font-semibold text-violet-700 dark:border-violet-400/20 dark:bg-violet-500/10 dark:text-violet-200"
                           >
                             {technology}
                           </span>
@@ -330,7 +356,7 @@ export default async function CaseStudyDetailPage({
                     href={caseStudy.projectUrl}
                     target="_blank"
                     rel="noopener noreferrer"
-                    className="mt-6 flex w-full items-center justify-center gap-2 rounded-xl bg-slate-900 px-4 py-3 text-sm font-semibold text-white transition hover:bg-blue-600 dark:bg-blue-600 dark:hover:bg-blue-500"
+                    className="brand-grad mt-6 flex w-full items-center justify-center gap-2 rounded-xl px-4 py-3.5 text-sm font-bold text-white shadow-lg shadow-violet-500/25 transition-all duration-300 hover:-translate-y-0.5"
                   >
                     Visit Project
                     <ArrowUpRight size={15} />
@@ -345,27 +371,32 @@ export default async function CaseStudyDetailPage({
             BOTTOM CTA
         ====================================================== */}
 
-        <section className="border-t border-slate-200 bg-slate-50 dark:border-slate-800 dark:bg-slate-900/40">
-          <div className="mx-auto max-w-7xl px-6 py-16 text-center">
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-blue-600 dark:text-blue-400">
-              Have a Project?
-            </p>
+        <section className="px-4 pb-24 sm:px-6 lg:px-10">
+          <div className="brand-grad relative mx-auto max-w-7xl overflow-hidden rounded-[36px] px-6 py-16 text-center text-white shadow-[0_40px_100px_-40px_rgba(91,33,182,.55)] sm:px-10 sm:py-20">
+            <div className="pointer-events-none absolute -left-24 -top-24 h-72 w-72 rounded-full bg-cyan-300/30 blur-3xl" />
+            <div className="pointer-events-none absolute -bottom-24 -right-24 h-72 w-72 rounded-full bg-violet-300/40 blur-3xl" />
 
-            <h2 className="mx-auto mt-3 max-w-2xl text-2xl font-semibold text-slate-900 dark:text-white sm:text-3xl">
-              Let&apos;s build something great together.
-            </h2>
+            <div className="relative">
+              <p className="inline-flex rounded-full border border-white/30 bg-white/[0.14] px-4 py-2 text-[11px] font-bold uppercase tracking-[0.2em] backdrop-blur-xl">
+                Have a Project?
+              </p>
 
-            <p className="mx-auto mt-4 max-w-xl text-sm leading-7 text-slate-500 dark:text-slate-400">
-              Talk to our team about your business requirements and discover
-              how Geecon Technology can help.
-            </p>
+              <h2 className="mx-auto mt-6 max-w-2xl text-3xl font-extrabold leading-tight tracking-[-0.035em] sm:text-[46px]">
+                Let&apos;s build something great together.
+              </h2>
 
-            <Link
-              href="/contact"
-              className="mt-7 inline-flex items-center justify-center rounded-xl bg-blue-600 px-6 py-3 text-sm font-semibold text-white transition hover:bg-blue-500"
-            >
-              Contact Us
-            </Link>
+              <p className="mx-auto mt-5 max-w-xl text-base leading-8 text-indigo-50/90">
+                Talk to our team about your business requirements and discover
+                how Geecon Technology can help.
+              </p>
+
+              <Link
+                href="/contact"
+                className="mt-8 inline-flex items-center justify-center rounded-xl bg-white px-6 py-3.5 text-sm font-bold text-violet-700 shadow-lg shadow-violet-900/25 transition-all duration-300 hover:-translate-y-0.5"
+              >
+                Contact Us
+              </Link>
+            </div>
           </div>
         </section>
       </main>

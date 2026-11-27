@@ -573,31 +573,43 @@ export default function ClientsAdminPage() {
   };
 
   return (
-    <div className="min-h-screen bg-slate-50 p-6 dark:bg-slate-950">
+    <div className="w-full min-w-0">
       <div className="mx-auto max-w-7xl">
 
         {/* -------------------------------- */}
         {/* HEADER */}
         {/* -------------------------------- */}
 
-        <div className="mb-8 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
-          <div>
-            <h1 className="text-3xl font-bold tracking-tight text-slate-900 dark:text-white">
+        <div className="brand-grad relative mb-8 overflow-hidden rounded-[28px] px-6 py-7 text-white sm:px-8 sm:py-8">
+          <div className="pointer-events-none absolute -right-20 -top-24 h-72 w-72 rounded-full bg-violet-300/40 blur-3xl" />
+          <div className="pointer-events-none absolute -bottom-28 -left-16 h-72 w-72 rounded-full bg-cyan-300/30 blur-3xl" />
+          <div
+            className="pointer-events-none absolute inset-0 opacity-[0.07]"
+            style={{
+              backgroundImage:
+                "linear-gradient(rgba(255,255,255,.6) 1px, transparent 1px), linear-gradient(90deg,rgba(255,255,255,.6) 1px,transparent 1px)",
+              backgroundSize: "44px 44px",
+            }}
+          />
+
+          <div className="relative flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+          <div className="min-w-0">
+            <h1 className="text-2xl font-extrabold tracking-[-0.03em] sm:text-3xl">
               Clients
             </h1>
 
-            <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
+            <p className="mt-2 text-sm text-indigo-50/90">
               Manage client logos and client engagements
               displayed on the website.
             </p>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex flex-wrap items-center gap-3">
             <button
               type="button"
               onClick={fetchClients}
               disabled={loading}
-              className="inline-flex items-center gap-2 rounded-lg border border-slate-200 bg-white px-4 py-2.5 text-sm font-medium text-slate-700 shadow-sm transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50 dark:border-slate-700 dark:bg-slate-900 dark:text-slate-200 dark:hover:bg-slate-800"
+              className="inline-flex items-center gap-2 rounded-xl border border-white/30 bg-white/[0.14] px-5 py-3 text-sm font-bold text-white backdrop-blur-xl transition hover:bg-white/25 disabled:cursor-not-allowed disabled:opacity-50"
             >
               <RefreshCw
                 size={16}
@@ -610,12 +622,13 @@ export default function ClientsAdminPage() {
             <button
               type="button"
               onClick={openAddForm}
-              className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-blue-700"
+              className="inline-flex items-center gap-2 rounded-xl bg-white px-5 py-3 text-sm font-bold text-violet-700 shadow-lg transition hover:-translate-y-0.5"
             >
               <Plus size={17} />
 
               Add Client
             </button>
+          </div>
           </div>
         </div>
 
@@ -624,7 +637,7 @@ export default function ClientsAdminPage() {
         {/* -------------------------------- */}
 
         {error && (
-          <div className="mb-5 flex items-start justify-between gap-4 rounded-lg border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 dark:border-red-900/50 dark:bg-red-950/30 dark:text-red-400">
+          <div className="mb-5 flex items-start justify-between gap-4 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700 dark:border-red-500/20 dark:bg-red-500/10 dark:text-red-400">
             <span>{error}</span>
 
             <button
@@ -638,7 +651,7 @@ export default function ClientsAdminPage() {
         )}
 
         {success && (
-          <div className="mb-5 flex items-start justify-between gap-4 rounded-lg border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700 dark:border-emerald-900/50 dark:bg-emerald-950/30 dark:text-emerald-400">
+          <div className="mb-5 flex items-start justify-between gap-4 rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-700 dark:border-emerald-500/20 dark:bg-emerald-500/10 dark:text-emerald-400">
             <span>{success}</span>
 
             <button
@@ -656,11 +669,11 @@ export default function ClientsAdminPage() {
         {/* -------------------------------- */}
 
         {showForm && (
-          <div className="mb-8 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
+          <div className="mb-8 overflow-hidden rounded-[24px] border border-slate-200/80 bg-white shadow-[0_30px_70px_-45px_rgba(15,23,42,.45)] dark:border-white/[0.07] dark:bg-[#0b1220]">
 
-            <div className="flex items-center justify-between border-b border-slate-200 px-6 py-4 dark:border-slate-800">
+            <div className="flex items-center justify-between border-b border-slate-100 px-6 py-5 dark:border-white/[0.06]">
               <div>
-                <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
+                <h2 className="text-lg font-extrabold tracking-[-0.02em] text-slate-950 dark:text-white">
                   {editingId
                     ? "Edit Client"
                     : "Add Client"}
@@ -677,7 +690,7 @@ export default function ClientsAdminPage() {
                 type="button"
                 onClick={closeForm}
                 disabled={saving}
-                className="rounded-lg p-2 text-slate-500 transition hover:bg-slate-100 hover:text-slate-700 disabled:opacity-50 dark:hover:bg-slate-800 dark:hover:text-slate-200"
+                className="rounded-xl p-2 text-slate-500 transition hover:bg-violet-50 hover:text-violet-600 disabled:opacity-50 dark:hover:bg-white/[0.06] dark:hover:text-slate-200"
               >
                 <X size={19} />
               </button>
@@ -691,7 +704,7 @@ export default function ClientsAdminPage() {
               {/* NAME */}
 
               <div>
-                <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                <label className="mb-2 block text-[13px] font-semibold text-slate-700 dark:text-slate-300">
                   Client Name *
                 </label>
 
@@ -706,14 +719,14 @@ export default function ClientsAdminPage() {
                   }
                   required
                   placeholder="e.g. Cisco"
-                  className="w-full rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+                  className="w-full rounded-xl border border-slate-200 bg-slate-50/70 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-violet-400 focus:bg-white focus:ring-4 focus:ring-violet-500/10 dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-white"
                 />
               </div>
 
               {/* CLIENT LOGO */}
 
               <div>
-                <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                <label className="mb-2 block text-[13px] font-semibold text-slate-700 dark:text-slate-300">
                   Client Logo *
                 </label>
 
@@ -730,11 +743,11 @@ export default function ClientsAdminPage() {
                       openMediaLibrary();
                     }
                   }}
-                  className="group cursor-pointer rounded-xl border border-dashed border-slate-300 bg-slate-50 p-5 transition hover:border-blue-400 hover:bg-blue-50/50 focus:outline-none focus:ring-2 focus:ring-blue-500/20 dark:border-slate-700 dark:bg-slate-950 dark:hover:border-blue-500 dark:hover:bg-blue-950/20"
+                  className="group cursor-pointer rounded-2xl border border-dashed border-slate-300 bg-slate-50/70 p-5 transition hover:border-violet-400 hover:bg-violet-50/50 focus:outline-none focus:ring-4 focus:ring-violet-500/10 dark:border-white/[0.1] dark:bg-white/[0.03] dark:hover:border-violet-400/50 dark:hover:bg-violet-500/10"
                 >
                   {form.logo ? (
                     <div className="flex flex-col gap-4 sm:flex-row sm:items-center">
-                      <div className="flex h-24 w-32 shrink-0 items-center justify-center rounded-xl border border-slate-200 bg-white p-3 dark:border-slate-700 dark:bg-slate-900">
+                      <div className="flex h-24 w-32 shrink-0 items-center justify-center rounded-[18px] border border-slate-200 bg-white p-3 dark:border-white/[0.08] dark:bg-[#0b1220]">
                         <img
                           src={form.logo}
                           alt="Selected client logo"
@@ -757,14 +770,14 @@ export default function ClientsAdminPage() {
                           {form.logo}
                         </p>
 
-                        <p className="mt-2 text-xs font-medium text-blue-600 dark:text-blue-400">
+                        <p className="mt-2 text-xs font-semibold text-violet-600 dark:text-violet-400">
                           Click to choose another image from Media Library
                         </p>
                       </div>
                     </div>
                   ) : (
                     <div className="flex min-h-28 flex-col items-center justify-center text-center">
-                      <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-50 text-blue-600 transition group-hover:scale-105 dark:bg-blue-950/40 dark:text-blue-400">
+                      <div className="brand-grad flex h-12 w-12 items-center justify-center rounded-[14px] text-white shadow-lg shadow-violet-500/25 transition group-hover:scale-105">
                         <ImageIcon size={21} />
                       </div>
 
@@ -785,7 +798,7 @@ export default function ClientsAdminPage() {
               <div className="grid gap-5 sm:grid-cols-2">
 
                 <div>
-                  <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                  <label className="mb-2 block text-[13px] font-semibold text-slate-700 dark:text-slate-300">
                     Category *
                   </label>
 
@@ -797,7 +810,7 @@ export default function ClientsAdminPage() {
                         event.target.value
                       )
                     }
-                    className="w-full rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+                    className="w-full rounded-xl border border-slate-200 bg-slate-50/70 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-violet-400 focus:bg-white focus:ring-4 focus:ring-violet-500/10 dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-white"
                   >
                     {categories.map((category) => (
                       <option
@@ -811,7 +824,7 @@ export default function ClientsAdminPage() {
                 </div>
 
                 <div>
-                  <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                  <label className="mb-2 block text-[13px] font-semibold text-slate-700 dark:text-slate-300">
                     Display Order
                   </label>
 
@@ -825,7 +838,7 @@ export default function ClientsAdminPage() {
                         event.target.value
                       )
                     }
-                    className="w-full rounded-lg border border-slate-200 bg-white px-4 py-3 text-sm text-slate-900 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+                    className="w-full rounded-xl border border-slate-200 bg-slate-50/70 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-violet-400 focus:bg-white focus:ring-4 focus:ring-violet-500/10 dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-white"
                   />
                 </div>
               </div>
@@ -834,7 +847,7 @@ export default function ClientsAdminPage() {
 
               <div className="grid gap-4 sm:grid-cols-2">
 
-                <label className="flex cursor-pointer items-center justify-between rounded-lg border border-slate-200 bg-slate-50 px-4 py-3 dark:border-slate-700 dark:bg-slate-950">
+                <label className="flex cursor-pointer items-center justify-between rounded-xl border border-slate-200 bg-slate-50/70 px-4 py-3 transition hover:border-violet-300 dark:border-white/[0.08] dark:bg-white/[0.04]">
                   <div>
                     <p className="text-sm font-medium text-slate-700 dark:text-slate-300">
                       Featured Client
@@ -854,11 +867,11 @@ export default function ClientsAdminPage() {
                         event.target.checked
                       )
                     }
-                    className="h-5 w-5 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
+                    className="h-5 w-5 rounded border-slate-300 accent-violet-600 text-violet-600 focus:ring-violet-500"
                   />
                 </label>
 
-                <label className="flex cursor-pointer items-center justify-between rounded-lg border border-slate-200 bg-slate-50 px-4 py-3 dark:border-slate-700 dark:bg-slate-950">
+                <label className="flex cursor-pointer items-center justify-between rounded-xl border border-slate-200 bg-slate-50/70 px-4 py-3 transition hover:border-violet-300 dark:border-white/[0.08] dark:bg-white/[0.04]">
                   <div>
                     <p className="text-sm font-medium text-slate-700 dark:text-slate-300">
                       Active
@@ -878,19 +891,19 @@ export default function ClientsAdminPage() {
                         event.target.checked
                       )
                     }
-                    className="h-5 w-5 rounded border-slate-300 text-blue-600 focus:ring-blue-500"
+                    className="h-5 w-5 rounded border-slate-300 accent-violet-600 text-violet-600 focus:ring-violet-500"
                   />
                 </label>
               </div>
 
               {/* FORM BUTTONS */}
 
-              <div className="flex justify-end gap-3 border-t border-slate-200 pt-5 dark:border-slate-800">
+              <div className="flex justify-end gap-3 border-t border-slate-100 pt-5 dark:border-white/[0.06]">
                 <button
                   type="button"
                   onClick={closeForm}
                   disabled={saving}
-                  className="rounded-lg border border-slate-200 px-5 py-2.5 text-sm font-medium text-slate-700 transition hover:bg-slate-50 disabled:opacity-50 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
+                  className="rounded-xl border border-slate-200 bg-white px-5 py-2.5 text-sm font-bold text-slate-700 transition hover:border-violet-300 hover:text-violet-600 disabled:opacity-50 dark:border-white/[0.1] dark:bg-white/[0.04] dark:text-slate-200"
                 >
                   Cancel
                 </button>
@@ -898,7 +911,7 @@ export default function ClientsAdminPage() {
                 <button
                   type="submit"
                   disabled={saving}
-                  className="inline-flex items-center gap-2 rounded-lg bg-blue-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-60"
+                  className="brand-grad inline-flex items-center gap-2 rounded-xl px-5 py-2.5 text-sm font-bold text-white shadow-lg shadow-violet-500/25 transition hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   {saving && (
                     <RefreshCw
@@ -924,20 +937,20 @@ export default function ClientsAdminPage() {
 
         {mediaOpen && (
           <div
-            className="fixed inset-0 z-[100] flex items-center justify-center bg-black/55 p-4 backdrop-blur-sm"
+            className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/50 p-4 backdrop-blur-sm"
             onMouseDown={(event) => {
               if (event.target === event.currentTarget) {
                 closeMediaLibrary();
               }
             }}
           >
-            <div className="flex max-h-[88vh] w-full max-w-5xl flex-col overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-2xl dark:border-slate-800 dark:bg-slate-900">
+            <div className="flex max-h-[88vh] w-full max-w-5xl flex-col overflow-hidden rounded-[24px] border border-slate-200/80 bg-white shadow-2xl dark:border-white/[0.07] dark:bg-[#0b1220]">
 
               {/* MODAL HEADER */}
 
-              <div className="flex items-center justify-between border-b border-slate-200 px-6 py-4 dark:border-slate-800">
+              <div className="flex items-center justify-between border-b border-slate-100 px-6 py-5 dark:border-white/[0.06]">
                 <div>
-                  <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
+                  <h2 className="text-lg font-extrabold tracking-[-0.02em] text-slate-950 dark:text-white">
                     Select Client Logo
                   </h2>
 
@@ -949,7 +962,7 @@ export default function ClientsAdminPage() {
                 <button
                   type="button"
                   onClick={closeMediaLibrary}
-                  className="rounded-lg p-2 text-slate-500 transition hover:bg-slate-100 hover:text-slate-700 dark:hover:bg-slate-800 dark:hover:text-slate-200"
+                  className="rounded-xl p-2 text-slate-500 transition hover:bg-violet-50 hover:text-violet-600 dark:hover:bg-white/[0.06] dark:hover:text-slate-200"
                 >
                   <X size={19} />
                 </button>
@@ -957,7 +970,7 @@ export default function ClientsAdminPage() {
 
               {/* SEARCH */}
 
-              <div className="border-b border-slate-200 p-5 dark:border-slate-800">
+              <div className="border-b border-slate-100 p-5 dark:border-white/[0.06]">
                 <div className="relative">
                   <Search
                     size={16}
@@ -971,7 +984,7 @@ export default function ClientsAdminPage() {
                       setMediaSearch(event.target.value)
                     }
                     placeholder="Search by file name, alt text or folder..."
-                    className="w-full rounded-lg border border-slate-200 bg-white py-2.5 pl-10 pr-4 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+                    className="w-full rounded-xl border border-slate-200 bg-slate-50/70 py-2.5 pl-10 pr-4 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-violet-400 focus:bg-white focus:ring-4 focus:ring-violet-500/10 dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-white"
                   />
                 </div>
               </div>
@@ -983,14 +996,14 @@ export default function ClientsAdminPage() {
                   <div className="flex min-h-72 flex-col items-center justify-center gap-3 text-sm text-slate-500 dark:text-slate-400">
                     <RefreshCw
                       size={24}
-                      className="animate-spin text-blue-600"
+                      className="animate-spin text-violet-600"
                     />
 
                     Loading Media Library...
                   </div>
                 ) : filteredMedia.length === 0 ? (
                   <div className="flex min-h-72 flex-col items-center justify-center text-center">
-                    <div className="flex h-14 w-14 items-center justify-center rounded-full bg-slate-100 text-slate-400 dark:bg-slate-800">
+                    <div className="flex h-14 w-14 items-center justify-center rounded-[16px] bg-slate-100 text-slate-400 dark:bg-white/[0.06]">
                       <ImageIcon size={25} />
                     </div>
 
@@ -1015,7 +1028,7 @@ export default function ClientsAdminPage() {
                       </p>
 
                       {form.logo && (
-                        <p className="text-xs font-medium text-blue-600 dark:text-blue-400">
+                        <p className="text-xs font-semibold text-violet-600 dark:text-violet-400">
                           Current logo is highlighted
                         </p>
                       )}
@@ -1033,13 +1046,13 @@ export default function ClientsAdminPage() {
                             onClick={() =>
                               selectMedia(media)
                             }
-                            className={`group relative overflow-hidden rounded-xl border bg-white text-left shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-md dark:bg-slate-950 ${
+                            className={`group relative overflow-hidden rounded-[18px] border bg-white text-left shadow-sm transition-all duration-200 hover:-translate-y-0.5 hover:shadow-[0_20px_50px_-30px_rgba(91,33,182,.4)] dark:bg-[#0b1220] ${
                               selected
-                                ? "border-blue-500 ring-2 ring-blue-500/20"
-                                : "border-slate-200 hover:border-blue-300 dark:border-slate-700 dark:hover:border-blue-500"
+                                ? "border-violet-500 ring-4 ring-violet-500/15"
+                                : "border-slate-200 hover:border-violet-300 dark:border-white/[0.08] dark:hover:border-violet-400/50"
                             }`}
                           >
-                            <div className="relative flex h-28 items-center justify-center overflow-hidden bg-slate-100 p-3 dark:bg-slate-800">
+                            <div className="relative flex h-28 items-center justify-center overflow-hidden bg-slate-50 p-3 dark:bg-white/[0.04]">
                               <img
                                 src={media.url}
                                 alt={
@@ -1050,7 +1063,7 @@ export default function ClientsAdminPage() {
                               />
 
                               {selected && (
-                                <div className="absolute right-2 top-2 flex h-6 w-6 items-center justify-center rounded-full bg-blue-600 text-white shadow-md">
+                                <div className="brand-grad absolute right-2 top-2 flex h-6 w-6 items-center justify-center rounded-full text-white shadow-md shadow-violet-500/30">
                                   <Check size={14} />
                                 </div>
                               )}
@@ -1082,12 +1095,12 @@ export default function ClientsAdminPage() {
         {/* CLIENT LIST */}
         {/* -------------------------------- */}
 
-        <div className="overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-slate-800 dark:bg-slate-900">
+        <div className="overflow-hidden rounded-[24px] border border-slate-200/80 bg-white shadow-[0_30px_70px_-45px_rgba(15,23,42,.45)] dark:border-white/[0.07] dark:bg-[#0b1220]">
 
-          <div className="border-b border-slate-200 px-6 py-4 dark:border-slate-800">
+          <div className="border-b border-slate-100 bg-slate-50/80 px-6 py-4 dark:border-white/[0.06] dark:bg-white/[0.03]">
             <div className="flex items-center justify-between">
               <div>
-                <h2 className="font-semibold text-slate-900 dark:text-white">
+                <h2 className="text-[11px] font-bold uppercase tracking-[0.12em] text-slate-500 dark:text-slate-400">
                   All Clients
                 </h2>
 
@@ -1112,11 +1125,11 @@ export default function ClientsAdminPage() {
             </div>
           ) : clients.length === 0 ? (
             <div className="flex min-h-60 flex-col items-center justify-center px-6 text-center">
-              <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-full bg-blue-50 text-blue-600 dark:bg-blue-950/40 dark:text-blue-400">
+              <div className="brand-grad mb-4 flex h-14 w-14 items-center justify-center rounded-[16px] text-white shadow-lg shadow-violet-500/25">
                 <Star size={25} />
               </div>
 
-              <h3 className="text-base font-semibold text-slate-900 dark:text-white">
+              <h3 className="text-base font-extrabold text-slate-950 dark:text-white">
                 No clients available
               </h3>
 
@@ -1128,7 +1141,7 @@ export default function ClientsAdminPage() {
               <button
                 type="button"
                 onClick={openAddForm}
-                className="mt-5 inline-flex items-center gap-2 rounded-lg bg-blue-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-blue-700"
+                className="brand-grad mt-5 inline-flex items-center gap-2 rounded-xl px-5 py-2.5 text-sm font-bold text-white shadow-lg shadow-violet-500/25 transition hover:-translate-y-0.5"
               >
                 <Plus size={16} />
 
@@ -1136,12 +1149,12 @@ export default function ClientsAdminPage() {
               </button>
             </div>
           ) : (
-            <div className="divide-y divide-slate-200 dark:divide-slate-800">
+            <div className="divide-y divide-slate-100 dark:divide-white/[0.06]">
 
               {clients.map((client) => (
                 <div
                   key={client.id}
-                  className="p-6 transition hover:bg-slate-50/70 dark:hover:bg-slate-800/30"
+                  className="p-5 transition hover:bg-violet-50/40 sm:p-6 dark:hover:bg-white/[0.03]"
                 >
                   <div className="flex flex-col gap-5 lg:flex-row lg:items-center lg:justify-between">
 
@@ -1149,7 +1162,7 @@ export default function ClientsAdminPage() {
 
                     <div className="flex min-w-0 items-center gap-4">
 
-                      <div className="flex h-16 w-24 shrink-0 items-center justify-center rounded-xl border border-slate-200 bg-white p-3 dark:border-slate-700 dark:bg-slate-950">
+                      <div className="flex h-16 w-24 shrink-0 items-center justify-center rounded-[16px] border border-slate-200/80 bg-white p-3 shadow-sm dark:border-white/[0.08] dark:bg-white/[0.04]">
                         <img
                           src={client.logo}
                           alt={client.name}
@@ -1161,12 +1174,12 @@ export default function ClientsAdminPage() {
 
                         <div className="flex flex-wrap items-center gap-2">
 
-                          <h3 className="truncate text-base font-semibold text-slate-900 dark:text-white">
+                          <h3 className="truncate text-base font-extrabold text-slate-950 dark:text-white">
                             {client.name}
                           </h3>
 
                           {client.featured && (
-                            <span className="inline-flex items-center gap-1 rounded-full bg-amber-50 px-2 py-1 text-xs font-medium text-amber-700 dark:bg-amber-950/40 dark:text-amber-400">
+                            <span className="inline-flex items-center gap-1 rounded-full bg-amber-50 px-2.5 py-1 text-[11px] font-bold text-amber-700 dark:bg-amber-500/10 dark:text-amber-400">
                               <Star
                                 size={12}
                                 fill="currentColor"
@@ -1177,10 +1190,10 @@ export default function ClientsAdminPage() {
                           )}
 
                           <span
-                            className={`rounded-full px-2.5 py-1 text-xs font-medium ${
+                            className={`rounded-full px-2.5 py-1 text-[11px] font-bold ${
                               client.isActive
-                                ? "bg-emerald-50 text-emerald-700 dark:bg-emerald-950/40 dark:text-emerald-400"
-                                : "bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400"
+                                ? "bg-emerald-50 text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-400"
+                                : "bg-slate-100 text-slate-600 dark:bg-white/[0.06] dark:text-slate-400"
                             }`}
                           >
                             {client.isActive
@@ -1226,10 +1239,10 @@ export default function ClientsAdminPage() {
                             ? "Deactivate client"
                             : "Activate client"
                         }
-                        className={`inline-flex items-center gap-2 rounded-lg border px-3 py-2 text-xs font-medium transition ${
+                        className={`inline-flex items-center gap-2 rounded-xl border px-3 py-2 text-xs font-bold transition ${
                           client.isActive
-                            ? "border-emerald-200 text-emerald-700 hover:bg-emerald-50 dark:border-emerald-900/50 dark:text-emerald-400 dark:hover:bg-emerald-950/30"
-                            : "border-slate-200 text-slate-500 hover:bg-slate-50 dark:border-slate-700 dark:hover:bg-slate-800"
+                            ? "border-emerald-200 bg-emerald-50/60 text-emerald-700 hover:bg-emerald-50 dark:border-emerald-500/20 dark:bg-emerald-500/10 dark:text-emerald-400"
+                            : "border-slate-200 bg-white text-slate-500 hover:border-violet-300 hover:text-violet-600 dark:border-white/[0.1] dark:bg-white/[0.04] dark:text-slate-300"
                         }`}
                       >
                         {client.isActive ? (
@@ -1253,10 +1266,10 @@ export default function ClientsAdminPage() {
                             ? "Remove featured"
                             : "Make featured"
                         }
-                        className={`inline-flex items-center gap-2 rounded-lg border px-3 py-2 text-xs font-medium transition ${
+                        className={`inline-flex items-center gap-2 rounded-xl border px-3 py-2 text-xs font-bold transition ${
                           client.featured
-                            ? "border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-900/50 dark:bg-amber-950/30 dark:text-amber-400"
-                            : "border-slate-200 text-slate-500 hover:bg-slate-50 dark:border-slate-700 dark:hover:bg-slate-800"
+                            ? "border-amber-200 bg-amber-50 text-amber-700 dark:border-amber-500/20 dark:bg-amber-500/10 dark:text-amber-400"
+                            : "border-slate-200 bg-white text-slate-500 hover:border-violet-300 hover:text-violet-600 dark:border-white/[0.1] dark:bg-white/[0.04] dark:text-slate-300"
                         }`}
                       >
                         <Star
@@ -1276,7 +1289,7 @@ export default function ClientsAdminPage() {
                         onClick={() =>
                           openEditForm(client)
                         }
-                        className="inline-flex items-center gap-2 rounded-lg border border-slate-200 px-3 py-2 text-xs font-medium text-slate-600 transition hover:border-blue-300 hover:bg-blue-50 hover:text-blue-600 dark:border-slate-700 dark:text-slate-300 dark:hover:border-blue-500 dark:hover:bg-blue-950/30 dark:hover:text-blue-400"
+                        className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-bold text-slate-700 transition hover:border-violet-300 hover:text-violet-600 dark:border-white/[0.1] dark:bg-white/[0.04] dark:text-slate-200"
                       >
                         <Pencil size={14} />
 
@@ -1288,7 +1301,7 @@ export default function ClientsAdminPage() {
                         onClick={() =>
                           handleDelete(client)
                         }
-                        className="inline-flex items-center gap-2 rounded-lg border border-red-200 px-3 py-2 text-xs font-medium text-red-600 transition hover:bg-red-50 dark:border-red-900/50 dark:text-red-400 dark:hover:bg-red-950/30"
+                        className="inline-flex items-center gap-2 rounded-xl border border-red-200 bg-red-50 px-3 py-2 text-xs font-bold text-red-600 transition hover:bg-red-100 dark:border-red-500/20 dark:bg-red-500/10 dark:text-red-400 dark:hover:bg-red-500/20"
                       >
                         <Trash2 size={14} />
 

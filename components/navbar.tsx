@@ -176,10 +176,10 @@ export function Navbar() {
 
   return (
     <header
-      className={`sticky top-0 z-50 w-full transition-all duration-500 ${
+      className={`brand-grad sticky top-0 z-50 w-full text-white transition-all duration-500 ${
         scrolled
-          ? "border-b border-slate-200/70 bg-white/85 shadow-[0_8px_40px_-20px_rgba(15,23,42,.3)] backdrop-blur-2xl dark:border-white/[0.07] dark:bg-[#070c18]/85"
-          : "border-b border-slate-200/40 bg-white/90 dark:border-white/[0.05] dark:bg-[#070c18]/90"
+          ? "shadow-[0_12px_40px_-18px_rgba(37,99,235,.65)]"
+          : ""
       }`}
     >
       {/* ===================================================
@@ -201,27 +201,27 @@ export function Navbar() {
             transition={{
               duration: 0.3,
             }}
-            className="hidden overflow-hidden border-b border-slate-100 bg-slate-50/80 text-xs text-slate-500 md:block dark:border-white/[0.05] dark:bg-white/[0.025] dark:text-slate-400"
+            className="hidden overflow-hidden border-b border-white/15 bg-black/10 text-xs text-white/80 md:block"
           >
             <div className="mx-auto flex max-w-7xl items-center justify-end px-6 py-2">
               <div className="flex items-center gap-6">
                 <Link
                   href="/candidate-screening"
-                  className="transition-colors hover:text-blue-600 dark:hover:text-white"
+                  className="transition-colors hover:text-white"
                 >
                   Candidate Screening
                 </Link>
 
                 <Link
                   href="/careers"
-                  className="transition-colors hover:text-blue-600 dark:hover:text-white"
+                  className="transition-colors hover:text-white"
                 >
                   Apply Current Openings
                 </Link>
 
                 <a
                   href="mailto:info@geecontechnology.com"
-                  className="flex items-center gap-1.5 transition-colors hover:text-blue-600 dark:hover:text-white"
+                  className="flex items-center gap-1.5 transition-colors hover:text-white"
                 >
                   <Mail size={13} />
 
@@ -230,7 +230,7 @@ export function Navbar() {
 
                 <a
                   href="tel:8655263606"
-                  className="flex items-center gap-1.5 transition-colors hover:text-blue-600 dark:hover:text-white"
+                  className="flex items-center gap-1.5 transition-colors hover:text-white"
                 >
                   <Phone size={13} />
 
@@ -259,25 +259,23 @@ export function Navbar() {
           href="/"
           className="group flex min-w-0 items-center gap-3"
         >
-          <div className="relative shrink-0">
-            <div className="absolute inset-0 scale-150 rounded-full bg-blue-500/10 opacity-0 blur-xl transition-opacity duration-300 group-hover:opacity-100" />
-
+          <div className="relative shrink-0 rounded-xl bg-white p-1 shadow-lg shadow-blue-900/20 transition-transform duration-300 group-hover:scale-105">
             <Image
               src="/logo-icon-1.png"
               alt="Geecon Technology"
               width={46}
               height={42}
               priority
-              className="relative h-9 w-auto transition-transform duration-300 group-hover:scale-105 sm:h-10"
+              className="relative h-8 w-auto sm:h-9"
             />
           </div>
 
           <div className="hidden leading-tight min-[430px]:block">
-            <div className="text-[20px] font-extrabold tracking-[-0.03em] text-slate-950 sm:text-[22px] dark:text-white">
+            <div className="text-[20px] font-extrabold tracking-[0.02em] text-white sm:text-[22px]">
               GEECON
             </div>
 
-            <div className="max-w-[170px] text-[7px] font-semibold tracking-[0.13em] text-slate-400 sm:text-[8px] dark:text-slate-500">
+            <div className="max-w-[170px] text-[7px] font-semibold tracking-[0.13em] text-white/70 sm:text-[8px]">
               SIMPLE SOLUTIONS ENGINEERED FOR EXTREME
             </div>
           </div>
@@ -287,7 +285,7 @@ export function Navbar() {
             DESKTOP NAVIGATION
         ================================================= */}
 
-        <nav className="hidden items-center gap-5 lg:flex xl:gap-7">
+        <nav className="hidden items-center gap-1 rounded-2xl border border-white/25 bg-white/[0.12] p-1.5 backdrop-blur-xl lg:flex">
           {navLinks.map((link) => {
             const active =
               link.label === "SERVICES"
@@ -310,10 +308,10 @@ export function Navbar() {
 
                   <Link
                     href={link.href}
-                    className={`group relative flex items-center gap-1 py-2 text-[13px] font-semibold tracking-[0.02em] transition-colors ${
+                    className={`flex items-center gap-1 whitespace-nowrap rounded-xl px-3 py-2.5 text-[12.5px] font-bold tracking-[0.03em] transition-colors xl:px-3.5 ${
                       active
-                        ? "text-blue-600 dark:text-blue-400"
-                        : "text-slate-700 hover:text-blue-600 dark:text-slate-300 dark:hover:text-white"
+                        ? "bg-white text-blue-600 shadow-sm"
+                        : "text-white/90 hover:bg-white/15 hover:text-white"
                     }`}
                   >
                     {link.label}
@@ -322,14 +320,6 @@ export function Navbar() {
                       size={14}
                       className={`transition-transform duration-300 ${
                         servicesOpen ? "rotate-180" : ""
-                      }`}
-                    />
-
-                    <span
-                      className={`absolute -bottom-1 left-0 h-[2px] rounded-full bg-gradient-to-r from-blue-600 to-cyan-400 transition-all duration-300 ${
-                        active
-                          ? "w-full"
-                          : "w-0 group-hover:w-full"
                       }`}
                     />
                   </Link>
@@ -519,21 +509,13 @@ export function Navbar() {
               <Link
                 key={link.label}
                 href={link.href}
-                className={`group relative whitespace-nowrap py-2 text-[13px] font-semibold tracking-[0.02em] transition-colors ${
+                className={`whitespace-nowrap rounded-xl px-3 py-2.5 text-[12.5px] font-bold tracking-[0.03em] transition-colors xl:px-3.5 ${
                   active
-                    ? "text-blue-600 dark:text-blue-400"
-                    : "text-slate-700 hover:text-blue-600 dark:text-slate-300 dark:hover:text-white"
+                    ? "bg-white text-blue-600 shadow-sm"
+                    : "text-white/90 hover:bg-white/15 hover:text-white"
                 }`}
               >
                 {link.label}
-
-                <span
-                  className={`absolute -bottom-1 left-0 h-[2px] rounded-full bg-gradient-to-r from-blue-600 to-cyan-400 transition-all duration-300 ${
-                    active
-                      ? "w-full"
-                      : "w-0 group-hover:w-full"
-                  }`}
-                />
               </Link>
             );
           })}
@@ -544,7 +526,7 @@ export function Navbar() {
         ================================================= */}
 
         <div className="flex shrink-0 items-center gap-2 sm:gap-3">
-          <ThemeToggle />
+          <ThemeToggle variant="glass" />
 
           <button
             type="button"
@@ -553,7 +535,7 @@ export function Navbar() {
             }
             aria-label="Toggle navigation menu"
             aria-expanded={mobileOpen}
-            className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-700 shadow-sm transition-all hover:border-blue-300 hover:text-blue-600 lg:hidden dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-slate-200"
+            className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/30 bg-white/10 text-white backdrop-blur-xl transition-all hover:bg-white/20 lg:hidden"
           >
             {mobileOpen ? (
               <X size={20} />

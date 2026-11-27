@@ -628,13 +628,16 @@ export default function NewProductSolutionPage() {
   // =========================================================
 
   return (
-    <div className="min-h-screen bg-slate-50 dark:bg-slate-950">
-      <div className="mx-auto max-w-7xl px-4 py-8 sm:px-6 lg:px-8">
+    <div className="w-full min-w-0">
+      <div className="mx-auto max-w-7xl">
         {/* =================================================
             HEADER
         ================================================== */}
 
-        <div className="mb-8">
+        <div className="brand-grad relative mb-8 overflow-hidden rounded-[28px] px-6 py-7 text-white sm:px-8 sm:py-8">
+        <div className="pointer-events-none absolute -right-20 -top-24 h-72 w-72 rounded-full bg-violet-300/40 blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-28 -left-16 h-72 w-72 rounded-full bg-cyan-300/30 blur-3xl" />
+        <div className="pointer-events-none absolute inset-0 opacity-[0.07]" style={{ backgroundImage: "linear-gradient(rgba(255,255,255,.6) 1px, transparent 1px), linear-gradient(90deg,rgba(255,255,255,.6) 1px,transparent 1px)", backgroundSize: "44px 44px" }} />
           <button
             type="button"
             onClick={() =>
@@ -642,18 +645,18 @@ export default function NewProductSolutionPage() {
                 "/admin/product-solution"
               )
             }
-            className="mb-3 inline-flex items-center gap-2 text-sm font-medium text-slate-500 transition hover:text-slate-900 dark:text-slate-400 dark:hover:text-white"
+            className="relative mb-4 inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/[0.14] px-3.5 py-1.5 text-xs font-bold text-white backdrop-blur-xl transition hover:bg-white/25"
           >
             <ArrowLeft className="h-4 w-4" />
 
             Back to Product Solutions
           </button>
 
-          <h1 className="text-3xl font-semibold tracking-tight text-slate-950 dark:text-white">
+          <h1 className="relative text-2xl font-extrabold tracking-[-0.03em] sm:text-3xl">
             Add Product Solution
           </h1>
 
-          <p className="mt-2 max-w-2xl text-sm leading-6 text-slate-500 dark:text-slate-400">
+          <p className="relative mt-2 max-w-2xl text-sm leading-6 text-indigo-50/90">
             Create and manage a dynamic
             product solution page. The
             same structure can be used
@@ -672,13 +675,13 @@ export default function NewProductSolutionPage() {
           ================================================== */}
 
           {error && (
-            <div className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 dark:border-red-900/60 dark:bg-red-950/40 dark:text-red-300">
+            <div className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 dark:border-red-500/20 dark:bg-red-500/10 dark:text-red-300">
               {error}
             </div>
           )}
 
           {success && (
-            <div className="rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700 dark:border-emerald-900/60 dark:bg-emerald-950/40 dark:text-emerald-300">
+            <div className="rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700 dark:border-emerald-500/20 dark:bg-emerald-500/10 dark:text-emerald-300">
               {success}
             </div>
           )}
@@ -687,9 +690,9 @@ export default function NewProductSolutionPage() {
               BASIC INFORMATION
           ================================================== */}
 
-          <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+          <section className="rounded-[24px] border border-slate-200/80 bg-white p-6 shadow-[0_30px_70px_-45px_rgba(15,23,42,.45)] sm:p-7 dark:border-white/[0.07] dark:bg-[#0b1220]">
             <div className="mb-6">
-              <h2 className="text-lg font-semibold text-slate-950 dark:text-white">
+              <h2 className="text-lg font-extrabold tracking-[-0.02em] text-slate-950 dark:text-white">
                 Basic Information
               </h2>
 
@@ -704,7 +707,7 @@ export default function NewProductSolutionPage() {
               {/* Name */}
 
               <div>
-                <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                <label className="mb-2 block text-[13px] font-semibold text-slate-700 dark:text-slate-300">
                   Name *
                 </label>
 
@@ -717,14 +720,14 @@ export default function NewProductSolutionPage() {
                     )
                   }
                   placeholder="ERP Solutions"
-                  className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-950 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+                  className="w-full rounded-xl border border-slate-200 bg-slate-50/70 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-violet-400 focus:bg-white focus:ring-4 focus:ring-violet-500/10 dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-white dark:focus:bg-white/[0.06]"
                 />
               </div>
 
               {/* Slug */}
 
               <div>
-                <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                <label className="mb-2 block text-[13px] font-semibold text-slate-700 dark:text-slate-300">
                   Slug *
                 </label>
 
@@ -742,14 +745,14 @@ export default function NewProductSolutionPage() {
                     );
                   }}
                   placeholder="erp-solutions"
-                  className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-950 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+                  className="w-full rounded-xl border border-slate-200 bg-slate-50/70 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-violet-400 focus:bg-white focus:ring-4 focus:ring-violet-500/10 dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-white dark:focus:bg-white/[0.06]"
                 />
               </div>
 
               {/* Project Tag */}
 
               <div>
-                <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                <label className="mb-2 block text-[13px] font-semibold text-slate-700 dark:text-slate-300">
                   Project Tag
                 </label>
 
@@ -765,14 +768,14 @@ export default function NewProductSolutionPage() {
                     )
                   }
                   placeholder="Enterprise Solutions"
-                  className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-950 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+                  className="w-full rounded-xl border border-slate-200 bg-slate-50/70 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-violet-400 focus:bg-white focus:ring-4 focus:ring-violet-500/10 dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-white dark:focus:bg-white/[0.06]"
                 />
               </div>
 
               {/* Card Back Title */}
 
               <div>
-                <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                <label className="mb-2 block text-[13px] font-semibold text-slate-700 dark:text-slate-300">
                   Card / CTA Title
                 </label>
 
@@ -788,14 +791,14 @@ export default function NewProductSolutionPage() {
                     )
                   }
                   placeholder="Explore ERP Solutions"
-                  className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-950 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+                  className="w-full rounded-xl border border-slate-200 bg-slate-50/70 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-violet-400 focus:bg-white focus:ring-4 focus:ring-violet-500/10 dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-white dark:focus:bg-white/[0.06]"
                 />
               </div>
 
               {/* Excerpt */}
 
               <div className="md:col-span-2">
-                <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                <label className="mb-2 block text-[13px] font-semibold text-slate-700 dark:text-slate-300">
                   Excerpt
                 </label>
 
@@ -809,14 +812,14 @@ export default function NewProductSolutionPage() {
                   }
                   rows={4}
                   placeholder="Short description shown on the home page..."
-                  className="w-full resize-y rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-950 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+                  className="w-full rounded-xl border border-slate-200 bg-slate-50/70 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-violet-400 focus:bg-white focus:ring-4 focus:ring-violet-500/10 dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-white dark:focus:bg-white/[0.06] resize-y"
                 />
               </div>
 
               {/* Order */}
 
               <div>
-                <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                <label className="mb-2 block text-[13px] font-semibold text-slate-700 dark:text-slate-300">
                   Order
                 </label>
 
@@ -830,16 +833,16 @@ export default function NewProductSolutionPage() {
                       event.target.value
                     )
                   }
-                  className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-950 outline-none transition focus:border-blue-500 focus:ring-2 focus:ring-blue-500/10 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+                  className="w-full rounded-xl border border-slate-200 bg-slate-50/70 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-violet-400 focus:bg-white focus:ring-4 focus:ring-violet-500/10 dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-white dark:focus:bg-white/[0.06]"
                 />
               </div>
 
               {/* Active */}
 
               <div className="flex items-end">
-                <label className="flex w-full cursor-pointer items-center justify-between rounded-xl border border-slate-300 px-4 py-3 dark:border-slate-700">
+                <label className="flex w-full cursor-pointer items-center justify-between gap-4 rounded-xl border border-slate-200 bg-slate-50/70 px-4 py-3 transition hover:border-violet-300 dark:border-white/[0.08] dark:bg-white/[0.04]">
                   <div>
-                    <p className="text-sm font-medium text-slate-900 dark:text-white">
+                    <p className="text-sm font-bold text-slate-900 dark:text-white">
                       Active
                     </p>
 
@@ -860,7 +863,7 @@ export default function NewProductSolutionPage() {
                         event.target.checked
                       )
                     }
-                    className="h-5 w-5 rounded border-slate-300"
+                    className="h-5 w-5 shrink-0 rounded border-slate-300 accent-violet-600"
                   />
                 </label>
               </div>
@@ -871,10 +874,10 @@ export default function NewProductSolutionPage() {
               DYNAMIC CONTENT SECTIONS
           ================================================== */}
 
-          <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+          <section className="rounded-[24px] border border-slate-200/80 bg-white p-6 shadow-[0_30px_70px_-45px_rgba(15,23,42,.45)] sm:p-7 dark:border-white/[0.07] dark:bg-[#0b1220]">
             <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <div>
-                <h2 className="text-lg font-semibold text-slate-950 dark:text-white">
+                <h2 className="text-lg font-extrabold tracking-[-0.02em] text-slate-950 dark:text-white">
                   Content Sections
                 </h2>
 
@@ -890,7 +893,7 @@ export default function NewProductSolutionPage() {
                 onClick={
                   addContentSection
                 }
-                className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 px-4 py-2.5 text-sm font-medium text-slate-700 transition hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
+                className="inline-flex items-center justify-center gap-2 rounded-xl border border-violet-200 bg-violet-50 px-4 py-2.5 text-sm font-bold text-violet-700 transition hover:border-violet-300 hover:bg-violet-100 dark:border-violet-400/20 dark:bg-violet-500/10 dark:text-violet-300"
               >
                 <Plus className="h-4 w-4" />
 
@@ -908,17 +911,17 @@ export default function NewProductSolutionPage() {
                   ) => (
                     <div
                       key={index}
-                      className="rounded-2xl border border-slate-200 bg-slate-50/60 p-5 dark:border-slate-800 dark:bg-slate-950/40"
+                      className="rounded-[20px] border border-slate-200/80 bg-slate-50/60 p-4 transition hover:border-violet-200 sm:p-5 dark:border-white/[0.07] dark:bg-white/[0.02]"
                     >
                       {/* Section header */}
 
                       <div className="mb-5 flex flex-wrap items-center justify-between gap-3">
                         <div className="flex items-center gap-3">
-                          <span className="flex h-8 w-8 items-center justify-center rounded-lg bg-slate-200 text-slate-500 dark:bg-slate-800">
+                          <span className="brand-grad flex h-8 w-8 items-center justify-center rounded-[10px] text-white shadow-md shadow-violet-500/25">
                             <GripVertical className="h-4 w-4" />
                           </span>
 
-                          <p className="text-sm font-semibold text-slate-900 dark:text-white">
+                          <p className="text-sm font-bold text-slate-900 dark:text-white">
                             Section{" "}
                             {String(
                               index + 1
@@ -940,7 +943,7 @@ export default function NewProductSolutionPage() {
                                 index
                               )
                             }
-                            className="rounded-lg border border-slate-200 px-3 py-2 text-xs font-medium text-slate-600 transition hover:bg-white disabled:cursor-not-allowed disabled:opacity-40 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
+                            className="rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-bold text-slate-700 transition hover:border-violet-300 hover:text-violet-600 disabled:cursor-not-allowed disabled:opacity-40 dark:border-white/[0.1] dark:bg-white/[0.04] dark:text-slate-200"
                           >
                             Up
                           </button>
@@ -959,7 +962,7 @@ export default function NewProductSolutionPage() {
                                 index
                               )
                             }
-                            className="rounded-lg border border-slate-200 px-3 py-2 text-xs font-medium text-slate-600 transition hover:bg-white disabled:cursor-not-allowed disabled:opacity-40 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
+                            className="rounded-xl border border-slate-200 bg-white px-3 py-2 text-xs font-bold text-slate-700 transition hover:border-violet-300 hover:text-violet-600 disabled:cursor-not-allowed disabled:opacity-40 dark:border-white/[0.1] dark:bg-white/[0.04] dark:text-slate-200"
                           >
                             Down
                           </button>
@@ -971,7 +974,7 @@ export default function NewProductSolutionPage() {
                                 index
                               )
                             }
-                            className="inline-flex h-9 w-9 items-center justify-center rounded-lg text-red-500 transition hover:bg-red-50 dark:hover:bg-red-950/30"
+                            className="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-red-200 bg-red-50 text-red-600 transition hover:bg-red-100 dark:border-red-500/20 dark:bg-red-500/10 dark:text-red-400 dark:hover:bg-red-500/20"
                             title="Remove section"
                           >
                             <Trash2 className="h-4 w-4" />
@@ -983,7 +986,7 @@ export default function NewProductSolutionPage() {
                         {/* Type */}
 
                         <div>
-                          <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                          <label className="mb-2 block text-[13px] font-semibold text-slate-700 dark:text-slate-300">
                             Section Type
                           </label>
 
@@ -1001,7 +1004,7 @@ export default function NewProductSolutionPage() {
                                   .value as ContentSectionType
                               )
                             }
-                            className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-950 outline-none transition focus:border-blue-500 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+                            className="w-full rounded-xl border border-slate-200 bg-slate-50/70 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-violet-400 focus:bg-white focus:ring-4 focus:ring-violet-500/10 dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-white dark:focus:bg-white/[0.06]"
                           >
                             <option value="paragraph">
                               Paragraph
@@ -1022,7 +1025,7 @@ export default function NewProductSolutionPage() {
                         {section.type ===
                           "heading" && (
                           <div>
-                            <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                            <label className="mb-2 block text-[13px] font-semibold text-slate-700 dark:text-slate-300">
                               Heading
                             </label>
 
@@ -1042,7 +1045,7 @@ export default function NewProductSolutionPage() {
                                 )
                               }
                               placeholder="From Mobile Opportunity to Business Advantage"
-                              className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-950 outline-none transition focus:border-blue-500 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+                              className="w-full rounded-xl border border-slate-200 bg-slate-50/70 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-violet-400 focus:bg-white focus:ring-4 focus:ring-violet-500/10 dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-white dark:focus:bg-white/[0.06]"
                             />
                           </div>
                         )}
@@ -1053,7 +1056,7 @@ export default function NewProductSolutionPage() {
                           "paragraph" && (
                           <>
                             <div>
-                              <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                              <label className="mb-2 block text-[13px] font-semibold text-slate-700 dark:text-slate-300">
                                 Optional
                                 Heading
                               </label>
@@ -1074,12 +1077,12 @@ export default function NewProductSolutionPage() {
                                   )
                                 }
                                 placeholder="Optional section heading"
-                                className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-950 outline-none transition focus:border-blue-500 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+                                className="w-full rounded-xl border border-slate-200 bg-slate-50/70 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-violet-400 focus:bg-white focus:ring-4 focus:ring-violet-500/10 dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-white dark:focus:bg-white/[0.06]"
                               />
                             </div>
 
                             <div>
-                              <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                              <label className="mb-2 block text-[13px] font-semibold text-slate-700 dark:text-slate-300">
                                 Paragraph
                               </label>
 
@@ -1099,7 +1102,7 @@ export default function NewProductSolutionPage() {
                                 }
                                 rows={5}
                                 placeholder="Write paragraph content..."
-                                className="w-full resize-y rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-950 outline-none transition focus:border-blue-500 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+                                className="w-full rounded-xl border border-slate-200 bg-slate-50/70 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-violet-400 focus:bg-white focus:ring-4 focus:ring-violet-500/10 dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-white dark:focus:bg-white/[0.06] resize-y"
                               />
                             </div>
                           </>
@@ -1111,7 +1114,7 @@ export default function NewProductSolutionPage() {
                           "list" && (
                           <>
                             <div>
-                              <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                              <label className="mb-2 block text-[13px] font-semibold text-slate-700 dark:text-slate-300">
                                 List Heading
                               </label>
 
@@ -1131,12 +1134,12 @@ export default function NewProductSolutionPage() {
                                   )
                                 }
                                 placeholder="Training"
-                                className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-950 outline-none transition focus:border-blue-500 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+                                className="w-full rounded-xl border border-slate-200 bg-slate-50/70 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-violet-400 focus:bg-white focus:ring-4 focus:ring-violet-500/10 dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-white dark:focus:bg-white/[0.06]"
                               />
                             </div>
 
                             <div>
-                              <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                              <label className="mb-2 block text-[13px] font-semibold text-slate-700 dark:text-slate-300">
                                 List Items
                               </label>
 
@@ -1160,7 +1163,7 @@ export default function NewProductSolutionPage() {
 Customer Service Training
 Trainer Training
 Skills Development Programmes`}
-                                className="w-full resize-y rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-950 outline-none transition focus:border-blue-500 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+                                className="w-full rounded-xl border border-slate-200 bg-slate-50/70 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-violet-400 focus:bg-white focus:ring-4 focus:ring-violet-500/10 dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-white dark:focus:bg-white/[0.06] resize-y"
                               />
 
                               <p className="mt-2 text-xs text-slate-500">
@@ -1176,7 +1179,7 @@ Skills Development Programmes`}
                 )}
               </div>
             ) : (
-              <div className="rounded-xl border border-dashed border-slate-300 px-6 py-12 text-center dark:border-slate-700">
+              <div className="rounded-[18px] border border-dashed border-violet-200 bg-violet-50/30 dark:border-white/[0.1] dark:bg-white/[0.02] px-6 py-12 text-center">
                 <p className="text-sm text-slate-500">
                   No content sections
                   added.
@@ -1187,7 +1190,7 @@ Skills Development Programmes`}
                   onClick={
                     addContentSection
                   }
-                  className="mt-4 inline-flex items-center gap-2 text-sm font-semibold text-slate-900 dark:text-white"
+                  className="mt-4 inline-flex items-center gap-2 text-sm font-bold text-violet-600 transition hover:text-violet-700 dark:text-violet-300"
                 >
                   <Plus className="h-4 w-4" />
 
@@ -1201,9 +1204,9 @@ Skills Development Programmes`}
               OLD CONTENT BACKUP
           ================================================== */}
 
-          <section className="rounded-2xl border border-amber-200 bg-amber-50/40 p-6 dark:border-amber-900/40 dark:bg-amber-950/10">
+          <section className="rounded-[24px] border border-amber-200 bg-amber-50/50 p-6 sm:p-7 dark:border-amber-500/20 dark:bg-amber-500/[0.06]">
             <div className="mb-5">
-              <h2 className="text-lg font-semibold text-slate-950 dark:text-white">
+              <h2 className="text-lg font-extrabold tracking-[-0.02em] text-slate-950 dark:text-white">
                 Legacy Content
               </h2>
 
@@ -1225,7 +1228,7 @@ Skills Development Programmes`}
               }
               rows={6}
               placeholder="Optional old content..."
-              className="w-full resize-y rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-950 outline-none transition focus:border-blue-500 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+              className="w-full rounded-xl border border-slate-200 bg-slate-50/70 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-violet-400 focus:bg-white focus:ring-4 focus:ring-violet-500/10 dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-white dark:focus:bg-white/[0.06] resize-y"
             />
           </section>
 
@@ -1233,10 +1236,10 @@ Skills Development Programmes`}
               BENEFITS
           ================================================== */}
 
-          <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+          <section className="rounded-[24px] border border-slate-200/80 bg-white p-6 shadow-[0_30px_70px_-45px_rgba(15,23,42,.45)] sm:p-7 dark:border-white/[0.07] dark:bg-[#0b1220]">
             <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-end sm:justify-between">
               <div className="flex-1">
-                <h2 className="text-lg font-semibold text-slate-950 dark:text-white">
+                <h2 className="text-lg font-extrabold tracking-[-0.02em] text-slate-950 dark:text-white">
                   Benefits
                 </h2>
 
@@ -1249,7 +1252,7 @@ Skills Development Programmes`}
               <button
                 type="button"
                 onClick={addBenefit}
-                className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 px-4 py-2.5 text-sm font-medium text-slate-700 transition hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
+                className="inline-flex items-center justify-center gap-2 rounded-xl border border-violet-200 bg-violet-50 px-4 py-2.5 text-sm font-bold text-violet-700 transition hover:border-violet-300 hover:bg-violet-100 dark:border-violet-400/20 dark:bg-violet-500/10 dark:text-violet-300"
               >
                 <Plus className="h-4 w-4" />
 
@@ -1260,7 +1263,7 @@ Skills Development Programmes`}
             {/* Benefits title */}
 
             <div className="mb-6">
-              <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+              <label className="mb-2 block text-[13px] font-semibold text-slate-700 dark:text-slate-300">
                 Benefits Section Title
               </label>
 
@@ -1276,7 +1279,7 @@ Skills Development Programmes`}
                   )
                 }
                 placeholder="Your Benefits"
-                className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-950 outline-none transition focus:border-blue-500 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+                className="w-full rounded-xl border border-slate-200 bg-slate-50/70 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-violet-400 focus:bg-white focus:ring-4 focus:ring-violet-500/10 dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-white dark:focus:bg-white/[0.06]"
               />
             </div>
 
@@ -1290,10 +1293,10 @@ Skills Development Programmes`}
                   ) => (
                     <div
                       key={index}
-                      className="rounded-xl border border-slate-200 p-4 dark:border-slate-800"
+                      className="rounded-[18px] border border-slate-200/80 bg-slate-50/60 p-4 sm:p-5 dark:border-white/[0.07] dark:bg-white/[0.02]"
                     >
                       <div className="mb-4 flex items-center justify-between">
-                        <p className="text-sm font-semibold text-slate-900 dark:text-white">
+                        <p className="text-sm font-bold text-slate-900 dark:text-white">
                           Benefit{" "}
                           {String(
                             index + 1
@@ -1310,7 +1313,7 @@ Skills Development Programmes`}
                               index
                             )
                           }
-                          className="inline-flex h-9 w-9 items-center justify-center rounded-lg text-red-500 transition hover:bg-red-50 dark:hover:bg-red-950/30"
+                          className="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-red-200 bg-red-50 text-red-600 transition hover:bg-red-100 dark:border-red-500/20 dark:bg-red-500/10 dark:text-red-400 dark:hover:bg-red-500/20"
                         >
                           <Trash2 className="h-4 w-4" />
                         </button>
@@ -1318,7 +1321,7 @@ Skills Development Programmes`}
 
                       <div className="grid gap-4 md:grid-cols-2">
                         <div>
-                          <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                          <label className="mb-2 block text-[13px] font-semibold text-slate-700 dark:text-slate-300">
                             Title
                           </label>
 
@@ -1338,12 +1341,12 @@ Skills Development Programmes`}
                               )
                             }
                             placeholder="Accelerated Solutions"
-                            className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-950 outline-none transition focus:border-blue-500 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+                            className="w-full rounded-xl border border-slate-200 bg-slate-50/70 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-violet-400 focus:bg-white focus:ring-4 focus:ring-violet-500/10 dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-white dark:focus:bg-white/[0.06]"
                           />
                         </div>
 
                         <div>
-                          <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                          <label className="mb-2 block text-[13px] font-semibold text-slate-700 dark:text-slate-300">
                             Description
                           </label>
 
@@ -1363,7 +1366,7 @@ Skills Development Programmes`}
                               )
                             }
                             placeholder="Decrease time-to-market..."
-                            className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-950 outline-none transition focus:border-blue-500 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+                            className="w-full rounded-xl border border-slate-200 bg-slate-50/70 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-violet-400 focus:bg-white focus:ring-4 focus:ring-violet-500/10 dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-white dark:focus:bg-white/[0.06]"
                           />
                         </div>
                       </div>
@@ -1372,7 +1375,7 @@ Skills Development Programmes`}
                 )}
               </div>
             ) : (
-              <div className="rounded-xl border border-dashed border-slate-300 py-10 text-center dark:border-slate-700">
+              <div className="rounded-[18px] border border-dashed border-violet-200 bg-violet-50/30 dark:border-white/[0.1] dark:bg-white/[0.02] px-6 py-10 text-center">
                 <p className="text-sm text-slate-500">
                   No benefits added.
                 </p>
@@ -1382,7 +1385,7 @@ Skills Development Programmes`}
                   onClick={
                     addBenefit
                   }
-                  className="mt-3 inline-flex items-center gap-2 text-sm font-semibold text-slate-900 dark:text-white"
+                  className="mt-3 inline-flex items-center gap-2 text-sm font-bold text-violet-600 transition hover:text-violet-700 dark:text-violet-300"
                 >
                   <Plus className="h-4 w-4" />
 
@@ -1396,10 +1399,10 @@ Skills Development Programmes`}
               HIGHLIGHT CARDS
           ================================================== */}
 
-          <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+          <section className="rounded-[24px] border border-slate-200/80 bg-white p-6 shadow-[0_30px_70px_-45px_rgba(15,23,42,.45)] sm:p-7 dark:border-white/[0.07] dark:bg-[#0b1220]">
             <div className="mb-6 flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
               <div>
-                <h2 className="text-lg font-semibold text-slate-950 dark:text-white">
+                <h2 className="text-lg font-extrabold tracking-[-0.02em] text-slate-950 dark:text-white">
                   Highlight Cards
                 </h2>
 
@@ -1415,7 +1418,7 @@ Skills Development Programmes`}
                 onClick={
                   addHighlightCard
                 }
-                className="inline-flex items-center justify-center gap-2 rounded-xl border border-slate-300 px-4 py-2.5 text-sm font-medium text-slate-700 transition hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
+                className="inline-flex items-center justify-center gap-2 rounded-xl border border-violet-200 bg-violet-50 px-4 py-2.5 text-sm font-bold text-violet-700 transition hover:border-violet-300 hover:bg-violet-100 dark:border-violet-400/20 dark:bg-violet-500/10 dark:text-violet-300"
               >
                 <Plus className="h-4 w-4" />
 
@@ -1433,10 +1436,10 @@ Skills Development Programmes`}
                   ) => (
                     <div
                       key={index}
-                      className="rounded-xl border border-slate-200 p-4 dark:border-slate-800"
+                      className="rounded-[18px] border border-slate-200/80 bg-slate-50/60 p-4 sm:p-5 dark:border-white/[0.07] dark:bg-white/[0.02]"
                     >
                       <div className="mb-4 flex items-center justify-between">
-                        <p className="text-sm font-semibold text-slate-900 dark:text-white">
+                        <p className="text-sm font-bold text-slate-900 dark:text-white">
                           {String(
                             index + 1
                           ).padStart(
@@ -1453,7 +1456,7 @@ Skills Development Programmes`}
                               index
                             )
                           }
-                          className="inline-flex h-9 w-9 items-center justify-center rounded-lg text-red-500 transition hover:bg-red-50 dark:hover:bg-red-950/30"
+                          className="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-red-200 bg-red-50 text-red-600 transition hover:bg-red-100 dark:border-red-500/20 dark:bg-red-500/10 dark:text-red-400 dark:hover:bg-red-500/20"
                         >
                           <Trash2 className="h-4 w-4" />
                         </button>
@@ -1461,7 +1464,7 @@ Skills Development Programmes`}
 
                       <div className="grid gap-4 md:grid-cols-2">
                         <div>
-                          <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                          <label className="mb-2 block text-[13px] font-semibold text-slate-700 dark:text-slate-300">
                             Title
                           </label>
 
@@ -1481,12 +1484,12 @@ Skills Development Programmes`}
                               )
                             }
                             placeholder="Faster Solutions"
-                            className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-950 outline-none transition focus:border-blue-500 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+                            className="w-full rounded-xl border border-slate-200 bg-slate-50/70 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-violet-400 focus:bg-white focus:ring-4 focus:ring-violet-500/10 dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-white dark:focus:bg-white/[0.06]"
                           />
                         </div>
 
                         <div>
-                          <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                          <label className="mb-2 block text-[13px] font-semibold text-slate-700 dark:text-slate-300">
                             Description
                           </label>
 
@@ -1506,7 +1509,7 @@ Skills Development Programmes`}
                               )
                             }
                             placeholder="Short description..."
-                            className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-950 outline-none transition focus:border-blue-500 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+                            className="w-full rounded-xl border border-slate-200 bg-slate-50/70 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-violet-400 focus:bg-white focus:ring-4 focus:ring-violet-500/10 dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-white dark:focus:bg-white/[0.06]"
                           />
                         </div>
                       </div>
@@ -1515,7 +1518,7 @@ Skills Development Programmes`}
                 )}
               </div>
             ) : (
-              <div className="rounded-xl border border-dashed border-slate-300 py-10 text-center dark:border-slate-700">
+              <div className="rounded-[18px] border border-dashed border-violet-200 bg-violet-50/30 dark:border-white/[0.1] dark:bg-white/[0.02] px-6 py-10 text-center">
                 <p className="text-sm text-slate-500">
                   No highlight cards
                   added.
@@ -1526,7 +1529,7 @@ Skills Development Programmes`}
                   onClick={
                     addHighlightCard
                   }
-                  className="mt-3 inline-flex items-center gap-2 text-sm font-semibold text-slate-900 dark:text-white"
+                  className="mt-3 inline-flex items-center gap-2 text-sm font-bold text-violet-600 transition hover:text-violet-700 dark:text-violet-300"
                 >
                   <Plus className="h-4 w-4" />
 
@@ -1540,9 +1543,9 @@ Skills Development Programmes`}
               MEDIA
           ================================================== */}
 
-          <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+          <section className="rounded-[24px] border border-slate-200/80 bg-white p-6 shadow-[0_30px_70px_-45px_rgba(15,23,42,.45)] sm:p-7 dark:border-white/[0.07] dark:bg-[#0b1220]">
             <div className="mb-6">
-              <h2 className="text-lg font-semibold text-slate-950 dark:text-white">
+              <h2 className="text-lg font-extrabold tracking-[-0.02em] text-slate-950 dark:text-white">
                 Media
               </h2>
 
@@ -1556,7 +1559,7 @@ Skills Development Programmes`}
               {/* Banner */}
 
               <div>
-                <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                <label className="mb-2 block text-[13px] font-semibold text-slate-700 dark:text-slate-300">
                   Banner Image URL
                 </label>
 
@@ -1572,14 +1575,14 @@ Skills Development Programmes`}
                     )
                   }
                   placeholder="/mobile-solution.png"
-                  className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-950 outline-none transition focus:border-blue-500 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+                  className="w-full rounded-xl border border-slate-200 bg-slate-50/70 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-violet-400 focus:bg-white focus:ring-4 focus:ring-violet-500/10 dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-white dark:focus:bg-white/[0.06]"
                 />
               </div>
 
               {/* Sidebar */}
 
               <div>
-                <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                <label className="mb-2 block text-[13px] font-semibold text-slate-700 dark:text-slate-300">
                   Sidebar Image URL
                 </label>
 
@@ -1595,14 +1598,14 @@ Skills Development Programmes`}
                     )
                   }
                   placeholder="/mobile-Solution-Service.png"
-                  className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-950 outline-none transition focus:border-blue-500 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+                  className="w-full rounded-xl border border-slate-200 bg-slate-50/70 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-violet-400 focus:bg-white focus:ring-4 focus:ring-violet-500/10 dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-white dark:focus:bg-white/[0.06]"
                 />
               </div>
 
               {/* Logo */}
 
               <div className="md:col-span-2">
-                <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                <label className="mb-2 block text-[13px] font-semibold text-slate-700 dark:text-slate-300">
                   Logo / Home Card Image
                   URL
                 </label>
@@ -1619,7 +1622,7 @@ Skills Development Programmes`}
                     )
                   }
                   placeholder="/mobile-logo.png"
-                  className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm text-slate-950 outline-none transition focus:border-blue-500 dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+                  className="w-full rounded-xl border border-slate-200 bg-slate-50/70 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-violet-400 focus:bg-white focus:ring-4 focus:ring-violet-500/10 dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-white dark:focus:bg-white/[0.06]"
                 />
               </div>
             </div>
@@ -1629,9 +1632,9 @@ Skills Development Programmes`}
               SEO
           ================================================== */}
 
-          <section className="rounded-2xl border border-slate-200 bg-white p-6 shadow-sm dark:border-slate-800 dark:bg-slate-900">
+          <section className="rounded-[24px] border border-slate-200/80 bg-white p-6 shadow-[0_30px_70px_-45px_rgba(15,23,42,.45)] sm:p-7 dark:border-white/[0.07] dark:bg-[#0b1220]">
             <div className="mb-6">
-              <h2 className="text-lg font-semibold text-slate-950 dark:text-white">
+              <h2 className="text-lg font-extrabold tracking-[-0.02em] text-slate-950 dark:text-white">
                 SEO
               </h2>
 
@@ -1645,7 +1648,7 @@ Skills Development Programmes`}
               {/* Meta title */}
 
               <div>
-                <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                <label className="mb-2 block text-[13px] font-semibold text-slate-700 dark:text-slate-300">
                   Meta Title
                 </label>
 
@@ -1661,14 +1664,14 @@ Skills Development Programmes`}
                     )
                   }
                   placeholder="ERP Solutions | Geecon Technology"
-                  className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+                  className="w-full rounded-xl border border-slate-200 bg-slate-50/70 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-violet-400 focus:bg-white focus:ring-4 focus:ring-violet-500/10 dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-white dark:focus:bg-white/[0.06]"
                 />
               </div>
 
               {/* Keywords */}
 
               <div>
-                <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                <label className="mb-2 block text-[13px] font-semibold text-slate-700 dark:text-slate-300">
                   Keywords
                 </label>
 
@@ -1684,14 +1687,14 @@ Skills Development Programmes`}
                     )
                   }
                   placeholder="ERP solutions, enterprise software, business management"
-                  className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+                  className="w-full rounded-xl border border-slate-200 bg-slate-50/70 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-violet-400 focus:bg-white focus:ring-4 focus:ring-violet-500/10 dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-white dark:focus:bg-white/[0.06]"
                 />
               </div>
 
               {/* Description */}
 
               <div className="md:col-span-2">
-                <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                <label className="mb-2 block text-[13px] font-semibold text-slate-700 dark:text-slate-300">
                   Meta Description
                 </label>
 
@@ -1707,14 +1710,14 @@ Skills Development Programmes`}
                   }
                   rows={3}
                   placeholder="Short SEO description..."
-                  className="w-full resize-y rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+                  className="w-full rounded-xl border border-slate-200 bg-slate-50/70 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-violet-400 focus:bg-white focus:ring-4 focus:ring-violet-500/10 dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-white dark:focus:bg-white/[0.06] resize-y"
                 />
               </div>
 
               {/* Canonical */}
 
               <div>
-                <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                <label className="mb-2 block text-[13px] font-semibold text-slate-700 dark:text-slate-300">
                   Canonical URL
                 </label>
 
@@ -1730,14 +1733,14 @@ Skills Development Programmes`}
                     )
                   }
                   placeholder="/erp-solutions"
-                  className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+                  className="w-full rounded-xl border border-slate-200 bg-slate-50/70 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-violet-400 focus:bg-white focus:ring-4 focus:ring-violet-500/10 dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-white dark:focus:bg-white/[0.06]"
                 />
               </div>
 
               {/* OG image */}
 
               <div>
-                <label className="mb-2 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                <label className="mb-2 block text-[13px] font-semibold text-slate-700 dark:text-slate-300">
                   Open Graph Image
                 </label>
 
@@ -1753,7 +1756,7 @@ Skills Development Programmes`}
                     )
                   }
                   placeholder="/erp-solutions.png"
-                  className="w-full rounded-xl border border-slate-300 bg-white px-4 py-3 text-sm dark:border-slate-700 dark:bg-slate-950 dark:text-white"
+                  className="w-full rounded-xl border border-slate-200 bg-slate-50/70 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-violet-400 focus:bg-white focus:ring-4 focus:ring-violet-500/10 dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-white dark:focus:bg-white/[0.06]"
                 />
               </div>
             </div>
@@ -1763,7 +1766,7 @@ Skills Development Programmes`}
               ACTIONS
           ================================================== */}
 
-          <div className="sticky bottom-4 z-20 flex flex-col-reverse gap-3 rounded-2xl border border-slate-200 bg-white/90 p-4 shadow-xl backdrop-blur-lg sm:flex-row sm:justify-end dark:border-slate-800 dark:bg-slate-900/90">
+          <div className="sticky bottom-4 z-20 flex flex-col-reverse gap-3 rounded-[22px] border border-slate-200/80 bg-white/90 p-4 shadow-[0_30px_70px_-35px_rgba(15,23,42,.45)] backdrop-blur-lg sm:flex-row sm:justify-end dark:border-white/[0.07] dark:bg-[#0b1220]/90">
             <button
               type="button"
               onClick={() =>
@@ -1771,7 +1774,7 @@ Skills Development Programmes`}
                   "/admin/product-solution"
                 )
               }
-              className="rounded-xl border border-slate-300 px-5 py-3 text-sm font-medium text-slate-700 transition hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"
+              className="rounded-xl border border-slate-200 bg-white px-5 py-3 text-sm font-bold text-slate-700 transition hover:border-violet-300 hover:text-violet-600 dark:border-white/[0.1] dark:bg-white/[0.04] dark:text-slate-200"
             >
               Cancel
             </button>
@@ -1782,7 +1785,7 @@ Skills Development Programmes`}
                 saving ||
                 !canSubmit
               }
-              className="inline-flex items-center justify-center gap-2 rounded-xl bg-slate-950 px-6 py-3 text-sm font-semibold text-white transition hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-50 dark:bg-white dark:text-slate-950 dark:hover:bg-slate-200"
+              className="brand-grad inline-flex items-center justify-center gap-2 rounded-xl px-6 py-3 text-sm font-bold text-white shadow-lg shadow-violet-500/25 transition hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:translate-y-0"
             >
               <Save className="h-4 w-4" />
 

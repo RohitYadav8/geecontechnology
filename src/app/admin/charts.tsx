@@ -1,11 +1,6 @@
 "use client";
 
 import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
   ResponsiveContainer,
   PieChart,
   Pie,
@@ -19,12 +14,13 @@ interface ChartDatum {
   value: number;
 }
 
+// Brand palette: blue → violet → cyan, plus two supporting tones.
 const COLORS = [
-  "#3b82f6",
+  "#2563eb",
+  "#7c5cf6",
   "#06b6d4",
-  "#8b5cf6",
-  "#22c55e",
-  "#f59e0b",
+  "#a78bfa",
+  "#60a5fa",
 ];
 
 export function AdminDashboardCharts({
@@ -34,111 +30,51 @@ export function AdminDashboardCharts({
 }) {
   const pieData = data.filter((item) => item.value > 0);
 
-  const hasData = data.some((item) => item.value > 0);
-
   return (
-    <div className="grid gap-6 lg:grid-cols-2">
-      {/* Bar Chart */}
-      <div className="rounded-2xl bg-white p-6 shadow-sm dark:bg-slate-900">
-        <h3 className="text-base font-semibold text-slate-900 dark:text-white">
-          Analytics Overview
-        </h3>
+    <div className="rounded-[26px] border border-slate-200/80 bg-white p-5 shadow-[0_30px_70px_-45px_rgba(15,23,42,.45)] sm:p-7 dark:border-white/[0.07] dark:bg-[#0b1220]">
+      <div className="flex items-center gap-3">
+        <span className="brand-grad block h-6 w-1.5 rounded-full" />
 
-        <div className="mt-4 h-72">
-          {hasData ? (
-            <ResponsiveContainer width="100%" height="100%">
-              <BarChart
-                data={data}
-                margin={{
-                  top: 10,
-                  right: 10,
-                  left: 0,
-                  bottom: 5,
-                }}
-              >
-                <CartesianGrid
-                  strokeDasharray="3 3"
-                  stroke="#e2e8f0"
-                  vertical={false}
-                />
-
-                <XAxis
-                  dataKey="label"
-                  tick={{ fontSize: 12 }}
-                  stroke="#94a3b8"
-                  tickLine={false}
-                  axisLine={false}
-                />
-
-                <YAxis
-                  tick={{ fontSize: 12 }}
-                  stroke="#94a3b8"
-                  allowDecimals={false}
-                  tickLine={false}
-                  axisLine={false}
-                />
-
-                <Tooltip />
-
-                <Bar
-                  dataKey="value"
-                  fill="#2563eb"
-                  radius={[6, 6, 0, 0]}
-                  maxBarSize={55}
-                />
-              </BarChart>
-            </ResponsiveContainer>
-          ) : (
-            <div className="flex h-full items-center justify-center">
-              <p className="text-sm text-slate-400">
-                No data available yet.
-              </p>
-            </div>
-          )}
-        </div>
-      </div>
-
-      {/* Pie Chart */}
-      <div className="rounded-2xl bg-white p-6 shadow-sm dark:bg-slate-900">
-        <h3 className="text-base font-semibold text-slate-900 dark:text-white">
+        <h3 className="text-lg font-extrabold tracking-[-0.02em] text-slate-950 dark:text-white">
           Content Distribution
         </h3>
+      </div>
 
-        <div className="mt-4 h-72">
-          {pieData.length > 0 ? (
-            <ResponsiveContainer width="100%" height="100%">
-              <PieChart>
-                <Pie
-                  data={pieData}
-                  dataKey="value"
-                  nameKey="label"
-                  cx="50%"
-                  cy="45%"
-                  innerRadius={50}
-                  outerRadius={90}
-                  paddingAngle={3}
-                >
-                  {pieData.map((item, index) => (
-                    <Cell
-                      key={item.label}
-                      fill={COLORS[index % COLORS.length]}
-                    />
-                  ))}
-                </Pie>
+      <div className="mt-4 h-80">
+        {pieData.length > 0 ? (
+          <ResponsiveContainer width="100%" height="100%">
+            <PieChart>
+              <Pie
+                data={pieData}
+                dataKey="value"
+                nameKey="label"
+                cx="50%"
+                cy="45%"
+                innerRadius={65}
+                outerRadius={110}
+                paddingAngle={3}
+                stroke="none"
+              >
+                {pieData.map((item, index) => (
+                  <Cell
+                    key={item.label}
+                    fill={COLORS[index % COLORS.length]}
+                  />
+                ))}
+              </Pie>
 
-                <Legend />
+              <Legend iconType="circle" />
 
-                <Tooltip />
-              </PieChart>
-            </ResponsiveContainer>
-          ) : (
-            <div className="flex h-full items-center justify-center">
-              <p className="text-sm text-slate-400">
-                No data available yet.
-              </p>
-            </div>
-          )}
-        </div>
+              <Tooltip />
+            </PieChart>
+          </ResponsiveContainer>
+        ) : (
+          <div className="flex h-full items-center justify-center">
+            <p className="text-sm text-slate-400">
+              No data available yet.
+            </p>
+          </div>
+        )}
       </div>
     </div>
   );

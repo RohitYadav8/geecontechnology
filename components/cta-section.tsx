@@ -7,22 +7,25 @@ import { ArrowRight } from "lucide-react";
  */
 export function CtaSection() {
   return (
-    <section className="relative overflow-hidden bg-gradient-to-br from-[#1a2b4a] via-[#16233d] to-[#0d1830] py-20 dark:from-blue-950 dark:via-slate-950 dark:to-black">
-      <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(59,130,246,.25),transparent_60%)]" />
-      <div className="relative mx-auto max-w-3xl px-6 text-center">
-        <h2 className="text-2xl font-bold text-white sm:text-3xl">
+    <section className="relative px-4 pb-24 sm:px-6 lg:px-10">
+      <div className="brand-grad relative mx-auto max-w-7xl overflow-hidden rounded-[36px] px-6 py-16 text-center sm:py-20">
+      <div className="pointer-events-none absolute -right-24 -top-24 h-80 w-80 rounded-full bg-violet-300/40 blur-3xl" />
+      <div className="pointer-events-none absolute -bottom-32 -left-20 h-80 w-80 rounded-full bg-cyan-300/30 blur-3xl" />
+      <div className="relative mx-auto max-w-3xl">
+        <h2 className="text-3xl font-extrabold tracking-[-0.035em] text-white sm:text-[42px] sm:leading-tight">
           Ready to build your next enterprise solution?
         </h2>
-        <p className="mt-3 text-sm leading-6 text-slate-300">
+        <p className="mt-4 text-base leading-7 text-indigo-50/90">
           Let&apos;s talk about how Geecon can help your team ship faster.
         </p>
         <Link
           href="/contact"
-          className="group/btn mt-8 inline-flex items-center gap-2 rounded-full bg-white px-6 py-3 text-sm font-semibold text-[#1a2b4a] transition-transform hover:scale-105"
+          className="group/btn mt-8 inline-flex items-center gap-2 rounded-2xl bg-white px-6 py-3.5 text-sm font-bold text-blue-600 shadow-[0_18px_40px_-18px_rgba(15,23,42,.6)] transition-transform hover:-translate-y-1"
         >
           Contact Us
           <ArrowRight size={16} className="transition-transform group-hover/btn:translate-x-1" />
         </Link>
+      </div>
       </div>
     </section>
   );

@@ -4,13 +4,16 @@ import type { Client } from "../lib/clients-data";
 export function ClientCard({ client, featured = false }: { client: Client; featured?: boolean }) {
     return (
         <div
-            className={`group/logo relative flex items-center justify-center overflow-hidden rounded-2xl border border-slate-200 bg-white/60 p-6 backdrop-blur-xl transition-all duration-500 hover:-translate-y-1 hover:border-blue-400 hover:shadow-[0_20px_60px_rgba(59,130,246,0.25)] dark:border-slate-800 dark:bg-slate-900/60 ${
+            className={`group/logo relative flex items-center justify-center overflow-hidden rounded-[26px] border border-slate-200/80 bg-white p-6 shadow-[0_30px_80px_-45px_rgba(15,23,42,.45)] transition-all duration-500 hover:-translate-y-1 hover:border-violet-200 hover:shadow-[0_30px_70px_-35px_rgba(91,33,182,.35)] dark:border-white/[0.07] dark:bg-[#0b1220] dark:hover:border-violet-400/25 ${
                 featured ? "h-40" : "h-28"
             }`}
         >
+            {/* Accent bar */}
+            <span className="brand-grad pointer-events-none absolute inset-x-0 top-0 h-1 origin-left scale-x-0 transition-transform duration-500 group-hover/logo:scale-x-100" />
+
             {/* Shine sweep */}
-            <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-2xl">
-                <div className="absolute -left-full top-0 h-full w-1/2 -skew-x-12 bg-white/30 transition-all duration-700 group-hover/logo:left-[160%]" />
+            <div className="pointer-events-none absolute inset-0 overflow-hidden rounded-[26px]">
+                <div className="absolute -left-full top-0 h-full w-1/2 -skew-x-12 bg-violet-100/40 transition-all duration-700 group-hover/logo:left-[160%] dark:bg-white/10" />
             </div>
 
             <Image

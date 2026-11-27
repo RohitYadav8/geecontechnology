@@ -50,23 +50,7 @@ export function AdminTopbar({
 
   return (
     <header
-      className="
-        flex
-        h-16
-        w-full
-        items-center
-        justify-between
-        border-b
-        border-slate-200
-        bg-white/95
-        px-3
-        backdrop-blur
-        sm:px-4
-        md:px-5
-        lg:px-6
-        dark:border-white/5
-        dark:bg-[#0a0e1a]/95
-      "
+      className="flex h-16 w-full items-center justify-between border-b border-slate-200 bg-white/95 px-3 backdrop-blur sm:px-4 md:px-5 lg:px-6 dark:border-white/5 dark:bg-[#0a0e1a]/95"
     >
       {/* ================= MOBILE MENU ================= */}
 
@@ -75,26 +59,7 @@ export function AdminTopbar({
           type="button"
           onClick={onMenuClick}
           aria-label="Open admin navigation"
-          className="
-            flex
-            h-10
-            w-10
-            items-center
-            justify-center
-            rounded-xl
-            border
-            border-slate-200
-            bg-white
-            text-slate-700
-            shadow-sm
-            transition
-            hover:bg-slate-100
-            lg:hidden
-            dark:border-white/10
-            dark:bg-white/5
-            dark:text-slate-200
-            dark:hover:bg-white/10
-          "
+          className="flex h-10 w-10 items-center justify-center rounded-xl border border-slate-200 bg-white text-slate-700 shadow-sm transition hover:bg-slate-100 lg:hidden dark:border-white/10 dark:bg-white/5 dark:text-slate-200 dark:hover:bg-white/10"
         >
           <Menu size={20} />
         </button>
@@ -127,25 +92,7 @@ export function AdminTopbar({
             }
             aria-label="Open admin profile menu"
             aria-expanded={menuOpen}
-            className="
-              flex
-              h-9
-              w-9
-              items-center
-              justify-center
-              rounded-full
-              bg-gradient-to-br
-              from-blue-500
-              to-cyan-400
-              text-sm
-              font-semibold
-              text-white
-              shadow-sm
-              transition
-              hover:scale-105
-              sm:h-10
-              sm:w-10
-            "
+            className="flex h-9 w-9 items-center justify-center rounded-full brand-grad text-sm font-semibold text-white shadow-lg shadow-violet-500/25 transition hover:scale-105 sm:h-10 sm:w-10"
           >
             <User size={17} />
           </button>
@@ -163,24 +110,7 @@ export function AdminTopbar({
               />
 
               <div
-                className="
-                  absolute
-                  right-0
-                  top-full
-                  z-50
-                  mt-2
-                  w-48
-                  overflow-hidden
-                  rounded-xl
-                  border
-                  border-slate-200
-                  bg-white
-                  py-1
-                  shadow-xl
-                  sm:w-52
-                  dark:border-white/10
-                  dark:bg-[#0f1524]
-                "
+                className="absolute right-0 top-full z-50 mt-2 w-48 overflow-hidden rounded-xl border border-slate-200 bg-white py-1 shadow-xl sm:w-52 dark:border-white/10 dark:bg-[#0f1524]"
               >
                 {/* User info */}
                 <div className="border-b border-slate-100 px-4 py-3 dark:border-white/5">
@@ -198,25 +128,7 @@ export function AdminTopbar({
                   type="button"
                   onClick={handleLogout}
                   disabled={loggingOut}
-                  className="
-                    flex
-                    w-full
-                    items-center
-                    gap-2
-                    px-4
-                    py-2.5
-                    text-left
-                    text-sm
-                    text-slate-600
-                    transition-colors
-                    hover:bg-slate-100
-                    hover:text-slate-900
-                    disabled:cursor-not-allowed
-                    disabled:opacity-60
-                    dark:text-slate-300
-                    dark:hover:bg-white/5
-                    dark:hover:text-white
-                  "
+                  className="flex w-full items-center gap-2 px-4 py-2.5 text-left text-sm text-slate-600 transition-colors hover:bg-slate-100 hover:text-slate-900 disabled:cursor-not-allowed disabled:opacity-60 dark:text-slate-300 dark:hover:bg-white/5 dark:hover:text-white"
                 >
                   <LogOut size={15} />
 

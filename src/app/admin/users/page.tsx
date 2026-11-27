@@ -370,21 +370,25 @@ export default function AdminUsersPage() {
   ).length;
 
   return (
-    <div className="min-h-full bg-slate-50 p-6 dark:bg-[#0a0e1a]">
+    <div className="w-full min-w-0">
       {/* Header */}
-      <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+      <div className="brand-grad relative overflow-hidden rounded-[28px] px-6 py-7 text-white sm:px-8 sm:py-8">
+        <div className="pointer-events-none absolute -right-20 -top-24 h-64 w-64 rounded-full bg-violet-300/40 blur-3xl" />
+        <div className="pointer-events-none absolute -bottom-28 -left-16 h-64 w-64 rounded-full bg-cyan-300/30 blur-3xl" />
+        <div className="pointer-events-none absolute inset-0 bg-[linear-gradient(rgba(255,255,255,.6)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,.6)_1px,transparent_1px)] bg-[size:44px_44px] opacity-[0.07]" />
+      <div className="relative flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <div className="flex items-center gap-3">
-            <div className="flex h-11 w-11 items-center justify-center rounded-xl bg-violet-600 text-white shadow-sm">
+            <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-[14px] border border-white/30 bg-white/[0.16] text-white backdrop-blur-xl">
               <Users size={21} />
             </div>
 
             <div>
-              <h1 className="text-2xl font-bold text-slate-900 dark:text-white">
+              <h1 className="text-2xl font-extrabold tracking-[-0.03em] sm:text-3xl">
                 Users
               </h1>
 
-              <p className="text-sm text-slate-500 dark:text-slate-400">
+              <p className="mt-1 text-sm text-indigo-50/90">
                 Manage administrators who can access
                 the admin panel.
               </p>
@@ -399,7 +403,7 @@ export default function AdminUsersPage() {
             onClick={fetchUsers}
             disabled={loading}
             title="Refresh users"
-            className="inline-flex items-center justify-center rounded-lg border border-slate-200 bg-white p-2.5 text-slate-600 transition hover:bg-slate-100 disabled:cursor-not-allowed disabled:opacity-50 dark:border-white/10 dark:bg-white/5 dark:text-slate-300 dark:hover:bg-white/10"
+            className="inline-flex items-center justify-center rounded-xl border border-white/30 bg-white/[0.14] text-white backdrop-blur-xl transition hover:bg-white/25 p-3 disabled:cursor-not-allowed disabled:opacity-50"
           >
             <RefreshCw
               size={17}
@@ -415,17 +419,18 @@ export default function AdminUsersPage() {
           <button
             type="button"
             onClick={openCreateModal}
-            className="inline-flex items-center justify-center gap-2 rounded-lg bg-violet-600 px-4 py-2.5 text-sm font-semibold text-white shadow-sm transition hover:bg-violet-700"
+            className="inline-flex items-center justify-center gap-2 rounded-xl bg-white px-5 py-3 text-sm font-bold text-violet-700 shadow-lg shadow-violet-900/20 transition hover:-translate-y-0.5"
           >
             <Plus size={17} />
             Add User
           </button>
         </div>
       </div>
+      </div>
 
       {/* Error */}
       {error && (
-        <div className="mt-6 flex items-center justify-between gap-4 rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700 dark:border-red-500/20 dark:bg-red-500/10 dark:text-red-300">
+        <div className="mt-6 flex items-center justify-between gap-4 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm font-medium text-red-700 dark:border-red-500/20 dark:bg-red-500/10 dark:text-red-300">
           <span>{error}</span>
 
           <button
@@ -440,7 +445,7 @@ export default function AdminUsersPage() {
 
       {/* Success */}
       {success && (
-        <div className="mt-6 flex items-center justify-between gap-4 rounded-xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm text-emerald-700 dark:border-emerald-500/20 dark:bg-emerald-500/10 dark:text-emerald-300">
+        <div className="mt-6 flex items-center justify-between gap-4 rounded-2xl border border-emerald-200 bg-emerald-50 px-4 py-3 text-sm font-medium text-emerald-700 dark:border-emerald-500/20 dark:bg-emerald-500/10 dark:text-emerald-300">
           <span>{success}</span>
 
           <button
@@ -454,70 +459,94 @@ export default function AdminUsersPage() {
       )}
 
       {/* Stats */}
-      <div className="mt-6 grid gap-4 sm:grid-cols-3">
+      <div className="mt-6 grid gap-4 sm:grid-cols-3 sm:gap-5">
         {/* Total */}
-        <div className="rounded-xl border border-slate-200 bg-white p-5 dark:border-white/10 dark:bg-[#111827]">
-          <p className="text-sm text-slate-500 dark:text-slate-400">
-            Total Users
-          </p>
+        <div className="group rounded-[22px] border border-slate-100 bg-white p-5 shadow-[0_30px_70px_-40px_rgba(15,23,42,.45)] transition-all duration-300 hover:-translate-y-1 hover:border-violet-200 dark:border-white/[0.07] dark:bg-[#0b1220] dark:hover:border-violet-400/25">
+          <div className="flex items-start justify-between gap-3">
+            <div className="min-w-0">
+              <p className="truncate text-xs font-bold uppercase tracking-[0.12em] text-slate-500 dark:text-slate-400">
+                Total Users
+              </p>
 
-          <p className="mt-2 text-2xl font-bold text-slate-900 dark:text-white">
-            {users.length}
-          </p>
+              <p className="mt-3 text-3xl font-extrabold tracking-tight brand-text">
+                {users.length}
+              </p>
+            </div>
+
+            <div className="brand-grad flex h-11 w-11 shrink-0 items-center justify-center rounded-[14px] text-white shadow-lg shadow-violet-500/25 transition-transform duration-300 group-hover:-rotate-6">
+              <Users size={19} />
+            </div>
+          </div>
         </div>
 
         {/* Active */}
-        <div className="rounded-xl border border-slate-200 bg-white p-5 dark:border-white/10 dark:bg-[#111827]">
-          <p className="text-sm text-slate-500 dark:text-slate-400">
-            Active Users
-          </p>
+        <div className="group rounded-[22px] border border-slate-100 bg-white p-5 shadow-[0_30px_70px_-40px_rgba(15,23,42,.45)] transition-all duration-300 hover:-translate-y-1 hover:border-violet-200 dark:border-white/[0.07] dark:bg-[#0b1220] dark:hover:border-violet-400/25">
+          <div className="flex items-start justify-between gap-3">
+            <div className="min-w-0">
+              <p className="truncate text-xs font-bold uppercase tracking-[0.12em] text-slate-500 dark:text-slate-400">
+                Active Users
+              </p>
 
-          <p className="mt-2 text-2xl font-bold text-emerald-600">
-            {activeUsers}
-          </p>
+              <p className="mt-3 text-3xl font-extrabold tracking-tight text-emerald-600">
+                {activeUsers}
+              </p>
+            </div>
+
+            <div className="brand-grad flex h-11 w-11 shrink-0 items-center justify-center rounded-[14px] text-white shadow-lg shadow-violet-500/25 transition-transform duration-300 group-hover:-rotate-6">
+              <UserCheck size={19} />
+            </div>
+          </div>
         </div>
 
         {/* Inactive */}
-        <div className="rounded-xl border border-slate-200 bg-white p-5 dark:border-white/10 dark:bg-[#111827]">
-          <p className="text-sm text-slate-500 dark:text-slate-400">
-            Inactive Users
-          </p>
+        <div className="group rounded-[22px] border border-slate-100 bg-white p-5 shadow-[0_30px_70px_-40px_rgba(15,23,42,.45)] transition-all duration-300 hover:-translate-y-1 hover:border-violet-200 dark:border-white/[0.07] dark:bg-[#0b1220] dark:hover:border-violet-400/25">
+          <div className="flex items-start justify-between gap-3">
+            <div className="min-w-0">
+              <p className="truncate text-xs font-bold uppercase tracking-[0.12em] text-slate-500 dark:text-slate-400">
+                Inactive Users
+              </p>
 
-          <p className="mt-2 text-2xl font-bold text-red-500">
-            {inactiveUsers}
-          </p>
+              <p className="mt-3 text-3xl font-extrabold tracking-tight text-red-500">
+                {inactiveUsers}
+              </p>
+            </div>
+
+            <div className="brand-grad flex h-11 w-11 shrink-0 items-center justify-center rounded-[14px] text-white shadow-lg shadow-violet-500/25 transition-transform duration-300 group-hover:-rotate-6">
+              <UserX size={19} />
+            </div>
+          </div>
         </div>
       </div>
 
       {/* Users Table */}
-      <div className="mt-6 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-sm dark:border-white/10 dark:bg-[#111827]">
+      <div className="mt-6 overflow-hidden rounded-[24px] border border-slate-200/80 bg-white shadow-[0_30px_70px_-45px_rgba(15,23,42,.45)] dark:border-white/[0.07] dark:bg-[#0b1220]">
         <div className="overflow-x-auto">
           <table className="w-full min-w-[850px]">
-            <thead className="border-b border-slate-200 bg-slate-50 dark:border-white/10 dark:bg-white/[0.03]">
+            <thead className="border-b border-slate-100 bg-slate-50/80 dark:border-white/[0.06] dark:bg-white/[0.03]">
               <tr>
-                <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">
+                <th className="px-6 py-4 text-left text-[11px] font-bold uppercase tracking-[0.12em] text-slate-500 dark:text-slate-400">
                   User
                 </th>
 
-                <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">
+                <th className="px-6 py-4 text-left text-[11px] font-bold uppercase tracking-[0.12em] text-slate-500 dark:text-slate-400">
                   Role
                 </th>
 
-                <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">
+                <th className="px-6 py-4 text-left text-[11px] font-bold uppercase tracking-[0.12em] text-slate-500 dark:text-slate-400">
                   Status
                 </th>
 
-                <th className="px-6 py-4 text-left text-xs font-semibold uppercase tracking-wide text-slate-500">
+                <th className="px-6 py-4 text-left text-[11px] font-bold uppercase tracking-[0.12em] text-slate-500 dark:text-slate-400">
                   Last Login
                 </th>
 
-                <th className="px-6 py-4 text-right text-xs font-semibold uppercase tracking-wide text-slate-500">
+                <th className="px-6 py-4 text-right text-[11px] font-bold uppercase tracking-[0.12em] text-slate-500 dark:text-slate-400">
                   Actions
                 </th>
               </tr>
             </thead>
 
-            <tbody className="divide-y divide-slate-100 dark:divide-white/5">
+            <tbody className="divide-y divide-slate-100 dark:divide-white/[0.06]">
               {/* Loading */}
               {loading ? (
                 <tr>
@@ -560,7 +589,7 @@ export default function AdminUsersPage() {
                     <button
                       type="button"
                       onClick={openCreateModal}
-                      className="mt-4 inline-flex items-center gap-2 rounded-lg bg-violet-600 px-4 py-2 text-xs font-semibold text-white hover:bg-violet-700"
+                      className="mt-4 inline-flex items-center gap-2 brand-grad rounded-xl text-sm font-bold text-white shadow-lg shadow-violet-500/25 transition hover:-translate-y-0.5 hover:shadow-violet-500/40 px-5 py-2.5"
                     >
                       <Plus size={14} />
                       Add User
@@ -576,12 +605,12 @@ export default function AdminUsersPage() {
                   return (
                     <tr
                       key={user.id}
-                      className="transition hover:bg-slate-50 dark:hover:bg-white/[0.02]"
+                      className="transition hover:bg-violet-50/40 dark:hover:bg-white/[0.03]"
                     >
                       {/* User */}
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-3">
-                          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full bg-gradient-to-br from-violet-600 to-blue-500 text-sm font-bold text-white">
+                          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-[14px] brand-grad text-sm font-bold text-white shadow-md shadow-violet-500/25">
                             {(user.name ||
                               user.email)
                               .charAt(0)
@@ -603,7 +632,7 @@ export default function AdminUsersPage() {
 
                       {/* Role */}
                       <td className="px-6 py-4">
-                        <span className="inline-flex items-center gap-1.5 rounded-full bg-violet-50 px-2.5 py-1 text-xs font-medium text-violet-700 dark:bg-violet-500/10 dark:text-violet-300">
+                        <span className="inline-flex items-center gap-1.5 rounded-full bg-violet-50 px-2.5 py-1 text-[11px] font-bold text-violet-700 dark:bg-violet-500/10 dark:text-violet-300">
                           <Shield size={12} />
                           {user.role}
                         </span>
@@ -612,12 +641,12 @@ export default function AdminUsersPage() {
                       {/* Status */}
                       <td className="px-6 py-4">
                         {user.isActive ? (
-                          <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-xs font-medium text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-300">
+                          <span className="inline-flex items-center gap-1.5 rounded-full bg-emerald-50 px-2.5 py-1 text-[11px] font-bold text-emerald-700 dark:bg-emerald-500/10 dark:text-emerald-300">
                             <UserCheck size={12} />
                             Active
                           </span>
                         ) : (
-                          <span className="inline-flex items-center gap-1.5 rounded-full bg-red-50 px-2.5 py-1 text-xs font-medium text-red-700 dark:bg-red-500/10 dark:text-red-300">
+                          <span className="inline-flex items-center gap-1.5 rounded-full bg-red-50 px-2.5 py-1 text-[11px] font-bold text-red-700 dark:bg-red-500/10 dark:text-red-300">
                             <UserX size={12} />
                             Inactive
                           </span>
@@ -652,7 +681,7 @@ export default function AdminUsersPage() {
                                 ? "Deactivate"
                                 : "Activate"
                             }
-                            className="rounded-lg border border-slate-200 p-2 text-slate-500 transition hover:bg-slate-100 hover:text-slate-900 disabled:cursor-not-allowed disabled:opacity-50 dark:border-white/10 dark:text-slate-400 dark:hover:bg-white/5 dark:hover:text-white"
+                            className="rounded-xl border border-slate-200 bg-white text-slate-700 transition hover:border-violet-300 hover:text-violet-600 dark:border-white/[0.1] dark:bg-white/[0.04] dark:text-slate-200 dark:hover:border-violet-400/40 dark:hover:text-violet-300 p-2 disabled:cursor-not-allowed disabled:opacity-50"
                           >
                             {user.isActive ? (
                               <UserX size={15} />
@@ -673,7 +702,7 @@ export default function AdminUsersPage() {
                             onClick={() =>
                               deleteUser(user)
                             }
-                            className="rounded-lg border border-red-200 p-2 text-red-500 transition hover:bg-red-50 disabled:cursor-not-allowed disabled:opacity-50 dark:border-red-500/20 dark:hover:bg-red-500/10"
+                            className="rounded-xl border border-red-200 bg-red-50 text-red-600 transition hover:bg-red-100 dark:border-red-500/20 dark:bg-red-500/10 dark:text-red-300 dark:hover:bg-red-500/20 p-2 disabled:cursor-not-allowed disabled:opacity-50"
                           >
                             <Trash2 size={15} />
                           </button>
@@ -690,12 +719,13 @@ export default function AdminUsersPage() {
 
       {/* Create User Modal */}
       {showModal && (
-        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
-          <div className="w-full max-w-md rounded-2xl border border-slate-200 bg-white shadow-2xl dark:border-white/10 dark:bg-[#111827]">
+        <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-950/50 backdrop-blur-sm p-4">
+          <div className="relative w-full max-w-md overflow-hidden rounded-[24px] border border-slate-100 bg-white shadow-[0_40px_100px_-30px_rgba(15,23,42,.5)] dark:border-white/[0.07] dark:bg-[#0b1220]">
+            <div className="brand-grad absolute left-0 top-0 h-1 w-full" />
             {/* Modal Header */}
-            <div className="flex items-center justify-between border-b border-slate-200 px-6 py-4 dark:border-white/10">
+            <div className="flex items-center justify-between border-b border-slate-100 px-6 py-5 dark:border-white/[0.06]">
               <div>
-                <h2 className="text-lg font-semibold text-slate-900 dark:text-white">
+                <h2 className="text-lg font-extrabold tracking-[-0.02em] text-slate-900 dark:text-white">
                   Add Admin User
                 </h2>
 
@@ -709,7 +739,7 @@ export default function AdminUsersPage() {
                 type="button"
                 onClick={closeModal}
                 disabled={saving}
-                className="rounded-lg p-2 text-slate-400 transition hover:bg-slate-100 hover:text-slate-700 disabled:cursor-not-allowed disabled:opacity-50 dark:hover:bg-white/5 dark:hover:text-white"
+                className="rounded-xl p-2 text-slate-400 transition hover:bg-violet-50 hover:text-violet-600 disabled:cursor-not-allowed disabled:opacity-50 dark:hover:bg-white/5 dark:hover:text-white"
               >
                 <X size={18} />
               </button>
@@ -722,7 +752,7 @@ export default function AdminUsersPage() {
             >
               {/* Name */}
               <div>
-                <label className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                <label className="mb-1.5 block text-[13px] font-semibold text-slate-700 dark:text-slate-300">
                   Name
                 </label>
 
@@ -736,13 +766,13 @@ export default function AdminUsersPage() {
                     }))
                   }
                   placeholder="John Doe"
-                  className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-violet-500 dark:border-white/10 dark:bg-white/5 dark:text-white dark:placeholder:text-slate-500"
+                  className="w-full rounded-xl border border-slate-200 bg-slate-50/70 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-violet-400 focus:bg-white focus:outline-none focus:ring-4 focus:ring-violet-500/10 dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-white dark:placeholder:text-slate-500 dark:focus:bg-white/[0.06]"
                 />
               </div>
 
               {/* Email */}
               <div>
-                <label className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                <label className="mb-1.5 block text-[13px] font-semibold text-slate-700 dark:text-slate-300">
                   Email
                 </label>
 
@@ -757,13 +787,13 @@ export default function AdminUsersPage() {
                     }))
                   }
                   placeholder="admin@example.com"
-                  className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-violet-500 dark:border-white/10 dark:bg-white/5 dark:text-white dark:placeholder:text-slate-500"
+                  className="w-full rounded-xl border border-slate-200 bg-slate-50/70 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-violet-400 focus:bg-white focus:outline-none focus:ring-4 focus:ring-violet-500/10 dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-white dark:placeholder:text-slate-500 dark:focus:bg-white/[0.06]"
                 />
               </div>
 
               {/* Password */}
               <div>
-                <label className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                <label className="mb-1.5 block text-[13px] font-semibold text-slate-700 dark:text-slate-300">
                   Password
                 </label>
 
@@ -785,7 +815,7 @@ export default function AdminUsersPage() {
                       }))
                     }
                     placeholder="Minimum 6 characters"
-                    className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 pr-10 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-violet-500 dark:border-white/10 dark:bg-white/5 dark:text-white dark:placeholder:text-slate-500"
+                    className="w-full rounded-xl border border-slate-200 bg-slate-50/70 pl-4 pr-10 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-violet-400 focus:bg-white focus:outline-none focus:ring-4 focus:ring-violet-500/10 dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-white dark:placeholder:text-slate-500 dark:focus:bg-white/[0.06]"
                   />
 
                   <button
@@ -818,7 +848,7 @@ export default function AdminUsersPage() {
 
               {/* Role */}
               <div>
-                <label className="mb-1.5 block text-sm font-medium text-slate-700 dark:text-slate-300">
+                <label className="mb-1.5 block text-[13px] font-semibold text-slate-700 dark:text-slate-300">
                   Role
                 </label>
 
@@ -830,7 +860,7 @@ export default function AdminUsersPage() {
                       role: e.target.value,
                     }))
                   }
-                  className="w-full rounded-lg border border-slate-200 bg-white px-3 py-2.5 text-sm text-slate-900 outline-none transition focus:border-violet-500 dark:border-white/10 dark:bg-white/5 dark:text-white"
+                  className="w-full rounded-xl border border-slate-200 bg-slate-50/70 px-4 py-3 text-sm text-slate-900 outline-none transition placeholder:text-slate-400 focus:border-violet-400 focus:bg-white focus:outline-none focus:ring-4 focus:ring-violet-500/10 dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-white dark:placeholder:text-slate-500 dark:focus:bg-white/[0.06]"
                 >
                   <option value="ADMIN">
                     ADMIN
@@ -848,7 +878,7 @@ export default function AdminUsersPage() {
                   type="button"
                   onClick={closeModal}
                   disabled={saving}
-                  className="rounded-lg border border-slate-200 px-4 py-2.5 text-sm font-medium text-slate-600 transition hover:bg-slate-50 disabled:cursor-not-allowed disabled:opacity-50 dark:border-white/10 dark:text-slate-300 dark:hover:bg-white/5"
+                  className="rounded-xl border border-slate-200 bg-white text-slate-700 transition hover:border-violet-300 hover:text-violet-600 dark:border-white/[0.1] dark:bg-white/[0.04] dark:text-slate-200 dark:hover:border-violet-400/40 dark:hover:text-violet-300 px-5 py-2.5 text-sm font-semibold disabled:cursor-not-allowed disabled:opacity-50"
                 >
                   Cancel
                 </button>
@@ -856,7 +886,7 @@ export default function AdminUsersPage() {
                 <button
                   type="submit"
                   disabled={saving}
-                  className="rounded-lg bg-violet-600 px-4 py-2.5 text-sm font-semibold text-white transition hover:bg-violet-700 disabled:cursor-not-allowed disabled:opacity-60"
+                  className="brand-grad rounded-xl text-sm font-bold text-white shadow-lg shadow-violet-500/25 transition hover:-translate-y-0.5 hover:shadow-violet-500/40 px-5 py-2.5 disabled:cursor-not-allowed disabled:opacity-60"
                 >
                   {saving
                     ? "Creating..."
