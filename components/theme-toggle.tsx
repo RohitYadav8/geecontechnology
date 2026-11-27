@@ -4,8 +4,15 @@ import { useEffect, useState } from "react";
 import { useTheme } from "./theme-provider";
 import { Sun, Moon } from "lucide-react";
 
-export function ThemeToggle({ variant = "default" }: { variant?: "default" | "glass" } = {}) {
-  const glass = variant === "glass";
+export function ThemeToggle({ variant = "default" }: { variant?: "default" | "glass" | "line" } = {}) {
+  if (variant === "line") {
+    return <LineThemeToggle />;
+  }
+
+  return <BaseThemeToggle glass={variant === "glass"} />;
+}
+
+function BaseThemeToggle({ glass }: { glass: boolean }) {
   const { theme, setTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
@@ -31,6 +38,30 @@ export function ThemeToggle({ variant = "default" }: { variant?: "default" | "gl
       className={glass ? "flex h-10 w-10 items-center justify-center rounded-xl border border-white/30 bg-white/10 text-white backdrop-blur-xl transition-colors hover:bg-white/20" : "flex h-9 w-9 items-center justify-center rounded-md border border-slate-200 text-slate-600 transition-colors hover:bg-slate-100 dark:border-slate-700 dark:text-slate-300 dark:hover:bg-slate-800"}
     >
       {theme === "dark" ? <Sun size={17} /> : <Moon size={17} />}
+    </button>
+  );
+}
+
+function LineThemeToggle() {
+  const { theme, setTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return <div className="h-9 w-9 border border-line" aria-hidden="true" />;
+  }
+
+  return (
+    <button
+      type="button"
+      onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+      aria-label="Toggle theme"
+      className="flex h-9 w-9 items-center justify-center border border-line text-ink transition-colors hover:border-ink"
+    >
+      {theme === "dark" ? <Sun size={15} /> : <Moon size={15} />}
     </button>
   );
 }

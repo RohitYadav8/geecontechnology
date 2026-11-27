@@ -1,13 +1,16 @@
 "use client";
 
 import { useState } from "react";
-import { Upload, Send, CheckCircle, FileText, X } from "lucide-react";
+import { Upload, FileText, X, ArrowUpRight } from "lucide-react";
 import { Navbar } from "../../../components/navbar";
 import { Footer } from "../../../components/footer";
-import { AnimateIn } from "../../../components/animate-in";
-import { AnimatedHeading } from "../../../components/animated-heading";
-import { FloatingBlob } from "../../../components/floating-blob";
-import { RippleButton } from "../../../components/ripple-button";
+import {
+    SitePage,
+    PageHeader,
+    Section,
+    fieldClass,
+    labelClass,
+} from "../../../components/site/ui";
 
 type FieldType =
     | "text"
@@ -177,6 +180,13 @@ const fields: FieldConfig[] = [
         type: "select",
         required: true,
     },
+];
+
+/* Question groups: consecutive slices of `fields` (order unchanged) */
+const fieldGroups = [
+    { label: "Personal & education", start: 0, end: 7 },
+    { label: "Role & experience", start: 7, end: 17 },
+    { label: "Compensation & availability", start: 17, end: fields.length },
 ];
 
 const initialForm: Record<string, string> = Object.fromEntries(
@@ -405,454 +415,263 @@ export default function CandidateScreeningPage() {
         }
     };
 
+    const renderField = (field: FieldConfig) => {
+        if (field.type === "textarea") {
+            return (
+                <textarea
+                    id={field.name}
+                    name={field.name}
+                    value={form[field.name]}
+                    onChange={handleChange(field.name)}
+                    rows={4}
+                    required={field.required}
+                    placeholder="Enter your answer..."
+                    className={`${fieldClass} resize-y`}
+                />
+            );
+        }
+
+        if (field.type === "select") {
+            return (
+                <select
+                    id={field.name}
+                    name={field.name}
+                    value={form[field.name]}
+                    onChange={handleChange(field.name)}
+                    required={field.required}
+                    className={`${fieldClass} cursor-pointer`}
+                >
+                    <option value="">Select an option</option>
+                    <option value="Yes">Yes</option>
+                    <option value="No">No</option>
+                </select>
+            );
+        }
+
+        return (
+            <input
+                id={field.name}
+                name={field.name}
+                type={field.type}
+                value={form[field.name]}
+                onChange={handleChange(field.name)}
+                required={field.required}
+                placeholder={
+                    field.type === "date" ? undefined : "Enter your answer..."
+                }
+                className={fieldClass}
+            />
+        );
+    };
+
     return (
-        <div className="flex min-h-screen flex-col bg-slate-50 dark:bg-[#060b16]">
+        <SitePage>
             <Navbar />
 
-            <main className="relative flex-1 overflow-hidden">
-                {/* Hero */}
+            <main className="flex-1">
+                <PageHeader
+                    trail={[{ label: "Careers", href: "/careers" }]}
+                    title="Candidate Screening"
+                    intro="Please complete the following information carefully. Our recruitment team will review your application and contact you if your profile matches our requirements."
+                    meta={
+                        <p className={labelClass}>
+                            <span className="text-accent">*</span> Required
+                        </p>
+                    }
+                />
 
-                <section className="brand-grad relative overflow-hidden px-6 pb-40 pt-16 text-center text-white sm:px-8 sm:pb-44 sm:pt-20 lg:px-10">
-                    <FloatingBlob
-                        className="-left-40 top-24 h-[460px] w-[460px]"
-                        color="bg-cyan-300/35"
-                        duration={18}
-                    />
+                <form onSubmit={handleSubmit}>
+                    {fieldGroups.map((group, groupIndex) => (
+                        <Section
+                            key={group.label}
+                            index={String(groupIndex + 1).padStart(2, "0")}
+                            label={group.label}
+                        >
+                            <ol className="border-t border-line">
+                                {fields
+                                    .slice(group.start, group.end)
+                                    .map((field, i) => (
+                                        <li
+                                            key={field.name}
+                                            className="grid grid-cols-[2.5rem_1fr] gap-x-4 gap-y-2 border-b border-line py-6 lg:grid-cols-[3rem_minmax(0,1fr)_minmax(0,1fr)] lg:gap-x-10"
+                                        >
+                                            <span className="pt-0.5 font-mono text-xs text-muted">
+                                                {String(
+                                                    group.start + i + 1
+                                                ).padStart(2, "0")}
+                                            </span>
 
-                    <FloatingBlob
-                        className="-right-28 -top-24 h-[420px] w-[420px]"
-                        color="bg-violet-300/40"
-                        duration={16}
-                    />
-
-                    <div
-                        className="pointer-events-none absolute inset-0 opacity-[0.07]"
-                        style={{
-                            backgroundImage:
-                                "linear-gradient(rgba(255,255,255,.6) 1px, transparent 1px), linear-gradient(90deg,rgba(255,255,255,.6) 1px,transparent 1px)",
-                            backgroundSize: "56px 56px",
-                        }}
-                    />
-
-                    <div className="relative mx-auto max-w-4xl">
-                        <AnimatedHeading
-                            text="Candidate Screening"
-                            as="h1"
-                            delay={0.05}
-                            highlightFrom={1}
-                            highlightClassName="brand-text-light"
-                            className="text-[40px] font-extrabold leading-[1.05] tracking-[-0.045em] sm:text-6xl lg:text-[72px]"
-                        />
-
-                        <AnimateIn delay={0.1}>
-                            <p className="mx-auto mt-6 max-w-2xl text-base leading-8 text-indigo-50/90 sm:text-lg">
-                                Please complete the
-                                following information
-                                carefully. Our recruitment
-                                team will review your
-                                application and contact you
-                                if your profile matches our
-                                requirements.
-                            </p>
-                        </AnimateIn>
-                    </div>
-                </section>
-
-                <section className="relative z-10 mx-auto -mt-28 max-w-4xl px-4 pb-20 sm:-mt-32 sm:px-6 lg:pb-24">
-                    {/* Form */}
-
-                    <AnimateIn
-                        delay={0.1}
-                    >
-                        <div>
-                            <div>
-                                <div className="rounded-[32px] border border-slate-100 bg-white p-6 shadow-[0_40px_100px_-40px_rgba(15,23,42,.35)] sm:p-10 lg:p-12 dark:border-white/[0.07] dark:bg-[#0b1220]">
-                                    <div className="brand-grad mb-8 h-1.5 w-16 rounded-full" />
-                                    <form
-                                        onSubmit={
-                                            handleSubmit
-                                        }
-                                        className="space-y-6"
-                                    >
-                                        {fields.map(
-                                            (field) => (
-                                                <div
-                                                    key={
-                                                        field.name
-                                                    }
-                                                >
-                                                    <label
-                                                        htmlFor={
-                                                            field.name
-                                                        }
-                                                        className="mb-2 block text-[13px] font-semibold text-slate-800 dark:text-slate-200"
+                                            <label
+                                                htmlFor={field.name}
+                                                className="text-[15px] leading-6 text-ink"
+                                            >
+                                                {field.label}
+                                                {field.required && (
+                                                    <span
+                                                        aria-hidden
+                                                        className="ml-1 text-accent"
                                                     >
-                                                        {
-                                                            field.label
-                                                        }
-
-                                                        {field.required && (
-                                                            <span className="ml-1 text-red-500">
-                                                                *
-                                                            </span>
-                                                        )}
-                                                    </label>
-
-                                                    {field.type ===
-                                                    "textarea" ? (
-                                                        <textarea
-                                                            id={
-                                                                field.name
-                                                            }
-                                                            name={
-                                                                field.name
-                                                            }
-                                                            value={
-                                                                form[
-                                                                    field
-                                                                        .name
-                                                                ]
-                                                            }
-                                                            onChange={handleChange(
-                                                                field.name
-                                                            )}
-                                                            rows={
-                                                                5
-                                                            }
-                                                            required={
-                                                                field.required
-                                                            }
-                                                            placeholder="Enter your answer..."
-                                                            className="w-full resize-y rounded-xl border border-slate-200 bg-slate-50/70 px-4 py-3 text-sm text-slate-900 outline-none transition-all placeholder:text-slate-400 focus:border-violet-400 focus:bg-white focus:outline-none focus:ring-4 focus:ring-violet-500/10 dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-white dark:placeholder:text-slate-500"
-                                                        />
-                                                    ) : field.type ===
-                                                      "select" ? (
-                                                        <select
-                                                            id={
-                                                                field.name
-                                                            }
-                                                            name={
-                                                                field.name
-                                                            }
-                                                            value={
-                                                                form[
-                                                                    field
-                                                                        .name
-                                                                ]
-                                                            }
-                                                            onChange={handleChange(
-                                                                field.name
-                                                            )}
-                                                            required={
-                                                                field.required
-                                                            }
-                                                            className="w-full rounded-xl border border-slate-200 bg-slate-50/70 px-4 py-3 text-sm text-slate-700 outline-none transition-all focus:border-violet-400 focus:bg-white focus:outline-none focus:ring-4 focus:ring-violet-500/10 dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-slate-300"
-                                                        >
-                                                            <option value="">
-                                                                Select
-                                                                an
-                                                                option
-                                                            </option>
-
-                                                            <option value="Yes">
-                                                                Yes
-                                                            </option>
-
-                                                            <option value="No">
-                                                                No
-                                                            </option>
-                                                        </select>
-                                                    ) : (
-                                                        <input
-                                                            id={
-                                                                field.name
-                                                            }
-                                                            name={
-                                                                field.name
-                                                            }
-                                                            type={
-                                                                field.type
-                                                            }
-                                                            value={
-                                                                form[
-                                                                    field
-                                                                        .name
-                                                                ]
-                                                            }
-                                                            onChange={handleChange(
-                                                                field.name
-                                                            )}
-                                                            required={
-                                                                field.required
-                                                            }
-                                                            placeholder={
-                                                                field.type ===
-                                                                "date"
-                                                                    ? undefined
-                                                                    : "Enter your answer..."
-                                                            }
-                                                            className="w-full rounded-xl border border-slate-200 bg-slate-50/70 px-4 py-3 text-sm text-slate-900 outline-none transition-all placeholder:text-slate-400 focus:border-violet-400 focus:bg-white focus:outline-none focus:ring-4 focus:ring-violet-500/10 dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-white dark:placeholder:text-slate-500"
-                                                        />
-                                                    )}
-                                                </div>
-                                            )
-                                        )}
-
-                                        {/* Resume Upload */}
-
-                                        <div>
-                                            <label className="mb-2 block text-[13px] font-semibold text-slate-800 dark:text-slate-200">
-                                                Upload Resume
-
-                                                <span className="ml-1 text-red-500">
-                                                    *
-                                                </span>
+                                                        *
+                                                    </span>
+                                                )}
                                             </label>
 
-                                            {!resumeFile ? (
-                                                <label
-                                                    onDragOver={(
-                                                        e
-                                                    ) => {
-                                                        e.preventDefault();
-                                                        setIsDragging(
-                                                            true
-                                                        );
-                                                    }}
-                                                    onDragLeave={() =>
-                                                        setIsDragging(
-                                                            false
-                                                        )
-                                                    }
-                                                    onDrop={
-                                                        handleDrop
-                                                    }
-                                                    className={`flex w-full cursor-pointer flex-col items-center justify-center gap-3 rounded-2xl border-2 border-dashed px-4 py-10 text-center transition-all ${
-                                                        isDragging
-                                                            ? "border-violet-500 bg-violet-50 text-violet-600 dark:bg-violet-500/10 dark:text-violet-300"
-                                                            : "border-slate-300 bg-slate-50/60 text-slate-600 hover:border-violet-400 hover:bg-violet-50/60 hover:text-violet-600 dark:border-white/[0.12] dark:bg-white/[0.03] dark:text-slate-300 dark:hover:border-violet-400 dark:hover:bg-violet-500/5"
-                                                    }`}
-                                                >
-                                                    <div className="brand-grad flex h-12 w-12 items-center justify-center rounded-[14px] text-white shadow-lg shadow-violet-500/25">
-                                                        <Upload
-                                                            size={
-                                                                22
-                                                            }
-                                                        />
-                                                    </div>
-
-                                                    <div>
-                                                        <p className="text-sm font-semibold">
-                                                            Drag
-                                                            & drop
-                                                            your
-                                                            resume
-                                                        </p>
-
-                                                        <p className="mt-1 text-xs text-slate-400">
-                                                            or
-                                                            click
-                                                            to
-                                                            browse
-                                                        </p>
-                                                    </div>
-
-                                                    <p className="text-xs text-slate-400">
-                                                        PDF, DOC
-                                                        or DOCX
-                                                        • Max
-                                                        5MB
-                                                    </p>
-
-                                                    <input
-                                                        type="file"
-                                                        accept=".pdf,.doc,.docx"
-                                                        onChange={
-                                                            handleFile
-                                                        }
-                                                        className="hidden"
-                                                    />
-                                                </label>
-                                            ) : (
-                                                <div className="flex items-center justify-between rounded-2xl border border-violet-200 bg-violet-50/60 px-4 py-4 dark:border-violet-500/30 dark:bg-violet-500/10">
-                                                    <div className="flex min-w-0 items-center gap-3">
-                                                        <div className="brand-grad flex h-10 w-10 shrink-0 items-center justify-center rounded-xl text-white shadow-lg shadow-violet-500/25">
-                                                            <FileText
-                                                                size={
-                                                                    20
-                                                                }
-                                                            />
-                                                        </div>
-
-                                                        <div className="min-w-0">
-                                                            <p className="truncate text-sm font-medium text-slate-900 dark:text-white">
-                                                                {
-                                                                    resumeFile.name
-                                                                }
-                                                            </p>
-
-                                                            <p className="mt-0.5 text-xs text-slate-500 dark:text-slate-400">
-                                                                {(
-                                                                    resumeFile.size /
-                                                                    1024 /
-                                                                    1024
-                                                                ).toFixed(
-                                                                    2
-                                                                )}{" "}
-                                                                MB
-                                                            </p>
-                                                        </div>
-                                                    </div>
-
-                                                    <button
-                                                        type="button"
-                                                        onClick={
-                                                            removeFile
-                                                        }
-                                                        aria-label="Remove resume"
-                                                        className="ml-3 flex h-8 w-8 shrink-0 items-center justify-center rounded-full text-slate-400 transition-colors hover:bg-red-500/10 hover:text-red-500"
-                                                    >
-                                                        <X
-                                                            size={
-                                                                17
-                                                            }
-                                                        />
-                                                    </button>
-                                                </div>
-                                            )}
-                                        </div>
-
-                                        {/* Error */}
-
-                                        {errorMessage && (
-                                            <div
-                                                role="alert"
-                                                className="rounded-xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-600 dark:border-red-500/20 dark:bg-red-500/10 dark:text-red-400"
-                                            >
-                                                {
-                                                    errorMessage
-                                                }
+                                            <div className="col-start-2 lg:col-start-3 lg:-mt-3">
+                                                {renderField(field)}
                                             </div>
-                                        )}
+                                        </li>
+                                    ))}
+                            </ol>
+                        </Section>
+                    ))}
 
-                                        {/* Captcha */}
+                    <Section
+                        index={String(fieldGroups.length + 1).padStart(2, "0")}
+                        label="Resume & submit"
+                    >
+                        <div className="max-w-3xl">
+                            <p className={labelClass}>
+                                Upload Resume
+                                <span className="ml-1 text-accent">*</span>
+                            </p>
 
-                                        <label className="flex w-fit cursor-pointer items-center gap-3 rounded-xl border border-slate-200 bg-slate-50/70 px-4 py-3 text-sm font-medium text-slate-700 transition-colors hover:border-violet-300 dark:border-white/[0.08] dark:bg-white/[0.04] dark:text-slate-300">
-                                            <input
-                                                type="checkbox"
-                                                checked={
-                                                    recaptchaChecked
-                                                }
-                                                onChange={(
-                                                    e
-                                                ) =>
-                                                    setRecaptchaChecked(
-                                                        e
-                                                            .target
-                                                            .checked
-                                                    )
-                                                }
-                                                className="h-4 w-4 cursor-pointer accent-violet-600"
-                                            />
+                            {!resumeFile ? (
+                                <label
+                                    onDragOver={(e) => {
+                                        e.preventDefault();
+                                        setIsDragging(true);
+                                    }}
+                                    onDragLeave={() => setIsDragging(false)}
+                                    onDrop={handleDrop}
+                                    className={`mt-4 flex w-full cursor-pointer items-center gap-4 border border-dashed px-5 py-8 transition-colors ${
+                                        isDragging
+                                            ? "border-accent bg-paper-2 text-accent"
+                                            : "border-line text-ink-2 hover:border-ink"
+                                    }`}
+                                >
+                                    <Upload
+                                        size={20}
+                                        className="shrink-0 text-accent"
+                                    />
 
-                                            <span>
-                                                I&apos;m not
-                                                a robot
-                                            </span>
-                                        </label>
+                                    <span>
+                                        <span className="block text-[15px] text-ink">
+                                            Drag &amp; drop your resume, or
+                                            click to browse
+                                        </span>
+                                        <span className="mt-1 block font-mono text-[11px] uppercase tracking-[0.12em] text-muted">
+                                            PDF, DOC or DOCX · Max 5MB
+                                        </span>
+                                    </span>
 
-                                        {/* Submit */}
+                                    <input
+                                        type="file"
+                                        accept=".pdf,.doc,.docx"
+                                        onChange={handleFile}
+                                        className="hidden"
+                                    />
+                                </label>
+                            ) : (
+                                <div className="mt-4 flex items-center justify-between gap-4 border border-line px-5 py-4">
+                                    <div className="flex min-w-0 items-center gap-4">
+                                        <FileText
+                                            size={20}
+                                            className="shrink-0 text-accent"
+                                        />
 
-                                        <div className="pt-2">
-                                            <RippleButton
-                                                type="submit"
-                                                disabled={
-                                                    isSubmitting
-                                                }
-                                                className="brand-grad flex w-full items-center justify-center gap-2 rounded-xl px-8 py-4 text-sm font-bold text-white shadow-lg shadow-violet-500/25 transition-all hover:-translate-y-0.5 disabled:cursor-not-allowed disabled:opacity-60"
-                                            >
-                                                {isSubmitting ? (
-                                                    <>
-                                                        <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/30 border-t-white" />
-
-                                                        Submitting...
-                                                    </>
-                                                ) : (
-                                                    <>
-                                                        <Send
-                                                            size={
-                                                                15
-                                                            }
-                                                        />
-
-                                                        Submit
-                                                        Application
-                                                    </>
-                                                )}
-                                            </RippleButton>
+                                        <div className="min-w-0">
+                                            <p className="truncate text-[15px] text-ink">
+                                                {resumeFile.name}
+                                            </p>
+                                            <p className="mt-0.5 font-mono text-[11px] uppercase tracking-[0.12em] text-muted">
+                                                {(
+                                                    resumeFile.size /
+                                                    1024 /
+                                                    1024
+                                                ).toFixed(2)}{" "}
+                                                MB
+                                            </p>
                                         </div>
+                                    </div>
 
-                                        <p className="text-center text-xs leading-5 text-slate-400 dark:text-slate-500">
-                                            By submitting
-                                            this form,
-                                            you confirm
-                                            that the
-                                            information
-                                            provided is
-                                            accurate and
-                                            complete.
-                                        </p>
-                                    </form>
+                                    <button
+                                        type="button"
+                                        onClick={removeFile}
+                                        aria-label="Remove resume"
+                                        className="flex h-9 w-9 shrink-0 items-center justify-center border border-line text-muted transition-colors hover:border-ink hover:text-ink"
+                                    >
+                                        <X size={16} />
+                                    </button>
                                 </div>
+                            )}
+
+                            <label className="mt-8 flex w-fit cursor-pointer items-center gap-3 text-[15px] text-ink">
+                                <input
+                                    type="checkbox"
+                                    checked={recaptchaChecked}
+                                    onChange={(e) =>
+                                        setRecaptchaChecked(e.target.checked)
+                                    }
+                                    className="h-4 w-4 cursor-pointer rounded-none accent-[var(--accent)]"
+                                />
+                                <span>I&apos;m not a robot</span>
+                            </label>
+
+                            <div className="mt-10 border-t border-line pt-8">
+                                {errorMessage && (
+                                    <p
+                                        role="alert"
+                                        className="mb-6 border-l-2 border-red-600 pl-4 text-[15px] text-red-700 dark:border-red-400 dark:text-red-400"
+                                    >
+                                        {errorMessage}
+                                    </p>
+                                )}
+
+                                {showToast && (
+                                    <div
+                                        role="status"
+                                        className="mb-6 border-l-2 border-accent pl-4"
+                                    >
+                                        <p className="text-[15px] font-semibold text-ink">
+                                            Application submitted!
+                                        </p>
+                                        <p className="mt-1 text-[14px] text-ink-2">
+                                            Your application has been received
+                                            successfully.
+                                        </p>
+                                    </div>
+                                )}
+
+                                <button
+                                    type="submit"
+                                    disabled={isSubmitting}
+                                    className="inline-flex items-center gap-2 bg-accent px-7 py-4 text-sm font-semibold text-accent-ink transition-colors hover:bg-ink hover:text-paper disabled:cursor-not-allowed disabled:opacity-60"
+                                >
+                                    {isSubmitting ? (
+                                        <>
+                                            <span className="h-4 w-4 animate-spin border-2 border-current border-t-transparent" />
+                                            Submitting...
+                                        </>
+                                    ) : (
+                                        <>
+                                            Submit Application
+                                            <ArrowUpRight size={16} />
+                                        </>
+                                    )}
+                                </button>
+
+                                <p className="mt-5 max-w-[60ch] text-[13px] leading-6 text-muted">
+                                    By submitting this form, you confirm that
+                                    the information provided is accurate and
+                                    complete.
+                                </p>
                             </div>
                         </div>
-                    </AnimateIn>
-                </section>
+                    </Section>
+                </form>
             </main>
 
             <Footer />
-
-            {/* Success Toast */}
-
-            {showToast && (
-                <div
-                    role="status"
-                    className="fixed bottom-6 right-6 z-50 flex max-w-sm items-center gap-3 rounded-2xl border border-violet-200 bg-white px-5 py-4 text-sm font-medium text-slate-800 shadow-2xl dark:border-violet-500/20 dark:bg-[#0b1220] dark:text-white"
-                    style={{
-                        animation:
-                            "candidate-toast-in 0.3s ease-out",
-                    }}
-                >
-                    <div className="brand-grad flex h-9 w-9 shrink-0 items-center justify-center rounded-xl text-white shadow-lg shadow-violet-500/25">
-                        <CheckCircle size={18} />
-                    </div>
-
-                    <div>
-                        <p className="font-semibold">
-                            Application submitted!
-                        </p>
-
-                        <p className="mt-0.5 text-xs text-slate-500 dark:text-slate-400">
-                            Your application has been
-                            received successfully.
-                        </p>
-                    </div>
-
-                    <style jsx>{`
-                        @keyframes candidate-toast-in {
-                            from {
-                                transform: translateY(12px);
-                                opacity: 0;
-                            }
-
-                            to {
-                                transform: translateY(0);
-                                opacity: 1;
-                            }
-                        }
-                    `}</style>
-                </div>
-            )}
-        </div>
+        </SitePage>
     );
 }

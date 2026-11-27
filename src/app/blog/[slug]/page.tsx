@@ -1,19 +1,16 @@
 import type { Metadata } from "next";
-import Image from "next/image";
-import Link from "next/link";
 import { notFound } from "next/navigation";
-
-import {
-  ArrowLeft,
-  CalendarDays,
-  User,
-  Tag,
-} from "lucide-react";
 
 import { Navbar } from "../../../../components/navbar";
 import { Footer } from "../../../../components/footer";
-import { AnimateIn } from "../../../../components/animate-in";
-import { FloatingBlob } from "../../../../components/floating-blob";
+import {
+  ButtonLink,
+  Container,
+  Figure,
+  PageHeader,
+  SitePage,
+  Tag,
+} from "../../../../components/site/ui";
 
 import { prisma } from "../../../../lib/prisma";
 
@@ -86,10 +83,6 @@ export default async function BlogDetailPage({
 }: BlogDetailPageProps) {
   const { slug } = await params;
 
-  // ==========================================================
-  // FETCH BLOG
-  // ==========================================================
-
   const post = await prisma.blogPost.findFirst({
     where: {
       slug,
@@ -101,10 +94,6 @@ export default async function BlogDetailPage({
     notFound();
   }
 
-  // ==========================================================
-  // TAGS
-  // ==========================================================
-
   const tags: string[] =
     Array.isArray(post.tags)
       ? post.tags.filter(
@@ -113,192 +102,84 @@ export default async function BlogDetailPage({
         )
       : [];
 
-  // ==========================================================
-  // UI
-  // ==========================================================
+  const metaParts = [
+    post.category,
+    post.author ? `By ${post.author}` : null,
+  ].filter(Boolean) as string[];
 
   return (
-    <div className="flex min-h-screen flex-col bg-slate-50 dark:bg-[#060b16]">
+    <SitePage>
       <Navbar />
 
       <main className="flex-1">
-        {/* ==================================================
-            ARTICLE HEADER
-        ================================================== */}
-
-        <section className="brand-grad relative overflow-hidden px-6 pb-40 pt-16 text-white sm:px-8 sm:pb-44 sm:pt-20 lg:px-10">
-          {/* Background */}
-
-          <FloatingBlob
-            className="-left-40 top-24 h-[460px] w-[460px]"
-            color="bg-cyan-300/35"
-            duration={18}
-          />
-
-          <FloatingBlob
-            className="-right-28 -top-24 h-[420px] w-[420px]"
-            color="bg-violet-300/40"
-            duration={16}
-          />
-
-          <div
-            className="pointer-events-none absolute inset-0 opacity-[0.07]"
-            style={{
-              backgroundImage:
-                "linear-gradient(rgba(255,255,255,.6) 1px, transparent 1px), linear-gradient(90deg,rgba(255,255,255,.6) 1px,transparent 1px)",
-              backgroundSize: "56px 56px",
-            }}
-          />
-
-          <div className="relative mx-auto max-w-4xl text-center">
-            <AnimateIn>
-              {/* BACK */}
-
-              <Link
-                href="/blog"
-                className="inline-flex items-center gap-2 rounded-full border border-white/30 bg-white/[0.14] px-4 py-2 text-sm font-semibold text-white backdrop-blur-xl transition-all duration-300 hover:-translate-y-0.5 hover:bg-white/[0.22]"
-              >
-                <ArrowLeft size={16} />
-
-                Back to Blog
-              </Link>
-
-              {/* CATEGORY */}
-
-              {post.category && (
-                <div className="mt-8">
-                  <p className="inline-flex rounded-full border border-white/30 bg-white/[0.14] px-4 py-2 text-[11px] font-bold uppercase tracking-[0.2em] backdrop-blur-xl">
-                    {post.category}
-                  </p>
-                </div>
-              )}
-
-              {/* TITLE */}
-
-              <h1 className="mt-6 break-words text-[40px] font-extrabold leading-[1.05] tracking-[-0.045em] sm:text-6xl lg:text-[64px]">
-                {post.title}
-              </h1>
-
-              {/* EXCERPT */}
-
-              {post.excerpt && (
-                <p className="mx-auto mt-6 max-w-3xl text-base leading-8 text-indigo-50/90 sm:text-lg">
-                  {post.excerpt}
-                </p>
-              )}
-
-              {/* META */}
-
-              <div className="mt-7 flex flex-wrap items-center justify-center gap-x-6 gap-y-3 text-sm text-indigo-50/90">
-                {post.author && (
-                  <div className="flex items-center gap-2">
-                    <User size={15} />
-
-                    <span>
-                      {post.author}
-                    </span>
-                  </div>
-                )}
-
+        <PageHeader
+          trail={[{ label: "Blog", href: "/blog" }]}
+          title={<span className="break-words">{post.title}</span>}
+          intro={post.excerpt || undefined}
+          meta={
+            (metaParts.length > 0 || post.publishedAt) && (
+              <p className="flex flex-wrap gap-x-3 gap-y-1 font-mono text-[11px] uppercase tracking-[0.16em] text-muted">
                 {post.publishedAt && (
-                  <div className="flex items-center gap-2">
-                    <CalendarDays size={15} />
-
-                    <time
-                      dateTime={post.publishedAt.toISOString()}
-                    >
-                      {post.publishedAt.toLocaleDateString(
-                        "en-IN",
-                        {
-                          day: "2-digit",
-                          month: "long",
-                          year: "numeric",
-                        }
-                      )}
-                    </time>
-                  </div>
+                  <time dateTime={post.publishedAt.toISOString()}>
+                    {post.publishedAt.toLocaleDateString("en-IN", {
+                      day: "2-digit",
+                      month: "long",
+                      year: "numeric",
+                    })}
+                  </time>
                 )}
+                {metaParts.map((part) => (
+                  <span key={part}>
+                    <span aria-hidden className="mr-3">/</span>
+                    {part}
+                  </span>
+                ))}
+              </p>
+            )
+          }
+        />
+
+        <article className="border-b border-line">
+          {post.featuredImage && (
+            <Container className="pt-10 sm:pt-14">
+              <Figure
+                src={post.featuredImage}
+                alt={post.title}
+                ratio="aspect-[16/8]"
+                contain={false}
+                priority
+              />
+            </Container>
+          )}
+
+          <Container className="grid py-12 sm:py-16 lg:grid-cols-12 lg:gap-12 lg:py-20">
+            <div className="lg:col-span-8 lg:col-start-4">
+              <div className="max-w-[68ch] whitespace-pre-line text-[17px] leading-[1.85] text-ink-2 sm:text-[19px]">
+                {post.content}
               </div>
-            </AnimateIn>
-          </div>
-        </section>
-
-        {/* ==================================================
-            ARTICLE
-        ================================================== */}
-
-        <article className="relative z-10 -mt-28 px-4 pb-24 sm:-mt-32 sm:px-6 sm:pb-28 lg:px-10">
-          <div className="mx-auto max-w-4xl rounded-[32px] border border-slate-100 bg-white p-3 shadow-[0_40px_100px_-40px_rgba(15,23,42,.35)] dark:border-white/[0.07] dark:bg-[#0b1220] sm:p-4">
-            {/* FEATURED IMAGE */}
-
-            {post.featuredImage && (
-              <AnimateIn>
-                <div className="relative aspect-[16/8] overflow-hidden rounded-[22px] bg-slate-100 dark:bg-slate-900">
-                  <Image
-                    src={post.featuredImage}
-                    alt={post.title}
-                    fill
-                    priority
-                    sizes="(max-width: 1024px) 100vw, 900px"
-                    className="object-cover"
-                  />
-                </div>
-              </AnimateIn>
-            )}
-
-            <div className="px-3 pb-6 pt-8 sm:px-8 sm:pb-10 sm:pt-10 lg:px-12">
-              {/* CONTENT */}
-
-              <AnimateIn delay={0.08}>
-                <div>
-                  <span className="brand-grad mb-8 block h-1 w-12 rounded-full" />
-
-                  <div className="whitespace-pre-line text-[15px] leading-8 text-slate-700 dark:text-slate-300 sm:text-base">
-                    {post.content}
-                  </div>
-                </div>
-              </AnimateIn>
-
-              {/* TAGS */}
 
               {tags.length > 0 && (
-                <div className="mt-12 border-t border-slate-100 pt-7 dark:border-white/[0.07]">
-                  <div className="flex flex-wrap items-center gap-2">
-                    <Tag
-                      size={15}
-                      className="mr-1 text-violet-500"
-                    />
-
-                    {tags.map((tag) => (
-                      <span
-                        key={tag}
-                        className="rounded-full border border-violet-100 bg-violet-50/70 px-3 py-1.5 text-xs font-semibold text-violet-700 dark:border-violet-400/20 dark:bg-violet-500/10 dark:text-violet-200"
-                      >
-                        {tag}
-                      </span>
-                    ))}
-                  </div>
+                <div className="mt-14 flex max-w-[68ch] flex-wrap items-center gap-2 border-t border-line pt-6">
+                  <span className="mr-2 font-mono text-[11px] uppercase tracking-[0.16em] text-muted">
+                    Tags
+                  </span>
+                  {tags.map((tag) => (
+                    <Tag key={tag}>{tag}</Tag>
+                  ))}
                 </div>
               )}
 
-              {/* BACK */}
-
-              <div className="mt-10">
-                <Link
-                  href="/blog"
-                  className="inline-flex items-center gap-2 rounded-xl border border-slate-200 bg-white px-5 py-3 text-sm font-bold text-slate-700 transition-all duration-300 hover:-translate-y-0.5 hover:border-violet-300 hover:text-violet-600 dark:border-white/[0.1] dark:bg-white/[0.04] dark:text-slate-200 dark:hover:border-violet-400/40 dark:hover:text-violet-300"
-                >
-                  <ArrowLeft size={15} />
-
-                  View All Blog Posts
-                </Link>
+              <div className="mt-12">
+                <ButtonLink href="/blog" variant="text">
+                  All posts
+                </ButtonLink>
               </div>
             </div>
-          </div>
+          </Container>
         </article>
       </main>
 
       <Footer />
-    </div>
+    </SitePage>
   );
 }

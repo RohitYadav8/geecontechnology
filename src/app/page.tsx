@@ -1,27 +1,30 @@
 import { Navbar } from "../../components/navbar";
-import { HeroSlider } from "../../components/home/hero-slider";
-import { FactsSection } from "../../components/home/facts-section";
-import { ServicesGrid } from "../../components/home/services-grid";
-import { ProductSolutions } from "../../components/home/product-solutions";
-import { Testimonials } from "../../components/home/testimonials";
-import { ClientLogos } from "../../components/home/client-logos";
 import { Footer } from "../../components/footer";
+import { SitePage } from "../../components/site/ui";
+import { HomeHero } from "../../components/home/home-hero";
+import {
+  HomeAbout,
+  HomeClients,
+  HomeServices,
+} from "../../components/home/home-sections";
+import { HomeSolutions } from "../../components/home/home-solutions";
+import { Testimonials } from "../../components/home/testimonials";
 
 export default function Home() {
   return (
-    <div className="flex min-h-screen flex-col bg-slate-50 transition-colors duration-500 dark:bg-[#060b16]">
+    <SitePage>
       <Navbar />
 
       <main className="flex-1">
-        <HeroSlider />
-        <FactsSection />
-        <ServicesGrid />
-        <ProductSolutions />
+        <HomeHero />
+        <HomeAbout />
+        <HomeServices />
+        <HomeSolutions />
         <Testimonials />
-        <ClientLogos />
+        <HomeClients />
       </main>
 
       <Footer />
-    </div>
+    </SitePage>
   );
 }

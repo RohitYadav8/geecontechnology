@@ -1,394 +1,214 @@
 "use client";
 
 import { useState } from "react";
-import Image from "next/image";
 import Link from "next/link";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
 
-import {
-  ChevronRight,
-  Send,
-  ShieldCheck,
-} from "lucide-react";
-
-import { footerLinks } from "../lib/home-data";
-
-import { AnimateIn } from "./animate-in";
-import {
-  StaggerContainer,
-  StaggerItem,
-} from "./stagger-container";
+import { contactInfo, siteMap } from "../lib/site-nav";
 
 /* =========================================================
-   FOOTER COLUMN CONFIG
-========================================================= */
-
-type ColumnKey = "services" | "products" | "about" | "popular";
-
-const columnTitles = {
-  services: "Services",
-  products: "Products & Solutions",
-  about: "About Geecon",
-  popular: "Popular Links",
-};
-
-/* =========================================================
-   FOOTER COLUMN
-========================================================= */
-
-function FooterColumn({
-  columnKey,
-  links,
-}: {
-  columnKey: ColumnKey;
-  links: {
-    label: string;
-    href: string;
-  }[];
-}) {
-  return (
-    <div className="min-w-0">
-      <h4 className="text-[15px] font-bold text-white">
-        {columnTitles[columnKey]}
-      </h4>
-
-      <ul className="mt-5 space-y-2.5">
-        {links.map((link) => (
-          <li key={link.label}>
-            <Link
-              href={link.href}
-              className="group inline-flex items-start gap-1.5 text-[13.5px] leading-5 text-indigo-50/85 transition-colors hover:text-white"
-            >
-              <span className="min-w-0 break-words">
-                {link.label}
-              </span>
-
-              <ChevronRight
-                size={12}
-                className="mt-1 shrink-0 -translate-x-1 opacity-0 transition-all duration-200 group-hover:translate-x-0 group-hover:opacity-100"
-              />
-            </Link>
-          </li>
-        ))}
-      </ul>
-    </div>
-  );
-}
-
-/* =========================================================
-   FOOTER
+   SITE FOOTER
+   Ink block: one contact statement, the site index (each
+   page listed once) and the newsletter form.
 ========================================================= */
 
 export function Footer() {
   const [email, setEmail] = useState("");
+  const [loading, setLoading] = useState(false);
+  const [message, setMessage] = useState("");
+  const [error, setError] = useState("");
 
-  const [
-    newsletterLoading,
-    setNewsletterLoading,
-  ] = useState(false);
-
-  const [
-    newsletterMessage,
-    setNewsletterMessage,
-  ] = useState("");
-
-  const [
-    newsletterError,
-    setNewsletterError,
-  ] = useState("");
-
-  /* =======================================================
-     NEWSLETTER SUBMIT
-  ======================================================= */
-
-  const handleNewsletterSubmit = async (
-    event: React.FormEvent<HTMLFormElement>
-  ) => {
+  const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
     const cleanEmail = email.trim();
-
-    setNewsletterMessage("");
-    setNewsletterError("");
+    setMessage("");
+    setError("");
 
     if (!cleanEmail) {
-      setNewsletterError(
-        "Please enter your email address."
-      );
-
+      setError("Please enter your email address.");
       return;
     }
 
-    const emailRegex =
-      /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-
-    if (!emailRegex.test(cleanEmail)) {
-      setNewsletterError(
-        "Please enter a valid email address."
-      );
-
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(cleanEmail)) {
+      setError("Please enter a valid email address.");
       return;
     }
 
     try {
-      setNewsletterLoading(true);
+      setLoading(true);
 
-      const response = await fetch(
-        "/api/newsletter",
-        {
-          method: "POST",
-
-          headers: {
-            "Content-Type":
-              "application/json",
-          },
-
-          body: JSON.stringify({
-            email: cleanEmail,
-          }),
-        }
-      );
+      const response = await fetch("/api/newsletter", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email: cleanEmail }),
+      });
 
       const text = await response.text();
-
-      let data: {
-        success?: boolean;
-        message?: string;
-        error?: string;
-      } = {};
+      let data: { success?: boolean; message?: string; error?: string } = {};
 
       if (text) {
         try {
           data = JSON.parse(text);
         } catch {
-          console.error(
-            "Invalid newsletter API response:",
-            text
-          );
+          console.error("Invalid newsletter API response:", text);
         }
       }
 
       if (!response.ok) {
         throw new Error(
-          data.error ||
-            "Subscription failed. Please try again."
+          data.error || "Subscription failed. Please try again."
         );
       }
 
-      setNewsletterMessage(
-        data.message ||
-          "Thank you for subscribing!"
-      );
-
+      setMessage(data.message || "Thank you for subscribing!");
       setEmail("");
-    } catch (error) {
-      console.error(
-        "Newsletter subscribe error:",
-        error
-      );
-
-      setNewsletterError(
-        error instanceof Error
-          ? error.message
+    } catch (err) {
+      console.error("Newsletter subscribe error:", err);
+      setError(
+        err instanceof Error
+          ? err.message
           : "Something went wrong. Please try again."
       );
     } finally {
-      setNewsletterLoading(false);
+      setLoading(false);
     }
   };
 
   return (
-    <footer className="brand-grad relative overflow-hidden text-white">
-      {/* Glow blobs */}
-      <div className="pointer-events-none absolute -left-32 top-10 h-96 w-96 rounded-full bg-cyan-300/25 blur-3xl" />
-      <div className="pointer-events-none absolute -right-24 bottom-0 h-96 w-96 rounded-full bg-violet-300/30 blur-3xl" />
+    <footer className="site bg-ink text-paper">
+      <div className="mx-auto w-full max-w-[1320px] px-5 sm:px-8 lg:px-12">
+        {/* ================= STATEMENT ================= */}
+        <div className="grid gap-10 border-b border-paper/15 py-16 sm:py-24 lg:grid-cols-12">
+          <div className="lg:col-span-8">
+            <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-paper/50">
+              Simple solutions, engineered for the extreme
+            </p>
+            <Link
+              href="/contact"
+              className="group mt-6 inline-flex items-end gap-4 font-display text-5xl font-semibold leading-[0.95] text-paper sm:text-7xl lg:text-[96px]"
+            >
+              <span>
+                Let&apos;s build
+                <br />
+                something.
+              </span>
+              <ArrowUpRight className="mb-2 h-10 w-10 text-accent transition-transform group-hover:-translate-y-1 group-hover:translate-x-1 sm:h-14 sm:w-14" />
+            </Link>
+          </div>
 
-      <div className="relative mx-auto w-full max-w-7xl px-6 sm:px-8 lg:px-10">
-        {/* ================================================= */}
-        {/* STAY UPDATED */}
-        {/* ================================================= */}
+          <div className="flex flex-col justify-end gap-3 lg:col-span-4">
+            <a
+              href={`mailto:${contactInfo.email}`}
+              className="border-b border-paper/15 pb-3 text-lg text-paper transition-colors hover:text-accent"
+            >
+              {contactInfo.email}
+            </a>
+            <a
+              href={`tel:${contactInfo.phone}`}
+              className="border-b border-paper/15 pb-3 text-lg text-paper transition-colors hover:text-accent"
+            >
+              {contactInfo.phoneDisplay}
+            </a>
+          </div>
+        </div>
 
-        <AnimateIn>
-          <div className="flex flex-col gap-6 border-b border-white/20 py-12 lg:flex-row lg:items-center lg:justify-between lg:py-14">
-            <div>
-              <h3 className="text-2xl font-extrabold tracking-[-0.02em] sm:text-[32px]">
-                Stay Updated
-              </h3>
+        {/* ================= INDEX + NEWSLETTER ================= */}
+        <div className="grid gap-12 py-14 lg:grid-cols-12">
+          <div className="grid grid-cols-2 gap-x-8 gap-y-10 md:grid-cols-4 lg:col-span-9">
+            {siteMap.map((group) => (
+              <div key={group.title}>
+                <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-paper/50">
+                  {group.href ? (
+                    <Link href={group.href} className="hover:text-paper">
+                      {group.title}
+                    </Link>
+                  ) : (
+                    group.title
+                  )}
+                </p>
+                <ul className="mt-4 space-y-2.5">
+                  {group.links.map((link) => (
+                    <li key={link.href}>
+                      <Link
+                        href={link.href}
+                        className="text-[14px] text-paper/80 transition-colors hover:text-paper"
+                      >
+                        {link.label}
+                      </Link>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
 
-              <p className="mt-2 text-[15px] text-indigo-50/85">
-                Subscribe to our newsletter for the
-                latest updates and insights.
-              </p>
-            </div>
+          <div className="lg:col-span-3">
+            <p className="font-mono text-[11px] uppercase tracking-[0.18em] text-paper/50">
+              Newsletter
+            </p>
+            <p className="mt-4 text-[14px] leading-6 text-paper/80">
+              Occasional notes on software, hosting and hiring.
+            </p>
 
-            <div className="w-full lg:w-[460px]">
-              <form
-                onSubmit={handleNewsletterSubmit}
-                className={`flex w-full items-center gap-1.5 rounded-2xl border-2 bg-white p-1.5 shadow-[0_20px_50px_-25px_rgba(15,23,42,.6)] transition-all dark:bg-[#0b1220] ${
-                  newsletterError
+            <form onSubmit={handleSubmit} className="mt-5" noValidate>
+              <div
+                className={`flex items-center border-b ${
+                  error
                     ? "border-red-400"
-                    : newsletterMessage
+                    : message
                       ? "border-emerald-400"
-                      : "border-transparent"
+                      : "border-paper/30 focus-within:border-paper"
                 }`}
               >
                 <input
                   type="email"
                   value={email}
-                  onChange={(event) => {
-                    setEmail(event.target.value);
-
-                    if (newsletterError) {
-                      setNewsletterError("");
-                    }
-
-                    if (newsletterMessage) {
-                      setNewsletterMessage("");
-                    }
+                  onChange={(e) => {
+                    setEmail(e.target.value);
+                    if (error) setError("");
+                    if (message) setMessage("");
                   }}
-                  placeholder="Enter your email"
-                  disabled={newsletterLoading}
+                  placeholder="you@company.com"
+                  disabled={loading}
                   autoComplete="email"
                   aria-label="Email address"
-                  className="min-w-0 flex-1 bg-transparent px-4 py-3 text-sm text-slate-900 outline-none placeholder:text-slate-400 disabled:cursor-not-allowed disabled:opacity-60 dark:text-white"
+                  className="min-w-0 flex-1 bg-transparent py-3 text-[15px] text-paper placeholder:text-paper/40 focus:outline-none"
                 />
-
                 <button
                   type="submit"
-                  disabled={newsletterLoading}
-                  aria-label={
-                    newsletterLoading
-                      ? "Subscribing"
-                      : "Subscribe"
-                  }
-                  className="flex shrink-0 items-center gap-2 rounded-xl bg-slate-950 px-5 py-3 text-sm font-bold text-white transition-all duration-200 hover:bg-slate-800 disabled:cursor-not-allowed disabled:opacity-60 dark:bg-white dark:text-slate-950"
+                  disabled={loading}
+                  aria-label={loading ? "Subscribing" : "Subscribe"}
+                  className="flex h-9 w-9 items-center justify-center text-paper transition-colors hover:text-accent disabled:opacity-50"
                 >
-                  {newsletterLoading ? (
-                    <span className="h-4 w-4 animate-spin rounded-full border-2 border-white/40 border-t-white" />
+                  {loading ? (
+                    <span className="h-4 w-4 animate-spin rounded-full border-2 border-paper/30 border-t-paper" />
                   ) : (
-                    <Send size={14} />
+                    <ArrowRight size={18} />
                   )}
                 </button>
-              </form>
+              </div>
 
-              {newsletterMessage && (
-                <p
-                  role="status"
-                  className="mt-2 text-xs font-semibold text-emerald-100"
-                >
-                  ✓ {newsletterMessage}
+              {message && (
+                <p role="status" className="mt-3 text-[13px] text-emerald-400">
+                  {message}
                 </p>
               )}
-
-              {newsletterError && (
-                <p
-                  role="alert"
-                  className="mt-2 text-xs font-semibold text-red-100"
-                >
-                  {newsletterError}
+              {error && (
+                <p role="alert" className="mt-3 text-[13px] text-red-400">
+                  {error}
                 </p>
               )}
-            </div>
+            </form>
           </div>
-        </AnimateIn>
-
-        {/* ================================================= */}
-        {/* MAIN FOOTER */}
-        {/* ================================================= */}
-
-        <div className="grid gap-10 py-12 sm:py-14 lg:grid-cols-[1.3fr_4fr] lg:gap-12">
-          {/* Company */}
-          <AnimateIn direction="left">
-            <Link
-              href="/"
-              className="inline-flex items-center gap-3"
-            >
-              <span className="rounded-xl bg-white p-1 shadow-lg shadow-blue-900/20">
-                <Image
-                  src="/logo-icon-1.png"
-                  alt="Geecon Technology"
-                  width={45}
-                  height={42}
-                  className="h-8 w-auto"
-                />
-              </span>
-
-              <div className="leading-tight">
-                <div className="text-lg font-extrabold tracking-[0.02em]">
-                  GEECON
-                </div>
-
-                <div className="text-[9px] font-bold tracking-[0.22em] text-white/75">
-                  TECHNOLOGY
-                </div>
-              </div>
-            </Link>
-
-            <p className="mt-5 max-w-xs text-[14px] leading-7 text-indigo-50/85">
-              Delivering innovative technology
-              solutions that help businesses grow,
-              transform and succeed in the digital
-              world.
-            </p>
-
-            <div className="mt-6 flex items-center gap-3">
-              <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl border border-white/25 bg-white/10">
-                <ShieldCheck size={16} />
-              </div>
-
-              <div>
-                <p className="text-[12px] font-bold text-white">
-                  Trusted Partner
-                </p>
-
-                <p className="mt-0.5 text-[13.5px] text-indigo-50/85">
-                  Secure. Reliable.
-                  Professional.
-                </p>
-              </div>
-            </div>
-          </AnimateIn>
-
-          {/* Columns */}
-          <StaggerContainer className="grid min-w-0 grid-cols-1 gap-8 sm:grid-cols-2 xl:grid-cols-4">
-            <StaggerItem>
-              <FooterColumn
-                columnKey="services"
-                links={footerLinks.services}
-              />
-            </StaggerItem>
-
-            <StaggerItem>
-              <FooterColumn
-                columnKey="products"
-                links={footerLinks.products}
-              />
-            </StaggerItem>
-
-            <StaggerItem>
-              <FooterColumn
-                columnKey="about"
-                links={footerLinks.about}
-              />
-            </StaggerItem>
-
-            <StaggerItem>
-              <FooterColumn
-                columnKey="popular"
-                links={footerLinks.popular}
-              />
-            </StaggerItem>
-          </StaggerContainer>
         </div>
 
-        {/* ================================================= */}
-        {/* BOTTOM BAR */}
-        {/* ================================================= */}
-
-        <div className="border-t border-white/20 py-6 text-center text-[13px] text-indigo-50/80">
-          <p>
-            © 2026 Geecon Technology. All
-            Rights Reserved.
-          </p>
+        {/* ================= BOTTOM BAR ================= */}
+        <div className="flex flex-col gap-2 border-t border-paper/15 py-6 font-mono text-[11px] uppercase tracking-[0.14em] text-paper/50 sm:flex-row sm:items-center sm:justify-between">
+          <p>© {new Date().getFullYear()} Geecon Technology</p>
+          <Link href="/" className="hover:text-paper">
+            Geecon
+          </Link>
         </div>
       </div>
     </footer>

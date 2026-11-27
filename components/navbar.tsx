@@ -4,686 +4,208 @@ import { useEffect, useState } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { ArrowUpRight, X } from "lucide-react";
 
-import {
-  ChevronDown,
-  ChevronRight,
-  Cloud,
-  Code2,
-  Globe2,
-  Mail,
-  Menu,
-  Phone,
-  Server,
-  Settings,
-  Share2,
-  X,
-} from "lucide-react";
-
-import { AnimatePresence, motion } from "motion/react";
-
+import { contactInfo, primaryNav, siteMap } from "../lib/site-nav";
 import { ThemeToggle } from "./theme-toggle";
 
 /* =========================================================
-   NAVIGATION
-========================================================= */
-
-const navLinks = [
-  {
-    label: "HOME",
-    href: "/",
-  },
-
-  {
-    label: "SERVICES",
-    href: "/services",
-
-    children: [
-      {
-        label: "Website Development",
-        href: "/website-development",
-        icon: Code2,
-      },
-
-      {
-        label: "Customised Software Development",
-        href: "/customised-software-development",
-        icon: Settings,
-      },
-
-      {
-        label: "VPS/Dedicated Servers",
-        href: "/vps-dedicated-servers",
-        icon: Server,
-      },
-
-      {
-        label: "Cloud Services",
-        href: "/cloud-services",
-        icon: Cloud,
-      },
-
-      {
-        label: "Social Media Marketing",
-        href: "/social-media-marketing-services",
-        icon: Share2,
-      },
-
-      {
-        label: "Search Engine Optimization",
-        href: "/search-engine-optimization",
-        icon: Globe2,
-      },
-
-      {
-        label: "Software Support & Maintenance",
-        href: "/software-support-maintenance",
-        icon: Settings,
-      },
-    ],
-  },
-
-  {
-    label: "PRODUCTS",
-    href: "/products",
-  },
-
-  {
-    label: "CLIENTELE & ENGAGEMENT",
-    href: "/clientele-engagement",
-  },
-
-  {
-    label: "CAREERS",
-    href: "/careers",
-  },
-
-  {
-    label: "CONTACT US",
-    href: "/contact",
-  },
-];
-
-/* =========================================================
-   NAVBAR
+   SITE HEADER
+   A thin bar with a few primary links and an "Index" button
+   that opens a full-screen site map. No dropdowns.
 ========================================================= */
 
 export function Navbar() {
-  const pathname = usePathname();
+  const pathname = usePathname() ?? "/";
+  const [open, setOpen] = useState(false);
 
-  const [scrolled, setScrolled] = useState(false);
-
-  const [mobileOpen, setMobileOpen] = useState(false);
-
-  const [servicesOpen, setServicesOpen] = useState(false);
-
-  const [mobileServicesOpen, setMobileServicesOpen] =
-    useState(false);
-
-  /* =======================================================
-     SCROLL
-  ======================================================= */
-
+  // Close the index when the route changes
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 30);
-    };
-
-    handleScroll();
-
-    window.addEventListener("scroll", handleScroll, {
-      passive: true,
-    });
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-    };
-  }, []);
-
-  /* =======================================================
-     CLOSE MENU AFTER ROUTE CHANGE
-  ======================================================= */
-
-  useEffect(() => {
-    setMobileOpen(false);
-    setServicesOpen(false);
-    setMobileServicesOpen(false);
+    setOpen(false);
   }, [pathname]);
 
-  /* =======================================================
-     ACTIVE ROUTE
-  ======================================================= */
+  // Lock scroll and allow Escape while the index is open
+  useEffect(() => {
+    if (!open) return;
 
-  const isRouteActive = (href: string) => {
-    if (href === "/") {
-      return pathname === "/";
-    }
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
 
-    return pathname.startsWith(href);
-  };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
 
-  const servicesActive =
-    pathname === "/services" ||
-    navLinks[1].children?.some(
-      (child) =>
-        pathname === child.href ||
-        pathname.startsWith(`${child.href}/`)
-    );
+    return () => {
+      document.body.style.overflow = prev;
+      window.removeEventListener("keydown", onKey);
+    };
+  }, [open]);
 
-  /* =======================================================
-     UI
-  ======================================================= */
+  const isActive = (href: string) =>
+    href === "/" ? pathname === "/" : pathname.startsWith(href);
 
   return (
-    <header
-      className={`brand-grad sticky top-0 z-50 w-full text-white transition-all duration-500 ${
-        scrolled
-          ? "shadow-[0_12px_40px_-18px_rgba(37,99,235,.65)]"
-          : ""
-      }`}
-    >
-      {/* ===================================================
-          UTILITY BAR
-      =================================================== */}
-
-      <AnimatePresence initial={false}>
-        {!scrolled && (
-          <motion.div
-            initial={false}
-            animate={{
-              height: "auto",
-              opacity: 1,
-            }}
-            exit={{
-              height: 0,
-              opacity: 0,
-            }}
-            transition={{
-              duration: 0.3,
-            }}
-            className="hidden overflow-hidden border-b border-white/15 bg-black/10 text-xs text-white/80 md:block"
+    <>
+      <header className="site sticky top-0 z-50 border-b border-line bg-paper/90 backdrop-blur-md">
+        <div className="mx-auto flex h-16 w-full max-w-[1320px] items-center gap-6 px-5 sm:px-8 lg:h-[72px] lg:px-12">
+          {/* Logo */}
+          <Link
+            href="/"
+            className="flex shrink-0 items-center gap-2.5"
+            aria-label="Geecon Technology home"
           >
-            <div className="mx-auto flex max-w-7xl items-center justify-end px-6 py-2">
-              <div className="flex items-center gap-6">
-                <Link
-                  href="/candidate-screening"
-                  className="transition-colors hover:text-white"
-                >
-                  Candidate Screening
-                </Link>
-
-                <Link
-                  href="/careers"
-                  className="transition-colors hover:text-white"
-                >
-                  Apply Current Openings
-                </Link>
-
-                <a
-                  href="mailto:info@geecontechnology.com"
-                  className="flex items-center gap-1.5 transition-colors hover:text-white"
-                >
-                  <Mail size={13} />
-
-                  info@geecontechnology.com
-                </a>
-
-                <a
-                  href="tel:8655263606"
-                  className="flex items-center gap-1.5 transition-colors hover:text-white"
-                >
-                  <Phone size={13} />
-
-                  8655263606
-                </a>
-              </div>
-            </div>
-          </motion.div>
-        )}
-      </AnimatePresence>
-
-      {/* ===================================================
-          MAIN NAVIGATION
-      =================================================== */}
-
-      <div
-        className={`mx-auto flex max-w-7xl items-center justify-between px-4 transition-all duration-300 sm:px-6 ${
-          scrolled ? "py-3" : "py-4"
-        }`}
-      >
-        {/* =================================================
-            LOGO
-        ================================================= */}
-
-        <Link
-          href="/"
-          className="group flex min-w-0 items-center gap-3"
-        >
-          <div className="relative shrink-0 rounded-xl bg-white p-1 shadow-lg shadow-blue-900/20 transition-transform duration-300 group-hover:scale-105">
             <Image
               src="/logo-icon-1.png"
-              alt="Geecon Technology"
-              width={46}
-              height={42}
+              alt=""
+              width={34}
+              height={32}
               priority
-              className="relative h-8 w-auto sm:h-9"
+              className="h-8 w-auto"
             />
-          </div>
+            <span className="font-display text-lg font-semibold tracking-[-0.03em] text-ink">
+              Geecon
+            </span>
+          </Link>
 
-          <div className="hidden leading-tight min-[430px]:block">
-            <div className="text-[20px] font-extrabold tracking-[0.02em] text-white sm:text-[22px]">
-              GEECON
-            </div>
-
-            <div className="max-w-[170px] text-[7px] font-semibold tracking-[0.13em] text-white/70 sm:text-[8px]">
-              SIMPLE SOLUTIONS ENGINEERED FOR EXTREME
-            </div>
-          </div>
-        </Link>
-
-        {/* =================================================
-            DESKTOP NAVIGATION
-        ================================================= */}
-
-        <nav className="hidden items-center gap-1 rounded-2xl border border-white/25 bg-white/[0.12] p-1.5 backdrop-blur-xl lg:flex">
-          {navLinks.map((link) => {
-            const active =
-              link.label === "SERVICES"
-                ? servicesActive
-                : isRouteActive(link.href);
-
-            /* =============================================
-               SERVICES
-            ============================================= */
-
-            if (link.children) {
-              return (
-                <div
-                  key={link.label}
-                  className="relative"
-                  onMouseEnter={() => setServicesOpen(true)}
-                  onMouseLeave={() => setServicesOpen(false)}
-                >
-                  {/* SERVICES NAV LINK */}
-
-                  <Link
-                    href={link.href}
-                    className={`flex items-center gap-1 whitespace-nowrap rounded-xl px-3 py-2.5 text-[12.5px] font-bold tracking-[0.03em] transition-colors xl:px-3.5 ${
-                      active
-                        ? "bg-white text-blue-600 shadow-sm"
-                        : "text-white/90 hover:bg-white/15 hover:text-white"
-                    }`}
-                  >
-                    {link.label}
-
-                    <ChevronDown
-                      size={14}
-                      className={`transition-transform duration-300 ${
-                        servicesOpen ? "rotate-180" : ""
-                      }`}
-                    />
-                  </Link>
-
-                  {/* =======================================
-                      SERVICES DROPDOWN
-                  ======================================= */}
-
-                  <AnimatePresence>
-                    {servicesOpen && (
-                      <motion.div
-                        initial={{
-                          opacity: 0,
-                          y: 10,
-                          scale: 0.985,
-                        }}
-                        animate={{
-                          opacity: 1,
-                          y: 0,
-                          scale: 1,
-                        }}
-                        exit={{
-                          opacity: 0,
-                          y: 7,
-                          scale: 0.99,
-                        }}
-                        transition={{
-                          duration: 0.16,
-                          ease: "easeOut",
-                        }}
-                        className="absolute left-1/2 top-full w-[360px] -translate-x-1/2 pt-3"
-                      >
-                        {/* HOVER BRIDGE */}
-
-                        <div className="absolute left-0 right-0 top-0 h-3" />
-
-                        {/* DROPDOWN PANEL */}
-
-                        <div className="relative overflow-hidden rounded-[18px] border border-slate-200/80 bg-white/95 p-2 shadow-[0_20px_55px_-24px_rgba(15,23,42,0.35)] backdrop-blur-2xl dark:border-white/[0.09] dark:bg-[#0b1220]/95 dark:shadow-[0_24px_65px_-24px_rgba(0,0,0,0.7)]">
-                          {/* BACKGROUND GLOW */}
-
-                          <div className="pointer-events-none absolute -right-14 -top-14 h-32 w-32 rounded-full bg-blue-500/[0.07] blur-3xl" />
-
-                          <div className="pointer-events-none absolute -bottom-16 -left-14 h-32 w-32 rounded-full bg-cyan-400/[0.05] blur-3xl" />
-
-                          {/* DROPDOWN HEADER */}
-
-                          <div className="relative mb-1.5 flex items-center justify-between border-b border-slate-100 px-2.5 pb-2.5 pt-1.5 dark:border-white/[0.06]">
-                            <div>
-                              <p className="text-[9px] font-bold uppercase tracking-[0.16em] text-blue-600 dark:text-blue-400">
-                                Our Services
-                              </p>
-
-                              <p className="mt-0.5 text-[11px] text-slate-400 dark:text-slate-500">
-                                Explore our technology solutions
-                              </p>
-                            </div>
-
-                            <Link
-                              href="/services"
-                              className="group/all flex items-center gap-1 text-[11px] font-semibold text-slate-500 transition-colors hover:text-blue-600 dark:text-slate-400 dark:hover:text-blue-400"
-                            >
-                              View All
-
-                              <ChevronRight
-                                size={12}
-                                className="transition-transform duration-200 group-hover/all:translate-x-0.5"
-                              />
-                            </Link>
-                          </div>
-
-                          {/* SERVICE LINKS */}
-
-                          <div className="relative grid grid-cols-1 gap-0.5">
-                            {link.children.map(
-                              (child, index) => {
-                                const childActive =
-                                  pathname === child.href ||
-                                  pathname.startsWith(
-                                    `${child.href}/`
-                                  );
-
-                                const Icon = child.icon;
-
-                                return (
-                                  <motion.div
-                                    key={child.label}
-                                    initial={{
-                                      opacity: 0,
-                                      x: -4,
-                                    }}
-                                    animate={{
-                                      opacity: 1,
-                                      x: 0,
-                                    }}
-                                    transition={{
-                                      duration: 0.16,
-                                      delay: index * 0.02,
-                                    }}
-                                  >
-                                    <Link
-                                      href={child.href}
-                                      className={`group/item relative flex items-center gap-2.5 overflow-hidden rounded-[10px] px-2.5 py-1.5 transition-all duration-200 ${
-                                        childActive
-                                          ? "bg-blue-50 text-blue-700 dark:bg-blue-500/[0.12] dark:text-blue-300"
-                                          : "text-slate-600 hover:bg-slate-50 dark:text-slate-300 dark:hover:bg-white/[0.05]"
-                                      }`}
-                                    >
-                                      {/* ACTIVE LINE */}
-
-                                      <span
-                                        className={`absolute bottom-1.5 left-0 top-1.5 w-[2px] rounded-r-full bg-gradient-to-b from-blue-500 to-cyan-400 transition-all duration-200 ${
-                                          childActive
-                                            ? "opacity-100"
-                                            : "scale-y-50 opacity-0 group-hover/item:scale-y-100 group-hover/item:opacity-100"
-                                        }`}
-                                      />
-
-                                      {/* ICON */}
-
-                                      <span
-                                        className={`flex h-7 w-7 shrink-0 items-center justify-center rounded-[7px] border transition-all duration-200 ${
-                                          childActive
-                                            ? "border-blue-200 bg-white text-blue-600 dark:border-blue-500/20 dark:bg-blue-500/10 dark:text-blue-400"
-                                            : "border-slate-200/80 bg-white text-slate-400 group-hover/item:border-blue-200 group-hover/item:text-blue-600 dark:border-white/[0.07] dark:bg-white/[0.035] dark:text-slate-500 dark:group-hover/item:border-blue-500/20 dark:group-hover/item:text-blue-400"
-                                        }`}
-                                      >
-                                        <Icon
-                                          size={13}
-                                          strokeWidth={1.8}
-                                        />
-                                      </span>
-
-                                      {/* LABEL */}
-
-                                      <span className="min-w-0 flex-1 text-[12px] font-medium transition-colors group-hover/item:text-[#1a2b4a] dark:group-hover/item:text-white">
-                                        {child.label}
-                                      </span>
-
-                                      {/* ARROW */}
-
-                                      <ChevronRight
-                                        size={13}
-                                        className={`shrink-0 transition-all duration-200 ${
-                                          childActive
-                                            ? "translate-x-0 text-blue-600 dark:text-blue-400"
-                                            : "-translate-x-1 text-slate-300 opacity-0 group-hover/item:translate-x-0 group-hover/item:text-blue-500 group-hover/item:opacity-100 dark:text-slate-600"
-                                        }`}
-                                      />
-                                    </Link>
-                                  </motion.div>
-                                );
-                              }
-                            )}
-                          </div>
-
-                          {/* BOTTOM ACCENT */}
-
-                          <div className="relative mt-1.5 h-[2px] overflow-hidden rounded-full bg-slate-100 dark:bg-white/[0.05]">
-                            <motion.div
-                              initial={{
-                                x: "-100%",
-                              }}
-                              animate={{
-                                x: "0%",
-                              }}
-                              transition={{
-                                duration: 0.5,
-                                ease: "easeOut",
-                              }}
-                              className="h-full w-1/3 rounded-full bg-gradient-to-r from-blue-600 via-blue-500 to-cyan-400"
-                            />
-                          </div>
-                        </div>
-                      </motion.div>
-                    )}
-                  </AnimatePresence>
-                </div>
-              );
-            }
-
-            /* =============================================
-               NORMAL NAV LINKS
-            ============================================= */
-
-            return (
+          {/* Primary links */}
+          <nav
+            aria-label="Primary"
+            className="ml-6 hidden items-center gap-7 lg:flex"
+          >
+            {primaryNav.map((link) => (
               <Link
-                key={link.label}
+                key={link.href}
                 href={link.href}
-                className={`whitespace-nowrap rounded-xl px-3 py-2.5 text-[12.5px] font-bold tracking-[0.03em] transition-colors xl:px-3.5 ${
-                  active
-                    ? "bg-white text-blue-600 shadow-sm"
-                    : "text-white/90 hover:bg-white/15 hover:text-white"
+                className={`relative text-[14px] font-medium transition-colors hover:text-ink ${
+                  isActive(link.href) ? "text-ink" : "text-muted"
                 }`}
               >
                 {link.label}
+                {isActive(link.href) && (
+                  <span className="absolute -bottom-[25px] left-0 h-[2px] w-full bg-accent" />
+                )}
               </Link>
-            );
-          })}
-        </nav>
+            ))}
+          </nav>
 
-        {/* =================================================
-            THEME + MOBILE BUTTON
-        ================================================= */}
+          {/* Right side */}
+          <div className="ml-auto flex items-center gap-2 sm:gap-3">
+            <Link
+              href="/contact"
+              className="hidden items-center gap-1.5 bg-accent px-4 py-2.5 text-[13px] font-semibold text-accent-ink transition-colors hover:bg-ink hover:text-paper sm:inline-flex"
+            >
+              Start a project
+              <ArrowUpRight size={15} />
+            </Link>
 
-        <div className="flex shrink-0 items-center gap-2 sm:gap-3">
-          <ThemeToggle variant="glass" />
+            <ThemeToggle variant="line" />
 
-          <button
-            type="button"
-            onClick={() =>
-              setMobileOpen((previous) => !previous)
-            }
-            aria-label="Toggle navigation menu"
-            aria-expanded={mobileOpen}
-            className="flex h-10 w-10 items-center justify-center rounded-xl border border-white/30 bg-white/10 text-white backdrop-blur-xl transition-all hover:bg-white/20 lg:hidden"
-          >
-            {mobileOpen ? (
-              <X size={20} />
-            ) : (
-              <Menu size={20} />
-            )}
-          </button>
+            <button
+              type="button"
+              onClick={() => setOpen(true)}
+              aria-expanded={open}
+              aria-controls="site-index"
+              className="flex h-9 items-center gap-2 border border-line px-3 font-mono text-[11px] uppercase tracking-[0.16em] text-ink transition-colors hover:border-ink"
+            >
+              <span className="flex flex-col gap-[3px]" aria-hidden>
+                <span className="block h-px w-4 bg-current" />
+                <span className="block h-px w-4 bg-current" />
+              </span>
+              Index
+            </button>
+          </div>
         </div>
-      </div>
+      </header>
 
-      {/* ===================================================
-          MOBILE NAVIGATION
-      =================================================== */}
-
-      <div
-        className={`overflow-hidden border-t border-slate-100 bg-white/95 backdrop-blur-2xl transition-[max-height] duration-500 lg:hidden dark:border-white/[0.05] dark:bg-[#070c18]/95 ${
-          mobileOpen
-            ? "max-h-[1000px]"
-            : "max-h-0 border-t-0"
-        }`}
-      >
-        <nav className="px-4 py-4 sm:px-5">
-          {navLinks.map((link) => {
-            const active =
-              link.label === "SERVICES"
-                ? servicesActive
-                : isRouteActive(link.href);
-
-            /* =============================================
-               MOBILE SERVICES
-            ============================================= */
-
-            if (link.children) {
-              return (
-                <div
-                  key={link.label}
-                  className="border-b border-slate-100 py-2 dark:border-white/[0.05]"
-                >
-                  <div className="flex items-center justify-between">
-                    <Link
-                      href={link.href}
-                      className={`flex-1 py-2 text-sm font-semibold ${
-                        active
-                          ? "text-blue-600 dark:text-blue-400"
-                          : "text-slate-800 dark:text-slate-200"
-                      }`}
-                    >
-                      {link.label}
-                    </Link>
-
-                    <button
-                      type="button"
-                      onClick={() =>
-                        setMobileServicesOpen(
-                          (previous) => !previous
-                        )
-                      }
-                      aria-label="Toggle services"
-                      aria-expanded={mobileServicesOpen}
-                      className="flex h-9 w-9 items-center justify-center rounded-lg text-slate-500 transition hover:bg-slate-100 hover:text-blue-600 dark:text-slate-400 dark:hover:bg-white/[0.05] dark:hover:text-blue-400"
-                    >
-                      <ChevronDown
-                        size={17}
-                        className={`transition-transform duration-300 ${
-                          mobileServicesOpen
-                            ? "rotate-180"
-                            : ""
-                        }`}
-                      />
-                    </button>
-                  </div>
-
-                  {/* MOBILE SUBMENU */}
-
-                  <div
-                    className={`grid transition-all duration-300 ${
-                      mobileServicesOpen
-                        ? "grid-rows-[1fr] opacity-100"
-                        : "grid-rows-[0fr] opacity-0"
-                    }`}
-                  >
-                    <div className="overflow-hidden">
-                      <div className="mb-2 mt-1 space-y-0.5 rounded-2xl border border-slate-100 bg-slate-50/70 p-2 dark:border-white/[0.06] dark:bg-white/[0.025]">
-                        {link.children.map((child) => {
-                          const Icon = child.icon;
-
-                          const childActive =
-                            pathname === child.href ||
-                            pathname.startsWith(
-                              `${child.href}/`
-                            );
-
-                          return (
-                            <Link
-                              key={child.label}
-                              href={child.href}
-                              className={`group flex items-center gap-2.5 rounded-xl px-2.5 py-2 text-[13px] transition-all ${
-                                childActive
-                                  ? "bg-white text-blue-600 shadow-sm dark:bg-white/[0.06] dark:text-blue-400"
-                                  : "text-slate-600 hover:bg-white hover:text-blue-600 dark:text-slate-400 dark:hover:bg-white/[0.05] dark:hover:text-white"
-                              }`}
-                            >
-                              <span className="flex h-7 w-7 shrink-0 items-center justify-center rounded-lg border border-slate-200 bg-white text-slate-400 transition group-hover:border-blue-200 group-hover:text-blue-600 dark:border-white/[0.07] dark:bg-white/[0.035] dark:text-slate-500 dark:group-hover:text-blue-400">
-                                <Icon size={14} />
-                              </span>
-
-                              <span className="min-w-0 flex-1">
-                                {child.label}
-                              </span>
-
-                              <ChevronRight
-                                size={13}
-                                className="shrink-0 text-slate-300 transition-transform group-hover:translate-x-0.5 group-hover:text-blue-500"
-                              />
-                            </Link>
-                          );
-                        })}
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              );
-            }
-
-            /* =============================================
-               MOBILE NORMAL LINKS
-            ============================================= */
-
-            return (
-              <div
-                key={link.label}
-                className="border-b border-slate-100 py-2 last:border-none dark:border-white/[0.05]"
+      {/* ================= FULL-SCREEN INDEX ================= */}
+      {open && (
+        <div
+          id="site-index"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Site index"
+          className="site fixed inset-0 z-[70] overflow-y-auto"
+        >
+          <div className="mx-auto flex min-h-full w-full max-w-[1320px] flex-col px-5 sm:px-8 lg:px-12">
+            <div className="flex h-16 items-center justify-between border-b border-line lg:h-[72px]">
+              <span className="font-mono text-[11px] uppercase tracking-[0.18em] text-muted">
+                Index
+              </span>
+              <button
+                type="button"
+                onClick={() => setOpen(false)}
+                className="flex h-9 items-center gap-2 border border-ink px-3 font-mono text-[11px] uppercase tracking-[0.16em] text-ink transition-colors hover:bg-ink hover:text-paper"
               >
-                <Link
-                  href={link.href}
-                  className={`block py-2 text-sm font-semibold transition-colors ${
-                    active
-                      ? "text-blue-600 dark:text-blue-400"
-                      : "text-slate-800 hover:text-blue-600 dark:text-slate-200 dark:hover:text-white"
-                  }`}
-                >
-                  {link.label}
-                </Link>
-              </div>
-            );
-          })}
-        </nav>
-      </div>
-    </header>
+                <X size={14} />
+                Close
+              </button>
+            </div>
+
+            <Link
+              href="/"
+              className="group flex items-baseline justify-between border-b border-line py-6"
+            >
+              <span className="font-display text-4xl font-semibold text-ink transition-colors group-hover:text-accent sm:text-6xl">
+                Home
+              </span>
+              <ArrowUpRight className="text-muted group-hover:text-accent" />
+            </Link>
+
+            <div className="grid flex-1 gap-x-10 py-10 sm:grid-cols-2 lg:grid-cols-4">
+              {siteMap.map((group) => (
+                <div key={group.title} className="mb-10">
+                  {group.href ? (
+                    <Link
+                      href={group.href}
+                      className="group flex items-center gap-2 border-b border-ink pb-3 font-display text-2xl font-semibold text-ink"
+                    >
+                      {group.title}
+                      <ArrowUpRight
+                        size={18}
+                        className="text-muted group-hover:text-accent"
+                      />
+                    </Link>
+                  ) : (
+                    <p className="border-b border-ink pb-3 font-display text-2xl font-semibold text-ink">
+                      {group.title}
+                    </p>
+                  )}
+
+                  <ul className="mt-2">
+                    {group.links.map((link) => (
+                      <li key={link.href}>
+                        <Link
+                          href={link.href}
+                          className={`block border-b border-line py-2.5 text-[15px] transition-colors hover:text-accent ${
+                            pathname === link.href
+                              ? "text-accent"
+                              : "text-ink-2"
+                          }`}
+                        >
+                          {link.label}
+                        </Link>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+
+            <div className="flex flex-wrap items-center gap-x-8 gap-y-2 border-t border-line py-6 font-mono text-[12px] text-muted">
+              <a
+                href={`mailto:${contactInfo.email}`}
+                className="hover:text-ink"
+              >
+                {contactInfo.email}
+              </a>
+              <a href={`tel:${contactInfo.phone}`} className="hover:text-ink">
+                {contactInfo.phoneDisplay}
+              </a>
+            </div>
+          </div>
+        </div>
+      )}
+    </>
   );
 }

@@ -1,26 +1,14 @@
 "use client";
 
-import {
-  useCallback,
-  useEffect,
-  useState,
-} from "react";
+import { useEffect, useState } from "react";
+import { ArrowLeft, ArrowRight } from "lucide-react";
 
-import {
-  AnimatePresence,
-  motion,
-} from "motion/react";
+import { Section } from "../site/ui";
 
-import {
-  ChevronLeft,
-  ChevronRight,
-  Quote,
-  Star,
-} from "lucide-react";
-
-import { MouseGlow } from "../mouse-glow";
-
-const AUTO_SLIDE_DURATION = 6000;
+/* =========================================================
+   04 — TESTIMONIALS
+   A single large pull quote with manual paging.
+========================================================= */
 
 type Testimonial = {
   id: number;
@@ -30,294 +18,77 @@ type Testimonial = {
   order: number;
 };
 
-function getInitials(name: string) {
-  return name
-    .trim()
-    .split(/\s+/)
-    .map((word) => word.charAt(0))
-    .join("")
-    .slice(0, 2)
-    .toUpperCase();
-}
-
 export function Testimonials() {
-  const [testimonials, setTestimonials] =
-    useState<Testimonial[]>([]);
-
+  const [items, setItems] = useState<Testimonial[]>([]);
   const [active, setActive] = useState(0);
-  const [isPaused, setIsPaused] =
-    useState(false);
-  const [loading, setLoading] =
-    useState(true);
 
   useEffect(() => {
-    async function fetchTestimonials() {
-      try {
-        const response = await fetch(
-          "/api/testimonials"
-        );
+    let cancelled = false;
 
-        if (!response.ok) {
-          throw new Error(
-            "Failed to fetch testimonials"
-          );
-        }
+    fetch("/api/testimonials")
+      .then((res) => {
+        if (!res.ok) throw new Error("Failed to fetch testimonials");
+        return res.json();
+      })
+      .then((data: Testimonial[]) => {
+        if (!cancelled) setItems(Array.isArray(data) ? data : []);
+      })
+      .catch((err) => console.error("Testimonials fetch error:", err));
 
-        const data: Testimonial[] =
-          await response.json();
-
-        setTestimonials(data);
-      } catch (error) {
-        console.error(
-          "Testimonials fetch error:",
-          error
-        );
-      } finally {
-        setLoading(false);
-      }
-    }
-
-    fetchTestimonials();
+    return () => {
+      cancelled = true;
+    };
   }, []);
 
-  const goTo = useCallback(
-    (index: number) => {
-      if (!testimonials.length) return;
+  if (!items.length) return null;
 
-      setActive(
-        (index + testimonials.length) %
-          testimonials.length
-      );
-    },
-    [testimonials.length]
-  );
-
-  const next = useCallback(() => {
-    goTo(active + 1);
-  }, [active, goTo]);
-
-  const previous = useCallback(() => {
-    goTo(active - 1);
-  }, [active, goTo]);
-
-  useEffect(() => {
-    if (
-      isPaused ||
-      testimonials.length <= 1
-    ) {
-      return;
-    }
-
-    const timer = window.setInterval(() => {
-      setActive(
-        (current) =>
-          (current + 1) %
-          testimonials.length
-      );
-    }, AUTO_SLIDE_DURATION);
-
-    return () =>
-      window.clearInterval(timer);
-  }, [isPaused, testimonials.length]);
-
-  if (loading || !testimonials.length) {
-    return null;
-  }
-
-  const testimonial =
-    testimonials[active];
+  const current = items[active];
+  const go = (delta: number) =>
+    setActive((i) => (i + delta + items.length) % items.length);
 
   return (
-    <section
-      className="relative overflow-hidden pb-24 sm:pb-28"
-    >
-
-      <div className="relative mx-auto max-w-7xl px-6 sm:px-8 lg:px-10">
-        <div
-          className="relative mx-auto max-w-4xl"
-          onMouseEnter={() =>
-            setIsPaused(true)
-          }
-          onMouseLeave={() =>
-            setIsPaused(false)
-          }
-          onFocus={() =>
-            setIsPaused(true)
-          }
-          onBlur={() =>
-            setIsPaused(false)
-          }
+    <Section index="04" label="In their words" tone="tint">
+      <figure>
+        <blockquote
+          key={current.id}
+          className="font-display text-[26px] font-medium leading-[1.25] text-ink sm:text-[36px] lg:text-[42px]"
         >
-          <MouseGlow>
-            <AnimatePresence mode="wait">
-              <motion.article
-                key={testimonial.id}
-                initial={{
-                  opacity: 0,
-                  y: 20,
-                  scale: 0.98,
-                  filter: "blur(5px)",
-                }}
-                animate={{
-                  opacity: 1,
-                  y: 0,
-                  scale: 1,
-                  filter: "blur(0px)",
-                }}
-                exit={{
-                  opacity: 0,
-                  y: -15,
-                  scale: 0.98,
-                  filter: "blur(5px)",
-                }}
-                transition={{
-                  duration: 0.5,
-                }}
-                className="group relative overflow-hidden rounded-[30px] border border-slate-200/80 bg-white px-7 py-10 shadow-[0_40px_100px_-45px_rgba(15,23,42,.4)] sm:px-12 sm:py-12 dark:border-white/[0.07] dark:bg-[#0b1220]"
-              >
-                <div className="brand-grad absolute inset-x-0 top-0 h-[4px]" />
+          <span className="text-accent">“</span>
+          {current.quote.replace(/\s+/g, " ").trim()}
+          <span className="text-accent">”</span>
+        </blockquote>
 
-                <Quote
-                  size={120}
-                  strokeWidth={0.8}
-                  className="pointer-events-none absolute -right-8 -top-9 rotate-6 text-violet-500/[0.06] transition-transform duration-500 group-hover:rotate-12 dark:text-blue-400/[0.08]"
-                />
+        <div className="mt-10 flex flex-wrap items-center justify-between gap-6 border-t border-line pt-6">
+          <figcaption className="font-mono text-[12px] uppercase tracking-[0.16em] text-ink">
+            {current.name}
+          </figcaption>
 
-                <div className="flex justify-center gap-1 text-amber-400">
-                  {Array.from({
-                    length: 5,
-                  }).map((_, index) => (
-                    <Star
-                      key={index}
-                      size={17}
-                      fill="currentColor"
-                      strokeWidth={0}
-                    />
-                  ))}
-                </div>
-
-                <p
-                  className="relative mx-auto mt-7 max-w-3xl text-center text-base leading-8 text-slate-600 sm:text-lg sm:leading-9 dark:text-slate-300"
-                >
-                  &ldquo;
-                  {testimonial.quote}
-                  &rdquo;
-                </p>
-
-                <div className="relative mt-9 flex items-center justify-center gap-4 border-t border-slate-200 pt-7 dark:border-white/[0.08]">
-                  <div
-                    className="brand-grad flex h-12 w-12 items-center justify-center rounded-full text-sm font-bold text-white shadow-lg shadow-violet-500/25"
-                  >
-                    {getInitials(
-                      testimonial.name
-                    )}
-                  </div>
-
-                  <div>
-                    <p className="text-sm font-semibold text-slate-950 dark:text-white">
-                      {testimonial.name}
-                    </p>
-
-                    <div className="mt-2 flex items-center gap-2">
-                      <span className="h-1.5 w-1.5 rounded-full bg-emerald-500" />
-                    </div>
-                  </div>
-                </div>
-              </motion.article>
-            </AnimatePresence>
-          </MouseGlow>
-
-          {testimonials.length > 1 && (
-            <>
+          {items.length > 1 && (
+            <div className="flex items-center gap-4">
+              <span className="font-mono text-[12px] text-muted">
+                {String(active + 1).padStart(2, "0")} /{" "}
+                {String(items.length).padStart(2, "0")}
+              </span>
               <button
                 type="button"
-                onClick={previous}
+                onClick={() => go(-1)}
                 aria-label="Previous testimonial"
-                className="absolute left-0 top-1/2 z-20 hidden h-11 w-11 -translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-600 shadow-lg transition-all hover:-translate-x-[55%] hover:border-violet-400 hover:text-violet-600 sm:flex dark:border-white/[0.08] dark:bg-[#0b1220] dark:text-slate-300"
+                className="flex h-10 w-10 items-center justify-center border border-ink text-ink transition-colors hover:bg-ink hover:text-paper"
               >
-                <ChevronLeft size={18} />
+                <ArrowLeft size={16} />
               </button>
-
               <button
                 type="button"
-                onClick={next}
+                onClick={() => go(1)}
                 aria-label="Next testimonial"
-                className="absolute right-0 top-1/2 z-20 hidden h-11 w-11 translate-x-1/2 -translate-y-1/2 items-center justify-center rounded-full border border-slate-200 bg-white text-slate-600 shadow-lg transition-all hover:translate-x-[55%] hover:border-violet-400 hover:text-violet-600 sm:flex dark:border-white/[0.08] dark:bg-[#0b1220] dark:text-slate-300"
+                className="flex h-10 w-10 items-center justify-center border border-ink text-ink transition-colors hover:bg-ink hover:text-paper"
               >
-                <ChevronRight size={18} />
+                <ArrowRight size={16} />
               </button>
-            </>
+            </div>
           )}
         </div>
-
-        {testimonials.length > 1 && (
-          <div className="mt-8 flex justify-center gap-2">
-            {testimonials.map(
-              (item, index) => (
-                <button
-                  key={item.id}
-                  type="button"
-                  onClick={() =>
-                    goTo(index)
-                  }
-                  aria-label={`Go to testimonial ${
-                    index + 1
-                  }`}
-                  className={`
-                    relative
-                    h-1.5
-                    overflow-hidden
-                    rounded-full
-                    bg-slate-200
-                    transition-all
-                    dark:bg-white/10
-                    ${
-                      index === active
-                        ? "w-12"
-                        : "w-4"
-                    }
-                  `}
-                >
-                  {index === active && (
-                    <motion.span
-                      key={`${active}-${isPaused}`}
-                      initial={{
-                        width: "0%",
-                      }}
-                      animate={{
-                        width: isPaused
-                          ? "0%"
-                          : "100%",
-                      }}
-                      transition={{
-                        duration: isPaused
-                          ? 0
-                          : AUTO_SLIDE_DURATION /
-                            1000,
-                        ease: "linear",
-                      }}
-                      className="absolute inset-y-0 left-0 rounded-full bg-gradient-to-r from-blue-600 via-violet-500 to-cyan-400"
-                    />
-                  )}
-                </button>
-              )
-            )}
-          </div>
-        )}
-
-        {testimonials.length > 1 && (
-          <p className="mt-4 text-center font-mono text-[11px] tracking-wider text-slate-400">
-            {String(active + 1).padStart(
-              2,
-              "0"
-            )}{" "}
-            /{" "}
-            {String(
-              testimonials.length
-            ).padStart(2, "0")}
-          </p>
-        )}
-      </div>
-    </section>
+      </figure>
+    </Section>
   );
 }
